@@ -1,0 +1,15 @@
+{
+	"nodes":[
+		{"id":"a71bbf6c50a0b849","type":"text","text":"# Linear Algebra For Engineers","x":-540,"y":-140,"width":240,"height":120,"color":"6"},
+		{"id":"6e00e8286ae6272c","type":"text","text":"## 2 - Systems of Linear Equations","x":-60,"y":-840,"width":420,"height":50},
+		{"id":"809b35c6c77c1cb1","type":"text","text":"# 1 - Vectors Geometry\n","x":-20,"y":-2520,"width":340,"height":50},
+		{"id":"e03a48f4686d7d40","type":"file","file":"MATH115 - Linear Algebra/2 - Systems of Linear Equations/2.1 - Systems of Equations as Matrices.md","x":439,"y":-1640,"width":1120,"height":440},
+		{"id":"d4dfe7aaf7f78549","type":"file","file":"MATH115 - Linear Algebra/2 - Systems of Linear Equations/2.2 - Matrix Representation.md","x":439,"y":-1160,"width":1079,"height":400},
+		{"id":"0201f95c34a7955b","type":"file","file":"MATH115 - Linear Algebra/2 - Systems of Linear Equations/2.3 - System Rank Theorem.md","x":439,"y":-720,"width":1079,"height":400},
+		{"id":"7d3ffc286e93e26c","x":439,"y":-243,"width":1079,"height":327,"type":"file","file":"MATH115 - Linear Algebra/2 - Systems of Linear Equations/2.4 - Homogeneous Systems.md"}
+	],
+	"edges":[
+		{"id":"05fd4099f722b8c6","fromNode":"a71bbf6c50a0b849","fromSide":"right","toNode":"809b35c6c77c1cb1","toSide":"left"},
+		{"id":"9f416c4a4db6c234","fromNode":"a71bbf6c50a0b849","fromSide":"right","toNode":"6e00e8286ae6272c","toSide":"left"}
+	]
+}

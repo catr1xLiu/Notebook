@@ -25,14 +25,17 @@
             "id": "585de942cb9459c5",
             "type": "leaf",
             "state": {
-              "type": "markdown",
+              "type": "canvas",
               "state": {
-                "file": "MATH115 - Linear Algebra/2 - Systems of Linear Equations/2.4 - Homogeneous Systems.md",
-                "mode": "source",
-                "source": false
+                "file": "MATH115 - Linear Algebra/Mind Map.canvas",
+                "viewState": {
+                  "x": 666.0224173531557,
+                  "y": -456.40020409926774,
+                  "zoom": -1.2015786579972676
+                }
               },
-              "icon": "lucide-file",
-              "title": "2.4 - Homogeneous Systems"
+              "icon": "lucide-layout-dashboard",
+              "title": "Mind Map"
             }
           }
         ],
@@ -109,7 +112,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "MATH115 - Linear Algebra/2 - Systems of Linear Equations/2.4 - Homogeneous Systems.md",
+                "file": "MATH115 - Linear Algebra/Mind Map.canvas",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -119,7 +122,7 @@
                 "unlinkedCollapsed": true
               },
               "icon": "links-coming-in",
-              "title": "Backlinks for 2.4 - Homogeneous Systems"
+              "title": "Backlinks for Mind Map"
             }
           },
           {
@@ -186,8 +189,8 @@
   },
   "active": "585de942cb9459c5",
   "lastOpenFiles": [
-    "MATH115 - Linear Algebra/2 - Systems of Linear Equations/2.3 - System Rank Theorem.md",
     "MATH115 - Linear Algebra/2 - Systems of Linear Equations/2.4 - Homogeneous Systems.md",
+    "MATH115 - Linear Algebra/2 - Systems of Linear Equations/2.3 - System Rank Theorem.md",
     "MATH115 - Linear Algebra/2 - Systems of Linear Equations/2.2 - Matrix Representation.md",
     "AI Prompt for Hand-Written Note Conversion.md",
     "MATH115 - Linear Algebra/2 - Systems of Linear Equations/2.1 - Systems of Equations as Matrices.md",
