@@ -26,13 +26,13 @@ $$
 > [!quote] Definition
 > ## Differentiable and Derivative
 
-We say that a function $f$ is <u><strong style="color:#dab1da">differentiable at $a$</u></strong> if the limit
+We say that a function $f$ is <u><strong style="color:#dab1da">differentiable</u></strong> at $a$ if the limit
 
 $$
 \lim_{h \to 0} \frac{f(a + h) - f(a)}{h}
 $$
 
-exists. In this case, we call this value the <u><strong style="color:#dab1da">derivative of $f$ at $a$</u></strong>, denoted by $f'(a)$.
+exists. In this case, we call this value the <u><strong style="color:#dab1da">derivative</u></strong> of $f$ at $a$, denoted by $f'(a)$.
 
 $$
 f'(a) = \lim_{h \to 0} \frac{f(a + h) - f(a)}{h} = \lim_{x \to a} \frac{f(x) - f(a)}{x - a}
