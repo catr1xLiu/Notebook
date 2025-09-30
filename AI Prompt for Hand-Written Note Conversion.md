@@ -128,6 +128,7 @@ A = \begin{bmatrix}
 $$
 
 Vectors & Matrices with hidden terms:
+$$D = \begin{bmatrix} -2 & 0 \\ 0 & 5 \end{bmatrix}$$
 $$
 \vec{s} = \begin{bmatrix} s_1\ \\ \vdots\ \\ s_n \end{bmatrix}
 $$
@@ -143,8 +144,9 @@ a_{21} & a_{22} & \cdots & a_{2n} & b_2\\
 a_{m1} & a_{m2} & \cdots& a_{mn} & b_m
 \end{array}\right]
 $$
-INCORRECT (squeezed):
-$$\vec{s} = \begin{bmatrix} s_1\ \vdots\ s_n \end{bmatrix}$$ 
+INCORRECT (squeezed because line braker `\\` not used properly):
+$$D = \begin{bmatrix} -2 & 0 \ 0 & 5 \end{bmatrix}$$
+$$\vec{s} = \begin{bmatrix} s_1\ \vdots\ s_n \end{bmatrix}$$
 $$A = \begin{bmatrix} a_{11} & a_{12} & \cdots & a_{1n}\ \vdots & & & \vdots\ a_{m1} & a_{m2} & \cdots & a_{mn} \end{bmatrix}$$
 $$[A|\vec{b}] = \left[\begin{array}{cccc|c} a_{11} & \cdots & a_{1n} & | & b_1\ \vdots & & \vdots & | & \vdots\ a_{m1} & \cdots & a_{mn} & | & b_m \end{array}\right]$$
 ### 2.3 Examples with Collapsible Solutions
@@ -353,3 +355,10 @@ $$
 ```
 
 The attached handwritten note contains a few mistakes and is not very well-structured, so it has been converted into a more organized format.
+
+
+## 5. Output:
+
+**Always** output in markdown code quote instead of printing directly in the context, as the web-app might auto-format the markdown which can cause issues. 
+
+When the user prompts you to modify a particular part in the content, only output that part in code quote to save time and tokens.
