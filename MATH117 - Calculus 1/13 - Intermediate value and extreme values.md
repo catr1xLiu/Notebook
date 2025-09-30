@@ -66,18 +66,17 @@ This means that:
 > [!example] Example
 > ## EVT Applied to Specific Functions
 
+<div style="text-align: center;">
+  <img src="./media/image13.2.png" alt="Description of first image" style="width: 45%; display: inline-block;">
+  <img src="./media/image13.3.png" alt="Description of second image" style="width: 45%; display: inline-block;">
+</div>
+
 **Example 1:** $f(x) = \sin(x)$ on $I = [-\pi, \pi]$   
-
-<img src="./media/image13.2.png" style="width: 40%;"> 
 As guaranteed by the EVT:
-
 - **Maximum value** of $1$, occurs at $x = \frac{\pi}{2}$
 - **Minimum value** of $-1$, occurs at $x = -\frac{\pi}{2}$
 
 **Example 2:** $f(x) = \frac{1}{2}x$ on $I = [1, 3]$
-
-<img src="media/image13.3.png" style="width: 40%;">
-
 As guaranteed by the EVT:
 - **Maximum value** of $\frac{3}{2}$, occurs at $x = 3$
 - **Minimum value** of $\frac{1}{2}$, occurs at $x = 1$

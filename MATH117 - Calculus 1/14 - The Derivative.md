@@ -10,7 +10,10 @@ $$
 \frac{f(b) - f(a)}{b - a} = \frac{\Delta f}{\Delta x}
 $$
 
-[Insert graph: function curve with secant line from point (a, f(a)) to point (b, f(b))]
+
+<p align="center">
+  <img src="image14.1.png" alt="Description of image" width="50%">
+</p>
 
 - If we assume that the graph of the function is a line on the interval $[a, b]$, then the slope of this line would be the quantity above
 - If we choose a very small interval $\Delta x$, then the above assumption becomes more reasonable
@@ -19,7 +22,7 @@ $$
 $$
 \lim_{\Delta x \to 0} \frac{f(a + \Delta x) - f(a)}{\Delta x} = \lim_{x \to a} \frac{f(x) - f(a)}{x - a}
 $$
-
+![[illustration14.1.svg]]
 > [!quote] Definition
 > ## Differentiable and Derivative
 
@@ -181,5 +184,17 @@ $$
 > 
 > Therefore, $\frac{d}{dx}(\sin x) = \cos x$.
 
-[TODO: here, add 3b1b's geometric interpretation of the derivative of sine]
 
+#### A Better Visual Explanation:
+
+The sine function can be visualized as: 
+<div style="text-align: center;"> <img src="./media/illustration14.2.svg" alt="Description of first image" style="width: 35%; display: inline-block;"><img src="./media/illustration14.3.svg" alt="Description of second image" style="width: 55%; display: inline-block;"></div>
+
+Consider a slight nudge of $d\theta$ along the circumference of the circle; a tiny step in your walk around the unit circle. How much does this change $sin(θ)$ ? How much does that step change your _height_ above the x-axis? This is best observed by zooming in on the point where you are on the circle.
+
+<p align="center">
+  <img src="./media/illustration14.4.svg" alt="Description of image" width="60%">
+</p>
+<p align="center">
+  <img src="./media/illustration14.5.svg" alt="Description of image" width="60%">
+</p>
