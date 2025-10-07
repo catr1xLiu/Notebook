@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ECE190 Midterm Aid Sheet</title>
+    <style>
+        @page {
+            size: A4;
+            margin: 0.8cm;
+        }
+        
+        body {
+            font-family: 'Comic Sans MS', 'Segoe Print', cursive;
+            font-size: 11pt;
+            line-height: 1.4;
+            margin: 0;
+            padding: 0.8cm;
+            color: #000;
+        }
+        
+        .page {
+            page-break-after: always;
+            min-height: 26cm;
+        }
+        
+        .page:last-child {
+            page-break-after: auto;
+        }
+        
+        h1 {
+            font-size: 16pt;
+            font-weight: bold;
+            text-align: center;
+            margin: 0 0 0.5cm 0;
+            text-decoration: underline;
+        }
+        
+        h2 {
+            font-size: 13pt;
+            font-weight: bold;
+            margin: 0.4cm 0 0.2cm 0;
+            text-decoration: underline;
+        }
+        
+        .box {
+            border: 2px solid #000;
+            padding: 0.3cm;
+            margin: 0.3cm 0;
+        }
+        
+        .important {
+            background-color: #ffeb3b;
+            padding: 0.1cm 0.2cm;
+            font-weight: bold;
+        }
+        
+        ul {
+            margin: 0.2cm 0;
+            padding-left: 0.6cm;
+        }
+        
+        li {
+            margin: 0.15cm 0;
+        }
+        
+        strong {
+            font-weight: bold;
+        }
+        
+        .note {
+            font-size: 10pt;
+            font-style: italic;
+            color: #666;
+        }
+        
+        .process-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.2cm;
+            margin: 0.3cm 0;
+        }
+        
+        .process-box {
+            border: 2px solid #000;
+            padding: 0.2cm;
+            background: #fff;
+            flex: 1;
+            min-height: 2cm;
+            font-size: 10pt;
+        }
+        
+        .arrow {
+            font-size: 18pt;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+<!-- SIDE 1 -->
+<div class="page">
+    <h1>ECE190 MIDTERM - SIDE 1</h1>
+    
+    <h2>W2: Professional Engineers Act (RSO 1990 c.P.28)</h2>
+    <div class="box">
+        Practice of engineering = planning/designing/composing/evaluating/advising/reporting/directing/supervising requiring eng principles concerning <span class="important">SAFEGUARDING life, health, property, economic interests, public welfare, ENVIRONMENT</span>
+    </div>
+    
+    <h2>W2: Becoming P.Eng (5 Requirements via PEO)</h2>
+    <ol>
+        <li>≥18 years old</li>
+        <li>Good character</li>
+        <li>Academic requirements satisfied</li>
+        <li><strong>Pass National Professional Practice Exam</strong> (ethics/law/practice)</li>
+        <li>≥4 years engineering work experience</li>
+    </ol>
+    <p class="note">Protected term. Fines: $10K first, $25K subsequent</p>
+    
+    <h2>W4: ENGINEERING DESIGN PROCESS ★</h2>
+    <div class="process-container">
+        <div class="process-box">
+            <strong>Define Problem</strong><br>
+            •Identify need<br>
+            •Determine req.
+        </div>
+        <div class="arrow">→</div>
+        <div class="process-box">
+            <strong>Propose Hi-Level</strong><br>
+            •Gen. alternatives<br>
+            •Choose solution
+        </div>
+        <div class="arrow">→</div>
+        <div class="process-box">
+            <strong>Work Out Details</strong><br>
+            •Detailed design<br>
+            •Prototype/model
+        </div>
+        <div class="arrow">→</div>
+        <div class="process-box">
+            <strong>Test Solution</strong>
+        </div>
+        <div class="arrow">→</div>
+        <div class="process-box">
+            <strong>Recommend</strong>
+        </div>
+    </div>
+    <p style="text-align: center; margin: 0.2cm 0; font-weight: bold;">↻ ITERATE at any stage!</p>
+    
+    <h2>W4: Good Requirements = C.T.S.</h2>
+    <ul>
+        <li><strong>Complete:</strong> All functions/objectives/constraints</li>
+        <li><strong>Testable:</strong> Objectively verifiable, quantified</li>
+        <li><strong>Solution independent:</strong> Don't constrain design prematurely</li>
+    </ul>
+    
+    <h2>W4: Prototypes vs Models vs Simulations</h2>
+    <ul>
+        <li><strong>Physical Prototype:</strong> One-off functional life-size</li>
+        <li><strong>Physical Model:</strong> Small-size, not fully functional</li>
+        <li><strong>Simulation:</strong> Computer-based version</li>
+    </ul>
+    <p class="note">Testing: α-test=internal staff, β-test=real users</p>
+    
+    <h2>W2: Team Stages (Tuckman 1965)</h2>
+    <p><strong>Forming → Storming → Norming → Performing</strong></p>
+</div>
+
+<!-- SIDE 2 -->
+<div class="page">
+    <h1>ECE190 MIDTERM - SIDE 2</h1>
+    
+    <h2>W5: Sustainable Development (Brundtland 1987)</h2>
+    <div class="box">
+        "Meeting needs of <span class="important">PRESENT</span> without compromising ability of <span class="important">FUTURE GENERATIONS</span> to meet their own needs"
+    </div>
+    
+    <h2>W5: 3 Components (interconnected, need balance)</h2>
+    <ul>
+        <li><strong>ENVIRONMENTAL:</strong> Air/water/land quality, resources, climate</li>
+        <li><strong>ECONOMIC:</strong> Living standards, employment, prices, taxes</li>
+        <li><strong>SOCIAL:</strong> Security, health, education, fairness</li>
+    </ul>
+    
+    <h2>W5: Life Cycle Assessment (LCA)</h2>
+    <p><strong>Stages:</strong> Production → Usage → Maintenance → Disposal</p>
+    <p><strong>Cradle to grave</strong> vs <strong>Cradle to cradle</strong> (circular economy: waste=resource)</p>
+    
+    <h2>W5: 3R's in Engineering</h2>
+    <ul>
+        <li><strong>REDUCE:</strong> Less materials/energy. Encourage via: taxes, laws (right to repair), mindset</li>
+        <li><strong>REUSE:</strong> Design for disassembly & reuse</li>
+        <li><strong>RECYCLE:</strong> Use recycled materials (asphalt, concrete, plastic, metal)</li>
+    </ul>
+    
+    <h2>W6: 6 CENTRAL ETHICAL DUTIES ★</h2>
+    <ol>
+        <li><span class="important">PARAMOUNT duty to SOCIETY & ENVIRONMENT</span> (most important!)</li>
+        <li>Duty to employers & clients (fairness, competence, confidentiality)</li>
+        <li>Duty to colleagues & profession (support, uphold reputation)</li>
+        <li>Duty to avoid/disclose conflicts of interest
+            <p class="note">Conflict = derive personal benefit from official actions</p>
+        </li>
+        <li>Duty to maintain & act with competency (work within competence)</li>
+        <li>Duty to report (dangers, violations, unethical behavior)</li>
+    </ol>
+    
+    <h2>W6: 4 Ethical Perspectives</h2>
+    <p>Utilitarianism, Duty ethics, Rights ethics, Virtue ethics</p>
+    <p class="note">(Often consistent, sometimes conflict)</p>
+    
+    <h2>Key Acronyms</h2>
+    <ul>
+        <li><strong>PEO:</strong> Professional Engineers Ontario</li>
+        <li><strong>CEAB:</strong> Canadian Engineering Accreditation Board</li>
+        <li><strong>LCA:</strong> Life Cycle Assessment</li>
+        <li><strong>CCS:</strong> Carbon Capture & Storage</li>
+        <li><strong>LEED:</strong> Leadership in Energy & Environmental Design</li>
+    </ul>
+    
+    <p class="note" style="margin-top: 1cm;">
+        <strong>Codes of Ethics:</strong> Engineers Canada, PEO (ON Reg 941 §77), IEEE, ACM
+    </p>
+</div>
+
+</body>
+</html>
