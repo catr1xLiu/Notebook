@@ -118,17 +118,13 @@ Provide an example or a computation exercise.
 
 #### Vectors & Matrices
 
-Standard matrix:
-$$
-A = \begin{bmatrix}
-1 & -1 & 0\\
-0 & 3 & 2\\
-0 & 0 & 0
-\end{bmatrix}
-$$
-
-Vectors & Matrices with hidden terms:
+##### Correct Matrix:
 $$D = \begin{bmatrix} -2 & 0 \\ 0 & 5 \end{bmatrix}$$
+
+##### Incorrect Matrix 
+(squeezed because line braker `\\` not used properly):
+$$D = \begin{bmatrix} -2 & 0 \ 0 & 5 \end{bmatrix}$$
+##### Correct Matrix with hidden items:
 $$
 \vec{s} = \begin{bmatrix} s_1\ \\ \vdots\ \\ s_n \end{bmatrix}
 $$
@@ -144,11 +140,19 @@ a_{21} & a_{22} & \cdots & a_{2n} & b_2\\
 a_{m1} & a_{m2} & \cdots& a_{mn} & b_m
 \end{array}\right]
 $$
-INCORRECT (squeezed because line braker `\\` not used properly):
-$$D = \begin{bmatrix} -2 & 0 \ 0 & 5 \end{bmatrix}$$
+##### INCORRECT:
 $$\vec{s} = \begin{bmatrix} s_1\ \vdots\ s_n \end{bmatrix}$$
 $$A = \begin{bmatrix} a_{11} & a_{12} & \cdots & a_{1n}\ \vdots & & & \vdots\ a_{m1} & a_{m2} & \cdots & a_{mn} \end{bmatrix}$$
 $$[A|\vec{b}] = \left[\begin{array}{cccc|c} a_{11} & \cdots & a_{1n} & | & b_1\ \vdots & & \vdots & | & \vdots\ a_{m1} & \cdots & a_{mn} & | & b_m \end{array}\right]$$
+
+##### Correct Vector Set
+$\{\begin{bmatrix} 1 \\ 0 \\ 0 \end{bmatrix}, \begin{bmatrix} 0 \\ 1 \\ 0 \end{bmatrix}, \begin{bmatrix} 0 \\ 0 \\ 1 \end{bmatrix}\}$
+
+##### INCORRECT
+
+(there is no `\left` `\right` such thing in latex!!! stop producing such garbage)
+$\left{\begin{bmatrix} 1 \ 0 \ 0 \end{bmatrix}, \begin{bmatrix} 0 \ 1 \ 0 \end{bmatrix}, \begin{bmatrix} 0 \ 0 \ 1 \end{bmatrix}\right}$
+
 ### 2.3 Examples with Collapsible Solutions
 
 For examples that need solutions, solutions are hidden by default:
