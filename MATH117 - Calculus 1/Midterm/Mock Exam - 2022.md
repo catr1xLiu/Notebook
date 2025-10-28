@@ -170,11 +170,6 @@ Express the function: $$g(x) = \frac{5}{2}\cos x + \frac{5\sqrt{3}}{2}\sin x$$
 in the form $A\cos(x - \alpha)$.
 
 
-#### My Work
-
-_[Paste your handwritten work here]_
-
-
 > [!success]- Solution (Click to expand)
 > 
 > ### Part (a): Partial Fraction Decomposition
@@ -183,7 +178,7 @@ _[Paste your handwritten work here]_
 > 
 > Since the degree of the numerator (4) is greater than the degree of the denominator (3), we perform long division:
 > 
-> $$\begin{array}{c|cc} & x & +1 \ \hline x^3 - x^2 - x + 1 & x^4 & +0x^3 & -2x^2 & +4x & +1 \ & x^4 & -x^3 & -x^2 & +x & \ \hline & & x^3 & -x^2 & +3x & +1 \ & & x^3 & -x^2 & -x & +1 \ \hline & & & & 4x & \end{array}$$
+> $$ \begin{array}{r} x + 1 \\ x^3 - x^2 - x + 1 \enclose{longdiv}{x^4 + 0x^3 - 2x^2 + 4x + 1} \\ \underline{x^4 - x^3 - x^2 + x} \\ x^3 - x^2 + 3x + 1 \\ \underline{x^3 - x^2 - x + 1} \\ 4x \end{array} $$
 > 
 > Therefore: $$f(x) = x + 1 + \frac{4x}{x^3 - x^2 - x + 1}$$
 > 
