@@ -8,17 +8,15 @@
         "type": "tabs",
         "children": [
           {
-            "id": "57e820489c179e8b",
+            "id": "869c76c62376e419",
             "type": "leaf",
             "state": {
-              "type": "markdown",
+              "type": "excalidraw",
               "state": {
-                "file": "Motion Diffusion Model Basics/4 - Age Diffusion Model/1- Project Overview.md",
-                "mode": "source",
-                "source": false
+                "file": "Motion Diffusion Model Basics/drawings/Example Drawing.md"
               },
-              "icon": "lucide-file",
-              "title": "1- Project Overview"
+              "icon": "excalidraw-icon",
+              "title": "Example Drawing"
             }
           }
         ]
@@ -171,12 +169,16 @@
       "obsidian-excalidraw-plugin:New drawing": false
     }
   },
-  "active": "57e820489c179e8b",
+  "active": "d46a359f111fa790",
   "lastOpenFiles": [
+    "Motion Diffusion Model Basics/4 - Age Diffusion Model/1- Project Overview.md",
+    "Motion Diffusion Model Basics/drawings/Example Drawing.md",
+    "Motion Diffusion Model Basics/media/Age vs Speed ScatterPlot.png",
+    "Motion Diffusion Model Basics/drawings/Drawing 2026-01-08 16.51.02.excalidraw.md",
+    "Motion Diffusion Model Basics/drawings/Drawing 2026-01-08 16.47.10.excalidraw.md",
     "Python Image Processor/image_processing.py",
     "Motion Diffusion Model Basics/drawings/d2.md",
     "Motion Diffusion Model Basics/drawings/d1.md",
-    "Motion Diffusion Model Basics/4 - Age Diffusion Model/1- Project Overview.md",
     "Motion Diffusion Model Basics/drawings",
     "3 Solutions/New Marker Fitting.md",
     "3 Solutions",
@@ -186,7 +188,6 @@
     "Understanding Motion Diffusion Model.md",
     "MATH115 - Linear Algebra/8 - Eigenvectors and eigenvalues/8.2 - Finding Eigen Pairs.md",
     "Motion Diffusion Model Basics/media",
-    "Motion Diffusion Model Basics/media/Age vs Speed ScatterPlot.png",
     "Motion Diffusion Model Basics/1 - Fundamentals of AI/1 - Fundamentals of Machine Learning.md",
     "MATH115 - Linear Algebra/8 - Eigenvectors and eigenvalues/8.1 - Eigenvectors and Eigenvalues.md",
     "Motion Diffusion Model Basics/1 - Fundamentals of AI/2 - Pytorch Basics.md",
@@ -205,12 +206,8 @@
     "MATH115 - Linear Algebra/8 - Eigenvectors and eigenvalues/8.3 - Diagonalization.md",
     "MATH115 - Linear Algebra/8 - Eigenvectors and eigenvalues/Drawing 2025-11-26 16.07.50.excalidraw.md",
     "MATH115 - Linear Algebra/8 - Eigenvectors and eigenvalues/Drawing.md",
-    "MATH115 - Linear Algebra/MATH115F25CourseNotesV2.pdf",
     "MATH115 - Linear Algebra/7 - Complex Numbers/7.3 - Complex Roots of Polynomials.md",
     "Pasted image 20251125164028.png",
-    "MATH115 - Linear Algebra/5 - Linear Transformation/5.5 - Inverse of a Matrix.md",
-    "MATH115 - Linear Algebra/3 - Matrices/3.4 - Matrix Multiplication.md",
-    "MATH115 - Linear Algebra/3 - Matrices/3.5 - Matrix Inverse.md",
     "MATH115 - Linear Algebra/8 - Eigenvectors and eigenvalues/media/graph2_reflection_basis.png",
     "MATH115 - Linear Algebra/8 - Eigenvectors and eigenvalues/media/graph1_eigenvectors_line.png",
     "MATH115 - Linear Algebra/7 - Complex Numbers/media/sixth_roots.png",
