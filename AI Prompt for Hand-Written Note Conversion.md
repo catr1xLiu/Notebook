@@ -1,7 +1,7 @@
 
 ## 1. Task Overview
 
-Convert handwritten course notes into clean, well-structured Obsidian markdown format. You have full creative freedom to:
+Convert course notes into clean, well-structured Obsidian markdown format. You will be a given a piece of note in any format (word document, OneNote document, hand-written version), and you will need to:
 
 - Fix computational errors
 - Reorganize unclear structures
@@ -150,7 +150,7 @@ $\{\begin{bmatrix} 1 \\ 0 \\ 0 \end{bmatrix}, \begin{bmatrix} 0 \\ 1 \\ 0 \end{b
 
 ##### INCORRECT
 
-(there is no `\left` `\right` such thing in latex!!! stop producing such garbage)
+(there is no `\left` `\right` such thing in latex!!! stop using these incorrect syntax)
 $\left{\begin{bmatrix} 1 \ 0 \ 0 \end{bmatrix}, \begin{bmatrix} 0 \ 1 \ 0 \end{bmatrix}, \begin{bmatrix} 0 \ 0 \ 1 \end{bmatrix}\right}$
 
 ### 2.3 Examples with Collapsible Solutions
@@ -175,15 +175,15 @@ Find the rank of the given matrix.
 
 ### 2.5 Graphs and Figures
 
-For hand-drawn graphs:
+Good notes uses visuals, and I will prepare them. Whenever you think it is appropriate to insert a visual into the note, add an `img` tag like this:
 
 ```markdown
-[Insert graph: description of what should be shown]
+<img src="title.png" alt="Please Insert Image of XXX" width="50%">
 ```
 
 ### 2.6 Important Terminology
 
-Use purple colour and underline for terminologies that are within a line, example:
+Use purple color and underline for terminologies that are within a line, example:
 
 ```markdown
 The vector $\vec{s} = \begin{bmatrix} s_1\ \\ \vdots\ \\ s_n \end{bmatrix}$ is called a <u><strong style="color:#dab1da" >coefficients</u></strong> to the system if all $m$ equations satisfy $LS = RS$ when the <u><strong style="color:#dab1da" >unknowns</u></strong> are replaced by the values in $\vec{s}$.
@@ -191,7 +191,7 @@ The vector $\vec{s} = \begin{bmatrix} s_1\ \\ \vdots\ \\ s_n \end{bmatrix}$ is c
 The <u><strong style="color:#dab1da" >solution set</u></strong> is the set that contains all possible solutions to the system.
 ```
 
-Or, if we were to give definition to very important terminologies, you can also use h4 (which is also marked purple in obsidian):
+Or, if we have a very important terminologies, you can also use h4. You **DO NOT** have to specify color:#dab1da in this case, because the theme is already configured to use this color for h4.
 
 ```markdown
 For all linear systems, there are only 3 possibilities:
