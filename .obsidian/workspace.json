@@ -4,31 +4,21 @@
     "type": "split",
     "children": [
       {
-        "id": "d7398a69056e0aec",
+        "id": "f2971c58e5a325bc",
         "type": "tabs",
         "children": [
           {
-            "id": "62c955ecedbeeabb",
+            "id": "3c6ece5853abe967",
             "type": "leaf",
             "state": {
-              "type": "excalidraw",
+              "type": "markdown",
               "state": {
-                "file": "Motion Diffusion Model Basics/drawings/2 - Tensors.md"
+                "file": "Motion Diffusion Model Basics/1 - Fundamentals of AI/2 - Pytorch Basics.md",
+                "mode": "source",
+                "source": false
               },
-              "icon": "excalidraw-icon",
-              "title": "2 - Tensors"
-            }
-          },
-          {
-            "id": "3bf50962308a3813",
-            "type": "leaf",
-            "state": {
-              "type": "excalidraw",
-              "state": {
-                "file": "Motion Diffusion Model Basics/drawings/2 - Tensors.md"
-              },
-              "icon": "excalidraw-icon",
-              "title": "2 - Tensors"
+              "icon": "lucide-file",
+              "title": "2 - Pytorch Basics"
             }
           }
         ]
@@ -182,53 +172,52 @@
       "obsidian-git:Open Git source control": false
     }
   },
-  "active": "62c955ecedbeeabb",
+  "active": "3c6ece5853abe967",
   "lastOpenFiles": [
-    "Motion Diffusion Model Basics/drawings/Example Drawing.md",
-    "Motion Diffusion Model Basics/drawings/Drawing1.md",
-    "Motion Diffusion Model Basics/media/Pasted Image 20260112231131_358.png",
-    "AI Prompt for Hand-Written Note Conversion.md",
-    "Motion Diffusion Model Basics/4 - Age Diffusion Model/1- Project Overview.md",
     "Motion Diffusion Model Basics/1 - Fundamentals of AI/2 - Pytorch Basics.md",
+    "Motion Diffusion Model Basics/1 - Fundamentals of AI/2 - Pytorch Basics.ipynb",
+    "Motion Diffusion Model Basics/1 - Fundamentals of AI/2 - Pytorch Basics_tmp_jupytext_16244.ipynb",
+    "Motion Diffusion Model Basics/1 - Fundamentals of AI/2 - Pytorch Basics_tmp_jupytext_14816.ipynb",
     "Motion Diffusion Model Basics/drawings/2 - Tensors.md",
+    "network-svgrepo-com.svg",
+    "Motion Diffusion Model Basics/drawings/3 - Attributes of Tensors.md",
+    "Motion Diffusion Model Basics/drawings/Drawing1.md",
+    "Motion Diffusion Model Basics/media/Age vs Speed ScatterPlot.png",
     "Motion Diffusion Model Basics/1 - Fundamentals of AI/1 - Fundamentals of Machine Learning.md",
+    "Motion Diffusion Model Basics/media/graphics-card-svgrepo-com.svg",
+    "Motion Diffusion Model Basics/1 - Fundamentals of AI/2 - Pytorch Basics_tmp_jupytext_20408.ipynb",
+    "AI Prompt for Hand-Written Note Conversion.md",
+    "Motion Diffusion Model Basics/drawings/Example Drawing.md",
+    "Motion Diffusion Model Basics/media/cpu-processor-svgrepo-com.svg",
+    "Motion Diffusion Model Basics/media/microchip-svgrepo-com.svg",
+    "Motion Diffusion Model Basics/media/Pasted Image 20260112231131_358.png",
+    "Motion Diffusion Model Basics/media/video-card-svgrepo-com.svg",
+    "ram-memory-svgrepo-com.svg",
+    "gpu (1).png",
+    "gpu.png",
+    "Motion Diffusion Model Basics/1 - Fundamentals of AI/2 - Pytorch Basics_tmp_jupytext_29388.ipynb",
+    "Motion Diffusion Model Basics/1 - Fundamentals of AI/2 - Pytorch Basics_tmp_jupytext_29632.ipynb",
+    "Motion Diffusion Model Basics/1 - Fundamentals of AI/2 - Pytorch Basics_tmp_jupytext_17688.ipynb",
+    "Motion Diffusion Model Basics/1 - Fundamentals of AI/2 - Pytorch Basics_tmp_jupytext_22952.ipynb",
+    "Motion Diffusion Model Basics/1 - Fundamentals of AI/2 - Pytorch Basics_tmp_jupytext_26116.ipynb",
+    "Motion Diffusion Model Basics/1 - Fundamentals of AI/2 - Pytorch Basics_tmp_jupytext_19252.ipynb",
+    "Motion Diffusion Model Basics/4 - Age Diffusion Model/1- Project Overview.md",
     "Motion Diffusion Model Basics/drawings/Drawing 2026-01-12 23.51.07.excalidraw.md",
     "Motion Diffusion Model Basics/drawings/Drawing 2026-01-12 13.20.08.excalidraw.md",
-    "Motion Diffusion Model Basics/drawings/Untitled.md",
     "Motion Diffusion Model Basics/drawings/Drawing 2026-01-09 17.23.56.excalidraw.md",
     "Understanding Motion Diffusion Model.md",
     "Motion Diffusion Model Basics/drawings/Drawing2.md",
-    "Motion Diffusion Model Basics/media/Age vs Speed ScatterPlot.png",
     "Motion Diffusion Model Basics/drawings/Drawing 2026-01-08 16.51.02.excalidraw.md",
     "Motion Diffusion Model Basics/drawings/Drawing 2026-01-08 16.47.10.excalidraw.md",
-    "Python Image Processor/image_processing.py",
     "Motion Diffusion Model Basics/drawings/d2.md",
     "Motion Diffusion Model Basics/drawings/d1.md",
-    "Motion Diffusion Model Basics/drawings",
     "3 Solutions/New Marker Fitting.md",
-    "3 Solutions",
-    "Excalidraw",
     "Understanding LoRA-MDM.md",
     "MATH115 - Linear Algebra/8 - Eigenvectors and eigenvalues/8.2 - Finding Eigen Pairs.md",
-    "Motion Diffusion Model Basics/media",
     "MATH115 - Linear Algebra/8 - Eigenvectors and eigenvalues/8.1 - Eigenvectors and Eigenvalues.md",
     "Motion Diffusion Model Basics/Readme.md",
     "MATH115 - Linear Algebra/3 - Matrices/3.1 - Matrix Algebra.md",
     "Instruction.md",
-    "MATH115 - Linear Algebra/3 - Matrices/3.2P2 - Additional - Matrix As Transformations.md",
-    "Motion Diffusion Model Basics/4 - Age Diffusion Model",
-    "Motion Diffusion Model Basics/3 - Human Motion Diffusion Model",
-    "Motion Diffusion Model Basics/2 - Diffusion Models",
-    "Motion Diffusion Model Basics/1 - Fundamentals of AI",
-    "Motion Diffusion Model Basics",
-    "Pasted image 20251125164028.png",
-    "MATH115 - Linear Algebra/8 - Eigenvectors and eigenvalues/media/graph2_reflection_basis.png",
-    "MATH115 - Linear Algebra/8 - Eigenvectors and eigenvalues/media/graph1_eigenvectors_line.png",
-    "MATH115 - Linear Algebra/7 - Complex Numbers/media/sixth_roots.png",
-    "MATH115 - Linear Algebra/7 - Complex Numbers/media/sixth_roots.png",
-    "MATH115 - Linear Algebra/7 - Complex Numbers/media/complex_multiplication.png",
-    "MATH115 - Linear Algebra/7 - Complex Numbers/media/polar_form.png",
-    "MATH115 - Linear Algebra/7 - Complex Numbers/media/complex_plane_points.png",
     "MATH115 - Linear Algebra/Mind Map.canvas"
   ]
 }
