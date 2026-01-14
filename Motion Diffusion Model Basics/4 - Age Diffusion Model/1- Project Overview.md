@@ -136,13 +136,7 @@ class LoRALayer(nn.Module):
 | **Writing** | Week 7-8 | Draft paper; Generate demo videos. | Submission ready. |
 
 ---
-## Appendices
+## References
 
-### See Also
-* [[Understanding Motion Diffusion Model]] - Core architecture notes.
-* [[Understanding LoRA-MDM]] - Reference implementation.
-* [[3 Solutions/New Marker Fitting]] - Details on the dataset fix.
-
-### References
 1.  Tevet, G., et al. "Human Motion Diffusion Model." ICLR 2023.
 2.  Hu, E. J., et al. "LoRA: Low-Rank Adaptation of Large Language Models." ICLR 2022.
