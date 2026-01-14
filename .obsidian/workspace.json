@@ -4,19 +4,31 @@
     "type": "split",
     "children": [
       {
-        "id": "d6b30260a4fe43eb",
+        "id": "d7398a69056e0aec",
         "type": "tabs",
         "children": [
           {
-            "id": "869c76c62376e419",
+            "id": "62c955ecedbeeabb",
             "type": "leaf",
             "state": {
               "type": "excalidraw",
               "state": {
-                "file": "Motion Diffusion Model Basics/drawings/Example Drawing.md"
+                "file": "Motion Diffusion Model Basics/drawings/2 - Tensors.md"
               },
               "icon": "excalidraw-icon",
-              "title": "Example Drawing"
+              "title": "2 - Tensors"
+            }
+          },
+          {
+            "id": "3bf50962308a3813",
+            "type": "leaf",
+            "state": {
+              "type": "excalidraw",
+              "state": {
+                "file": "Motion Diffusion Model Basics/drawings/2 - Tensors.md"
+              },
+              "icon": "excalidraw-icon",
+              "title": "2 - Tensors"
             }
           }
         ]
@@ -92,7 +104,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "MATH115 - Linear Algebra/Mind Map.canvas",
+                "file": "Motion Diffusion Model Basics/drawings/Drawing 2026-01-09 17.23.56.excalidraw.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -102,7 +114,7 @@
                 "unlinkedCollapsed": true
               },
               "icon": "links-coming-in",
-              "title": "Backlinks for Mind Map"
+              "title": "Backlinks for Drawing 2026-01-09 17.23.56.excalidraw"
             }
           },
           {
@@ -166,13 +178,26 @@
       "templates:Insert template": false,
       "command-palette:Open command palette": false,
       "bases:Create new base": false,
-      "obsidian-excalidraw-plugin:New drawing": false
+      "obsidian-excalidraw-plugin:New drawing": false,
+      "obsidian-git:Open Git source control": false
     }
   },
-  "active": "d46a359f111fa790",
+  "active": "62c955ecedbeeabb",
   "lastOpenFiles": [
-    "Motion Diffusion Model Basics/4 - Age Diffusion Model/1- Project Overview.md",
     "Motion Diffusion Model Basics/drawings/Example Drawing.md",
+    "Motion Diffusion Model Basics/drawings/Drawing1.md",
+    "Motion Diffusion Model Basics/media/Pasted Image 20260112231131_358.png",
+    "AI Prompt for Hand-Written Note Conversion.md",
+    "Motion Diffusion Model Basics/4 - Age Diffusion Model/1- Project Overview.md",
+    "Motion Diffusion Model Basics/1 - Fundamentals of AI/2 - Pytorch Basics.md",
+    "Motion Diffusion Model Basics/drawings/2 - Tensors.md",
+    "Motion Diffusion Model Basics/1 - Fundamentals of AI/1 - Fundamentals of Machine Learning.md",
+    "Motion Diffusion Model Basics/drawings/Drawing 2026-01-12 23.51.07.excalidraw.md",
+    "Motion Diffusion Model Basics/drawings/Drawing 2026-01-12 13.20.08.excalidraw.md",
+    "Motion Diffusion Model Basics/drawings/Untitled.md",
+    "Motion Diffusion Model Basics/drawings/Drawing 2026-01-09 17.23.56.excalidraw.md",
+    "Understanding Motion Diffusion Model.md",
+    "Motion Diffusion Model Basics/drawings/Drawing2.md",
     "Motion Diffusion Model Basics/media/Age vs Speed ScatterPlot.png",
     "Motion Diffusion Model Basics/drawings/Drawing 2026-01-08 16.51.02.excalidraw.md",
     "Motion Diffusion Model Basics/drawings/Drawing 2026-01-08 16.47.10.excalidraw.md",
@@ -184,29 +209,18 @@
     "3 Solutions",
     "Excalidraw",
     "Understanding LoRA-MDM.md",
-    "AI Prompt for Hand-Written Note Conversion.md",
-    "Understanding Motion Diffusion Model.md",
     "MATH115 - Linear Algebra/8 - Eigenvectors and eigenvalues/8.2 - Finding Eigen Pairs.md",
     "Motion Diffusion Model Basics/media",
-    "Motion Diffusion Model Basics/1 - Fundamentals of AI/1 - Fundamentals of Machine Learning.md",
     "MATH115 - Linear Algebra/8 - Eigenvectors and eigenvalues/8.1 - Eigenvectors and Eigenvalues.md",
-    "Motion Diffusion Model Basics/1 - Fundamentals of AI/2 - Pytorch Basics.md",
     "Motion Diffusion Model Basics/Readme.md",
     "MATH115 - Linear Algebra/3 - Matrices/3.1 - Matrix Algebra.md",
     "Instruction.md",
     "MATH115 - Linear Algebra/3 - Matrices/3.2P2 - Additional - Matrix As Transformations.md",
-    "AI Prompt for Hand-Written Note Conversion - Copy.md",
-    "MATH115 - Linear Algebra/3 - Matrices/3.2 - The Matrix-Vector Product.md",
-    "Excalidraw/Drawing 2026-01-06 11.58.02.excalidraw.md",
     "Motion Diffusion Model Basics/4 - Age Diffusion Model",
     "Motion Diffusion Model Basics/3 - Human Motion Diffusion Model",
     "Motion Diffusion Model Basics/2 - Diffusion Models",
     "Motion Diffusion Model Basics/1 - Fundamentals of AI",
     "Motion Diffusion Model Basics",
-    "MATH115 - Linear Algebra/8 - Eigenvectors and eigenvalues/8.3 - Diagonalization.md",
-    "MATH115 - Linear Algebra/8 - Eigenvectors and eigenvalues/Drawing 2025-11-26 16.07.50.excalidraw.md",
-    "MATH115 - Linear Algebra/8 - Eigenvectors and eigenvalues/Drawing.md",
-    "MATH115 - Linear Algebra/7 - Complex Numbers/7.3 - Complex Roots of Polynomials.md",
     "Pasted image 20251125164028.png",
     "MATH115 - Linear Algebra/8 - Eigenvectors and eigenvalues/media/graph2_reflection_basis.png",
     "MATH115 - Linear Algebra/8 - Eigenvectors and eigenvalues/media/graph1_eigenvectors_line.png",
@@ -215,7 +229,6 @@
     "MATH115 - Linear Algebra/7 - Complex Numbers/media/complex_multiplication.png",
     "MATH115 - Linear Algebra/7 - Complex Numbers/media/polar_form.png",
     "MATH115 - Linear Algebra/7 - Complex Numbers/media/complex_plane_points.png",
-    "MATH115 - Linear Algebra/5 - Linear Transformation/media/image 3.png",
     "MATH115 - Linear Algebra/Mind Map.canvas"
   ]
 }
