@@ -37,10 +37,24 @@ data = [[1, 2], [3, 4]]
 # Intialize from python array
 data_tensor = torch.tensor(data)
 print(f"Tensor: \n{data_tensor}")
+```
 
+### Bridge with NumPy
+
+Tensors on the CPU can share underlying memory locations with NumPy arrays.
+
+```python
 # From numpy array
 np_array = np.array(data)
 np_tensor = torch.from_numpy(np_array)
+
+# Changes of numpy array will also apply to torch tensor
+# Because of shared underlying memory locations
+np_array[0, 0] = 2
+print(np_tensor)
+
+# Create numpy array from tensor, will also share the same memory address
+np_array2 = np_tensor.numpy()
 ```
 
 ### Copy Tensors
@@ -121,12 +135,39 @@ print(tensor)
 
 ### joining tensors
 
+We can use `torch.cat` to **concatenate** a sequence of tensors **along a given dimension** to form a larger tensor. 
 
 ```python
-t1 = torch.tensor([1, 2], [3, 4])
+t1 = torch.tensor([[1, 2], [3, 4]])
 t1 = torch.cat([t1, t1], dim=0)
-print(f"Cat)
+print(f"Tensor after concatenating in dim0: \n{t1}")
 t1 = torch.cat([t1, t1], dim=1)
-print(t1_cat)
+print(f"Tensor after concatenating in dim1: \n{t1}")
 ```
 
+We can also use `torch.stack` to build a sequence of tensors, this is slightly different
+
+```python
+vec = torch.tensor([1, 2, 3, 4])
+print(f"Concatenated vector: \n{torch.cat([vec, vec])}")
+t1 = torch.cat([t1, t1], dim=1)
+print(f"Stacked vector: \n{torch.stack([vec, vec])}")
+```
+
+### Math Operations
+
+```python
+n = torch.zeros(3, 3)
+
+# Add to every element
+n += 3 # or n = n.add(...)
+
+# Add / Subtract each corresponding element
+n += torch.ones(3, 3) # Or n = n.add(...)
+
+print(f"N = \n{n}\n")
+# Element-wise multiplication
+print(f"N mul N = \n{n * n}\n")
+# Matrix multiplication
+print(f"N dot N = \n{n @ n}\n") # or n.matmul(...)
+```
