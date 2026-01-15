@@ -121,23 +121,12 @@ print(tensor)
 
 ### joining tensors
 
+
 ```python
-t1 = tensor([1, 2, 3])
-t1_cat = torch.cat([t1, t1, t1], dim=1)
+t1 = torch.tensor([1, 2], [3, 4])
+t1 = torch.cat([t1, t1], dim=0)
+print(f"Cat)
+t1 = torch.cat([t1, t1], dim=1)
 print(t1_cat)
 ```
 
-
---- start-multi-column: ExampleRegion1  
-```column-settings  
-number of columns: 2  
-largest column: left  
-```
-
-Text displayed in column 1.
-
---- end-column ---
-
-Text displayed in column 2.
-
---- end-multi-column
