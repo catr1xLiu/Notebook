@@ -171,3 +171,11 @@ print(f"N mul N = \n{n * n}\n")
 # Matrix multiplication
 print(f"N dot N = \n{n @ n}\n") # or n.matmul(...)
 ```
+
+
+> [!fact] Theorem
+> ## Fundamentals of Neural Networks
+
+
+
+
