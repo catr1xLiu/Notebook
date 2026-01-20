@@ -27,7 +27,7 @@ print("NumPy version:", np.__version__)
 
 **Tensors** represents matrices/arrays in memory. It is used to encode inputs, outputs and parameters of a model. It's very similar to `np.array`, but it can run on **GPU/NPUs**.
 
-![[2 - Tensors|100%]]
+![[1.1 - Tensors|100%]]
 
 ### Initialize Tensors
 
@@ -99,7 +99,7 @@ The attribute of a tensor includes:
 - Its **datatype** (e.g. `int`, `float8`, `float32`)
 - The **device** at which the tensor is stored
 
-![[3 - Attributes of Tensors|100%]]
+![[1.2 - Attributes of Tensors|100%]]
 
 ```python
 print(f"Shape of Random Tensor: {rand_tensor.shape}")
@@ -176,6 +176,6 @@ print(f"N dot N = \n{n @ n}\n") # or n.matmul(...)
 > [!fact] Theorem
 > ## Fundamentals of Neural Networks
 
-
+![[2.1 - Network1|80%]]
 
 
