@@ -172,10 +172,3 @@ print(f"N mul N = \n{n * n}\n")
 print(f"N dot N = \n{n @ n}\n") # or n.matmul(...)
 ```
 
-
-> [!fact] Theorem
-> ## Fundamentals of Neural Networks
-
-![[2.1 - Network1|80%]]
-
-
