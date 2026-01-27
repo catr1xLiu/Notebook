@@ -3,8 +3,7 @@
 > ## Fundamentals of Neural Networks
 
 
-A **Neural Network** is a large set of **Neurons** arranged in several layers. Inputs and outputs of a network are simply the For this simple hand-writing detection network, 
-
+**Neural Network** is the fundamental algorithm behind Artificial Intelligence. It has a special structure, which can be graphically represented as a large set of connected *Nodes* forming a *Net*. 
 
 ![[2.1 - Network1|100%]]
 
