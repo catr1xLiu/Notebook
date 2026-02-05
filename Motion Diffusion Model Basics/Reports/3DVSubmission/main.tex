@@ -17,7 +17,7 @@
 \def\paperID{*****} % *** Enter the Paper ID here
 
 
-\title{Your Nectar Track Title}
+\title{Learning and Generating Age-Specific Human Motion Patterns with Graph Networks and Diffusion Models}
 
 % If anonymized:
 \author{Anonymous Author(s)}
@@ -29,34 +29,28 @@
 \maketitle
 
 \begin{abstract}
-% Aim for a tight abstract. Nectar submission is one page (optional 2nd page for figures).
-~150--250 words is a common sweet spot, unless you need more.
+	\input{sec/abstract}
 \end{abstract}
 
 \section{Motivation / Problem}
-(Short.)
+\input{sec/motivation}
 
 \section{Approach / Key Idea}
-(Short.)
+\input{sec/approach}
 
 \section{Preliminary Results / Expected Impact}
-(Short.)
+\input{sec/results}
 
 % ---- Optional figures page (page 2) ----
 \clearpage
 \section*{Figures (Optional)}
-% Keep this page figures + captions only.
-\begin{figure}[t]
-  \centering
-  % \includegraphics[width=\linewidth]{figs/teaser.pdf}
-  \caption{<Caption>}
-\end{figure}
+\input{sec/figures}
 
 % ---- References (excluded) ----
 \clearpage
 {\small
-\bibliographystyle{ieeenat_fullname}
-\bibliography{main}
+	\bibliographystyle{ieeenat_fullname}
+	\bibliography{main}
 }
 
 \end{document}
