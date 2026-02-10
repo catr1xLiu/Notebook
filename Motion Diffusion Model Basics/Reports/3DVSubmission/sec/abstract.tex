@@ -1,9 +1,3 @@
-It is well-established that age affects walking patterns through reduced velocity, constrained range of motion, and shift in posture. However, capturing these subtle kinematics signatures in the walking patterns of individual subjects remains challenging.
+Age affects walking patterns through kinematic signatures such as reduced velocity and shift in posture, but capturing these subtle differences in individual walking styles can be challenging. Impressive progress has been made in the field to detect and generate human motion of different styles. However, whether biomechanical signatures like aging can be learned by such models remains unexplored.
 
-We present a 3-stage workflow that bridges Clinical Gait Analysis with Machine-Learning Motion Synthesis: 
-(1) A multi-stage data processing pipeline that converts a clinical motion capture dataset (Plug-in Gait) to machine-learnable skeleton graphs of modern standard (HumanML3D), and removes instrumental noise and jitters to ensure quality;
-(2) A Spatial-Temporal Graph Convolutional Network (ST-GCN) to distinguish age groups (young, mid, old) from human motion. 
-(3) Various Low-Rank Adapters for Motion Diffusion Models (LoRA-MDM) for different age groups that allow age-conditioned motion generation, trained from a training-validation loop where the ST-GCN Network is used for guidance.
-
-Consistent ST-GCN age classification proves that age-specific signals exist within clinical data, while our LoRA-MDM results show that this signal can be reproduced using a generative model. This proof-of-concept lays the groundwork for age-aware motion synthesis systems.
-
+We present a proof-of-concept that attempts to learn and reproduce the aging signature in human motion using graph and diffusion networks. A graph convolutional network is trained to predict subject age from captured motion, while a diffusion network is trained to generate new motion conditioned on age. Consistent age classification demonstrates that age-specific signals exist within clinical data, while results of the diffusion network show that this signal can be effectively reproduced. This study bridges clinical gait analysis with modern machine-learning Models and lays the groundwork for age-aware motion synthesis systems.

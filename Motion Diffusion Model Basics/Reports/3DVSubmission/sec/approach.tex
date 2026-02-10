@@ -1,1 +1,8 @@
-(Short.)
+\textbf{Data Pipeline.}
+The dataset used in this study~\cite{vancriekinge2023dataset} provide full-body motion capture of healthy adults and stroke survivors spanning the entire adult lifespan. But the clinical marker set and data format are incompatible with the standard representation~\cite{guo2022generating} for models training. We develop a pipeline to convert clinical recordings to machine-learnable graphs format through feature extraction and model fitting~\cite{mahmood2019amass,loper2015smpl}, with noise removal and temporal smoothing to preserve motion quality.
+
+\textbf{Age Classification.}
+To verify that age-discriminative kinematic features survive the format conversion, we train a Spatial-Temporal Graph Convolutional Network (ST-GCN)~\cite{yan2018stgcn} to classify motion clips into three age groups (Young, Mid, Elderly). Consistent classification accuracy proves that the aging signal is present and extractable.
+
+\textbf{Age-Conditioned Generation.}
+We train separate Low-Rank Adapters~\cite{hu2022lora, sawdayee2025dance} on each age group's motion data, inserted into the attention layers of a pretrained MDM~\cite{tevet2023human}. The classifier network is reused in a training-validation loop to verify that age characteristics are reproduced.
