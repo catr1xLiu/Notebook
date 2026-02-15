@@ -1,8 +1,8 @@
 \begin{figure*}[t]
-    \section*{Figures}
+	\section*{Figures}
 	\centering
 	\includegraphics[width=\linewidth]{sec/figs/Pipeline.png}
-	\caption{Overview of our proposed motion diffusion model pipeline for modeling kinematic signatures of aging.}
-
+	\caption{Overview of the latent-conditioned motion diffusion framework. Top: data pre-processing — clinical markers retargeted to HumanML3D using VPoser optimization to fix anthropometric artifacts. Bottom: generative architecture — (1) Age Representation Learner: ST-GCN backbone~\cite{yan2018stgcn} regresses biological age and extracts kinematic latent $\mathbf{z}_{age}$. (2) Conditional Diffusion Model: denoises latent $\mathbf{x}_T$; $\mathbf{z}_{age}$ is injected via cross-attention~\cite{tevet2023human, chen2022mld} as a biomechanical constraint alongside the text prompt.}
+	\label{fig:framework}
 	\vspace{5cm}
 \end{figure*}

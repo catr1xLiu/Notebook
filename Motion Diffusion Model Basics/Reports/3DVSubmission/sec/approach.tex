@@ -1,11 +1,9 @@
-\textbf{Data pipeline.}
-The dataset used in this study~\cite{vancriekinge2023dataset} provides full-body motion capture of healthy adults and stroke survivors spanning the adult lifespan. However, the clinical marker set and data format are incompatible with modern representations used for model training~\cite{guo2022generating}. Traditional methods fail due to "mesh inflation" artifacts. To address this, we developed a pipeline using VPoser latent-prior optimization~\cite{mahmood2019amass} to convert the data into valid human bodies, and then into a machine-learnable graph format through model fitting~\cite{mahmood2019amass,loper2015smpl}, with noise removal and temporal smoothing to preserve motion quality.
+We adopt the motion capture dataset of Van Criekinge et al.~\cite{vancriekinge2023dataset} (ages 21-86) and transform data into a HumanML3D-compatible skeletal graph \cite{guo2022generating} for learning. The framework is proposed in Fig. \ref{fig:framework}.
 
 
 \textbf{Age classification.}
-We train an ST-GCN~\cite{yan2018stgcn} to regress subject age from processed motion graphs. The penultimate layer of the network is a latent vector that encapsulates the biomechanical signatures of aging (e.g., velocity variance, joint motion range), denoted as $z_{age}$. Consistent age-group classification indicates that kinematic signatures are successfully extracted from the motion.
+A Spatial-Temporal Graph Convolutional Network (ST-GCN)~\cite{yan2018stgcn} is trained to classify motion clips into three age groups (Young, Mid, Elderly).  The penultimate layer of the network is a latent vector that encapsulates the biomechanical signatures of aging (e.g., velocity variance, joint motion range), denoted as $z_{age}$.
 
 
 \textbf{Age-conditioned generation.}
-
-We introduce a latent-conditioned motion diffusion model. The age-specific latent vector $z_{age}$ is reproduced using an MLP and then injected into the attention layer of the pre-trained MDM~\cite{tevet2023human}. This allows "age" to be interpreted as a continuous style token, enabling fine-grained control over biological age in generated motion.
+We use a diffusion-based motion generative model~\cite{tevet2023human, chen2022mld} conditioned on both text and age embeddings.  The age-specific latent vector $z_{age}$, encoded via a small MLP, modulates diffusion steps through cross-attention, enabling controllable synthesis of age-consistent motion.
