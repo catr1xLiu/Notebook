@@ -40,7 +40,7 @@ jobs:
         uses: actions/upload-pages-artifact@v3
         with:
           # Upload only the ProjectPage directory with all its content (media, css, etc.)
-          path: 'Motion Diffusion Model Basics/ProjectPage'
+          path: 'WebPage/'
       
       - name: Deploy to GitHub Pages
         id: deployment
