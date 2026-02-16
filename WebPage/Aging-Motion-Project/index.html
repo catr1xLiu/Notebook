@@ -3,24 +3,10 @@
 <head>
   <meta charset="utf-8">
   <meta name="description"
-        content="Deformable Neural Radiance Fields creates free-viewpoint portraits (nerfies) from casually captured videos.">
-  <meta name="keywords" content="Nerfies, D-NeRF, NeRF">
+        content="Modeling Kinematic Signatures of Aging via Diffusion and Graph Networks - a framework for age-conditioned human motion synthesis using ST-GCN and diffusion models.">
+  <meta name="keywords" content="motion diffusion, aging, gait analysis, ST-GCN, HumanML3D, SMPL, motion synthesis, biomechanics">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Nerfies: Deformable Neural Radiance Fields</title>
-
-  <!-- Global site tag (gtag.js) - Google Analytics -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-PYVRSFMDRL"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-
-    function gtag() {
-      dataLayer.push(arguments);
-    }
-
-    gtag('js', new Date());
-
-    gtag('config', 'G-PYVRSFMDRL');
-  </script>
+  <title>Modeling Kinematic Signatures of Aging via Diffusion and Graph Networks</title>
 
   <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro"
         rel="stylesheet">
@@ -32,16 +18,91 @@
   <link rel="stylesheet"
         href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
   <link rel="stylesheet" href="./static/css/index.css">
-  <link rel="icon" href="./static/images/favicon.svg">
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script defer src="./static/js/fontawesome.all.min.js"></script>
   <script src="./static/js/bulma-carousel.min.js"></script>
   <script src="./static/js/bulma-slider.min.js"></script>
   <script src="./static/js/index.js"></script>
+
+  <style>
+    .section-divider {
+      border: none;
+      border-top: 1px solid #dbdbdb;
+      margin: 2rem 0;
+    }
+    .figure-caption {
+      font-size: 0.9rem;
+      color: #555;
+      margin-top: 0.5rem;
+      text-align: center;
+    }
+    .result-figure {
+      border: 1px solid #e8e8e8;
+      border-radius: 6px;
+      overflow: hidden;
+    }
+    .result-figure img {
+      width: 100%;
+      display: block;
+    }
+    .stat-box {
+      background: #f5f5f5;
+      border-radius: 8px;
+      padding: 1.25rem;
+      text-align: center;
+      height: 100%;
+    }
+    .stat-box .stat-value {
+      font-size: 2rem;
+      font-weight: 700;
+      color: #363636;
+      line-height: 1.2;
+    }
+    .stat-box .stat-label {
+      font-size: 0.85rem;
+      color: #777;
+      margin-top: 0.25rem;
+    }
+    .tag-group .tag {
+      margin: 0.2rem;
+    }
+    .pipeline-figure img {
+      width: 100%;
+      border-radius: 6px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.12);
+    }
+    .teaser-note {
+      font-size: 0.85rem;
+      color: #666;
+      font-style: italic;
+    }
+    code {
+      background: #f0f0f0;
+      padding: 0.1em 0.35em;
+      border-radius: 3px;
+      font-size: 0.9em;
+    }
+    .formula-block {
+      background: #fafafa;
+      border-left: 3px solid #dbdbdb;
+      padding: 0.8rem 1.2rem;
+      margin: 1rem 0;
+      border-radius: 0 4px 4px 0;
+      font-family: 'Noto Sans', monospace;
+      font-size: 0.9rem;
+      color: #444;
+    }
+    .author-note {
+      font-size: 0.8rem;
+      color: #888;
+      margin-top: 0.5rem;
+    }
+  </style>
 </head>
 <body>
 
+<!-- Navbar -->
 <nav class="navbar" role="navigation" aria-label="main navigation">
   <div class="navbar-brand">
     <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
@@ -50,438 +111,527 @@
       <span aria-hidden="true"></span>
     </a>
   </div>
-  <div class="navbar-menu">
-    <div class="navbar-start" style="flex-grow: 1; justify-content: center;">
-      <a class="navbar-item" href="https://keunhong.com">
-      <span class="icon">
-          <i class="fas fa-home"></i>
-      </span>
-      </a>
-
-      <div class="navbar-item has-dropdown is-hoverable">
-        <a class="navbar-link">
-          More Research
-        </a>
-        <div class="navbar-dropdown">
-          <a class="navbar-item" href="https://hypernerf.github.io">
-            HyperNeRF
-          </a>
-          <a class="navbar-item" href="https://nerfies.github.io">
-            Nerfies
-          </a>
-          <a class="navbar-item" href="https://latentfusion.github.io">
-            LatentFusion
-          </a>
-          <a class="navbar-item" href="https://photoshape.github.io">
-            PhotoShape
-          </a>
-        </div>
-      </div>
-    </div>
-
-  </div>
 </nav>
 
 
+<!-- Hero / Title -->
 <section class="hero">
   <div class="hero-body">
     <div class="container is-max-desktop">
       <div class="columns is-centered">
         <div class="column has-text-centered">
-          <h1 class="title is-1 publication-title">Nerfies: Deformable Neural Radiance Fields</h1>
-          <div class="is-size-5 publication-authors">
-            <span class="author-block">
-              <a href="https://keunhong.com">Keunhong Park</a><sup>1</sup>,</span>
-            <span class="author-block">
-              <a href="https://utkarshsinha.com">Utkarsh Sinha</a><sup>2</sup>,</span>
-            <span class="author-block">
-              <a href="https://jonbarron.info">Jonathan T. Barron</a><sup>2</sup>,
-            </span>
-            <span class="author-block">
-              <a href="http://sofienbouaziz.com">Sofien Bouaziz</a><sup>2</sup>,
-            </span>
-            <span class="author-block">
-              <a href="https://www.danbgoldman.com">Dan B Goldman</a><sup>2</sup>,
-            </span>
-            <span class="author-block">
-              <a href="https://homes.cs.washington.edu/~seitz/">Steven M. Seitz</a><sup>1,2</sup>,
-            </span>
-            <span class="author-block">
-              <a href="http://www.ricardomartinbrualla.com">Ricardo Martin-Brualla</a><sup>2</sup>
-            </span>
+          <h1 class="title is-1 publication-title">
+            Modeling Kinematic Signatures of Aging via Diffusion and Graph Networks
+          </h1>
+
+          <p class="author-note">Extended Abstract &mdash; 3DV 2026 Nectar Track (Submission)</p>
+
+          <div class="is-size-5 publication-authors" style="margin-top: 1rem;">
+            <span class="author-block"><a href="https://www.linkedin.com/in/yiran-liu-999773381/" target="_blank">Yiran Liu</a><sup>1,2</sup>,</span>
+            <span class="author-block">Eugene Zhao<sup>1</sup>,</span>
+            <span class="author-block">Karim Habashy<sup>1</sup>,</span>
+            <span class="author-block">Jason Peng<sup>3</sup>,</span>
+            <span class="author-block"><a href="https://nrc.canada.ca/en/corporate/contact-us/nrc-directory-science-professionals/chang-shu" target="_blank">Chang Shu</a><sup>1</sup>,</span>
+            <span class="author-block"><a href="https://nrc.canada.ca/en/corporate/contact-us/nrc-directory-science-professionals/pengcheng-xi" target="_blank">Pengcheng Xi</a><sup>1</sup></span>
           </div>
 
-          <div class="is-size-5 publication-authors">
-            <span class="author-block"><sup>1</sup>University of Washington,</span>
-            <span class="author-block"><sup>2</sup>Google Research</span>
+          <div class="is-size-6 publication-authors" style="margin-top: 0.5rem;">
+            <span class="author-block"><sup>1</sup>National Research Council Canada,&nbsp;</span>
+            <span class="author-block"><sup>2</sup>University of Waterloo,&nbsp;</span>
+            <span class="author-block"><sup>3</sup>Simon Fraser University</span>
           </div>
 
-          <div class="column has-text-centered">
+          <!-- Links -->
+          <div class="column has-text-centered" style="margin-top: 1.25rem;">
             <div class="publication-links">
-              <!-- PDF Link. -->
+
+              <!-- Extended Abstract (Google Drive) -->
               <span class="link-block">
-                <a href="https://arxiv.org/pdf/2011.12948"
-                   class="external-link button is-normal is-rounded is-dark">
+                <a href="https://drive.google.com/file/d/1VL6h9bPlH02eDIb4x6y7jobpd2QGzCyz/view?usp=drive_link"
+                   class="external-link button is-normal is-rounded is-dark"
+                   target="_blank">
                   <span class="icon">
-                      <i class="fas fa-file-pdf"></i>
+                    <i class="fas fa-file-pdf"></i>
                   </span>
-                  <span>Paper</span>
+                  <span>Extended Abstract</span>
                 </a>
               </span>
+
+              <!-- Video -->
               <span class="link-block">
-                <a href="https://arxiv.org/abs/2011.12948"
-                   class="external-link button is-normal is-rounded is-dark">
+                <a href="#"
+                   class="external-link button is-normal is-rounded is-dark"
+                   title="Video coming soon">
                   <span class="icon">
-                      <i class="ai ai-arxiv"></i>
-                  </span>
-                  <span>arXiv</span>
-                </a>
-              </span>
-              <!-- Video Link. -->
-              <span class="link-block">
-                <a href="https://www.youtube.com/watch?v=MrKrnHhk8IA"
-                   class="external-link button is-normal is-rounded is-dark">
-                  <span class="icon">
-                      <i class="fab fa-youtube"></i>
+                    <i class="fab fa-youtube"></i>
                   </span>
                   <span>Video</span>
                 </a>
               </span>
-              <!-- Code Link. -->
+
+              <!-- Code -->
               <span class="link-block">
-                <a href="https://github.com/google/nerfies"
-                   class="external-link button is-normal is-rounded is-dark">
+                <a href="https://github.com/catr1xLiu/LoRA-MDM-Age-Dataset"
+                   class="external-link button is-normal is-rounded is-dark"
+                   target="_blank">
                   <span class="icon">
-                      <i class="fab fa-github"></i>
+                    <i class="fab fa-github"></i>
                   </span>
                   <span>Code</span>
-                  </a>
+                </a>
               </span>
-              <!-- Dataset Link. -->
-              <span class="link-block">
-                <a href="https://github.com/google/nerfies/releases/tag/0.1"
-                   class="external-link button is-normal is-rounded is-dark">
-                  <span class="icon">
-                      <i class="far fa-images"></i>
-                  </span>
-                  <span>Data</span>
-                  </a>
-            </div>
 
+            </div>
           </div>
+          <!-- /Links -->
+
         </div>
       </div>
     </div>
   </div>
 </section>
+<!-- /Hero -->
 
-<section class="hero teaser">
+
+<!-- Teaser / Pipeline Overview -->
+<section class="hero teaser" style="background: #fafafa;">
   <div class="container is-max-desktop">
     <div class="hero-body">
-      <video id="teaser" autoplay muted loop playsinline height="100%">
-        <source src="./static/videos/teaser.mp4"
-                type="video/mp4">
-      </video>
-      <h2 class="subtitle has-text-centered">
-        <span class="dnerf">Nerfies</span> turns selfie videos from your phone into
-        free-viewpoint
-        portraits.
-      </h2>
-    </div>
-  </div>
-</section>
-
-
-<section class="hero is-light is-small">
-  <div class="hero-body">
-    <div class="container">
-      <div id="results-carousel" class="carousel results-carousel">
-        <div class="item item-steve">
-          <video poster="" id="steve" autoplay controls muted loop playsinline height="100%">
-            <source src="./static/videos/steve.mp4"
-                    type="video/mp4">
-          </video>
-        </div>
-        <div class="item item-chair-tp">
-          <video poster="" id="chair-tp" autoplay controls muted loop playsinline height="100%">
-            <source src="./static/videos/chair-tp.mp4"
-                    type="video/mp4">
-          </video>
-        </div>
-        <div class="item item-shiba">
-          <video poster="" id="shiba" autoplay controls muted loop playsinline height="100%">
-            <source src="./static/videos/shiba.mp4"
-                    type="video/mp4">
-          </video>
-        </div>
-        <div class="item item-fullbody">
-          <video poster="" id="fullbody" autoplay controls muted loop playsinline height="100%">
-            <source src="./static/videos/fullbody.mp4"
-                    type="video/mp4">
-          </video>
-        </div>
-        <div class="item item-blueshirt">
-          <video poster="" id="blueshirt" autoplay controls muted loop playsinline height="100%">
-            <source src="./static/videos/blueshirt.mp4"
-                    type="video/mp4">
-          </video>
-        </div>
-        <div class="item item-mask">
-          <video poster="" id="mask" autoplay controls muted loop playsinline height="100%">
-            <source src="./static/videos/mask.mp4"
-                    type="video/mp4">
-          </video>
-        </div>
-        <div class="item item-coffee">
-          <video poster="" id="coffee" autoplay controls muted loop playsinline height="100%">
-            <source src="./static/videos/coffee.mp4"
-                    type="video/mp4">
-          </video>
-        </div>
-        <div class="item item-toby">
-          <video poster="" id="toby" autoplay controls muted loop playsinline height="100%">
-            <source src="./static/videos/toby2.mp4"
-                    type="video/mp4">
-          </video>
-        </div>
+      <div class="pipeline-figure">
+        <img src="./static/images/Pipeline.png"
+             alt="Framework pipeline: C3D mocap → SMPL fitting → HumanML3D features → ST-GCN age classifier and age-conditioned diffusion model.">
       </div>
+      <p class="figure-caption" style="margin-top: 0.75rem;">
+        <strong>Framework Overview.</strong>
+        Clinical motion-capture recordings are processed through a multi-stage pipeline (C3D &rarr; SMPL &rarr; HumanML3D) to produce 263-dimensional feature vectors.
+        An ST-GCN classifier extracts a latent age embedding <em>z</em><sub>age</sub>, which is injected into a text-conditioned diffusion model via cross-attention to enable age-aware motion synthesis.
+      </p>
     </div>
   </div>
 </section>
+<!-- /Teaser -->
 
 
+<!-- Abstract -->
 <section class="section">
   <div class="container is-max-desktop">
-    <!-- Abstract. -->
     <div class="columns is-centered has-text-centered">
       <div class="column is-four-fifths">
         <h2 class="title is-3">Abstract</h2>
         <div class="content has-text-justified">
           <p>
-            We present the first method capable of photorealistically reconstructing a non-rigidly
-            deforming scene using photos/videos captured casually from mobile phones.
+            Aging profoundly shapes the way people move. Reduced walking velocity, shortened stride length,
+            compensatory hip strategies, and increased double-support time are among the biomechanical
+            hallmarks of an aging gait. Despite the clinical importance of these kinematic signatures, most
+            generative motion models treat age as an afterthought or ignore it entirely.
           </p>
           <p>
-            Our approach augments neural radiance fields
-            (NeRF) by optimizing an
-            additional continuous volumetric deformation field that warps each observed point into a
-            canonical 5D NeRF.
-            We observe that these NeRF-like deformation fields are prone to local minima, and
-            propose a coarse-to-fine optimization method for coordinate-based models that allows for
-            more robust optimization.
-            By adapting principles from geometry processing and physical simulation to NeRF-like
-            models, we propose an elastic regularization of the deformation field that further
-            improves robustness.
+            We present a two-component framework that bridges gait analysis and motion synthesis.
+            A <strong>Spatio-Temporal Graph Convolutional Network (ST-GCN)</strong> is trained on three age
+            groups (Young, Mid-age, Elderly) to extract a latent age embedding <em>z</em><sub>age</sub>
+            from skeletal sequences. This embedding is then injected into a <strong>text-conditioned
+            diffusion model</strong> via cross-attention, enabling age-conditioned motion generation from
+            natural-language prompts.
           </p>
           <p>
-            We show that <span class="dnerf">Nerfies</span> can turn casually captured selfie
-            photos/videos into deformable NeRF
-            models that allow for photorealistic renderings of the subject from arbitrary
-            viewpoints, which we dub <i>"nerfies"</i>. We evaluate our method by collecting data
-            using a
-            rig with two mobile phones that take time-synchronized photos, yielding train/validation
-            images of the same pose at different viewpoints. We show that our method faithfully
-            reconstructs non-rigidly deforming scenes and reproduces unseen views with high
-            fidelity.
+            Our data pipeline transforms clinical C3D motion-capture recordings from the Van Criekinge
+            dataset (ages 21&ndash;86) into the HumanML3D representation, carefully preserving
+            age-related kinematic cues while eliminating common SMPL fitting artifacts such as mesh
+            inflation and crouch-walking. The resulting infrastructure provides a scalable foundation
+            for age-representative motion synthesis with applications in rehabilitation monitoring,
+            aging-in-place assistance, and human&ndash;robot interaction.
           </p>
         </div>
       </div>
     </div>
-    <!--/ Abstract. -->
-
-    <!-- Paper video. -->
-    <div class="columns is-centered has-text-centered">
-      <div class="column is-four-fifths">
-        <h2 class="title is-3">Video</h2>
-        <div class="publication-video">
-          <iframe src="https://www.youtube.com/embed/MrKrnHhk8IA?rel=0&amp;showinfo=0"
-                  frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-        </div>
-      </div>
-    </div>
-    <!--/ Paper video. -->
   </div>
 </section>
+<!-- /Abstract -->
+
+<hr class="section-divider">
 
 
-<section class="section">
+<!-- Motivation -->
+<section class="section" style="padding-top: 1.5rem;">
   <div class="container is-max-desktop">
+    <h2 class="title is-3 has-text-centered">Motivation</h2>
+    <div class="content has-text-justified">
+      <p>
+        Gait analysis has long served as a non-invasive window into physical health. Walking speed alone
+        predicts survival in older adults (Studenski et al., 2011), and systematic changes in hip
+        extension, step width, and cadence are well-documented correlates of biological age
+        (Boyer et al., 2023). Yet existing text-to-motion generative models lack the resolution to
+        reproduce these subtle but clinically meaningful differences.
+      </p>
+      <p>
+        A central question motivates this work: <em>can data-driven models learn to capture
+        age-related biomechanical variation from real clinical recordings, and generate motions that
+        faithfully reflect those differences?</em>
+      </p>
+      <p>
+        Answering this requires solving two sub-problems in tandem:
+      </p>
+      <ul>
+        <li><strong>Recognition</strong> &mdash; reliably inferring age group from a skeletal motion sequence.</li>
+        <li><strong>Generation</strong> &mdash; conditioning a high-capacity diffusion model on that age signal to produce biomechanically plausible, age-appropriate motion.</li>
+      </ul>
+      <p>
+        Early experiments with a continuous age scalar (normalized to [0,1]) injected into the diffusion
+        model produced only speed variation: posture and gait style remained indistinguishable across age
+        groups. This failure guided our pivot toward a discrete latent embedding learned by a dedicated
+        graph network, which captures richer structural information about inter-joint dynamics.
+      </p>
+    </div>
+  </div>
+</section>
 
-    <div class="columns is-centered">
 
-      <!-- Visual Effects. -->
+<!-- Dataset -->
+<section class="section" style="background: #f8f8f8; padding-top: 2rem; padding-bottom: 2rem;">
+  <div class="container is-max-desktop">
+    <h2 class="title is-3 has-text-centered">Dataset</h2>
+    <p class="has-text-centered" style="margin-bottom: 1.5rem;">
+      We use the <strong>Van Criekinge dataset</strong>, a clinical gait database spanning the adult
+      lifespan (ages 21&ndash;86), comprising 588 walking trials from 138 healthy subjects.
+    </p>
+
+    <!-- Stat boxes -->
+    <div class="columns is-centered" style="margin-bottom: 1.5rem;">
+      <div class="column is-2">
+        <div class="stat-box">
+          <div class="stat-value">588</div>
+          <div class="stat-label">Walking Trials</div>
+        </div>
+      </div>
+      <div class="column is-2">
+        <div class="stat-box">
+          <div class="stat-value">138</div>
+          <div class="stat-label">Subjects</div>
+        </div>
+      </div>
+      <div class="column is-2">
+        <div class="stat-box">
+          <div class="stat-value">21&ndash;86</div>
+          <div class="stat-label">Age Range</div>
+        </div>
+      </div>
+      <div class="column is-2">
+        <div class="stat-box">
+          <div class="stat-value">100 Hz</div>
+          <div class="stat-label">Capture Rate</div>
+        </div>
+      </div>
+      <div class="column is-2">
+        <div class="stat-box">
+          <div class="stat-value">~60</div>
+          <div class="stat-label">Markers / Subject</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Charts row 1 -->
+    <div class="columns">
       <div class="column">
-        <div class="content">
-          <h2 class="title is-3">Visual Effects</h2>
-          <p>
-            Using <i>nerfies</i> you can create fun visual effects. This Dolly zoom effect
-            would be impossible without nerfies since it would require going through a wall.
-          </p>
-          <video id="dollyzoom" autoplay controls muted loop playsinline height="100%">
-            <source src="./static/videos/dollyzoom-stacked.mp4"
-                    type="video/mp4">
-          </video>
+        <div class="result-figure">
+          <img src="./static/images/age_distribution.png"
+               alt="Age distribution histogram of dataset subjects">
         </div>
+        <p class="figure-caption">Age distribution across 588 trials (mean age: 50.4 ± 19.7 years).</p>
       </div>
-      <!--/ Visual Effects. -->
-
-      <!-- Matting. -->
       <div class="column">
-        <h2 class="title is-3">Matting</h2>
-        <div class="columns is-centered">
-          <div class="column content">
-            <p>
-              As a byproduct of our method, we can also solve the matting problem by ignoring
-              samples that fall outside of a bounding box during rendering.
-            </p>
-            <video id="matting-video" controls playsinline height="100%">
-              <source src="./static/videos/matting.mp4"
-                      type="video/mp4">
-            </video>
-          </div>
-
+        <div class="result-figure">
+          <img src="./static/images/age_group_distribution.png"
+               alt="Pie chart of age group proportions: Young, Middle, Old">
         </div>
+        <p class="figure-caption">Distribution across age groups: Young (&lt;30), Middle (30&ndash;50), Elderly (&gt;50).</p>
       </div>
     </div>
-    <!--/ Matting. -->
 
-    <!-- Animation. -->
-    <div class="columns is-centered">
-      <div class="column is-full-width">
-        <h2 class="title is-3">Animation</h2>
-
-        <!-- Interpolating. -->
-        <h3 class="title is-4">Interpolating states</h3>
-        <div class="content has-text-justified">
-          <p>
-            We can also animate the scene by interpolating the deformation latent codes of two input
-            frames. Use the slider here to linearly interpolate between the left frame and the right
-            frame.
-          </p>
+    <!-- Charts row 2 -->
+    <div class="columns" style="margin-top: 1rem;">
+      <div class="column">
+        <div class="result-figure">
+          <img src="./static/images/age_vs_walking_speed.png"
+               alt="Scatter plot of age vs walking speed with regression lines">
         </div>
-        <div class="columns is-vcentered interpolation-panel">
-          <div class="column is-3 has-text-centered">
-            <img src="./static/images/interpolate_start.jpg"
-                 class="interpolation-image"
-                 alt="Interpolate start reference image."/>
-            <p>Start Frame</p>
-          </div>
-          <div class="column interpolation-video-column">
-            <div id="interpolation-image-wrapper">
-              Loading...
-            </div>
-            <input class="slider is-fullwidth is-large is-info"
-                   id="interpolation-slider"
-                   step="1" min="0" max="100" value="0" type="range">
-          </div>
-          <div class="column is-3 has-text-centered">
-            <img src="./static/images/interpolate_end.jpg"
-                 class="interpolation-image"
-                 alt="Interpolation end reference image."/>
-            <p class="is-bold">End Frame</p>
-          </div>
+        <p class="figure-caption">
+          Age vs. walking speed. For subjects under 50, correlation is negligible (r&nbsp;=&nbsp;&minus;0.13);
+          for subjects over 50, a pronounced decline emerges (r&nbsp;=&nbsp;&minus;0.51).
+        </p>
+      </div>
+      <div class="column">
+        <div class="result-figure">
+          <img src="./static/images/walking_speed_distribution.png"
+               alt="Histogram of walking speeds">
         </div>
-        <br/>
-        <!--/ Interpolating. -->
-
-        <!-- Re-rendering. -->
-        <h3 class="title is-4">Re-rendering the input video</h3>
-        <div class="content has-text-justified">
-          <p>
-            Using <span class="dnerf">Nerfies</span>, you can re-render a video from a novel
-            viewpoint such as a stabilized camera by playing back the training deformations.
-          </p>
-        </div>
-        <div class="content has-text-centered">
-          <video id="replay-video"
-                 controls
-                 muted
-                 preload
-                 playsinline
-                 width="75%">
-            <source src="./static/videos/replay.mp4"
-                    type="video/mp4">
-          </video>
-        </div>
-        <!--/ Re-rendering. -->
-
+        <p class="figure-caption">
+          Walking speed distribution (mean 1.21 ± 0.17 m/s). Reduced speed in older adults
+          is one of the primary kinematic aging signatures this work aims to model.
+        </p>
       </div>
     </div>
-    <!--/ Animation. -->
-
-
-    <!-- Concurrent Work. -->
-    <div class="columns is-centered">
-      <div class="column is-full-width">
-        <h2 class="title is-3">Related Links</h2>
-
-        <div class="content has-text-justified">
-          <p>
-            There's a lot of excellent work that was introduced around the same time as ours.
-          </p>
-          <p>
-            <a href="https://arxiv.org/abs/2104.09125">Progressive Encoding for Neural Optimization</a> introduces an idea similar to our windowed position encoding for coarse-to-fine optimization.
-          </p>
-          <p>
-            <a href="https://www.albertpumarola.com/research/D-NeRF/index.html">D-NeRF</a> and <a href="https://gvv.mpi-inf.mpg.de/projects/nonrigid_nerf/">NR-NeRF</a>
-            both use deformation fields to model non-rigid scenes.
-          </p>
-          <p>
-            Some works model videos with a NeRF by directly modulating the density, such as <a href="https://video-nerf.github.io/">Video-NeRF</a>, <a href="https://www.cs.cornell.edu/~zl548/NSFF/">NSFF</a>, and <a href="https://neural-3d-video.github.io/">DyNeRF</a>
-          </p>
-          <p>
-            There are probably many more by the time you are reading this. Check out <a href="https://dellaert.github.io/NeRF/">Frank Dellart's survey on recent NeRF papers</a>, and <a href="https://github.com/yenchenlin/awesome-NeRF">Yen-Chen Lin's curated list of NeRF papers</a>.
-          </p>
-        </div>
-      </div>
-    </div>
-    <!--/ Concurrent Work. -->
 
   </div>
 </section>
 
 
-<section class="section" id="BibTeX">
-  <div class="container is-max-desktop content">
-    <h2 class="title">BibTeX</h2>
-    <pre><code>@article{park2021nerfies,
-  author    = {Park, Keunhong and Sinha, Utkarsh and Barron, Jonathan T. and Bouaziz, Sofien and Goldman, Dan B and Seitz, Steven M. and Martin-Brualla, Ricardo},
-  title     = {Nerfies: Deformable Neural Radiance Fields},
-  journal   = {ICCV},
-  year      = {2021},
-}</code></pre>
+<!-- Data Pipeline -->
+<section class="section" style="padding-top: 2rem;">
+  <div class="container is-max-desktop">
+    <h2 class="title is-3 has-text-centered">Data Pipeline</h2>
+    <div class="content has-text-justified">
+      <p>
+        Transforming raw optical marker data into a format suitable for diffusion model training requires
+        a carefully designed multi-stage pipeline. Each stage introduces its own representation trade-offs
+        and potential failure modes.
+      </p>
+    </div>
+
+    <!-- Stage table -->
+    <div class="table-container" style="margin-bottom: 1.5rem;">
+      <table class="table is-bordered is-striped is-fullwidth is-size-6">
+        <thead>
+          <tr>
+            <th>Stage</th>
+            <th>Representation</th>
+            <th>Shape</th>
+            <th>Key Operation</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>0</strong></td>
+            <td>Raw C3D marker trajectories</td>
+            <td>(T, ~60, 3) @ 100 Hz</td>
+            <td>Vicon optical capture</td>
+          </tr>
+          <tr>
+            <td><strong>1</strong></td>
+            <td>SMPL parametric body model</td>
+            <td>θ: (T,72), β: (10,), t: (T,3)</td>
+            <td>VPoser-based marker fitting with artifact correction</td>
+          </tr>
+          <tr>
+            <td><strong>2</strong></td>
+            <td>HumanML3D skeleton (22 joints)</td>
+            <td>(T<sub>20Hz</sub>, 22, 3)</td>
+            <td>Coordinate frame change + temporal resampling (100→20 Hz)</td>
+          </tr>
+          <tr>
+            <td><strong>3</strong></td>
+            <td>HumanML3D feature vector</td>
+            <td>(T−1, 263)</td>
+            <td>Root trajectory + joint positions/velocities/rotations + foot contacts</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="content has-text-justified">
+      <p>
+        The pipeline achieves an overall <strong>85× compression</strong> from raw marker data to
+        training features while preserving clinically relevant kinematic cues. Motion is represented
+        in a body-centered coordinate frame, making the learned representations invariant to global
+        position and enabling better generalization across environments.
+      </p>
+      <p>
+        A key implementation fix involved correcting a coordinate transformation bug in the
+        C3D-to-SMPL stage (Vicon Z-up &rarr; body-centered Y-up), which previously introduced
+        systematic lean and descent artifacts that were incorrectly filtered as noise.
+      </p>
+    </div>
   </div>
 </section>
 
 
+<!-- Artifact Analysis -->
+<section class="section" style="background: #f8f8f8; padding-top: 2rem; padding-bottom: 2rem;">
+  <div class="container is-max-desktop">
+    <h2 class="title is-3 has-text-centered">SMPL Fitting &amp; Artifact Correction</h2>
+    <div class="content has-text-justified" style="margin-bottom: 1.25rem;">
+      <p>
+        Fitting SMPL to optical marker data introduces systematic artifacts that, if uncorrected,
+        corrupt the age-related kinematic signal. We identify and address three main failure modes:
+      </p>
+      <ul>
+        <li><strong>Mesh inflation</strong> &mdash; over-estimated body shape parameters (β) causing unrealistic body proportions.</li>
+        <li><strong>Crouch-walking</strong> &mdash; spurious knee flexion introduced by marker occlusion or initialization errors.</li>
+        <li><strong>VPoser-corrected output</strong> &mdash; applying a learned pose prior during fitting regularizes the solution and eliminates anatomically implausible poses.</li>
+      </ul>
+    </div>
+
+    <div class="columns is-centered">
+      <div class="column is-10">
+        <div class="result-figure">
+          <img src="./static/images/body_artifacts.png"
+               alt="Three-panel comparison: mesh inflation artifact, crouch-walking artifact, VPoser-corrected mesh">
+        </div>
+        <p class="figure-caption">
+          <strong>Left:</strong> Mesh inflation artifact (inflated β values).
+          <strong>Middle:</strong> Crouch-walking artifact (erroneous knee flexion).
+          <strong>Right:</strong> VPoser-corrected output with anatomically plausible pose.
+        </p>
+      </div>
+    </div>
+
+    <div class="columns" style="margin-top: 1.5rem;">
+      <div class="column">
+        <div class="result-figure">
+          <img src="./static/images/loss_plt.png"
+               alt="Multi-stage VPoser fitting loss curves">
+        </div>
+        <p class="figure-caption">
+          Multi-stage VPoser fitting loss curves. Each optimization stage addresses a different
+          component (shape, pose, translation), with the final stage enforcing temporal smoothness.
+        </p>
+      </div>
+      <div class="column">
+        <div class="result-figure">
+          <img src="./static/images/beta_plot.png"
+               alt="SMPL shape parameter (beta) values across subjects">
+        </div>
+        <p class="figure-caption">
+          SMPL shape parameters (β) across subjects before and after correction.
+          Outlier values corresponding to inflated meshes are suppressed by the fitting prior.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- Approach -->
+<section class="section" style="padding-top: 2rem;">
+  <div class="container is-max-desktop">
+    <h2 class="title is-3 has-text-centered">Approach</h2>
+
+    <div class="columns is-vcentered" style="margin-bottom: 1rem;">
+      <div class="column is-5">
+        <h3 class="title is-4">1. Age Classification (ST-GCN)</h3>
+        <div class="content has-text-justified">
+          <p>
+            A <strong>Spatio-Temporal Graph Convolutional Network</strong> operates directly on the
+            22-joint skeletal graph, learning to discriminate between three age groups:
+            Young (&lt;30), Mid-age (30&ndash;60), and Elderly (&gt;60).
+          </p>
+          <p>
+            Rather than discarding the classifier after training, we extract its latent representation
+            <em>z</em><sub>age</sub> as a compact, biomechanically-grounded age embedding. This
+            avoids the failure mode of continuous age scalars, which lack the representational
+            capacity to encode inter-joint coordination patterns.
+          </p>
+        </div>
+      </div>
+      <div class="column is-7">
+        <h3 class="title is-4">2. Age-Conditioned Diffusion</h3>
+        <div class="content has-text-justified">
+          <p>
+            The diffusion model follows the Human Motion Diffusion Model (MDM) architecture.
+            The forward diffusion process is:
+          </p>
+          <div class="formula-block">q(x<sub>t</sub> | x<sub>0</sub>) = 𝒩(x<sub>t</sub>; √ᾱ<sub>t</sub> x<sub>0</sub>, (1 − ᾱ<sub>t</sub>) I)</div>
+          <p>
+            where <em>x<sub>t</sub> ∈ ℝ<sup>B × T × 263</sup></em> is the noisy motion sequence.
+            Age conditioning is injected by concatenating <em>z</em><sub>age</sub> with the text
+            embedding in the cross-attention layers of the denoising transformer, enabling joint
+            text-and-age control over generation.
+          </p>
+          <p>
+            The training objective minimizes the simple noise-prediction loss:
+          </p>
+          <div class="formula-block">ℒ = 𝔼<sub>x₀, ε, t</sub> [ ‖ε − ε<sub>θ</sub>(x<sub>t</sub>, t, z<sub>text</sub>, z<sub>age</sub>)‖² ]</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- Results: Kinematic Signatures -->
+<section class="section" style="background: #f8f8f8; padding-top: 2rem; padding-bottom: 2rem;">
+  <div class="container is-max-desktop">
+    <h2 class="title is-3 has-text-centered">Kinematic Signatures</h2>
+    <div class="content has-text-justified" style="margin-bottom: 1.25rem;">
+      <p>
+        To validate that the pipeline preserves age-related information, we compare joint angular
+        velocity profiles across the normalized gait cycle for a young subject (age 24) and an
+        elderly subject (age 78). The heatmap below visualizes per-joint angular velocities, where
+        systematic differences in hip extension, knee flexion timing, and ankle push-off amplitude
+        are consistent with established biomechanical literature on aging gait.
+      </p>
+    </div>
+    <div class="columns is-centered">
+      <div class="column is-10">
+        <div class="result-figure">
+          <img src="./static/images/heatmap.png"
+               alt="Heatmap of joint angular velocities over the gait cycle comparing young and elderly subjects">
+        </div>
+        <p class="figure-caption">
+          <strong>Kinematic signature heatmap.</strong>
+          Joint angular velocities over the normalized gait cycle. The young subject (top) shows
+          higher peak velocities and more pronounced hip extension. The elderly subject (bottom)
+          displays reduced amplitude across most joints, with a notably altered hip strategy —
+          consistent with the compensatory kinematics documented in aging gait research.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- Discussion -->
+<section class="section" style="padding-top: 2rem;">
+  <div class="container is-max-desktop">
+    <h2 class="title is-3 has-text-centered">Discussion &amp; Future Work</h2>
+    <div class="content has-text-justified">
+      <p>
+        Our pipeline reliably transforms clinical motion-capture recordings into a representation
+        suitable for diffusion model training, while retaining age-discriminative kinematic cues.
+        The ST-GCN classifier successfully separates age groups, and the age embedding shows
+        promise as a conditioning signal for generation.
+      </p>
+      <p>
+        <strong>Current limitations:</strong>
+      </p>
+      <ul>
+        <li>
+          <strong>Dataset balance</strong> — older adult cohorts are systematically underrepresented
+          in publicly available motion datasets, limiting the diversity of elderly gait patterns the
+          model can learn from.
+        </li>
+        <li>
+          <strong>Protocol variability</strong> — differences in clinical capture protocols
+          (marker placement, walking track length, instruction standardization) introduce
+          confounds that constrain cross-dataset generalization.
+        </li>
+        <li>
+          <strong>Evaluation metrics</strong> — standard motion generation metrics (FID, diversity)
+          are not designed to measure biomechanical aging fidelity; new evaluation frameworks
+          are needed.
+        </li>
+      </ul>
+      <p>
+        <strong>Planned extensions:</strong>
+      </p>
+      <ul>
+        <li>Biomechanically-informed generation with joint torque estimation as an auxiliary signal.</li>
+        <li>Longitudinal data integration for personalized functional trajectory modeling.</li>
+        <li>Transition from discrete age groups to a continuous age manifold using LoRA adapter interpolation.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+
+<!-- Footer -->
 <footer class="footer">
   <div class="container">
     <div class="content has-text-centered">
-      <a class="icon-link"
-         href="./static/videos/nerfies_paper.pdf">
-        <i class="fas fa-file-pdf"></i>
-      </a>
-      <a class="icon-link" href="https://github.com/keunhong" class="external-link" disabled>
-        <i class="fab fa-github"></i>
-      </a>
-    </div>
-    <div class="columns is-centered">
-      <div class="column is-8">
-        <div class="content">
-          <p>
-            This website is licensed under a <a rel="license"
-                                                href="http://creativecommons.org/licenses/by-sa/4.0/">Creative
-            Commons Attribution-ShareAlike 4.0 International License</a>.
-          </p>
-          <p>
-            This means you are free to borrow the <a
-              href="https://github.com/nerfies/nerfies.github.io">source code</a> of this website,
-            we just ask that you link back to this page in the footer.
-            Please remember to remove the analytics code included in the header of the website which
-            you do not want on your website.
-          </p>
-        </div>
-      </div>
+      <p>
+        This webpage was built using the
+        <a href="https://github.com/nerfies/nerfies.github.io">Nerfies</a> template.
+      </p>
     </div>
   </div>
 </footer>
