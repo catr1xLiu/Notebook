@@ -4,19 +4,19 @@
     "type": "split",
     "children": [
       {
-        "id": "339ebf036ee83e3a",
+        "id": "1f409764a00dbb05",
         "type": "tabs",
         "children": [
           {
-            "id": "220a986b9978f50b",
+            "id": "28d885a33f6290e9",
             "type": "leaf",
             "state": {
               "type": "excalidraw",
               "state": {
-                "file": "Motion Diffusion Model Basics/drawings/12 - Pipeline Summary.md"
+                "file": "Motion Diffusion Model Basics/drawings/14 - Speed Heatmap.md"
               },
               "icon": "excalidraw-icon",
-              "title": "12 - Pipeline Summary"
+              "title": "14 - Speed Heatmap"
             }
           }
         ]
@@ -170,31 +170,33 @@
       "obsidian-git:Open Git source control": false
     }
   },
-  "active": "220a986b9978f50b",
+  "active": "d46a359f111fa790",
   "lastOpenFiles": [
+    "Motion Diffusion Model Basics/drawings/13 - Body Artifacts.md",
     "Motion Diffusion Model Basics/Reports/3DVSubmission/main.synctex(busy)",
-    "Motion Diffusion Model Basics/Reports/3DVSubmission/pdflatex130101.fls",
-    "Motion Diffusion Model Basics/Reports/3DVSubmission/sec/results.bak0",
-    "Motion Diffusion Model Basics/Reports/3DVSubmission/pdflatex130003.fls",
-    "Motion Diffusion Model Basics/Reports/3DVSubmission/sec/approach.bak0",
-    "Motion Diffusion Model Basics/Reports/3DVSubmission/pdflatex129848.fls",
-    "Motion Diffusion Model Basics/Reports/3DVSubmission/sec/motivation.bak0",
-    "Motion Diffusion Model Basics/Reports/3DVSubmission/pdflatex129761.fls",
-    "Motion Diffusion Model Basics/Reports/3DVSubmission/sec/abstract.bak0",
-    "Motion Diffusion Model Basics/Reports/3DVSubmission/pdflatex129370.fls",
-    "Motion Diffusion Model Basics/Reports/3DVSubmission/indent.log",
-    "Motion Diffusion Model Basics/Reports/3DVSubmission/sec/figs/Pipeline (1).png",
-    "Motion Diffusion Model Basics/drawings/12 - Pipeline Summary.md",
-    "Motion Diffusion Model Basics/Reports/3DVSubmission/sec/figs/Pipeline.png",
-    "Motion Diffusion Model Basics/Reports/3DVSubmission/sec/figs/Pipeline (1).svg",
-    "Motion Diffusion Model Basics/drawings/12 - Pipeline Summary 1.md",
-    "Motion Diffusion Model Basics/Reports/3DVSubmission/sec/figs/Pipeline.svg",
-    "Motion Diffusion Model Basics/Reports/3DVSubmission/sec/figs/Pipeline Summary.svg",
-    "Motion Diffusion Model Basics/Reports/3DVSubmission/sec/figs/12 - Pipeline Summary.svg",
-    "Motion Diffusion Model Basics/Reports/3DVSubmission/12 - Pipeline Summary.svg",
+    "Motion Diffusion Model Basics/Reports/3DVSubmission/pdflatex81113.fls",
+    "Motion Diffusion Model Basics/Reports/3DVSubmission/pdflatex80941.fls",
+    "Motion Diffusion Model Basics/Reports/3DVSubmission/pdflatex80619.fls",
+    "Motion Diffusion Model Basics/Reports/3DVSubmission/pdflatex80159.fls",
+    "Motion Diffusion Model Basics/Reports/3DVSubmission/pdflatex79733.fls",
+    "Motion Diffusion Model Basics/Reports/3DVSubmission/pdflatex79701.fls",
+    "Motion Diffusion Model Basics/Reports/3DVSubmission/pdflatex79494.fls",
+    "Motion Diffusion Model Basics/Reports/3DVSubmission/pdflatex79354.fls",
+    "Motion Diffusion Model Basics/Reports/3DVSubmission/pdflatex79349.fls",
+    "Motion Diffusion Model Basics/Reports/3DVSubmission/sec/figs/heatmap.png",
+    "Motion Diffusion Model Basics/drawings/14 - Speed Heatmap.md",
+    "Motion Diffusion Model Basics/Reports/3DVSubmission/sec/figs/Heat Map.png",
+    "Figure_1.png",
+    "Motion Diffusion Model Basics/media/Joints.png",
+    "Motion Diffusion Model Basics/media/Subj2 Success.png",
+    "Motion Diffusion Model Basics/media/Subj2_Bent_Knee1-removebg-preview.png",
+    "Motion Diffusion Model Basics/media/Subj2_Inflated_Shape1-removebg-preview.png",
+    "Motion Diffusion Model Basics/media/STGCN pipeline.png",
     "Motion Diffusion Model Basics/media/STGCN.png",
-    "Motion Diffusion Model Basics/media/Mocap Data2.png",
-    "Motion Diffusion Model Basics/media/7ddac8b33f69c9bb6b2ed407c69511fbce14fd3221878d7b1ccb0bd1.png",
+    "Motion Diffusion Model Basics/media/smpl_mesh_4.png",
+    "Motion Diffusion Model Basics/drawings/12 - Pipeline Summary.md",
+    "Motion Diffusion Model Basics/drawings/13 -.md",
+    "Motion Diffusion Model Basics/drawings/12 - Pipeline Summary 1.md",
     "Motion Diffusion Model Basics/Reports/WeeklyReports/Week5/Week5 Draft Report.md",
     "Motion Diffusion Model Basics/4 - Age Diffusion Model/3 - Project Overview.md",
     "Motion Diffusion Model Basics/4 - Age Diffusion Model/2 - Dataset Processing Pipeline.md",
@@ -215,9 +217,6 @@
     "Motion Diffusion Model Basics/drawings/Drawing 2026-01-12 13.20.08.excalidraw.md",
     "Motion Diffusion Model Basics/drawings/Drawing 2026-01-09 17.23.56.excalidraw.md",
     "Understanding Motion Diffusion Model.md",
-    "Motion Diffusion Model Basics/drawings/Drawing2.md",
-    "Motion Diffusion Model Basics/drawings/Drawing 2026-01-08 16.51.02.excalidraw.md",
-    "Motion Diffusion Model Basics/drawings/Drawing 2026-01-08 16.47.10.excalidraw.md",
     "MATH115 - Linear Algebra/Mind Map.canvas"
   ]
 }

@@ -1,8 +1,56 @@
-\begin{figure*}[t]
-	\section*{Figures}
+\begin{figure*}[p]
 	\centering
-	\includegraphics[width=\linewidth]{sec/figs/Pipeline.png}
-	\caption{Overview of the latent-conditioned motion diffusion framework. Top: data pre-processing — clinical markers retargeted to HumanML3D using VPoser optimization to fix anthropometric artifacts. Bottom: generative architecture — (1) Age Representation Learner: ST-GCN backbone~\cite{yan2018stgcn} regresses biological age and extracts kinematic latent $\mathbf{z}_{age}$. (2) Conditional Diffusion Model: denoises latent $\mathbf{x}_T$; $\mathbf{z}_{age}$ is injected via cross-attention~\cite{tevet2023human, chen2022mld} as a biomechanical constraint alongside the text prompt.}
+	\includegraphics[width=0.9\linewidth]{sec/figs/Pipeline.png}
+	\caption{Overview of the latent-conditioned motion diffusion framework. Top: data pre-processing — clinical markers retargeted to HumanML3D. Bottom: generative architecture — (1) Age Representation Learner: ST-GCN backbone~\cite{yan2018stgcn} regresses biological age and extracts kinematic latent $\mathbf{z}_{age}$. (2) Conditional Diffusion Model: denoises latent $\mathbf{x}_T$; $\mathbf{z}_{age}$ is injected via cross-attention~\cite{tevet2023human, chen2022mld}.}
 	\label{fig:framework}
-	\vspace{5cm}
+\end{figure*}
+
+% --- Row: Artifact (left, 40%) and two plots stacked (right, 30%) ---
+\begin{figure*}[p]
+	\centering
+	% Left: Artifact image (40% width)
+	\begin{minipage}[c]{0.40\linewidth}
+		\centering
+		\IfFileExists{sec/figs/Body Artifacts.png}{%
+			\includegraphics[width=\linewidth]{sec/figs/Body Artifacts.png}
+		}{%
+			\fbox{\parbox[c][6cm][c]{\linewidth}{\centering Artifact image missing: \texttt{sec/figs/Body Artifacts.png}}}
+		}
+		\captionof{figure}{Artifact analysis in clinical motion retargeting: naive mapping causes mesh inflation (right) while standard priors induce crouch artifacts (left); multi-stage VPoser (center) recovers natural posture.}
+		\label{fig:artifact}
+	\end{minipage}%
+	\hspace{0.03\linewidth}%
+	% Right: Loss and Beta plots stacked (30% width total)
+	\begin{minipage}[c]{0.30\linewidth}
+		\centering
+		% Top: Loss plot
+		\IfFileExists{sec/figs/loss_plt.png}{%
+			\includegraphics[width=\linewidth]{sec/figs/loss_plt.png}
+		}{%
+			\fbox{\parbox[c][2cm][c]{\linewidth}{\centering Loss plot missing: \texttt{sec/figs/loss_plt.png}}}
+		}
+
+		\vspace{0.2em}
+
+		% Bottom: Beta plot
+		\IfFileExists{sec/figs/beta_plot.png}{%
+			\includegraphics[width=\linewidth]{sec/figs/beta_plot.png}
+		}{%
+			\fbox{\parbox[c][2cm][c]{\linewidth}{\centering Beta plot missing: \texttt{sec/figs/beta_plot.png}}}
+		}
+		\captionof{figure}{(a) Loss during multi-stage VPoser fitting for Subject 01. (b) Optimized SMPL shape parameters ($\beta$).}
+		\label{fig:optplots}
+	\end{minipage}
+\end{figure*}
+
+% Full-width heatmap (final row) --- labeled as Figure 4
+\begin{figure*}[p]
+	\centering
+	\IfFileExists{sec/figs/heatmap.png}{%
+			\includegraphics[width=0.8\linewidth]{sec/figs/heatmap.png}
+		}{%
+			\fbox{\parbox[c][2cm][c]{\linewidth}{\centering Heatmap image missing: \texttt{sec/figs/heatmap.png}}}
+		}
+	\caption{Kinematic Signatures of Aging. Comparative heatmaps of joint angular velocity (rad/s) over a normalized gait cycle. (Middle) The elderly subject (Age 78) exhibits reduced peak velocities and constrained range of motion. (Right) The young subject (Age 24) demonstrates distinct, high-intensity kinematic bursts (red/orange).}
+	\label{fig:heatmap}
 \end{figure*}
