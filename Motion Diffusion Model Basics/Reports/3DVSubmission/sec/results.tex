@@ -1,14 +1,15 @@
-\textbf{4. Results \& Future Work}
 Our pipeline reliably transforms clinical motion data into
 HumanML3D format while preserving age-related kinematic
-cues such as reduced hip extension and stride length
-(Fig.~\ref{fig:heatmap}). Multi-stage VPoser fitting
+cues. Comparative analysis of joint angular velocity over
+normalized gait cycles reveals that elderly subjects exhibit
+reduced peak velocities and constrained range of motion,
+while younger subjects display distinct high-intensity
+kinematic bursts across hip, knee, and ankle
+joints (Fig.~\ref{fig:heatmap}). Multi-stage VPoser fitting
 resolves retargeting artifacts including mesh inflation and
 crouch-walking (Fig.~\ref{fig:artifact}), yielding
 anatomically plausible motion across all adult ages.
 ST-GCN and latent-conditioned diffusion
 models~\cite{chen2022mld, hu2022lora, sawdayee2025dance}
 are being trained for age signal extraction and
-reproduction. Future work will incorporate physical
-regularization and longitudinal data for personalized aging
-trajectories.
+reproduction.
