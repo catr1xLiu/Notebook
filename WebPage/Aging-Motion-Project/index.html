@@ -544,9 +544,26 @@
       </div>
     </div>
 
+    <!-- ST-GCN Network Breakdown -->
+    <div class="columns is-centered" style="margin-top: 1.5rem;">
+      <div class="column is-12">
+        <div class="result-figure">
+          <img src="./static/images/STGCN-Network-Breakdown.png"
+               alt="ST-GCN network architecture showing stages 1-3 with spatial and temporal graph convolutions, global average pooling, and age group classification head">
+        </div>
+        <p class="figure-caption">
+          <strong>ST-GCN Network Architecture.</strong>
+          The network processes skeletal sequences through three stages of spatio-temporal graph convolutions (ST-GCN blocks).
+          Each stage applies spatial convolutions across the joint graph and temporal convolutions along the motion sequence.
+          The perception layers aggregate features globally, and the classification head (yellow) maps the learned latent
+          age embedding <em>z</em><sub>age</sub> to discrete age group predictions (Young, Mid-age, Elderly).
+        </p>
+      </div>
+    </div>
+
     <!-- Training vs Inference Diagram -->
     <div class="columns is-centered" style="margin-top: 1.5rem;">
-      <div class="column is-10">
+      <div class="column is-12">
         <div class="result-figure">
           <img src="./static/images/Training Inference Diagram.png"
                alt="Two-phase architecture diagram: Phase 1 training uses a frozen ST-GCN and MDM with an MLP supervised by MSE loss; Phase 2 inference uses only a text prompt and scalar age fed through CLIP and the MLP to generate motion via cross-attention.">

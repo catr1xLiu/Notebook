@@ -291,14 +291,14 @@ Stage 3: 263-Dim Feature Vector
 
 ### Information Preservation Analysis
 
-|Information Type|Stage|Preserved?|Notes|
-|---|---|---|---|
-|**3D Positions**|0→3|✅ Yes|Transformed but retained|
-|**Motion Dynamics**|0→3|⚠️ Partial|Downsampled 100→20 Hz|
-|**Body Shape**|0→1|❌ No|Lost after Stage 1|
-|**Joint Topology**|0→3|✅ Yes|Implicit in skeleton|
-|**World Coordinates**|0→2|❌ No|Lost in canonicalization|
-|**Pose Parameters**|0→3|⚠️ Indirect|Encoded in features|
+| Information Type      | Stage | Preserved?  | Notes                    |     |
+| --------------------- | ----- | ----------- | ------------------------ | --- |
+| **3D Positions**      | 0→3   | ✅ Yes       | Transformed but retained |     |
+| **Motion Dynamics**   | 0→3   | ⚠️ Partial  | Downsampled 100→20 Hz    |     |
+| **Body Shape**        | 0→1   | ❌ No        | Lost after Stage 1       |     |
+| **Joint Topology**    | 0→3   | ✅ Yes       | Implicit in skeleton     |     |
+| **World Coordinates** | 0→2   | ❌ No        | Lost in canonicalization |     |
+| **Pose Parameters**   | 0→3   | ⚠️ Indirect | Encoded in features      |     |
 
 ### Data Compression Across Stages
 
