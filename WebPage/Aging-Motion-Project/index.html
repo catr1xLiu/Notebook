@@ -544,6 +544,30 @@
       </div>
     </div>
 
+    <!-- Training vs Inference Diagram -->
+    <div class="columns is-centered" style="margin-top: 1.5rem;">
+      <div class="column is-10">
+        <div class="result-figure">
+          <img src="./static/images/Training Inference Diagram.png"
+               alt="Two-phase architecture diagram: Phase 1 training uses a frozen ST-GCN and MDM with an MLP supervised by MSE loss; Phase 2 inference uses only a text prompt and scalar age fed through CLIP and the MLP to generate motion via cross-attention.">
+        </div>
+        <p class="figure-caption">
+          <strong>Two-Phase Architecture.</strong>
+          <strong>Phase 1 (Training):</strong> A frozen ST-GCN extracts the target age embedding
+          <em>z</em><sub>age</sub> from a real motion clip. A lightweight MLP <em>g</em>(<em>a</em>)
+          is trained to reproduce this embedding from the scalar age alone, supervised by an MSE loss
+          <em>L</em><sub>MSE</sub>. Simultaneously, the frozen MDM is optimized with the diffusion
+          loss <em>L</em><sub>diff</sub> conditioned on the text prompt and
+          <em>z</em><sub>age</sub> via cross-attention.
+          <strong>Phase 2 (Inference):</strong> No input motion is required. The text prompt is
+          encoded by a frozen CLIP encoder, and the scalar age is mapped to
+          <em>z</em><sub>age</sub> by the trained MLP. Both embeddings are combined through
+          cross-attention in the frozen MDM to generate the output motion sequence
+          <em>x</em><sub>0</sub>.
+        </p>
+      </div>
+    </div>
+
   </div>
 </section>
 
