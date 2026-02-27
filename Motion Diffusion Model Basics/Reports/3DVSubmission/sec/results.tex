@@ -1,1 +1,14 @@
-Our pipeline reliably transforms clinical motion data into the HumanML3D standard while preserving age-related kinematic cues such as reduced hip extension and stride length. ST-GCN and Latent-Conditioned Diffusers \cite{hu2022lora, sawdayee2025dance, chen2022mld} are being trained for extracting aging signals and reproducing them with diffusion model. This infrastructure enables scalable generation of age-representative motion datasets, advancing age-aware synthesis for rehabilitation, monitoring, and human-robot interaction.
+\textbf{4. Results \& Future Work}
+Our pipeline reliably transforms clinical motion data into
+HumanML3D format while preserving age-related kinematic
+cues such as reduced hip extension and stride length
+(Fig.~\ref{fig:heatmap}). Multi-stage VPoser fitting
+resolves retargeting artifacts including mesh inflation and
+crouch-walking (Fig.~\ref{fig:artifact}), yielding
+anatomically plausible motion across all adult ages.
+ST-GCN and latent-conditioned diffusion
+models~\cite{chen2022mld, hu2022lora, sawdayee2025dance}
+are being trained for age signal extraction and
+reproduction. Future work will incorporate physical
+regularization and longitudinal data for personalized aging
+trajectories.
