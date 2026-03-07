@@ -53,7 +53,7 @@ ba1d99c3ac5bd703ad441101cee5a254bc7d4525: [[STGCN pipeline.png]]
 
 cbf45c5b0bf8e89358ffed4e5a16869083eec78d: [[SMPL Result.png]]
 
-198aabf2a872e4f04bdfba00a26351df38fd9df8: [[Pasted Image 20260225020637_294.png]]
+198aabf2a872e4f04bdfba00a26351df38fd9df8: [[NTU Dataset.png]]
 
 %%
 ## Drawing

@@ -63,7 +63,7 @@ LoRA-MDM-Age ^p42jwpIX
 Body Motion ^AxmYPQxq
 
 ## Embedded Files
-d3080dac57fce60009c4c40a51314765ead4b059: [[Pasted Image 20260116123643_956.png]]
+d3080dac57fce60009c4c40a51314765ead4b059: [[ST-GCN Demo.png]]
 
 %%
 ## Drawing
