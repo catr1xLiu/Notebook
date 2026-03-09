@@ -137,4 +137,26 @@ Papers/ConferenceName/
 ```
 ---
 
+## LaTeX Additional Templates
+
+Additional templates available in `docs/latex/Templates/`:
+
+### Available Templates
+
+| Template | Description | Use Case |
+|----------|-------------|----------|
+| `Proposal/` | IEEEtran-based thesis proposal template for D-IV Komputasi Statistik at Politeknik Statistika STIS (Indonesian) | Thesis proposals |
+| `Report2/` | Rho class - professional academic article/research report template with STIX2 fonts, custom environments, and code highlighting | Research articles, technical reports |
+| `TAU Report/` | Tau class - professional academic article/research report template with STIX2 fonts, custom environments, and code highlighting | Research articles, lab reports |
+
+### Using These Templates
+
+1. Copy the entire template folder to your project location
+2. Edit `main.tex` (or `Proposal.tex`) with your content
+3. Update the bibliography file (`.bib`)
+4. Place figures in the `figures/` subfolder
+5. Compile with `latexmk -pdf main.tex`
+
+---
+
 End of AGENTS.md

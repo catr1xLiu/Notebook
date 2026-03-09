@@ -1,0 +1,26 @@
+{
+    "editor.formatOnSave": true,
+    "editor.tabSize": 4,
+    
+    // Make sure there is a comma after the previous setting block above
+    "latex-workshop.latex.tools": [
+        {
+            "name": "pdflatex",
+            "command": "pdflatex",
+            "args": [
+                "-shell-escape",
+                "-synctex=1",
+                "-interaction=nonstopmode",
+                "-file-line-error",
+                "%DOC%"
+            ]
+        }
+    ],
+    "latex-workshop.latex.recipes": [
+        {
+            "name": "pdflatex",
+            "tools": ["pdflatex"]
+        }
+    ]
+    // NO COMMA AFTER THE LAST BRACE
+}
