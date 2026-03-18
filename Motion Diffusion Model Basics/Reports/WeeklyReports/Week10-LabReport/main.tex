@@ -23,35 +23,30 @@
 \newcolumntype{Y}{>{\raggedright\arraybackslash}X}
 \captionsetup[table]{labelformat=simple,labelsep=colon,name=Table}
 
-\doctype{Weekly Lab Report}
-\title{Week 10 Report}
+\doctype{Week 10 Experiment Report}
+\title{ST-GCN++ Age Classification Training Results \& Analysis}
 
-\author[a,1]{Yiran Liu\thanks{\href{mailto:yiran.liu@canada.ca}{yiran.liu@canada.ca} (Y. Liu)}}
-\affil[a]{NRC - Digital Technology}
+\author{Yiran Liu}
 
 \dates{Compiled on \today}
-\footinfo{Week 10 Lab Report}
+\footinfo{Week 10 Experiment Report}
 \theday{\today}
 \organization{NRC - Digital Technology}
 \leadauthor{}
 
-\begin{abstract}
-\end{abstract}
+\begin{abstract} \itshape
+Last week, we implemented the conversion pipeline from SMPL mesh to NTU-25 joint format and validated the standalone ST-GCN++ reimplementation against the full NTU RGB+D 120 dataset (82.6\% top-1 accuracy, closely matching the published 83.2\% benchmark). 
 
-\keywords{}
+This week, two remaining issues in the SMPL$\rightarrow$NTU-25 conversion pipeline were resolved, and the cleaned Van Criekinge dataset (450 clips, 138 subjects) was verified by running the pretrained action recognition model on the full dataset---achieving 100\% walking-action classification.
+
+With the data pipeline validated, I made a few more attempts to fine-tune the ST-GCN++ model with a custom 3-class age classifier (Young $<$40, Adult 40--64, Elderly $\geq$65). The initial results were disappointing, but through a few iterations, the best model achieved 64.60\% validation accuracy (31.6\% above the random baseline). To help determine the best approach moving forward, I have written this detailed report for your review and for our upcoming discussion.
+\normalfont
+\end{abstract}
 
 \begin{document}
 
 \maketitle
 \thispagestyle{firststyle}
-
-\section{Executive Summary}
-
-Last week, we implemented the conversion pipeline from SMPL mesh to NTU-25 joint format and validated the standalone ST-GCN++ reimplementation against the full NTU RGB+D 120 dataset (82.6\% top-1 accuracy, closely matching the published 83.2\% benchmark). 
-
-This week, two remaining issues in the SMPL$\rightarrow$NTU-25 conversion pipeline were resolved (T-pose contamination and boundary frame padding), and the cleaned Van Criekinge dataset (450 clips, 138 subjects) was verified by running the pretrained action recognition model on the full dataset---achieving 100\% walking-action classification.
-
-With the data pipeline validated, I made a second attempt to fine-tune the ST-GCN++ model with a custom 3-class age classifier (Young $<$40, Adult 40--64, Elderly $\geq$65). However, the initial results were disappointing, with a 45\% best accuracy and a fluctuating loss curve. I then attempted to unfreeze parts of the ST-GCN backbone, testing a few configurations (fully frozen, 1-block unfrozen, 2-blocks unfrozen), followed by a data-splitting improvement and a detailed accuracy analysis. The best model achieved 64.60\% validation accuracy (31.6\% above the random baseline). I have also extracted the 32-dimensional $z_{age}$ embeddings for MDM conditioning.However, the model accuracy is still not satisfying, and further adjustments will be needed. To help determine the best approach moving forward, I have written this detailed report for your review and for our upcoming discussion.
 
 \section{Background: Data \& Environment Setup}
 
@@ -215,7 +210,7 @@ The best checkpoint was saved at epoch 1---validation accuracy never improved be
 
 \section{Iterative Improvements}
 
-\subsection{Backbone Unfreezing Sweep (Session 1)}
+\subsection{Improvement1: Backbone Unfreezing Sweep}
 
 Two additional configurations were tested, progressively unfreezing GCN blocks from the end of the backbone:
 
@@ -261,11 +256,11 @@ Key observations:
     \label{fig:training-curves}
 \end{figure}
 
-\subsection{Improved Train/Val Split (Session 2)}
+\subsection{Improvement 2: Train/Val Split}
 
-A critical issue was discovered in the original train/val split: \texttt{random.shuffle(subject\_ids)} could cluster age groups unevenly across splits, since subject IDs in the Van Criekinge dataset are roughly ordered by age. With only 87 val samples, this noise was significant.
+The observed overfitting is a dangerous sign indicating that the model could be memorizing the traits of specific subjects in the dataset, rather than learning generalized aging patterns. To rule out this source of bias, we must ensure that subjects are strictly mutually exclusive between the training and validation sets.
 
-\textbf{Fix:} Round-robin subject assignment. Subjects are sorted numerically, then every 4th subject is assigned to validation:
+\textbf{Fix:} Round-robin subject assignment. Subjects are sorted numerically, and every 4th subject is assigned to the validation set:
 
 \begin{listing}[H]
 \caption{Round-robin subject split used for validation assignment.}
@@ -273,7 +268,7 @@ A critical issue was discovered in the original train/val split: \texttt{random.
 \inputminted[fontsize=\footnotesize,breaklines,linenos]{python}{src/round_robin_split.py}
 \end{listing}
 
-This produces a $\sim$75/25 split (337 train / 113 val) with subjects from across the full age range in validation. Combined with a reduced batch size (16$\rightarrow$8) for implicit regularisation through gradient noise:
+This produces a $\sim$75/25 split (337 train / 113 val) ensuring that subjects from across the full age range are represented in the validation set. This was combined with a reduced batch size (16$\rightarrow$8) to introduce implicit regularization through gradient noise:
 
 \begin{table}[H]
     \caption{Split strategy comparison.}
@@ -294,16 +289,16 @@ This produces a $\sim$75/25 split (337 train / 113 val) with subjects from acros
     \end{tabularx}
 \end{table}
 
-The round-robin split improved 1-block val accuracy by \textbf{+6.16pp} and stabilised 2-block's overfitting dynamics dramatically---best epoch shifted from 4 $\rightarrow$ 30, giving a 30-epoch window for generalisation instead of a 4-epoch window.
+The new split method improved the 1-block validation accuracy by \textbf{+6.16pp} and stabilized the 2-block configuration's overfitting dynamics dramatically---the best epoch shifted from 4 $\rightarrow$ 30, providing a 30-epoch window for generalization instead of a narrow 4-epoch window.
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.98\columnwidth]{figures/figure4_split_comparison_combined.png}
-    \caption{Comparison of validation curves before and after split improvement for the 2-block configuration. Session 1 random split peaks at epoch 4 then oscillates wildly between 42--58\%, while Session 2 round-robin split climbs gradually to 64.60\% at epoch 30 and remains much more stable thereafter. Same Y-axis scale is used for direct comparison.}
+    \caption{Comparison of validation curves before and after the split improvement for the 2-block configuration. The Session 1 random split peaks at epoch 4 and then oscillates wildly between 42--58\%, while the Session 2 round-robin split climbs gradually to 64.60\% at epoch 30 and remains much more stable thereafter. The same Y-axis scale is used for direct comparison.}
     \label{fig:split-comparison-random}
 \end{figure}
 
-\subsection{Per-Class Accuracy Analysis (Session 3)}
+\subsection{Per-Class Accuracy Analysis}
 
 A dedicated inference script (\texttt{batch\_age\_inference.py}) was written to analyse per-class accuracy and boundary-zone behaviour. Two notions of accuracy were reported:
 
@@ -448,19 +443,15 @@ The recommended z\_age source for LoRA-MDM conditioning is the 1-block checkpoin
 
 \section{Current Roadblocks \& Error Analysis}
 
-\subsection{Fundamental Dataset Constraint}
+\subsection{Dataset Size Constraint}
 
-The primary bottleneck is dataset size: 450 clips from 138 subjects, with only 337 training samples. For context, the NTU RGB+D pretraining dataset has 113,945 clips. The 718K trainable parameters in the 2-block configuration exceed what this dataset can effectively constrain, leading to memorisation (100\% train accuracy) within a few epochs. Even the 1-block configuration (363K params) reaches 99\%+ train accuracy by epoch 50.
-
-\subsection{Adult Class Ambiguity}
-
-The Adult group (40--64) spans 25 years of functional variation---a 42-year-old and a 63-year-old may have dramatically different gait patterns, yet both carry the same label. The 2-block model's Adult fragmentation (54.55\% accuracy) reflects this biological reality: some older adults walk with elderly-like gait, and some younger adults with young-like gait. This is arguably a better learned representation than the 1-block model's flat Adult-majority bias, but it limits overall accuracy.
+The primary bottleneck is dataset size: The Van Criekinge dataset only contains 450 clean clips from 138 subjects. For context, the NTU RGB+D pretraining dataset has 113K clips. Both the 718K trainable parameters in the 2-block configuration and the 363K params in the 1-block configuration exceed what this dataset can effectively constrain, leading to memorisation (98+\% train accuracy) within a few epochs. 
 
 \subsection{Frozen Backbone Feature Invariance}
 
-The frozen backbone experiment (43.68\% val, barely above random) demonstrates that NTU-120 action-recognition features are largely \textbf{invariant to the style variation} that age classification depends on. ST-GCN++ was pretrained to recognise \textit{what action} is being performed (walking vs. sitting vs. throwing), not \textit{how} it is performed (young gait vs. elderly gait). Age-related differences---reduced velocity, altered hip strategy, constrained range of motion---live in the stylistic dimension that action pretraining deliberately discards for invariance.
+The frozen backbone experiment (43.68\% val, barely above random) shows that pre-trained STGCN++ backbone is largely \textbf{invariant to the action style} that age classification depends on. The model was pretrained on NTU-120 action dataset, and is purposed to extract \textit{what action} being performed (walking vs. sitting vs. throwing). Therotically, the model should learn to ignore \textit{how} the action is performed, and \textit{by whom} (young adults vs. elderly subjects). 
 
-This means any backbone architecture (CTR-GCN, DG-STGCN, etc.) pretrained on action recognition may face the same limitation when frozen. Unfreezing is necessary, and the question becomes how much adaptation is needed versus how much the small dataset can support.
+This means any backbone architecture (CTR-GCN, DG-STGCN, etc.) pretrained on action recognition may face the same limitation when frozen. Unfreezing is necessary, but (as mentioned above) it also causes overfitting.
 
 \subsection{Overfitting Dynamics}
 
@@ -484,10 +475,10 @@ The overfitting signature across configurations:
     \end{tabularx}
 \end{table}
 
-The round-robin split and reduced batch size substantially extended the practical training window for the 2-block configuration, but the fundamental overfitting tendency remains. Regularisation strategies (dropout, weight decay, data augmentation) are the most promising next steps.
+The round-robin split and reduced batch size substantially extended the practical training window for the 2-block configuration, but the fundamental overfitting tendency remains. 
 
 \section{Next Steps}
 
-\textit{(To be determined.)}
+Fine-tuning the regularisation parameters (dropout, weight decay) and using data augmentation are likely the most promising next steps. The detailed plan should be discussed in our meeting.
 
 \end{document}
