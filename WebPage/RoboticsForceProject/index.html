@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Evaluating the Effectiveness of Haptic Force Feedback during Data Collection for Force-Aware Visuomotor Policy Learning</title>
+    <meta name="description" content="A static project page for evaluating haptic force feedback during data collection for force-aware visuomotor policy learning.">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <meta name="robots" content="all">
+    <meta content="en_EN" property="og:locale">
+    <meta content="website" property="og:type">
+    <meta content="Evaluating the Effectiveness of Haptic Force Feedback during Data Collection for Force-Aware Visuomotor Policy Learning" property="og:title">
+    <meta content="Robotic teleoperation, haptic feedback, and contact-rich imitation learning." property="og:description">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:description" content="Robotic teleoperation, haptic feedback, and contact-rich imitation learning.">
+    <meta name="twitter:image:src" content="assets/figures/Overview.png">
+
+    <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+    <link rel="stylesheet" type="text/css" media="all" href="assets/vendor/clarity/stylesheets/main_free.css?v=robotics-force-2">
+    <link rel="stylesheet" type="text/css" media="all" href="assets/vendor/clarity/clarity/clarity.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/styles/foundation.min.css">
+    <link href="assets/vendor/clarity/fontawesome-free-7.2.0-web/css/all.min.css" rel="stylesheet">
+    <script src="assets/vendor/clarity/scripts/navbar.js"></script>
+    <script defer src="assets/vendor/clarity/scripts/main.js"></script>
+
+    <style>
+        :root {
+            --project-ink: #1f2528;
+            --project-muted: #536067;
+            --project-line: #d9e0e2;
+            --project-panel: #eef2f3;
+            --project-accent: #3c6e71;
+            --project-warning: #b25d3a;
+        }
+
+        body {
+            color: var(--project-ink);
+        }
+
+        div.container.blog#first-content {
+            background: linear-gradient(135deg, #e5ecee 0%, #f8faf9 55%, #dde7e4 100%);
+        }
+
+        div.container.blog#first-content div.blog-title.no-cover .blog-intro {
+            min-height: 64vh;
+        }
+
+        div.container.blog#first-content div.blog-title .blog-intro p.abstract {
+            color: #2f383c;
+            font-style: italic;
+            margin-left: auto;
+            margin-right: auto;
+            max-width: 980px;
+            text-align: center;
+        }
+
+        .project-kicker {
+            color: var(--project-accent);
+            font-family: "Poppins", sans-serif;
+            font-size: 0.82rem;
+            font-weight: 700;
+            letter-spacing: 0;
+            margin-bottom: 0.8rem;
+            text-align: center;
+            text-transform: uppercase;
+        }
+
+        .project-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.7rem;
+            justify-content: center;
+            margin-top: 1.2rem;
+        }
+
+        .project-links .button.icon {
+            border-radius: 8px;
+            margin: 0;
+        }
+
+        .affiliation-logos {
+            align-items: center;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem 1.4rem;
+            justify-content: center;
+            margin: 0.7rem auto 0;
+        }
+
+        .affiliation-logo {
+            align-items: center;
+            display: inline-flex;
+            gap: 0.45rem;
+        }
+
+        .affiliation-logo sup {
+            color: var(--project-muted);
+            font-family: "Poppins", sans-serif;
+            font-size: 0.78rem;
+            font-weight: 600;
+            top: 0;
+        }
+
+        .affiliation-logo img {
+            display: block;
+            height: 28px;
+            margin: 0;
+            width: auto;
+        }
+
+        .hero-overview {
+            margin: 1.5rem auto 1.1rem;
+            max-width: 1320px;
+        }
+
+        .hero-overview img {
+            border-radius: 8px;
+            box-shadow: 0 18px 36px rgba(37, 50, 53, 0.12);
+            width: 100%;
+        }
+
+        .hero-overview p {
+            color: var(--project-muted);
+            font-family: "Poppins", sans-serif;
+            font-size: 0.86rem;
+            line-height: 1.55;
+            margin-top: 0.55rem;
+            text-align: center;
+        }
+
+        .stat-grid {
+            display: grid;
+            gap: 1rem;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            margin: 1.5rem 0 0.5rem;
+        }
+
+        .stat-card {
+            border: 1px solid var(--project-line);
+            border-radius: 8px;
+            padding: 1rem;
+            text-align: center;
+        }
+
+        .stat-card strong {
+            color: var(--project-accent);
+            display: block;
+            font-family: "Poppins", sans-serif;
+            font-size: 1.55rem;
+            line-height: 1.15;
+            margin-bottom: 0.3rem;
+        }
+
+        .stat-card span {
+            color: var(--project-muted);
+            font-family: "Poppins", sans-serif;
+            font-size: 0.82rem;
+        }
+
+        .condition-table {
+            border-collapse: collapse;
+            font-family: "Poppins", sans-serif;
+            font-size: 0.9rem;
+            margin: 1.2rem 0;
+            width: 100%;
+        }
+
+        .condition-table th,
+        .condition-table td {
+            border-bottom: 1px solid var(--project-line);
+            padding: 0.75rem 0.6rem;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        .condition-table th {
+            color: var(--project-accent);
+            font-weight: 700;
+        }
+
+        .callout {
+            background: #f7f9f9;
+            border-left: 4px solid var(--project-accent);
+            border-radius: 0 8px 8px 0;
+            color: #30383b;
+            font-family: "Poppins", sans-serif;
+            font-size: 0.93rem;
+            line-height: 1.65;
+            margin: 1.2rem 0;
+            padding: 1rem 1.2rem;
+        }
+
+        .force-note {
+            color: var(--project-warning);
+            font-weight: 700;
+        }
+
+        .figure-row {
+            align-items: start;
+            display: grid;
+            gap: 1rem;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .figure-row img,
+        .single-figure img {
+            border-radius: 8px;
+            width: 100%;
+        }
+
+        .pipeline-split {
+            align-items: center;
+            display: grid;
+            gap: 2rem;
+            grid-template-columns: minmax(220px, 0.8fr) minmax(280px, 1.2fr);
+            margin: 0 auto;
+            max-width: 980px;
+        }
+
+        .pipeline-split img {
+            border-radius: 8px;
+            max-height: 520px;
+            object-fit: contain;
+            width: 100%;
+        }
+
+        .pipeline-copy {
+            color: #30383b;
+            font-family: "Poppins", sans-serif;
+            font-size: 0.98rem;
+            line-height: 1.7;
+        }
+
+        .pipeline-copy h2 {
+            color: var(--project-ink);
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 0.8rem;
+        }
+
+        .single-figure {
+            margin: 1rem auto;
+            max-width: 980px;
+        }
+
+        footer.container.blog {
+            color: var(--project-muted);
+            font-family: "Poppins", sans-serif;
+            font-size: 0.85rem;
+            padding-bottom: 5vh;
+            text-align: center;
+        }
+
+        @media (max-width: 860px) {
+            .stat-grid,
+            .figure-row,
+            .pipeline-split {
+                grid-template-columns: 1fr;
+            }
+
+            div.container.blog#first-content div.blog-title.no-cover .blog-intro {
+                min-height: auto;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container blog" id="first-content">
+        <div class="blog-title no-cover">
+            <div class="blog-intro">
+                <div>
+                    <p class="project-kicker">
+                        <a href="https://www.robotac.eu/robotac-2026" target="_blank" rel="noopener">RoboTac 2026</a> (under review)
+                    </p>
+                    <h1 class="title">Evaluating the Effectiveness of Haptic Force Feedback during Data Collection for Force-Aware Visuomotor Policy Learning</h1>
+                    <p class="author">
+                        Student Name <sup>1,2</sup>, Student Name <sup>1,2</sup>, Student Name <sup>1,2</sup>, Student Name <sup>1,2</sup>, Mentor Name <sup>1</sup>, Mentor Name <sup>1</sup>
+                    </p>
+                    <div class="affiliation-logos" aria-label="Institution affiliations">
+                        <a class="affiliation-logo nrc" href="https://nrc.canada.ca/" target="_blank" rel="noopener" aria-label="Affiliation 1: National Research Council Canada">
+                            <sup>1</sup>
+                            <img src="assets/logos/nrc.svg" alt="National Research Council Canada">
+                        </a>
+                        <a class="affiliation-logo waterloo" href="https://uwaterloo.ca/" target="_blank" rel="noopener" aria-label="Affiliation 2: University of Waterloo">
+                            <sup>2</sup>
+                            <img src="assets/logos/waterloo.svg" alt="University of Waterloo">
+                        </a>
+                    </div>
+                    <p class="abstract">
+                        Precise physical interaction is a bottleneck for visual imitation learning. This project studies whether a human operator should feel robot contact forces during demonstration collection, and whether that haptic loop produces safer, more useful data for force-aware policies.
+                    </p>
+                    <div class="project-links">
+                        <a href="#" class="button icon" title="Paper upload coming soon">Paper <i class="fa-regular fa-file-lines"></i></a>
+                        <a href="https://github.com/catr1xLiu/NRC_Diffusion_Policy_2.0" target="_blank" rel="noopener" class="button icon">Code <i class="fa-solid fa-code"></i></a>
+                        <a href="#" class="button icon" title="Hugging Face dataset coming soon">Dataset <i class="fa-regular fa-folder-open"></i></a>
+                    </div>
+                    <div class="hero-overview">
+                        <img src="assets/figures/Overview.png" alt="Overview of the haptic-fused imitation learning framework.">
+                        <p>Haptic-fused imitation learning framework: demonstrations are collected with synchronized vision, robot state, force-torque sensing, and rendered haptic feedback.</p>
+                    </div>
+                </div>
+
+                <div class="info">
+                    <p>Haptic teleoperation + force-aware diffusion policy</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container blog main first" id="blog-main">
+        <h1>Motivation</h1>
+        <p class="text">
+            Contact-rich tasks such as pressing compliant objects, wiping a surface, inserting parts, or manipulating deformable materials require more than visual alignment. The robot must regulate contact force continuously. A policy can be trained with wrist force-torque readings, but in many teleoperation pipelines the human demonstrator never feels those forces while collecting data.
+        </p>
+        <p class="text">
+            This project closes that missing sensory loop. A wrist-mounted force-torque sensor measures robot contact, the signal is filtered and scaled, and a Haply haptic controller renders that force back to the operator. The study asks whether this changes demonstration quality and downstream policy behavior.
+        </p>
+
+        <div class="stat-grid">
+            <div class="stat-card">
+                <strong>6-DoF</strong>
+                <span>wrist force-torque sensing</span>
+            </div>
+            <div class="stat-card">
+                <strong>3-DoF</strong>
+                <span>haptic force rendering</span>
+            </div>
+            <div class="stat-card">
+                <strong>2</strong>
+                <span>contact-rich evaluation tasks</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="container blog main">
+        <h1>System</h1>
+        <p class="text">
+            The hardware stack combines a Universal Robots UR10e, a Robotiq parallel gripper, two Intel RealSense RGB cameras, a 6-DoF MAE SensuReal force-torque sensor, and a Haply Inverse3 controller with a VerseGrip attachment. The UR10e is controlled through RTDE for low-latency state feedback and command execution.
+        </p>
+        <p class="text">
+            At each control cycle, the system acquires robot state, operator input, camera observations, and force-torque measurements. Haptic feedback is conditioned with low-pass filtering, rate limiting, contact thresholds, and smooth blending between free-space motion and contact before it is sent back to the device.
+        </p>
+    </div>
+
+    <div class="container blog large gray-linear">
+        <div class="pipeline-split">
+            <img src="assets/figures/TeleoperationPipeline.png" alt="Teleoperation pipeline diagram.">
+            <div class="pipeline-copy">
+                <h2>Teleoperation Loop</h2>
+                <p>
+                    The UR10e streams end-effector force, torque, position, and velocity into a force-alignment module. The signal is conditioned, passed through a virtual wall model, scaled, and mapped into refined haptic feedback for the Haply Inverse3. In the other direction, the operator's position, velocity, and button states drive the robot command loop, closing the bilateral teleoperation cycle.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <div class="container blog main">
+        <h1>Experimental Conditions</h1>
+        <p class="text">
+            The evaluation separates the effect of force observations at policy time from the effect of force feedback at demonstration time.
+        </p>
+
+        <table class="condition-table">
+            <thead>
+                <tr>
+                    <th>Condition</th>
+                    <th>Demonstration Collection</th>
+                    <th>Policy Input</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Force-blind</td>
+                    <td>No haptic feedback to the operator</td>
+                    <td>Vision and proprioception</td>
+                </tr>
+                <tr>
+                    <td>Force-aware</td>
+                    <td>No haptic feedback to the operator</td>
+                    <td>Vision, proprioception, and force</td>
+                </tr>
+                <tr>
+                    <td>Haptic-fused</td>
+                    <td>Force feedback rendered to the operator</td>
+                    <td>Vision, proprioception, and force</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <p class="text">
+            The policy uses a diffusion policy backbone. Multi-view RGB observations are encoded with ResNet-18 backbones, low-dimensional proprioceptive and force inputs are concatenated with visual features, and a 1D U-Net denoises action trajectories over time.
+        </p>
+    </div>
+
+    <div class="container blog main" id="results">
+        <h1>Dataset Quality</h1>
+        <p class="text">
+            The bottle-cap press task reveals a clear force regulation effect. Demonstrations collected with haptic feedback apply lower normal contact forces while preserving consistency across episodes.
+        </p>
+
+        <div class="callout">
+            Median peak normal force dropped from <span class="force-note">71.3 N</span> without haptic feedback to <span class="force-note">25.7 N</span> with haptic feedback, a 64.0% reduction.
+        </div>
+    </div>
+
+    <div class="container blog extra-large gray">
+        <div class="figure-row">
+            <div>
+                <img src="assets/figures/press_feedback_compare.png" alt="Temporal normal force comparison for the bottle-cap press task.">
+                <p class="caption inline center">Bottle-cap press mean normal force over time.</p>
+            </div>
+            <div>
+                <img src="assets/figures/peak_fz_boxplot.png" alt="Peak normal force boxplot for conditions with and without haptic feedback.">
+                <p class="caption inline center">Per-episode peak normal force.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="container blog main">
+        <h1>Task Contrast</h1>
+        <p class="text">
+            The whiteboard wiping task shows that haptic feedback does not simply make operators press less. In this task, effective execution requires sustained contact, so feedback helps operators maintain more stable normal force instead of backing away from the surface.
+        </p>
+    </div>
+
+    <div class="container blog extra-large gray-linear">
+        <div class="figure-row">
+            <div>
+                <img src="assets/figures/whiteboard_fz_compare.png" alt="Whiteboard wiping normal force comparison.">
+                <p class="caption inline center">Whiteboard wiping normal force.</p>
+            </div>
+            <div>
+                <img src="assets/figures/whiteboard_eef_compare.png" alt="Whiteboard wiping end-effector z-axis comparison.">
+                <p class="caption inline center">End-effector motion along the contact axis.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="container blog main">
+        <h1>Policy Behavior</h1>
+        <p class="text">
+            The policy trained from haptic-feedback demonstrations produces more controlled contact behavior during bottle-cap pressing. The preliminary force traces suggest that data collection modality can shape downstream force profiles, even when the final policy receives the same observation channels.
+        </p>
+    </div>
+
+    <div class="container blog large gray">
+        <img src="assets/figures/press_fz_inference.png" alt="Bottle-cap press force profile during policy inference.">
+        <p class="caption">
+            <b>Policy inference force profile.</b> The policy trained with haptic-enabled demonstrations produces reduced and more stable normal force during contact.
+        </p>
+    </div>
+
+    <div class="container blog main" id="future-work">
+        <h1>Discussion</h1>
+        <p class="text">
+            The central lesson is task dependent. If contact state can be inferred from vision alone, haptic feedback may not create a large policy-performance gap. The advantage should be clearer in tasks where force is weakly observable visually, such as peg-in-hole insertion, cap tightening, deformable object manipulation, or tasks with hidden contact.
+        </p>
+        <p class="text">
+            Future versions can also improve force integration inside the policy. Candidate directions include deeper force embedding injection, force-budget gating for action scaling, and hybrid switching into the UR10e native force-control mode when contact is detected.
+        </p>
+    </div>
+
+    <footer class="container blog main">
+        Built with the <a href="https://shikun.io/projects/clarity">Clarity</a> template. Figures are copied from the Robotics Force Project paper assets.
+    </footer>
+</body>
+</html>
