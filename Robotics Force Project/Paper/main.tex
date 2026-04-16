@@ -32,18 +32,62 @@
 \usepackage{amsmath} % for math equations
 \usepackage{amssymb}
 \usepackage{float}
-\usepackage{url}
 \usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    urlcolor=blue
+}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta, positioning, calc}
+\usepackage{caption}
+\captionsetup[table]{name=Table, labelsep=colon}
+\definecolor{mybluebg}{RGB}{198,228,252}
 
+
+% \title{\LARGE \bf
+% Evaluating the Effectiveness of Haptic Force Feedback during Data Collection for Force-Aware Visuomotor Policy Learning
+% }
 \title{\LARGE \bf
-Evaluating the Effectiveness of Haptic Force Feedback during Data Collection for Force-Aware Visuomotor Policy Learning
+On the Role of Haptic Feedback in Demonstration Collection for Visuomotor Policy Learning
 }
 
 
-\author{Student Name$^{1,2}$, Student Name$^{1,2}$, Student Name$^{1,2}$, Student Name$^{1,2}$, Mentor Name$^{1}$, Mentor Name$^{1}$ \\
+\author{Joanna Peng$^{1,2*}$, 
+Aidan Schreder$^{1,2*}$, 
+Yiran Liu$^{1,2*}$, 
+Manjot Dola$^{1,2}$, 
+Benjamin Tran$^{1,2}$, 
+Yue Hu$^{2}$,
+Pengcheng Xi$^{1}$ \\
 $^{1}$National Research Council Canada \quad
-$^{2}$University of Waterloo
+$^{2}$University of Waterloo \\
+%{\small $^{*}$Equal contribution} \quad
+{\small \tt \texttt{\{j85peng, aschrede, y3275liu\}}@uwaterloo.ca; pengcheng.xi@nrc-cnrc.gc.ca}
+\thanks{$^{*}$Equal contribution.}
 }
+
+% \author{
+% \IEEEauthorblockN{
+% \parbox{\linewidth}{\centering
+% Student 1$^{1,2,*}$,
+% Student 2$^{1,2,*}$,
+% Student 3$^{1,2}$,
+% Manjot Dola$^{1,2}$,
+% Benjamin Tran$^{1,2}$,
+% Chang Shu$^{1}$,
+% Yue Hu$^{2}$,
+% Eiichi Yoshida$^{3}$,
+% Pengcheng Xi$^{1}$
+% }
+% }
+% \IEEEauthorblockA{
+% \textit{$^{1}$National Research Council Canada, Ottawa, Canada} \\
+% \textit{$^{2}$University of Waterloo, Waterloo, Canada} \\
+% \textit{$^{3}$Tokyo University of Science, Tokyo, Japan} \\
+% Emails: % update if needed
+% }
+% \thanks{$^{*}$Equal contribution.}
+% }
 
 
 \begin{document}
@@ -58,224 +102,301 @@ $^{2}$University of Waterloo
 
 \begin{figure*}[t]
     \centering
-    \includegraphics[width=\textwidth]{figures/LearningFramework.png}
-    \caption{\textbf{Overview of the haptic-fused imitation learning framework.}}
+    \includegraphics[width=\textwidth]{figures/LearningFramework2.png}
+    \caption{Overview of the haptic-fused imitation learning framework.}
     \label{fig:overview}
 \end{figure*}
 
-\begin{abstract}\textit{
-Precise physical interaction is a significant challenge for visual imitation
-learning methods such as Diffusion Policy. To handle contact-rich tasks, the
-community has introduced advanced methods relying on complex neural architectures
-and reactive control flows. However, these methods overlook a critical bottleneck
-during data collection: standard teleoperation setups lack force feedback,
-completely depriving human operators of the tactile sensation that we rely on
-for precise manipulation. In this work, we propose a haptic-fused imitation
-learning framework. By utilizing a 6-DoF wrist-mounted force-torque sensor and
-a 3-DoF Haply haptic controller, we allow human operators to physically feel
-contact events through their fingertips during demonstration collection. We then
-conduct a comparative study across three conditions on contact-rich tasks,
-isolating the impact of haptic feedback on demonstration quality and resulting
-policy performance. Our preliminary evaluation reveals that task selection is a
-critical and underexplored variable: tasks where contact force is recoverable
-from visual cues alone may not expose the advantage of haptic-fused data
-collection, motivating a more principled benchmark for contact-rich policy
-learning. Code, video, dataset and model available at \url{TODO}.
+\begin{abstract}
+\textit{Precise physical interaction remains a major challenge for visual imitation learning methods such as diffusion policies. While recent approaches introduce more complex architectures, they often overlook a key limitation during data collection: standard teleoperation lacks haptic feedback, preventing operators from sensing contact. We propose a haptic-fused imitation learning framework that enables force-aware demonstration collection using a wrist-mounted force-torque sensor and a haptic controller. This setup allows operators to perceive contact through real-time force feedback. We conduct a comparative study on contact-rich tasks to evaluate the impact of haptic feedback on demonstration quality and downstream policy performance. 
+Results show that haptic feedback improves force regulation and contact maintenance during data collection. However, this does not directly translate to improved task success in the learned policy, highlighting limitations of task selection and open-loop policy execution. Our findings suggest that closing the haptic loop during data collection is important, but its benefits are task-dependent. Code, video, dataset and model are available at our \href{https://catr1xliu.github.io/Notebook/RoboticsForceProject/}{project page}.
 }\end{abstract}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{INTRODUCTION}
-Contact-rich manipulation---tasks that require precise, continuous regulation 
-of force exerted on objects---represents a fundamental challenge in robotics. 
-This includes tight-tolerance plug-in-hole tasks such as connecting a USB cable, 
-surface-following tasks such as cleaning a whiteboard, and deformable object 
-interactions such as flattening clothes. Unlike pick-and-place, these tasks demand 
-not only spatial precision but also real-time adaptation to contact dynamics that 
-are difficult to model explicitly.
+% Contact-rich manipulation---tasks that require precise, continuous regulation 
+% of force exerted on objects---represents a fundamental challenge in robotics. 
+% This includes tight-tolerance plug-in-hole tasks such as connecting a USB cable, 
+% surface-following tasks such as cleaning a whiteboard, and deformable object 
+% interactions such as flattening clothes. Unlike pick-and-place, these tasks demand 
+% not only spatial precision but also real-time adaptation to contact dynamics that 
+% are difficult to model explicitly.
+Contact-rich manipulation tasks require precise and continuous regulation of interaction forces and it remains a fundamental challenge in robotics. Examples include insertion tasks, surface-following operations, and interactions with deformable objects. Unlike pick-and-place, these tasks demand not only spatial accuracy but also real-time adaptation to contact dynamics that are difficult to model.
 
-Visual imitation learning (IL) offers a promising route: robots learn directly 
-from human demonstrations without task-specific programming. Methods such as 
-Diffusion Policy~\cite{chi2024diffusionpolicy} and Action Chunking 
-Transformer~\cite{zhao2023act} effectively capture the temporal structure of 
-natural human behavior and have shown strong performance on a range of 
-manipulation tasks. Reinforcement learning (RL) 
-methods~\cite{luo2024serl,luo2024hilserl,rajeswaran2018dexterous} extend this 
-further through online policy refinement seeded by demonstrations. However, 
-these approaches ground the robot's perception entirely in vision---a modality 
-that carries no information about physical contact forces, leaving them 
-ill-equipped for contact-rich scenarios.
+Imitation learning (IL) provides a promising approach by enabling robots to learn directly from human demonstrations. Recent methods such as Diffusion Policy~\cite{chi2024diffusionpolicy} and Action Chunking Transformer~\cite{zhao2023act} capture the temporal structure of demonstrations and achieve strong performance across manipulation tasks, while reinforcement learning (RL) methods~\cite{luo2024serl,luo2024hilserl,rajeswaran2018dexterous} further refine policies through interaction. However, these approaches rely primarily on visual observations, which do not capture interaction forces, limiting their effectiveness in contact-rich scenarios.
 
-Yet one limitation persists across all of these approaches: force data recorded
-at the robot's wrist during teleoperation is used to train the policy, but is
-never fed back to the human operator during collection. The operator remains
-entirely force-blind, relying solely on visual observation to judge contact
-quality. Despite some efforts toward passive mechanical coupling through
-leader-follower arms~\cite{zhao2023act} or instrumented gloves~\cite{liu2025forcemimic},
-active haptic rendering---where the operator physically feels scaled contact forces
-through a dedicated device---remains absent from the IL data collection pipeline.
-This is consequential: in fine-grained contact-rich tasks, humans depend on
-tactile sensation to modulate force, detect slip, and recover from failed contact.
-Without it, demonstrations may carry errors in force regulation, setting a hard ceiling 
-for force-aware policy learning frameworks.
+A key limitation persists: even when force data are recorded by the robot~\cite{shukla2025forcevisuomotor, he2025foar, helmut2025tactile}, this information is not fed back to the human operator during data collection. As a result, demonstrations are typically collected in a force-blind manner, with operators relying solely on visual cues to infer contact. Prior efforts~\cite{zhao2023act, liu2025forcemimic, xue2025rdp} provide partial solutions, but real-time haptic feedback, where operators directly feel interaction forces through a dedicated device, remains largely absent from imitation learning pipelines. This is consequential for contact-rich tasks, where humans rely on tactile feedback to regulate force, detect slip, and adjust actions during interaction. Without such feedback, demonstrations may contain suboptimal force patterns, limiting downstream policy performance.
 
-In this work, we propose a haptic-fused imitation learning framework that closes
-the sensory loop across the entire pipeline, from data collection through training
-to inference. Using a 6-DoF wrist-mounted force-torque sensor paired with a 3-DoF
-Haply Inverse3 haptic controller, we stream scaled contact forces from the robot's
-end-effector directly to the operator's fingertips in real time. We evaluate three
-experimental conditions: (1) a \textit{force-blind} baseline with no haptic
-feedback and no force input to the policy; (2) a \textit{force-aware} policy
-trained on force-blind demonstrations; and (3) our full \textit{haptic-fused}
-pipeline with haptic-enabled demonstrations feeding a force-aware policy.
-Preliminary results on two contact-rich tasks show no statistically significant
-performance gap across conditions. 
+In this work, we propose a haptic-fused imitation learning framework that incorporates force feedback into demonstration collection. Using a wrist-mounted force–torque sensor and a Haply Inverse3 haptic controller, we stream contact forces from the robot to the operator in real time. We compare two teleoperation conditions: a force-blind baseline and a haptic-fused setup with real-time force feedback. Experiments on two contact-rich tasks show that haptic feedback leads to improved demonstration quality, including reduced excessive force and more stable contact. These improvements are reflected in the learned policy, although they do not translate into immediate gains in task success.
 
-Our contributions are as follows: we present
-a complete, open-source haptic teleoperation infrastructure for end-to-end
-haptic-fused demonstration collection; we provide an empirical datapoint
-suggesting that on tasks where contact force is recoverable from visual cues,
-haptic feedback yields no significant benefit. This motivates
-more careful task selection in the future, and we introduce \textit{force-observability} as
-a criterion for benchmarking contact-rich IL, identifying candidate tasks
-(Section~\ref{sec:fut}) where closing the haptic loop is expected to produce
-a measurable difference.
+Our contributions are as followed: First, we present a haptic teleoperation framework for demonstration collection. Second, we provide quantitative evidence that haptic feedback improves force regulation during demonstrations and influences learned policy behavior. Third, we highlight the importance of task selection in contact-rich imitation learning, and suggest that tasks where force information is not visually inferable are more likely to benefit from haptic feedback.
 
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{METHODOLOGY}
 %hardware + teleoperation loop (
+
+We propose a haptic-fused imitation learning framework for contact-rich manipulation, combining force-aware teleoperation with diffusion-based policy learning (Fig. \ref{fig:overview}). During data collection, we compare two modalities: force-blind teleoperation, using standard interfaces, and force-streamed teleoperation, where a haptic device (Haply controller) provides bidirectional interaction by transmitting user commands to the robot and returning force/torque feedback to the operator.
+
+Demonstrations are used to train a policy that maps multi-modal observations, including camera views, robot pose, and force/torque signals, to action sequences. A diffusion policy is trained on these observation sequences to generate robot trajectories at inference time. The framework is evaluated on contact-rich tasks, including wiping and pressing, to study the impact of force feedback.
+
+
 \subsection{Hardware}
 % System Overview ?
 
-A Universal Robots UR10e is controlled through the Real-Time Data Exchange (RTDE) interface for low-latency state feedback and command execution. Teleoperation is performed using a Haply Inverse3 equipped with a VerseGrip attachment, which captures 6-DoF operator inputs. A Robotiq parallel gripper facilitates object interaction at the end-effector. Visual observations are acquired using two Intel RealSense RGB cameras: a wrist-mounted camera and a fixed external camera. Contact dynamics are measured using a 6-DoF MAE SensuReal force-torque sensor mounted at the robot interface. 
+A UR10e robot is controlled via RTDE for low-latency operation. Teleoperation uses a Haply Inverse3 with VerseGrip (6-DoF input) and a Robotiq gripper. Two RealSense RGB cameras (wrist and external) provide visual input, while a SensuReal 6-DoF force–torque sensor measures interaction forces.
 
 \subsection{Teleoperation Pipeline}
 
-\begin{figure}[H]
+\begin{figure}[t]
      \centering
-     \includegraphics[width=0.75\columnwidth]{figures/TeleoperationPipeline.png}
-     \caption{Teleoperation pipeline}
+     \includegraphics[width=0.8\columnwidth]{figures/TeleoperationPipeline.png}
+     \caption{Overview of the proposed haptic feedback loop. %Robot-side force/torque and motion signals are processed and mapped into refined haptic feedback for the Haply device, while user control commands are sent back to the robot.
+     }
      \label{fig:teleop_pipeline}
 \end{figure}
 
+
+
+% %% experiment 
+% \begin{figure}[t]
+% \centering
+% \resizebox{0.9\linewidth}{!}{%
+% \begin{tikzpicture}[
+%     font=\small,
+%     node distance=0.55cm and 0.9cm,
+%     >=Latex,
+%     box/.style={
+%         draw,
+%         rounded corners=2pt,
+%         thick,
+%         minimum height=0.85cm,
+%         align=center,
+%         fill=white
+%     },
+%     proc/.style={
+%         draw,
+%         rounded corners=2pt,
+%         thick,
+%         fill=mybluebg,
+%         minimum width=4.6cm,
+%         minimum height=0.68cm,
+%         align=center
+%     },
+%     bigbox/.style={
+%         draw,
+%         rounded corners=8pt,
+%         thick,
+%         inner sep=8pt,
+%         minimum width=5.6cm,
+%         minimum height=3.3cm
+%     },
+%     flow/.style={thick, ->},
+%     lab/.style={align=center, font=\footnotesize}
+% ]
+
+% % Top and bottom nodes
+% \node[box, minimum width=4.8cm] (robot) {\textbf{UR10E with F/T Sensor}};
+% \node[bigbox, below=0.8cm of robot] (procbox) {};
+% \node[box, minimum width=3.8cm, below=0.55cm of procbox] (haply) {\textbf{Haply Inverse3}};
+
+% % Big box title
+% \node[anchor=north, font=\bfseries\small] at ([yshift=-2mm]procbox.north) {Force Alignment \& Processing};
+
+% % Internal processing blocks
+% \node[proc, anchor=north] (sig) at ([yshift=-8mm]procbox.north) {Signal conditioning};
+% \node[proc, below=0.1cm of sig] (wall) {Virtual wall model};
+% \node[proc, below=0.1cm of wall] (map) {Scaling \& output mapping};
+
+% % Vertical arrows
+% \draw[flow] (robot.south) -- node[right, lab, xshift=2.5mm] {End-effector force/torque,\\position, and velocity} (procbox.north);
+% \draw[flow] (procbox.south) -- node[right, lab, xshift=2.5mm] {Refined haptic feedback} (haply.north);
+
+% % Feedback loop
+% \draw[flow] (haply.west) -| ([xshift=-1.2cm]haply.west) |- 
+%             node[left, lab, xshift=-2mm, pos=0.68] {Position, velocity,\\and button states}
+%             (robot.west);
+
+% \end{tikzpicture}%
+% }
+% \caption{Overview of the proposed haptic feedback loop. Robot-side force/torque and motion signals are processed and mapped into refined haptic feedback for the Haply device, while user control commands are sent back to the robot.}
+% \label{fig:haptic_framework}
+% \end{figure}
+
 % during data collection control loop (general; not involving haptic feedback):
-At each control cycle, the system synchronously acquires robot states, operator inputs, and visual observations to ensure temporally consistent multimodal data. Incremental translational and rotational deltas from the haptic interface are integrated within the control loop to generate a target 6-DoF end-effector pose. Concurrently, the system records the corresponding proprioceptive states and force-torque measurements. Visual data are captured in parallel and temporally aligned via timestamp-based resampling onto a unified control-time grip. Each demonstration is stored as a time-indexed Zarr replay buffer entry. 
+At each control cycle, the system synchronously acquires robot state, operator input, and visual observations to ensure temporally consistent multimodal data. Incremental pose updates from the haptic interface are integrated to generate target 6-DoF end-effector motions, while corresponding proprioceptive and force–torque measurements are recorded. Visual streams from multiple cameras are captured in parallel and aligned via timestamp-based resampling onto a unified time grid.
+%Each demonstration is stored as a time-indexed Zarr replay buffer entry. 
 
 % force integration + haptic feedback implementation:
-The haptic feedback pipeline (Fig. 1.) establishes a bidirectional coupling between the robot and the operator by mapping measured interaction forces to feedback at the input device. Force–torque measurements from the robot end-effector are processed within the control loop to produce a Cartesian force signal representing contact with the environment. This signal conveys interaction dynamics to the operator in real time.
+% The haptic feedback pipeline (Fig. \ref{fig:teleop_pipeline}) establishes a bidirectional coupling between the robot and the operator by mapping measured interaction forces to feedback at the input device. Force–torque measurements from the robot end-effector are processed within the control loop to produce a Cartesian force signal representing contact with the environment. This signal conveys interaction dynamics to the operator in real time.
 
-To ensure stability and consistency, the force signal is conditioned prior to rendering. Low-pass filtering attenuates sensor noise, while rate limiting prevents abrupt transients. A virtual contact model based on a unilateral spring–damper formulation regulates interaction along the contact axis, with force thresholds governing engagement and disengagement. A blending mechanism ensures smooth transitions between free-space motion and contact. The resulting force is scaled and transmitted to the haptic device, where it is rendered to the operator. This closes the loop: operator motion defines the robot’s desired state, and measured forces are returned as feedback to guide subsequent input.
+% To ensure stability and consistency, the force signal is conditioned prior to rendering. Low-pass filtering attenuates sensor noise, while rate limiting prevents abrupt transients. A virtual contact model based on a unilateral spring–damper formulation regulates interaction along the contact axis, with force thresholds governing engagement and disengagement. A blending mechanism ensures smooth transitions between free-space motion and contact. The resulting force is scaled and transmitted to the haptic device, where it is rendered to the operator. This closes the loop: operator motion defines the robot’s desired state, and measured forces are returned as feedback to guide subsequent input.
+
+The haptic feedback pipeline (Fig.~\ref{fig:teleop_pipeline}) establishes bidirectional coupling between the robot and the operator. Measured end-effector forces are processed to generate real-time feedback signals rendered through the haptic device, conveying contact dynamics during interaction. To ensure stability, the force signal is conditioned using low-pass filtering and rate limiting. A virtual contact model based on a unilateral spring–damper formulation regulates interaction along the contact axis, with threshold-based engagement and smooth transitions between free-space and contact. The resulting force is scaled and rendered to the operator, closing the loop between motion input and force feedback.
 
 %In the bilateral teleoperation control, the raw force-torque measurements are transformed to TCP-aligned coordindate frames and then aligned to the Haply coordinate frame. Within the force feedback loop, the force components of the Haply-aligned force is processed through low-pass filtering, rate limiting, and optional virtual wall rendering along the z-axis. The free-space and contact forces are then blended to produce a smooth feedback signal which is transmitted to the haptic device, enabling real-time force perception during teleoperation.
 
 \subsection{Policy Architecture}
-The policy architecture is based on the original diffusion policy architecture pipeline [CITATION]. 
+The policy is based on the Diffusion Policy framework~\cite{chi2024diffusionpolicy}. End-effector poses in both observations and actions are represented relative to the start of each episode. The model is trained as a conditional diffusion policy that predicts future action sequences from multi-view RGB observations and proprioceptive inputs.
 
-% dataset preprocessing + observation encoder
-The absolute end-effector observation and action pose are converted into a pose-relative representation using the start pose. We train a conditioned diffusion policy that predicts an action trajectory from multi-view RGB and proprioceptive observations. 
-The global conditioning vector is produced through the observation encoder that takes a specified number of observation steps (4 steps). For the image encoder, each RGB camera stream is passed through its own ResNet 18 backbone with the classification head removed. Then the preprocessed low dimensional signals are concatenated directly to the visual feature vector.
+A global conditioning vector is constructed from an observation encoder over a four-step horizon. Each camera view is encoded using a ResNet-18 backbone\cite{he2016resnet}, and the resulting features are concatenated with low-dimensional inputs, including proprioception and force–torque measurements. The combined representation conditions a CNN-based diffusion model, where the denoising network is implemented as a 1D U-Net \cite{ronneberger2015unet} over the temporal action sequence.
 
-% network policy
-The global condiitioning vector is then passed into a CNN-based diffusion policy where the diffusion model is applied over action sequences implemented as a 1D convolutional U-Net over time. The Gaussian noise, which represents a whole action trajectory over a specified horizon length (16) is iteratively denoised with the conditional 1D U-Net. %inference information?
+During inference, Real-Time Chunking (RTC)~\cite{black2025realtimeexecutionactionchunking} is used to improve execution of predicted trajectories in real-world settings.
 
 
 \subsection{Task Design}
-We evaluate the proposed approach on two manipulation tasks exhibiting distinct contact interaction characteristics. The \textbf{bottle-cap press} task requires sensitivity to object compliance, where the operator must apply sufficient normal force to fully depress the cap while avoiding excessive force that could damage the object. The \textbf{whiteboard wiping}  task involves sustained surface contact and emphasizes consistent force regulation, requiring the operator to maintain appropriate normal force while traversing the surface to effectively remove marker traces.
+We evaluate the proposed approach on two manipulation tasks with distinct contact interaction requirements. The \textbf{bottle-cap press} task requires sensitivity to object compliance, where sufficient normal force must be applied to fully depress the cap without exerting excessive force. The \textbf{whiteboard wiping} task involves sustained surface contact, requiring the operator to maintain appropriate normal force while moving across the board to remove marker traces.
 
-To study the impact of haptic feedback on data quality and downstream policy performance, demonstrations are collected under two teleoperation modes: unilateral control (without force feedback) and bilateral control (with haptic feedback).
+To study the effect of haptic feedback on both dataset quality and downstream policy performance, demonstrations are collected under two teleoperation modes: unilateral control (without haptic feedback) and bilateral control (with haptic feedback). Dataset quality is evaluated using interaction-based metrics to better understand the operator and environment interaction:
 
-Dataset quality is evaluated using task-specific metrics that capture force regulation behaviour. For the bottle-cap press task, we analyze (i) the temporal profile of normal force throughout each episode, and (ii) the peak normal force achieved during interaction. For the whiteboard wiping task, we evaluate (i) the temporal profile of normal force through each episode, and (ii) the robot end-effector pose in the same direction as the normal force. 
+\begin{itemize}
+    \item \textbf{Temporal profile of normal force:} The evolution of normal force $F_z$ over an episode is analyzed to compare force application patterns across both tasks.
+    \item \textbf{Peak normal force (bottle-cap press):} The maximum normal force reached in each episode is used to quantify excessive force during pressing. A reference range of 15--30 N, empirically determined from typical human usage, is used to assess whether demonstrations apply appropriate force magnitudes.
+    \item \textbf{End-effector displacement along the surface-normal direction (whiteboard wipe):} Motion along the surface-normal axis is analyzed to assess whether consistent contact with the wiping surface is maintained.
+\end{itemize}
 
+
+To evaluate downstream policy performance, the same interaction-based metrics are applied. In addition, task-level performance is measured using functional success metrics:
+\begin{itemize}
+    \item \textbf{Bottle-cap press:} A binary metric indicating whether the cap is fully depressed.
+    \item \textbf{Whiteboard wipe:} A discrete score from 0 to 4 based on the proportion of the marked line removed, where each successfully erased segment contributes one point.
+\end{itemize}
  
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{EXPERIMENTS AND RESULTS}
-We perform experiments answering the following questions:
-(1) Does incorporating haptic feedback during data collection improve dataset quality?
-(2) Does incorporating haptic feedback during data collection improve policy interaction quality?
+We evaluate the proposed approach by examining whether haptic feedback during teleoperated data collection improves demonstration quality, and whether these improvements translate to downstream policy performance.
 
-\subsection{Dataset Quality Comparison}
+\subsection{Demonstration Quality Comparison}
+
+
+
+% combine all these graphs into one figure: (all temporal evolution of mean normal contact force comparing w/ and w/o haptic feedback)
+
+
+
+
+%perhaps don't need this plot if taking up too much space:
+%\begin{figure}
+    %\centering
+    %\includegraphics[width=0.8\columnwidth]{figures/peak_fz_boxplot.png}
+    %\caption{Per-episode peak normal force for conditions with and without haptic feedback. Box plots show the distribution across episodes, including median and inter-quartile range.}
+    %\label{fig:peak_fz}
+%\end{figure}
+
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=\columnwidth]{figures/all_force_profile_figure_stack.png}
+    \caption{Temporal evolution of mean normal contact force $F_z$ during data collection and policy execution for both tasks. Shaded regions denote $\pm 1$ standard deviation across episodes.}
+    \label{fig:all_force_profiles}
+\end{figure}
+
+%\begin{figure}
+    %\centering
+    %\includegraphics[width=\columnwidth]{figures/wipe_eef_compare_stack.png}
+    %\caption{Robot end effector displacement along the surface-normal axis}
+    %\label{fig:placeholder}
+%\end{figure}
+
+\textbf{Bottle-Cap Press.} Demonstrations collected with haptic feedback exhibit substantially improved force regulation relative to demonstrations collected without feedback. As shown in Fig. \ref{fig:all_force_profiles}, the temporal profile of the normal force $F_z$ remains consistently lower throughout the contact phase for the bilateral teleoperation condition. Furthermore, the comparable spread of the standard deviation bands across both conditions indicates that this reduction in applied force is not achieved at the expense of increased variability, suggesting more controlled and repeatable interaction. 
 
 \begin{table}[t]
 \centering
 \caption{Peak Normal Force $F_z$}
 \label{tab:peak_force}
-\begin{tabular}{lccc}
+\begin{tabular}{lcc}
 \toprule
-\textbf{Condition} & \textbf{Median $\pm$ Std Dev (N)} & \textbf{Reduction (\%)} \\
+\textbf{Condition} & \textbf{Median $\pm$ Std Dev (N)} & \textbf{Reduction} \\
 \midrule
-w/ Haptic Feedback    & 25.7 $\pm $ 17.4 & \multirow{2}{*}{64.0\%} \\
-w/o Haptic Feedback & 71.3 $\pm $ 18.0 & \\
+w/o Haptic Feedback & 71.3 $\pm $ 18.0 & \multirow{2}{*}{64.0\%} \\
+w/ Haptic Feedback    & 25.7 $\pm $ 17.4 & \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-% combine all these graphs into one figure: (all temporal evolution of mean normal contact force comparing w/ and w/o haptic feedback)
-\begin{figure}[t]
-    \centering
-    \includegraphics[width=\columnwidth]{figures/press_feedback_compare.png}
-    \caption{Temporal evolution of mean normal contact force $F_z$ during the bottle-cap press task. Shaded regions denote $\pm 1$ standard deviation across episodes.}
-    \label{fig:press_force}
-\end{figure}
-
-\begin{figure}
-    \centering
-    \includegraphics[width=1\linewidth]{figures/press_fz_inference.png}
-    \caption{Enter Caption}
-    \label{fig:placeholder}
-\end{figure}
-\begin{figure}
-    \centering
-    \includegraphics[width=1\linewidth]{figures/whiteboard_fz_compare.png}
-    \caption{Enter Caption}
-    \label{fig:placeholder}
-\end{figure}
-\begin{figure}
-    \centering
-    \includegraphics[width=1\linewidth]{figures/whiteboard_eef_compare.png}
-    \caption{Enter Caption}
-    \label{fig:placeholder}
-\end{figure}
-\begin{figure}
-    \centering
-    \includegraphics[width=\columnwidth]{figures/peak_fz_boxplot.png}
-    \caption{Per-episode peak normal force for conditions with and without haptic feedback. Box plots show the distribution across episodes, including median and inter-quartile range.}
-    \label{fig:peak_fz}
-\end{figure}
-
-\textbf{Bottle-Cap Press.} Datasets collected with haptic feedback exhibit consistently lower normal contact forces compared to those collected without feedback, while maintaining similar variability across episodes. As shown in Fig.~\ref{fig:press_force}, the mean $F_z$ profile with feedback remains significantly reduced throughout the contact phase. The comparable standard deviation band widths indicate that this reduction is achieved without increased variability, suggesting both consistent and more controlled force application. 
-
-This trend is further supported by the peak force distributions in Fig.~\ref{fig:peak_fz}, where the haptic-feedback condition demonstrates a lower median and tighter spread. Comparing the median peak normal forces in Table X., it is evident that haptic feedback reduced the median peak normal force from 71.3 N to 25.7 N corresponding to a 64\% reduction.
-
-\textbf{Whiteboard Wipe.} In contrast to the bottle-cap task, effective execution of the whiteboard wiping task requires sustained and sufficiently large normal force. As shown in Fig.~X, datasets collected with haptic feedback result in higher normal force application throughout the contact phase. 
-
-Analysis of the end-effector motion further reveals that, without haptic feedback, trajectories tend to remain near the surface with insufficient pressure application, resulting in less effective wiping behavior. In contrast, demonstrations collected with feedback exhibit consistent contact engagement, demonstrated visually by the decrease in end-effector pose in the z-axis. Additionally, the no-feedback condition shows increased variability in force application, indicating less stable interaction.
-
-\subsection{Policy Interaction Quality Comparison}
-\textbf{Bottle-Cap Press.} To evaluate the effect of data collection modality on downstream policy behavior, we analyze the force profiles during task execution. As shown in Fig.~X, the policy trained on data collected without haptic feedback consistently produces higher normal forces during contact. In contrast, the policy trained with haptic feedback demonstrates reduced and more controlled force application throughout the interaction. 
-
-These results indicate that incorporating haptic feedback during data collection leads to policies that exhibit safer and more stable contact behavior during execution.
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Performance Analysis}
 
 
-\section{DISCUSSION \& FUTURE WORK}
+This trend is further supported by the per-episode peak force statistics shown in Table \ref{tab:peak_force}, which show a reduction in median peak normal force from 71.3 N (w/o haptic feedback) to 25.7 N (w/ haptic feedback), corresponding to a 64\% decrease. Moreover, the median force under haptic feedback falls within the predetermined reference range of 15--30 N, whereas in the unilateral condition, it substantially exceeds this range. These results indicate that haptic feedback improves dataset quality for transient contact interactions by enabling more task-appropriate force application during demonstration collection.
 
-Our results demonstrate that haptic force feedback enables context-sensitive force regulation during teleoperation, rather than simply reducing applied force overall. Quantitative force profiles and qualitative observation both confirm this: during the bottle-pump task, haptic-feedback operators arrested motion earlier and avoided the prolonged over-pressing seen in the blind baseline; during the wiping task, they maintained higher and more stable contact forces rather than backing off prematurely. Without any force channel, baseline operators were forced to infer contact state from vision alone, systematically biasing them toward under-pressing in high-demand tasks and over-pressing in low-demand ones.
+\textbf{Whiteboard Wipe.} The desired interaction for this task differs from that of the bottle-cap press---successful execution requires sustained contact with the surface and sufficiently large maintained normal force throughout the wiping motion. Demonstrations collected with haptic feedback for this task also show improved interaction quality. The temporal force profile in Fig. \ref{fig:all_force_profiles} shows that the haptic-feedback condition produces higher maintained normal force during the main contact phase. Quantitatively, the mean maintained normal force is 14.5 $\pm$ 13.8 N with haptic feedback, compared to 8.30 $\pm$ 8.72 N without feedback. Although both conditions exhibit substantial variability, the higher maintained force under haptic feedback is more consistent with the task requirement of preserving contact with the whiteboard surface during motion. 
 
-Several architectural directions remain open for improving how force is integrated into the diffusion policy. Force is currently concatenated into the observation vector alongside vision, but intermediate-layer injection, which fuses force embeddings deeper in the denoising network, may better decouple force conditioning from visual feature extraction. A force-budget approach, where policy position outputs are scaled by a learned force-based gating signal, offers a lightweight alternative for attenuating motion under excessive contact without explicit force control reasoning. More ambitiously, a hybrid switching policy could exploit the UR10e's native force control mode, delegating to a force-control primitive when significant contact is detected, though this would require separately trained model components and a learned arbitration mechanism.
+\begin{table}[t]
+\centering
+\caption{Contact Maintenance Ratio (ratio over each episode)}
+\label{tab:contact_main}
+\begin{tabular}{lcc}
+\toprule
+\textbf{Condition} & \textbf{Mean $\pm$ Std} & \textbf{Increase} \\
+\midrule
+w/o Haptic Feedback & 0.626 $\pm$ 0.311 & \multirow{2}{*}{45.3\%} \\
+w/ Haptic Feedback  & 0.910 $\pm$ 0.146 & \\
+\bottomrule
+\end{tabular}
+\end{table}
 
-Finally, the current benchmark is limited to two tasks with relatively constrained contact geometries. Expanding to tasks with richer force demands, such as peg-in-hole insertion, cap-tightening, or deformable object manipulation, would more rigorously test whether haptic-augmented demonstrations yield policies that generalize across contact regimes, and would enable systematic study of how the diversity of force-labeled demonstrations affects policy performance.
+To further assess contact stability, we analyze end-effector displacement along the surface-normal direction. For each episode, the initial end-effector position is taken as the zero-reference threshold, and contact maintenance ratio is computed as the fraction of the episode during which the end-effector remains below this threshold. As shown in Table \ref{tab:contact_main}, the mean contact maintenance ratio increases by 45.3\% for demonstrations collected with feedback compared to those without. Additionally, a larger amount of residual whiteboard marker was observed after the completion of unilateral teleoperation, as opposed to teleoperation with feedback, because of more inconsistent whiteboard and cloth contact.
+
+%Qualitatively, during the unilateral teleoperation, it was observed that the cloth tends to skims the surface with intermittent contact, whereas with the haptic feedback, we are able to maintain more sustained engagement throughout the wiping trajectory.
+
+These results show that haptic feedback improves dataset quality across both tasks by allowing teleoperators to produce more task-appropriate interaction behavior. 
+
+
+\subsection{Policy Performance Comparison}
+We next examine whether the improvements in demonstration quality will lead to improved downstream policy performance. %Across both tasks, we find that although haptic feedback improves the quality of the collected demonstrations, these gains do not translate to significant improvements in downstream policy performance. 
+
+\begin{table}[t]
+\centering
+\caption{Task Success Rate}
+\label{tab:task_success}
+\begin{tabular}{lccc}
+\toprule
+\textbf{Task} & \textbf{Wipe} & \textbf{Press} \\
+\midrule
+w/o Haptic Feedback   & 90\% & 65\%\\
+w/ Haptic Feedback & 100\% & 68\%\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\textbf{Bottle-Cap Press.}  Policies trained on datasets collected with or without haptic feedback achieve similar task completion, with success rates of 100\% and 90\%, respectively (Table \ref{tab:task_success}). We additionally analyze the force profiles from Fig. \ref{fig:all_force_profiles} during execution to determine whether the improved demonstration quality is reflected in learned interaction behavior. While the policies trained on unilateral and bilateral demonstrations exhibit different force profiles, the mean normal force in both cases remains outside the 15--30 N reference range. This indicates that the haptic condition does not improve task-appropriate force regulation during execution. Furthermore, due to the use of real-time chunking (RTC) during execution, the force profiles are smoothed and do not exhibit the same transient peaks observed in the demonstrations which may attenuate differences in force behavior learning from the demonstrations.
+
+\textbf{Whiteboard Wipe.} 
+A similar trend is observed for the whiteboard wipe task. Task-level performance is evaluated using the normalized mean of a 0--4 completion score. Table \ref{tab:task_success} shows that policies trained with or without haptic feedback achieve comparable performance, with normalized mean scores of 68\% and 65\%, respectively. 
+
+Overall, these results indicate that haptic feedback provides a clear advantage during data collection by improving force regulation and contact maintenance in a task-dependent manner. However, for the tasks considered, these improvements in dataset quality do not yield corresponding improvements in downstream policy performance.
+
+\section{DISCUSSION}
+
+Our results demonstrate that haptic force feedback enables context-sensitive force regulation during teleoperation, rather than simply reducing the overall applied force. 
+Qualitative analysis of force profiles confirms that during the bottle-cap press task, operators with haptic feedback eased pressure earlier, avoiding the prolonged over-pressing seen in the force-blind baseline; during the wiping task, operators maintained more stable contact with the surface. 
+These yield an important quality improvement of the collected demonstrations.
+
+However, despite reflecting the force patterns found in the demonstrations, the policy \textit{did not} demonstrate statistically significant performance improvement during inference. We identify task selection as the major bottleneck: the two evaluated tasks impose relatively loose constraints on force regulation, and critically, the visual observation stream contains sufficient positional and deformation cues to infer contact state, leaving little room for force-enriched demonstrations to confer additional benefit. 
+
+We introduce \textit{force-observability} as a criterion for task selection in contact-rich benchmarks---a task is force-observable if the contact state and force demand cannot be reliably inferred from vision alone. 
+Candidate tasks satisfying this criterion include peg-in-hole insertion, cap-tightening, and multi-material slip detection, where we expect haptic-augmented demonstrations to yield direct policy performance gains.
 
 \label{sec:fut}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{CONCLUSIONS}
+\section{CONCLUSION \& FUTURE WORK}
 
-This is to conclude our paper. 
+We presented a haptic-fused imitation learning framework that incorporates force feedback during demonstration collection, and conducted a controlled study to examine its impact on data quality and downstream policy behavior. We showed that enabling haptic feedback leads to clear force-aware behavior, including reduced peak contact force (up to 64\%) and more stable contact during surface-following tasks. These differences are reflected in the learned policy, although they do not translate into improved task success under the current open-loop execution.
+
+Our results highlight the importance of task characteristics in evaluating force-aware learning. In particular, tasks where contact state cannot be reliably inferred from visual observations are more likely to benefit from force-enriched demonstrations. We refer to this property as \textit{force-observability}, and propose it as a useful consideration for future benchmark design.
+
+Several directions remain for improving force integration into policy learning. Beyond incorporating force as an input, a promising approach is to combine trajectory prediction with compliance control, where the policy outputs motion together with a stiffness signal that is executed via an admittance controller~\cite{maples1986force, hou2019robust}. This separation of motion planning and force regulation may enable more robust execution in contact-rich scenarios.
+% We presented a haptic-fused imitation learning framework that closes the sensory loop during demonstration collection, and conducted a controlled three-condition study to isolate the effect of haptic feedback on data quality and the downstream policy behavior. 
+% We showed that operators exhibit obvious force-awareness when haptic feedback is enabled, reducing peak contact force by 64\% on a compliance-sensitive task, and maintaining more consistent contact during a surface-following task. We also observed the model's ability to reflect these behavioral differences during inference, despite the open-loop architecture bottlenecking overall task success rates.  
+% Our open-source infrastructure and the force-observability criterion provide a concrete foundation for future work in contact-rich policy learning. 
+% We establish \textit{force-observability} as a principled criterion for benchmark design in contact-rich imitation learning, motivating evaluation on tasks where contact forces are not visually recoverable --- particularly where closing the haptic loop during collection is expected to yield measurable performance gains.
+
+% Several architectural directions remain open for improving force integration into the policy. 
+% Beyond concatenating force readings into the observation vector, a compliance-control approach offers a promising direction: the policy learns to output a stiffness signal alongside the trajectory, which is then executed via an admittance controller that regulates contact force in real time~\cite{maples1986force, hou2019robust}. 
+% This decouples high-level motion planning from low-level force regulation, and has been shown to enable robust execution of contact-rich plans under uncertainty.
 
 \newpage
 
