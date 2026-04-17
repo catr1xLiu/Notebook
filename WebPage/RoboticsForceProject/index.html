@@ -295,6 +295,26 @@
             text-align: center;
         }
 
+        .video-container {
+            position: relative;
+            width: 100%;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+            border-radius: 8px;
+            margin: 1.5rem auto;
+            max-width: 980px;
+        }
+
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
         @media (max-width: 860px) {
             .stat-grid,
             .figure-row,
@@ -382,6 +402,13 @@
                 <strong>2</strong>
                 <span>contact-rich evaluation tasks</span>
             </div>
+        </div>
+    </div>
+
+    <div class="container blog main">
+        <h1>Demo</h1>
+        <div class="video-container">
+            <iframe src="https://www.youtube.com/embed/IRo6FAD_q1U" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
         </div>
     </div>
 
