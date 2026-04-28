@@ -1,0 +1,133 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%2345678901234567890123456789012345678901234567890123456789012345678901234567890
+%        1         2         3         4         5         6         7         8
+
+\documentclass[letterpaper, 10 pt, conference]{ieeeconf}  % Comment this line out if you need a4paper
+
+%\documentclass[a4paper, 10pt, conference]{ieeeconf}      % Use this line for a4 paper
+
+\IEEEoverridecommandlockouts                              % This command is only needed if 
+                                                          % you want to use the \thanks command
+
+\overrideIEEEmargins                                      % Needed to meet printer requirements.
+
+%In case you encounter the following error:
+%Error 1010 The PDF file may be corrupt (unable to open PDF file) OR
+%Error 1000 An error occurred while parsing a contents stream. Unable to analyze the PDF file.
+%This is a known problem with pdfLaTeX conversion filter. The file cannot be opened with acrobat reader
+%Please use one of the alternatives below to circumvent this error by uncommenting one or the other
+%\pdfobjcompresslevel=0
+%\pdfminorversion=4
+
+% See the \addtolength command later in the file to balance the column lengths
+% on the last page of the document
+
+% The following packages can be found on http:\\www.ctan.org
+\usepackage{graphics} % for pdf, bitmapped graphics files
+\usepackage{xcolor} % for coloring
+\usepackage{epsfig} % for postscript graphics files
+\usepackage{booktabs} % for tables
+\usepackage{multirow} % for tables
+\usepackage{mathptmx} % for math equations
+\usepackage{amsmath} % for math equations
+\usepackage{amssymb}
+\usepackage{float}
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    urlcolor=blue
+}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta, positioning, calc}
+\usepackage{caption}
+\captionsetup[table]{name=Table, labelsep=colon}
+\definecolor{mybluebg}{RGB}{198,228,252}
+
+
+% \title{\LARGE \bf
+% Evaluating the Effectiveness of Haptic Force Feedback during Data Collection for Force-Aware Visuomotor Policy Learning
+% }
+\title{\LARGE \bf
+Modeling Kinematic Signatures of Aging via Diffusion and Graph Networks
+}
+
+
+% If anonymized:
+%\author{Anonymous Author(s)}
+
+% If non-anonymized, use the standard author block:
+% \author{First Author\\Institution\\{\tt\small email} \and Second Author\\Institution\\{\tt\small email}}
+\author{
+Yiran Liu$^{1,2}$, Student Name$^{1,2}$, Student Name$^{1,2}$, Jason Peng$^{3}$, Chang Shu$^{1}$, Pengcheng Xi$^{1}$ \\
+$^{1}$National Research Council Canada \quad
+$^{2}$University of Waterloo \quad
+$^{3}$Simon Fraser University \\
+{\tt\small y3275liu@uwaterloo.ca, chang.shu@nrc-cnrc.gc.ca, pengcheng.xi@nrc-cnrc.gc.ca}
+}
+
+
+\begin{document}
+
+
+
+\maketitle
+\thispagestyle{empty}
+\pagestyle{empty}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% \begin{figure*}[t]
+%     \centering
+%     \includegraphics[width=\textwidth]{figures/LearningFramework2.png}
+%     \caption{Overview of the haptic-fused imitation learning framework.}
+%     \label{fig:overview}
+% \end{figure*}
+
+\begin{abstract}
+\input{sec/abstract}
+\end{abstract}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{INTRODUCTION}
+
+\input{sec/motivation}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{METHODOLOGY}
+
+\input{sec/figures}
+\input{sec/approach}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{EXPERIMENTS AND RESULTS}
+
+\input{sec/results}
+
+\section{DISCUSSION}
+
+\input{sec/discussion}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{CONCLUSION \& FUTURE WORK}
+
+
+
+\newpage
+
+
+
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% References are important to the reader; therefore, each citation must be complete and correct. If at all possible, references should be commonly available publications.
+
+\clearpage
+
+\bibliographystyle{IEEEtran}
+\bibliography{main}
+
+
+\end{document}
