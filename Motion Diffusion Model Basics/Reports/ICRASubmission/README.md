@@ -94,11 +94,11 @@ before writing it to any `.tex` file.
 ICRASubmission/
 ├── main.tex              # Top-level document (IEEEtran)
 ├── sec/
-│   ├── abstract.tex
-│   ├── motivation.tex    # Introduction + embedded related work
-│   ├── approach.tex      # Method: pipeline + ST-GCN + LoRA-MDM
-│   ├── results.tex       # Experiments & results
-│   └── discussion.tex    # Conclusion & future work
+│   ├── 0_abstract.tex
+│   ├── 1_introduction.tex    # Introduction + embedded related work
+│   ├── 2_methodology.tex     # Method: pipeline + ST-GCN + LoRA-MDM
+│   ├── 3_experiments.tex     # Experiments & results
+│   └── 4_discussion.tex      # Conclusion & future work
 ├── figures/              # All figures embedded inline
 ├── main.bib              # BibTeX references
 ├── IEEEtran.cls          # Do NOT modify
