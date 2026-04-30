@@ -71,17 +71,17 @@ $^{3}$Simon Fraser University \\
 
 
 \maketitle
-\thispagestyle{empty}
-\pagestyle{empty}
+% \thispagestyle{empty}
+% \pagestyle{empty}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% \begin{figure*}[t]
-%     \centering
-%     \includegraphics[width=\textwidth]{figures/LearningFramework2.png}
-%     \caption{Overview of the haptic-fused imitation learning framework.}
-%     \label{fig:overview}
-% \end{figure*}
+\begin{figure*}[t]
+	\centering
+	\includegraphics[width=0.9\textwidth]{sec/figs/Pipeline.png}
+	\caption{Overview of the latent-conditioned motion diffusion framework. Top: data pre-processing — clinical markers retargeted to HumanML3D. Bottom: generative architecture — (1) Age Representation Learner: ST-GCN backbone~\cite{yan2018stgcn} regresses biological age and extracts kinematic latent $\mathbf{z}_{age}$. (2) Conditional Diffusion Model: denoises latent $\mathbf{x}_T$; $\mathbf{z}_{age}$ is injected via cross-attention~\cite{tevet2023human, chen2022mld}.}
+	\label{fig:framework}
+\end{figure*}
 
 \begin{abstract}
 \input{sec/0_abstract}
@@ -96,7 +96,6 @@ $^{3}$Simon Fraser University \\
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{METHODOLOGY}
 
-\input{sec/figures}
 \input{sec/2_methodology}
 
 
@@ -114,9 +113,7 @@ $^{3}$Simon Fraser University \\
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{CONCLUSION \& FUTURE WORK}
 
-
-
-\newpage
+\input{sec/5_conclusion}
 
 
 
