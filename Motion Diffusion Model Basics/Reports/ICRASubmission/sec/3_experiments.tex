@@ -1,3 +1,36 @@
+\begin{figure}[H]
+	\centering
+	\IfFileExists{sec/figs/BodyArtifacts.png}%
+	{\includegraphics[width=0.7\linewidth]{sec/figs/BodyArtifacts.png}}%
+	{\fbox{\parbox[c][4cm][c]{\linewidth}{\centering Artifact image missing: \texttt{sec/figs/BodyArtifacts.png}}}}
+	\caption{Artifact analysis in clinical motion retargeting: naive mapping causes mesh inflation (right) while standard priors induce crouch artifacts (left); multi-stage VPoser (center) recovers natural posture.}
+	\label{fig:artifact}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\IfFileExists{sec/figs/loss_plt.png}%
+	{\includegraphics[width=0.8\linewidth]{sec/figs/loss_plt.png}}%
+	{\fbox{\parbox[c][1.2cm][c]{\linewidth}{\centering Loss plot missing: \texttt{sec/figs/loss_plt.png}}}}
+
+	\vspace{0.15em}
+
+	\IfFileExists{sec/figs/beta_plot.png}%
+	{\includegraphics[width=0.8\linewidth]{sec/figs/beta_plot.png}}%
+	{\fbox{\parbox[c][1.2cm][c]{\linewidth}{\centering Beta plot missing: \texttt{sec/figs/beta_plot.png}}}}
+	\caption{(a) Loss during multi-stage VPoser fitting for Subject 01. (b) Optimized SMPL shape parameters ($\beta$).}
+	\label{fig:optplots}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\IfFileExists{sec/figs/heatmap.png}%
+	{\includegraphics[width=\linewidth]{sec/figs/heatmap.png}}%
+	{\fbox{\parbox[c][2cm][c]{\linewidth}{\centering Heatmap image missing: \texttt{sec/figs/heatmap.png}}}}
+	\caption{Kinematic Signatures of Aging. Comparative heatmaps of joint angular velocity (rad/s) over a normalized gait cycle. (Middle) The elderly subject (Age 78) exhibits reduced peak velocities and constrained range of motion. (Right) The young subject (Age 24) demonstrates distinct, high-intensity kinematic bursts (red/orange).}
+	\label{fig:heatmap}
+\end{figure}
+
 Our pipeline reliably transforms clinical motion data into
 HumanML3D format while preserving age-related kinematic
 cues. Comparative analysis of joint angular velocity over
