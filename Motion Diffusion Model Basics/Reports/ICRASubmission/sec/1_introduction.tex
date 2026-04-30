@@ -1,16 +1,19 @@
-The intersection of generative artificial intelligence and human biomechanics represents a critical frontier in modern robotics and human-robot interaction (HRI).
-Over the past decade, deep generative architectures, including Diffusion Models and Spatial-Temporal Graph Convolutional Networks (ST-GCNs)~\cite{yan2018stgcn, tevet2023human, chen2022mld}, have demonstrated an unprecedented ability to synthesize complex human motion.
-However, current motion capture datasets are composed predominantly of young, able-bodied actors in controlled environments~\cite{umagami2025intend}.
-Consequently, state-of-the-art models suffer from a pervasive demographic bias: they inherently reflect the vigorous kinematics of youth, effectively marginalizing the biomechanical realities of aging, such as reduced joint flexibility and altered balance strategies.
+Accurate human motion synthesis is foundational for safe human-robot interaction, and deep generative architectures, particularly Motion Diffusion Models (MDMs)~\cite{tevet2023human, chen2022mld}, have demonstrated great success in synthesizing realistic and diverse motion.
+However, current motion capture datasets, such as AMASS~\cite{mahmood2019amass}, are heavily biased toward young, healthy actors~\cite{umagami2025intend}.
+Consequently, the vast majority of existing models successfully synthesize varied action expressions and styles~\cite{sawdayee2025dance}, but overlook the intrinsic biomechanical properties of the individual subjects.
+While recent efforts have attempted to incorporate physical attributes like body shape~\cite{liao2025shapemovestextdrivenshapeaware} as a condition for motion generation, the explicit modeling of age-induced kinematic degradation remains severely underexplored.
+This bias presents a critical bottleneck for deploying assistive robots and intelligent systems in eldercare and clinical hospitality scenarios, where accurately predicting and navigating around age-specific motion is paramount for safety.
 
-Standard generative frameworks frequently neglect strict biomechanical constraints, leading to generated motions that violate physical laws and fail to generalize to pathological or elderly demographics~\cite{Adeli_2026_WACV, biomodiffuse2025}.
-This poses a significant safety risk for assistive robots and intelligent systems designed to predict human motion and navigate dynamically around older populations. 
+Concurrently, clinical gait analysis has long provided a rigorous grounding for biomechanical assessment.
+Driven by objective, sensor-based data science, recent clinical works have successfully quantified the physiological and spatiotemporal signatures of age- and health-related gait~\cite{diaz2025evaluating, galasso2024development}.
 
-Concurrently, clinical biomechanics has transitioned from subjective visual assessments to objective, sensor-driven data science.
-Leveraging machine learning algorithms, clinicians can now extract highly granular spatiotemporal metrics that quantify the physiological signature of an aging gait~\cite{diaz2025evaluating, galasso2024development}.
-For example, studies utilize regression-based machine learning on wearable sensor data to measure the spatiotemporal Coefficient of Variation (CV) as an indicator of neuromuscular noise and stride instability~\cite{bailey2023smartwatch}.
-Similarly, constraint-based synthetic data methodologies assess the Margin of Stability (MoS) and specific velocity-stability relationships to evaluate dynamic fall risk~\cite{cordeiro2025constraint}. 
+Incorporating biomechanical gait signatures into deep learning human motion models is essential to ensuring the physical validity of synthesized motion. Rather than relying solely on subjective visual fidelity, deep learning frameworks must be anchored to clinical reality.
 
-For researchers developing age-aware generative motion models, these clinical techniques offer a vital benchmarking tool.
-Bridging the gap between generative motion synthesis and clinical gait analysis requires moving beyond subjective visual fidelity.
-Instead, synthesized motions must be evaluated against strict clinical thresholds---such as elevated stride CV, conservative MoS, and reduced Minimum Foot Clearance (MFC)~\cite{bailey2023smartwatch, cordeiro2025constraint, galasso2024development}---to mathematically verify that a model has successfully learned the physical constraints of aging.
+To address this gap, we present a proof-of-concept framework that integrates clinical gait analysis with deep generative modeling to synthesize age-aware human motion.
+First, we develop a data processing pipeline that converts clinical gait recordings from subjects across different age groups into standard skeletal representations.
+We then train a Spatial-Temporal Graph Convolutional Network (ST-GCN) to discriminate age by observing a single motion clip, and to encode biomechanical characteristics of motion into a latent representation.
+Using this representation as a condition, we fine-tune a Motion Diffusion Model (MDM) with Low-Rank Adaptation (LoRA) to generate text-driven motion that accurately reflects the physical characteristics of specific age groups.
+
+We evaluate our generated motions using established clinical gait metrics to verify that the model successfully reproduces the biomechanical signatures of aging, results show that ...
+We identify dataset size and quality as a critical bottleneck, motivating the collection of larger, age-diverse human motion datasets.
+Finally, we propose a hypothetical architecture incorporating joint torque estimation and physical regularization, which remains to be explored in future work.
