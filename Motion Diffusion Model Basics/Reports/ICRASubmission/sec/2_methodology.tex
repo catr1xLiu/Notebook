@@ -1,25 +1,14 @@
-We adopt the motion capture dataset of Van Criekinge et
-al.~\cite{vancriekinge2023dataset} (ages 21--86) and
-convert clinical marker recordings into HumanML3D-format
-skeletal graphs~\cite{guo2022generating} via SMPL body-model
-fitting~\cite{mahmood2019amass} and feature extraction.
-An overview of our framework is available in
-Fig.~\ref{fig:framework}.
+We adopt the motion capture dataset of Van Criekinge et al.~\cite{vancriekinge2023dataset} (ages 21--86) and convert clinical marker recordings into HumanML3D-format skeletal graphs~\cite{guo2022generating} via SMPL body-model fitting~\cite{mahmood2019amass} and feature extraction.
+An overview of our framework is available in Fig.~\ref{fig:framework}.
 
 
 \textbf{Age classification.}
-A Spatial-Temporal Graph Convolutional Network (ST-GCN)~\cite{yan2018stgcn} is trained to classify motion clips into three age groups (Young, Mid, Elderly).  The penultimate layer of the network is a latent vector that encapsulates the biomechanical signatures of aging (e.g., velocity variance, joint motion range), denoted as $z_{age}$.
+A Spatial-Temporal Graph Convolutional Network (ST-GCN)~\cite{yan2018stgcn} is trained to classify motion clips into three age groups (Young, Mid, Elderly).
+The penultimate layer of the network is a latent vector that encapsulates the biomechanical signatures of aging (e.g., velocity variance, joint motion range), denoted as $z_{age}$.
 
 
 \textbf{Age-conditioned generation.}
-We use a diffusion-based motion generative
-model~\cite{tevet2023human, chen2022mld} conditioned on
-both text and age. At training time, we extract
-$z_\text{age}$ from real motion clips using the frozen
-ST-GCN encoder, and train the diffusion model to generate
-motion conditioned on this embedding via cross-attention.
-A small MLP $g(a)$ is jointly trained to map a scalar age
-value to the same latent space, supervised by the
-ST-GCN-derived targets. At inference, $g(a)$ alone converts
-a desired age into $z_\text{age}$, enabling continuous
-age-controlled generation without requiring input motion.
+We use a diffusion-based motion generative model~\cite{tevet2023human, chen2022mld} conditioned on both text and age.
+At training time, we extract $z_\text{age}$ from real motion clips using the frozen ST-GCN encoder, and train the diffusion model to generate motion conditioned on this embedding via cross-attention.
+A small MLP $g(a)$ is jointly trained to map a scalar age value to the same latent space, supervised by the ST-GCN-derived targets.
+At inference, $g(a)$ alone converts a desired age into $z_\text{age}$, enabling continuous age-controlled generation without requiring input motion.

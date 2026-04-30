@@ -18,7 +18,8 @@
 	\IfFileExists{sec/figs/beta_plot.png}%
 	{\includegraphics[width=0.8\linewidth]{sec/figs/beta_plot.png}}%
 	{\fbox{\parbox[c][1.2cm][c]{\linewidth}{\centering Beta plot missing: \texttt{sec/figs/beta_plot.png}}}}
-	\caption{(a) Loss during multi-stage VPoser fitting for Subject 01. (b) Optimized SMPL shape parameters ($\beta$).}
+	\caption{(a) Loss during multi-stage VPoser fitting for Subject 01.
+(b) Optimized SMPL shape parameters ($\beta$).}
 	\label{fig:optplots}
 \end{figure}
 
@@ -27,22 +28,14 @@
 	\IfFileExists{sec/figs/heatmap.png}%
 	{\includegraphics[width=\linewidth]{sec/figs/heatmap.png}}%
 	{\fbox{\parbox[c][2cm][c]{\linewidth}{\centering Heatmap image missing: \texttt{sec/figs/heatmap.png}}}}
-	\caption{Kinematic Signatures of Aging. Comparative heatmaps of joint angular velocity (rad/s) over a normalized gait cycle. (Middle) The elderly subject (Age 78) exhibits reduced peak velocities and constrained range of motion. (Right) The young subject (Age 24) demonstrates distinct, high-intensity kinematic bursts (red/orange).}
+	\caption{Kinematic Signatures of Aging.
+Comparative heatmaps of joint angular velocity (rad/s) over a normalized gait cycle.
+(Middle) The elderly subject (Age 78) exhibits reduced peak velocities and constrained range of motion.
+(Right) The young subject (Age 24) demonstrates distinct, high-intensity kinematic bursts (red/orange).}
 	\label{fig:heatmap}
 \end{figure}
 
-Our pipeline reliably transforms clinical motion data into
-HumanML3D format while preserving age-related kinematic
-cues. Comparative analysis of joint angular velocity over
-normalized gait cycles reveals that elderly subjects exhibit
-reduced peak velocities and constrained range of motion,
-while younger subjects display distinct high-intensity
-kinematic bursts across hip, knee, and ankle
-joints (Fig.~\ref{fig:heatmap}). Multi-stage VPoser fitting
-resolves retargeting artifacts including mesh inflation and
-crouch-walking (Fig.~\ref{fig:artifact}), yielding
-anatomically plausible motion across all adult ages.
-ST-GCN and latent-conditioned diffusion
-models~\cite{chen2022mld, hu2022lora, sawdayee2025dance}
-are being trained for age signal extraction and
-reproduction.
+Our pipeline reliably transforms clinical motion data into HumanML3D format while preserving age-related kinematic cues.
+Comparative analysis of joint angular velocity over normalized gait cycles reveals that elderly subjects exhibit reduced peak velocities and constrained range of motion, while younger subjects display distinct high-intensity kinematic bursts across hip, knee, and ankle joints (Fig.~\ref{fig:heatmap}).
+Multi-stage VPoser fitting resolves retargeting artifacts including mesh inflation and crouch-walking (Fig.~\ref{fig:artifact}), yielding anatomically plausible motion across all adult ages.
+ST-GCN and latent-conditioned diffusion models~\cite{chen2022mld, hu2022lora, sawdayee2025dance} are being trained for age signal extraction and reproduction.
