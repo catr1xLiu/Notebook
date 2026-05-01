@@ -1,3 +1,9 @@
+\subsection{Data Quality Validation}
+The Van Criekinge et al.~\cite{vancriekinge2023dataset} clinical motion capture dataset contains recordings from 138 subjects across the lifespan.
+During preprocessing, we resolved dataset-specific artifacts, including sensor measurement errors, initialization transients, and mislabeled markers. We discarded approximately 10\% of the total clips that were irreversibly polluted, resulting in 450 effective clips.
+To ensure that biological fidelity is strictly preserved during the conversion to the HumanML3D machine-learnable format, we applied a multi-stage optimization procedure. Adapted from VPoser~\cite{pavlakos2019expressivebodycapture3d}, the optimizer first recovers the global body pose and subsequently refines localized artifacts around the body shape and limbs.
+Fig.~\ref{fig:optplots} shows the rapid convergence of the fitting loss, yielding successful recovery of the body parameters and the effective elimination of mesh inflation and crouch-walking artifacts (previously shown in Fig.~\ref{fig:artifact}).
+
 \begin{figure}[H]
 	\centering
 	\IfFileExists{sec/figs/loss_plt.png}%
@@ -14,19 +20,50 @@
 	\label{fig:optplots}
 \end{figure}
 
+\subsection{Model Training Results}
+
+\subsubsection{ST-GCN Age Representation Learner}
+We fine-tuned the ST-GCN++ architecture to classify the processed walking clips into three age categories: Young ($<$40), Adult (40--64), and Elderly ($\geq$65).
+To prevent subject-based overfitting—where the model memorizes the individual gait patterns of specific subjects—we ensured strict, mutually exclusive subject assignment between the training and validation splits. Our model achieved a peak validation accuracy of 64.60\% (a significant improvement over the 33.3\% random baseline).
+This indicates that the extracted latent embedding $\mathbf{z}_{age}$ successfully encapsulates biomechanical signatures useful for discriminating age, though performance was primarily bottlenecked by the limited dataset size.
+
+\subsubsection{Generative Motion Synthesis}
+As a proof of concept, we conditioned our LoRA-adapted generative model using discrete age tokens. After training LoRA adapters at ranks 5, 12, and 16 (yielding different levels of model influence), we selected the adapter with the lowest loss (rank=12) and generated 9,000 motion clips across the age conditions. Visual inspection confirmed that the model generates appealing, natural motion and adheres to the textual language conditions. However, the subtle biomechanical differences in walking patterns across the age groups are largely unobservable to the human eye, necessitating objective numerical evaluation.
+
+\subsection{Quantitative Clinical Analysis}
+To mathematically validate the age-awareness of our framework, we computed standard clinical metrics (Spatiotemporal, CV, and Range of Motion) on both the processed ground-truth dataset and the 9,000 generated motion clips.
+
+\subsubsection{Dataset Baseline Validation}
+Analysis of the ground-truth clinical data confirms that the expected aging signal is successfully preserved end-to-end through our conversion pipeline. 
+We observed monotonic trends consistent with clinical literature: as age increases from the Young to Elderly groups, average walking speed decreases (1.22 to 1.10 m/s), stride length decreases (1.34 to 1.26 m), and Knee RoM decreases ($54.9^\circ$ to $51.5^\circ$). Conversely, gait variability (stride time CV) increases significantly from 8.9\% to 15.0\%.
+Qualitatively, as shown in Fig.~\ref{fig:heatmap}, comparative heatmaps of joint angular velocity over a normalized gait cycle demonstrate that elderly subjects exhibit reduced peak velocities, whereas younger subjects display distinct high-intensity kinematic bursts.
+
+\subsubsection{Back-to-Back Evaluation of Generative Motion vs Dataset}
+When evaluating the generated clips conditioned on age, the metrics reveal both the potential and the limitations of the LoRA-adapted model.
+The generated motions successfully reproduce the expected age-related change in Range-of-Motion (RoM), with the "Elderly" token producing significantly constrained hip RoM (21.5$^\circ$) compared to the "Young" and "Adult" tokens (24--25$^\circ$). This indicates that the LoRA adapter successfully learns and imposes spatial kinematic constraints.
+
+However, the generative model struggles with spatiotemporal consistency. Walking speed ordering across the generated age groups is non-monotonic (Adult $>$ Elderly $>$ Young), indicating that while the adapter alters dynamics, it does not systematically control velocity. 
+Crucially, the stride Coefficient of Variation (CV) is uniformly elevated (16--19\%) across all generated age tokens (Fig.~\ref{fig:clinical_eval}). This massive overshoot in variability—exceeding clinical thresholds by 5--8$\times$—demonstrates that the inherent stochastic noise of the diffusion process dominates stride consistency. 
+
 \begin{figure}[H]
 	\centering
 	\IfFileExists{sec/figs/heatmap.png}%
 	{\includegraphics[width=\linewidth]{sec/figs/heatmap.png}}%
-	{\fbox{\parbox[c][2cm][c]{\linewidth}{\centering Heatmap image missing: \texttt{sec/figs/heatmap.png}}}}
-	\caption{Kinematic Signatures of Aging.
-Comparative heatmaps of joint angular velocity (rad/s) over a normalized gait cycle.
-(Middle) The elderly subject (Age 78) exhibits reduced peak velocities and constrained range of motion.
-(Right) The young subject (Age 24) demonstrates distinct, high-intensity kinematic bursts (red/orange).}
+	{}
+	\caption{Comparative heatmaps of joint angular velocity (rad/s) over a normalized gait cycle.
+	(Middle) The elderly subject (Age 78) exhibits reduced peak velocities and constrained range of motion.
+	(Right) The young subject (Age 24) demonstrates distinct, high-intensity kinematic bursts (red/orange).}
 	\label{fig:heatmap}
 \end{figure}
 
-Our pipeline reliably transforms clinical motion data into HumanML3D format while preserving age-related kinematic cues.
-Comparative analysis of joint angular velocity over normalized gait cycles reveals that elderly subjects exhibit reduced peak velocities and constrained range of motion, while younger subjects display distinct high-intensity kinematic bursts across hip, knee, and ankle joints (Fig.~\ref{fig:heatmap}).
-Multi-stage VPoser fitting resolves retargeting artifacts including mesh inflation and crouch-walking (Fig.~\ref{fig:artifact}), yielding anatomically plausible motion across all adult ages.
-ST-GCN and latent-conditioned diffusion models~\cite{chen2022mld, hu2022lora, sawdayee2025dance} are being trained for age signal extraction and reproduction.
+\begin{figure}[H]
+	\centering
+	\IfFileExists{sec/figs/combined/violin_comparison.png}%
+	{\includegraphics[width=\linewidth]{sec/figs/combined/violin_comparison.png}}%
+	{\fbox{\parbox[c][2cm][c]{\linewidth}{\centering Plot missing: \texttt{sec/figs/combined/violin\_comparison.png}}}}
+	\caption{Violin plots comparing the distribution of clinical metrics between the ground-truth dataset and the generated motion clips across age groups. The stride variability (CV) of the generated motions massively overshoots the dataset baseline, illustrating the influence of diffusion noise.}
+	\label{fig:clinical_eval}
+\end{figure}
+
+
+These findings provide a clear empirical argument: motion diffusion models trained to produce visually appealing motions can indeed to reflect spatial signatures, yet they fundamentally lack the biomechanical grounding required to synthesize stable and continuous locomotion.
