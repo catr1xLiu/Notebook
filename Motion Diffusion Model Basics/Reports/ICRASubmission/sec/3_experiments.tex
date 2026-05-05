@@ -1,0 +1,88 @@
+\subsection{Data Quality Validation}
+The Van Criekinge et al.~\cite{vancriekinge2023dataset} clinical motion capture dataset contains recordings from 138 subjects across the lifespan.
+During preprocessing, we resolved dataset-specific artifacts, including sensor measurement errors, initialization transients, and mislabeled markers. We discarded approximately 10\% of the total clips that were irreversibly polluted, resulting in 450 effective clips.
+To ensure that biological fidelity is strictly preserved during the conversion to the HumanML3D machine-learnable format, we applied a multi-stage optimization procedure. Adapted from VPoser~\cite{pavlakos2019expressivebodycapture3d}, the optimizer first recovers the global body pose and subsequently refines localized artifacts around the body shape and limbs.
+Fig.~\ref{fig:optplots} shows the rapid convergence of the fitting loss, yielding successful recovery of the body parameters and the effective elimination of mesh inflation and crouch-walking artifacts (previously shown in Fig.~\ref{fig:artifact}).
+
+\begin{figure}[H]
+	\centering
+	\IfFileExists{sec/figs/loss_plt.png}%
+	{\includegraphics[width=0.7\linewidth]{sec/figs/loss_plt.png}}%
+	{\fbox{\parbox[c][1.2cm][c]{\linewidth}{\centering Loss plot missing: \texttt{sec/figs/loss_plt.png}}}}
+	\caption{Loss during multi-stage VPoser fitting for Subject 01.}
+	\label{fig:optplots}
+\end{figure}
+
+\subsection{Model Training Results}
+
+\subsubsection{ST-GCN Age Representation Learner}
+We fine-tuned the ST-GCN++ architecture to classify the processed walking clips into three age categories: Young ($<$40), Adult (40--64), and Elderly ($\geq$65).
+To prevent subject-based overfitting—where the model memorizes the individual gait patterns of specific subjects—we ensured strict, mutually exclusive subject assignment between the \textit{training} and \textit{validation} splits. 
+As shown in the training dynamics (Fig.~\ref{fig:stgcn_curves}), we progressively unfreeze backbone blocks to get a balance between validation accuracy (64.60\%) and overfitting. Overfitting is still observed, as evidenced by the gap between \textit{validation} accuracy and the near-perfect fit with \textit{training} split. 
+The confusion matrices (Fig.~\ref{fig:stgcn_confusion}) reveal that the model consistently segregates the kinematic extremes (Young vs. Elderly), with the primary failure mode being the fragmentation of the Middle-Age category.
+This indicates that despite being constrained by dataset, our method successfully encapsulates $\mathbf{z}_{age}$ biomechanical signatures for discriminating age.
+
+\begin{figure}[H]
+	\centering
+	\begin{minipage}[t]{0.8\linewidth}
+		\centering
+		\IfFileExists{sec/figs/stgcn_train_loss.png}%
+		{\includegraphics[width=\linewidth]{sec/figs/stgcn_train_loss.png}}%
+		{}
+	\end{minipage}
+	\vspace{0.5em}
+	\begin{minipage}[t]{0.8\linewidth}
+		\centering
+		\IfFileExists{sec/figs/stgcn_val_accuracy.png}%
+		{\includegraphics[width=\linewidth]{sec/figs/stgcn_val_accuracy.png}}%
+		{}
+	\end{minipage}
+	\caption{Training dynamics for the ST-GCN age classifier.}
+	\label{fig:stgcn_curves}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\IfFileExists{sec/figs/stgcn_confusion.png}%
+	{\includegraphics[width=0.8\linewidth]{sec/figs/stgcn_confusion.png}}%
+	{}
+	\caption{Confusion matrices for the ST-GCN predictions.}
+	\label{fig:stgcn_confusion}
+\end{figure}
+
+\subsubsection{Generative Motion Synthesis}
+As a proof of concept, we conditioned our LoRA-adapted generative model using discrete age tokens. After training LoRA adapters at ranks 5, 12, and 16 (yielding different levels of model influence), we selected the adapter with the lowest loss (rank=12) and generated 9,000 motion clips across the age conditions. Visual inspection confirmed that the model generates appealing, natural motion and adheres to the textual language conditions. However, the subtle biomechanical differences in walking patterns across the age groups are largely unobservable to the human eye, necessitating objective numerical evaluation.
+
+\subsection{Quantitative Clinical Analysis}
+We computed standard clinical metrics (Spatiotemporal Parameters, Gait Variability, and Joint Range of Motion) on both the processed ground-truth dataset and the 9,000 generated motion clips.
+\subsubsection{Dataset Baseline Validation}
+Analysis of the ground-truth clinical data confirms that the expected aging signal is successfully preserved end-to-end through our conversion pipeline. 
+We observed monotonic trends consistent with clinical literature: as age increases from the Young to Elderly groups, average walking speed decreases (1.22 to 1.10 m/s), stride length decreases (1.34 to 1.26 m), and Knee RoM decreases ($54.9^\circ$ to $51.5^\circ$). Conversely, stride time CV increases significantly from 8.9\% to 15.0\%, as shown in Fig.~\ref{fig:clinical_eval}.
+Qualitatively, comparative heatmaps of joint angular velocity over a normalized gait cycle demonstrate that the elderly subject (Age 78) exhibits reduced peak velocities and constrained range of motion, whereas the young subject (Age 24) demonstrates distinct, high-intensity kinematic bursts.
+
+\begin{figure}[H]
+	\centering
+	\IfFileExists{sec/figs/heatmap.png}%
+	{\includegraphics[width=\linewidth]{sec/figs/heatmap.png}}%
+	{}
+	\caption{Comparative heatmaps of joint angular velocity (rad/s) over a normalized gait cycle. Left: Young Subject (Age 24); Right: Elderly Subject (Age 78)}
+	\label{fig:heatmap}
+\end{figure}
+
+\subsubsection{Back-to-Back Evaluation of Generative Motion vs Dataset}
+When evaluating the generated clips conditioned on age, the metrics reveal both the potential and the limitations of the LoRA-adapted model.
+The generated motions successfully reproduce the expected age-related change in Range-of-Motion (RoM), with the "Elderly" token producing significantly constrained hip RoM (21.5$^\circ$) compared to the "Young" and "Adult" tokens (24--25$^\circ$). This indicates that the LoRA adapter successfully learns and imposes spatial kinematic constraints.
+
+
+\begin{figure}[H]
+	\centering
+	\IfFileExists{sec/figs/combined/violin_comparison.png}%
+	{\includegraphics[width=\linewidth]{sec/figs/combined/violin_comparison.png}}%
+	{\fbox{\parbox[c][2cm][c]{\linewidth}{\centering Plot missing: \texttt{sec/figs/combined/violin\_comparison.png}}}}
+	\caption{Violin plots comparing the distribution of clinical metrics between the ground-truth dataset and the generated motion clips across age groups.}
+	\label{fig:clinical_eval}
+\end{figure}
+
+However, the generative model struggles with spatiotemporal consistency. 
+Critically, the stride Coefficient of Variation (CV) is uniformly elevated (16--19\%) across all generated clips, far exceeding clinical reference values. 
+We suspect that this might be due to the stochastic noise introduced in the diffusion process, which overwhelmed the stride consistency across samples.

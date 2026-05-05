@@ -56,6 +56,13 @@ Purpose
 
 ---
 
+## Line Breaking & Version Control Rules
+
+1. **No Fixed Wrapping**: Line wrapping is enabled in the user's IDE, so there is NO NEED to wrap lines at a fixed length (e.g. wrap at 100 characters).
+2. **Semantic Line Breaking**: Each sentence or each item in a (1) (2) (3) list should be on one separate line so that version control history looks nicer.
+
+---
+
 ## Typst Guidelines
 
 ### Build Commands
@@ -69,7 +76,7 @@ typst compile "week2 report.typ"
 - Headings: `#set heading(numbering: "1.")`
 - Images: `#image("drawing.svg", width: 12cm)`
 - Quote paths with spaces: `#image("Drawing 1.16.svg")`
-- Line wrap: ~100 characters
+- Line wrap: Follow the global Line Breaking Rules
 
 ### Template Structure
 Follow `WeeklyReports/Week2/week2 report.typ`:
