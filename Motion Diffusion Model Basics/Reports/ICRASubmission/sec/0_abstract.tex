@@ -1,9 +1,8 @@
-We present a framework to detect and reproduce biomechanical aging signatures in human motion using data-driven neural networks.
-Our preprocessing pipeline maps clinical gait recordings into learning-ready graphical representations, resolving retargeting artifacts and measurement errors to extract 450 valid clips from 138 lifespan subjects.
-We trained a Spatial-Temporal Graph Convolutional Network (ST-GCN) to classify age groups (Young, Adult, Elderly) directly from kinematics, achieving a peak validation accuracy of 64.6\%.
-Concurrently, a Motion Diffusion Model (MDM) fine-tuned via Low-Rank Adaptation (LoRA) was used to synthesize age-conditioned locomotion.
-To objectively evaluate synthesis quality, we computed standard clinical gait metrics—including spatiotemporal parameters, stride variability (CV), and lower-limb range of motion (RoM)—on both the ground-truth and generated datasets.
-Our analysis confirms that the converted dataset perfectly preserves monotonic age-related decline, and the generated motions reflects some differences in aging signatures but struggles with spatiotemporal consistency.
-These findings demonstrate the absolute necessity of quantitative biomechanical benchmarking for generative models, and highlight dataset scale and quality as the primary bottlenecks.
-Finally, we propose a continuous latent-encoding conditioning architecture as future work to stabilize age-aware motion synthesis for deployment in eldercare and assistive robotics.
+We present an age-conditioned human motion generation framework for studying aging signatures in the context of assistive robotics.
+Our pipeline converts clinical gait recordings into learning-ready motion representations while addressing defects from legacy motion-capture data.
+Using 450 clips from 138 subjects across young, mid-age, and elderly groups, we train a Spatial-Temporal Graph Convolutional Network (ST-GCN) to recognize age group from motion clips, achieving 64.6\% classification accuracy.
+We then fine-tune a Motion Diffusion Model (MDM) with Low-Rank Adaptation (LoRA) to generate text-conditioned human motion with age-group control.
+To evaluate whether generated motions preserve aging-related characteristics, we analyze clinical and kinematic gait metrics on 9,000 generated clips.
+Our results show that the model successfully reproduces spatial kinematic constraints in the Elderly condition, but spatiotemporal consistency remains unresolved --- generated stride variability massively overshoots clinical baselines due to the inherent stochasticity of the diffusion process.
+These findings highlight dataset size, motion quality, and conditioning strength as key bottlenecks, and motivate larger age-diverse datasets for demographic-aware motion prediction and assistive robot planning.
 Code and video available on the \href{https://catr1xliu.github.io/Notebook/Aging-Motion-Project/}{project page}.

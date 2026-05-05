@@ -1,12 +1,17 @@
-% Our preliminary findings suggest both the potential and the challenges of modeling age-related characteristics from motion data.
-% A key limitation is the availability of sufficiently balanced and diverse datasets, particularly for older adults.
-% In addition, clinical and laboratory datasets often differ in marker configurations, capture protocols, and preprocessing pipelines, which may affect cross-dataset generalization.
+Our preliminary findings reveal both the promise and current limitations of data-driven models in learning age-related motion signatures.
+The ST-GCN age-signature detection network successfully segregates kinematic extremes --- Young versus Elderly --- confirming that motion clips contain discriminative biomechanical information related to age group.
+However, the generated motions do not yet consistently reproduce statistically robust age-related differences across all selected clinical and kinematic metrics.
+The LoRA-adapted Motion Diffusion Model successfully learns and imposes spatial kinematic constraints --- Elderly-conditioned clips produce measurably reduced hip Range-of-Motion relative to Young and Adult conditions --- yet spatiotemporal consistency remains unresolved, with generated stride variability massively overshooting clinical baselines due to the inherent stochastic noise of the diffusion process.
+This gap highlights an important challenge for assistive robotics operating in eldercare and clinical environments: producing visually plausible age-conditioned motion is not sufficient for meaningful age-aware motion synthesis; motion prediction systems must also preserve biomechanical characteristics that affect anticipation, safety, and interaction.
 
-% Future work will investigate extensions of the proposed framework toward biomechanically informed generation, including the incorporation of joint torque estimation and physical regularization to improve motion plausibility.
-% We also plan to explore personalization using longitudinal data, with the goal of modeling functional trajectories over time rather than relying solely on discrete age categories.
-% While these directions remain exploratory, they may contribute toward more realistic and inclusive age-aware motion synthesis.
+The main bottleneck identified in this work is the limited size and quality of available age-diverse motion datasets.
+Our experiments rely on clinical gait recordings collected from subjects across different age groups, but all available datasets are currently too small to support the training of deep-learning models, unavoidably resulting in model overfitting.
 
-Our preliminary findings reveal both promise and challenges in modeling age-related motion.
-Limited balanced datasets, especially for older adults, and inconsistencies in clinical capture protocols constrain generalization.
-Future work will extend the framework toward bio-mechanically informed generation with joint torque estimation and physical regularization for realistic motion.
-We also plan to incorporate longitudinal data for personalized modeling of functional trajectories, advancing inclusive and age-aware motion synthesis.
+Another limitation is the current conditioning strategy.
+While our proposed framework aims to condition generation on a continuous latent age representation extracted by the age-signature network, the implemented prototype uses discrete age-group conditions through LoRA adaptation.
+This provides an efficient first step, but may not be expressive enough to capture gradual age-related changes or individual variability.
+
+Future work will move beyond discrete age-group conditioning toward the continuous latent conditioning architecture proposed in Section~\ref{sec:method}, incorporating personalized representations of functional ability.
+More broadly, this work motivates the collection of larger, higher-quality, and more diverse human motion datasets that include older adults, varying health conditions, and daily living activities --- datasets essential for advancing age-aware motion prediction and safer assistive human-robot interaction.
+
+By identifying these gaps and providing an initial clinical-to-generative pipeline grounded in biomechanical evaluation, this work provides an initial step toward demographic-aware motion priors for human motion prediction, assistive robot planning, and safer human-robot interaction in aging-in-place contexts.

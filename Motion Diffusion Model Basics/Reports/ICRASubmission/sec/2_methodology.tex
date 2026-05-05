@@ -1,5 +1,3 @@
-Our framework consists of four primary components: a robust data processing pipeline for clinical marker conversion, a graph-based representation learner for extracting age signatures, a theoretical generative architecture, and a practical LoRA-based prototype.
-
 \subsection{Data Processing Pipeline}
 We adopt the motion capture dataset of Van Criekinge et al.~\cite{vancriekinge2023dataset} (ages 21--86) and convert clinical marker recordings into HumanML3D-format skeletal graphs~\cite{guo2022generating} via SMPL body-model fitting~\cite{mahmood2019amass} and feature extraction.
 As shown in Fig.~\ref{fig:artifact}, naive mapping causes mesh inflation (right), while standard priors induce crouch artifacts (left).

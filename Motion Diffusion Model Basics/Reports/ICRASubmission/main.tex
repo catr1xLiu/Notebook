@@ -48,7 +48,8 @@
 % Evaluating the Effectiveness of Haptic Force Feedback during Data Collection for Force-Aware Visuomotor Policy Learning
 % }
 \title{\LARGE \bf
-Modeling Kinematic Signatures of Aging via Diffusion and Graph Networks
+Modeling Kinematic Signatures of Aging for Human Motion Prediction in Assistive Robotics
+%Age-Conditioned Human Motion Generation for Assistive Robot Anticipation
 }
 
 
@@ -58,9 +59,7 @@ Modeling Kinematic Signatures of Aging via Diffusion and Graph Networks
 % If non-anonymized, use the standard author block:
 % \author{First Author\\Institution\\{\tt\small email} \and Second Author\\Institution\\{\tt\small email}}
 \author{
-Yiran Liu$^{1,2}$, Student Name$^{1,2}$, Student Name$^{1,2}$, Jason Peng$^{3}$, Chang Shu$^{1}$, Pengcheng Xi$^{1}$% <-this % stops a space
-\thanks{This work is supported by the National Research Council Canada (NRC) through the Aging in Place Challenge Program. 
-The authors acknowledge the use of the \texttt{Gemini Deep Research Agent (Google)} for literature collection regarding clinical gait analysis.} \\
+Yiran Liu$^{1,2}$, Eugene Zhao$^{1,2}$, Karim Habashy$^{1,2}$, Jason Peng$^{3}$, Chang Shu$^{1}$, Pengcheng Xi$^{1}$ \\
 $^{1}$National Research Council Canada \quad
 $^{2}$University of Waterloo \quad
 $^{3}$Simon Fraser University \\
@@ -77,14 +76,6 @@ $^{3}$Simon Fraser University \\
 % \pagestyle{empty}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\begin{figure*}[t]
-	\centering
-	\includegraphics[width=0.9\textwidth]{sec/figs/Pipeline.png}
-	\caption{Overview of the latent-conditioned motion diffusion framework.}
-	\label{fig:framework}
-\end{figure*}
-
 \begin{abstract}
 \input{sec/0_abstract}
 \end{abstract}
@@ -96,24 +87,31 @@ $^{3}$Simon Fraser University \\
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{METHODOLOGY}
-
+\section{METHODOLOGY: AGE-AWARE MOTION SYNTHESIS FRAMEWORK}
+\label{sec:method}
 \input{sec/2_methodology}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\clearpage
 \section{EXPERIMENTS AND RESULTS}
 
 \input{sec/3_experiments}
 
-\section{DISCUSSION \& FUTURE WORK}
+
+\section{Discussion and Conclusion}
 
 \input{sec/4_discussion}
 
+\section*{Acknowledgment}
+This work was supported by the National Research Council Canada (NRC) through the Aging in Place Challenge Program.
+Compute resources were provided by the NRC Trixie HPC cluster.
+
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% References are important to the reader; therefore, each citation must be complete and correct. If at all possible, references should be commonly available publications.
 
 \clearpage
-
-
 
 \bibliographystyle{IEEEtran}
 \bibliography{main}
