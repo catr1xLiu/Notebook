@@ -14,6 +14,11 @@ First, we develop a data processing pipeline that converts clinical gait recordi
 We then train a Spatial-Temporal Graph Convolutional Network (ST-GCN) to discriminate age by observing a single motion clip, and to encode biomechanical characteristics of motion into a latent representation.
 Using this representation as a condition, we fine-tune a Motion Diffusion Model (MDM) with Low-Rank Adaptation (LoRA) to generate text-driven motion that accurately reflects the physical characteristics of specific age groups.
 
-We evaluate our generated motions using established clinical gait metrics to verify that the model successfully reproduces the biomechanical signatures of aging, results show that ...
-We identify dataset size and quality as a critical bottleneck, motivating the collection of larger, age-diverse human motion datasets.
-Finally, we propose a hypothetical architecture incorporating joint torque estimation and physical regularization, which remains to be explored in future work.
+We evaluate our generated motions using established clinical gait metrics to assess 
+whether the model reproduces biomechanical aging signatures.
+Our analysis reveals that the LoRA-adapted model successfully captures spatial constraints 
+such as Range-of-Motion reduction in the Elderly condition, but fails to reproduce 
+spatiotemporal consistency, with stride variability overshooting clinical thresholds 
+by 5--8$\times$ due to the inherent stochasticity of the diffusion process.
+We identify dataset scale and quality as a critical bottleneck, motivating the 
+collection of larger, age-diverse human motion datasets.

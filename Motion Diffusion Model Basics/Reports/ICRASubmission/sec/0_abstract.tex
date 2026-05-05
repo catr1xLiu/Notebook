@@ -1,9 +1,9 @@
-We present a framework to detect and reproduce aging signatures in human motion using data-driven neural networks.
-Our data processing pipeline converts clinical gait recordings into learning-ready representations, recovering from defects caused by outdated capture equipment.
-450 clips from 138 subjects across the lifespan was obtained for our experiments.
-A Spatial-Temporal Graph Convolutional Network (ST-GCN) is trained to distinguish age group (Young, Mid-age, Elderly) from a single motion clip, achieving 64.6\% classification accuracy.
-A Motion Diffusion Model (MDM) fine-tuned with Low-Rank Adaptation (LoRA) learns to generate realistic motion from natural language, grounded with an age condition.
-We measured various clinical gait metrics from the generated motion clips including \textbf{xxx}, \textbf{yyy}, and \textbf{zzz}, all of which show that age signal is consistently reproduced by our model.
-We find significant room for improvement, with dataset size and quality identified as the primary bottleneck.
-This work lays the foundation for age-aware motion synthesis systems deployed in eldercare and assistive robotics contexts, and motivates the collection of larger age-diverse human motion datasets.
+We present a framework to detect and reproduce biomechanical aging signatures in human motion using data-driven neural networks.
+Our preprocessing pipeline maps clinical gait recordings into learning-ready graphical representations, resolving retargeting artifacts and measurement errors to extract 450 valid clips from 138 lifespan subjects.
+We trained a Spatial-Temporal Graph Convolutional Network (ST-GCN) to classify age groups (Young, Adult, Elderly) directly from kinematics, achieving a peak validation accuracy of 64.6\%.
+Concurrently, a Motion Diffusion Model (MDM) fine-tuned via Low-Rank Adaptation (LoRA) was used to synthesize age-conditioned locomotion.
+To objectively evaluate synthesis quality, we computed standard clinical gait metrics—including spatiotemporal parameters, stride variability (CV), and lower-limb range of motion (RoM)—on both the ground-truth and generated datasets.
+Our analysis confirms that the converted dataset perfectly preserves monotonic age-related decline, and the generated motions reflects some differences in aging signatures but struggles with spatiotemporal consistency.
+These findings demonstrate the absolute necessity of quantitative biomechanical benchmarking for generative models, and highlight dataset scale and quality as the primary bottlenecks.
+Finally, we propose a continuous latent-encoding conditioning architecture as future work to stabilize age-aware motion synthesis for deployment in eldercare and assistive robotics.
 Code and video available on the \href{https://catr1xliu.github.io/Notebook/Aging-Motion-Project/}{project page}.
