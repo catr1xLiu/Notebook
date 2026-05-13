@@ -35,7 +35,7 @@ Notebook/
 
 ## Document Types and Conversion Skills
 
-Four skills are defined in `.claude/commands/` — invoke with `/obsidian-note`, `/technical-report`, or `/project-webpage`.
+Skills are defined in `.claude/commands/` — invoke with `/obsidian-note`, `/technical-report`, `/project-webpage`, `/schemdraw`, or `/embed-image`.
 
 ### Obsidian Notes (`/obsidian-note`)
 
@@ -72,11 +72,15 @@ Full spec in `WebPage/Aging-Motion-Project/AGENTS.md`. Reference design: `WebPag
 
 Access via the Notion MCP tools (`mcp__claude_ai_Notion__*`). Notion is used for drafting; finished content is converted to one of the three output types above using the relevant skill.
 
+### Circuit Diagrams (`/schemdraw`)
+
+Generates SVG circuit diagrams via SchemDraw for ECE124, ECE140, or any circuit/logic course. Write a Python script, run it through `uv` in `Python Image Processor/`, and embed the SVG directly in the note. Covers analog passives, sources, logic gates, flip-flops, transistors, and opamps.
+
 ### Image Processing (`/embed-image`)
 
 **Only invoke when explicitly asked** — not all images need processing.
 
-Script: `Python Image Processor/process.py`, run via `uv` from inside that directory. Auto-detects background type: light/white backgrounds (photographed notes) use a grayscale threshold to produce clean black-on-transparent line art; complex backgrounds use `rembg` AI removal. Outputs PNG to the target note's `media/` folder and prints ready-to-paste `<img>` tags. The rembg model (~170 MB) is cached in `~/.cache/rembg/` and is not tracked by git.
+Script: `Python Image Processor/process.py`, run via `uv` from inside that directory. Auto-detects background type: already-transparent SVGs (autocrop only); light/white backgrounds (photographed notes) use a grayscale threshold to produce clean black-on-transparent line art; complex backgrounds use `rembg` AI removal. Outputs PNG to the target note's `media/` folder and prints ready-to-paste `<img>` tags. The rembg model (~170 MB) is cached in `~/.cache/rembg/` and is not tracked by git.
 
 ## Conversion Workflow
 
