@@ -13,11 +13,11 @@ The mathematical foundations of computer engineering. The course requires a ment
 > [!info] Info
 > ## Score Distribution
 
-| Component | Weight | Notes |
-|-----------|--------|-------|
-| Assignments | 20% | Biweekly, due Fridays via Crowdmark |
-| Midterm | 30% | Week of June 22–26, in-person |
-| Final Exam | 50% | August 7–20, in-person |
+| Component   | Weight | Notes                               |
+| ----------- | ------ | ----------------------------------- |
+| Assignments | 20%    | Biweekly, due Fridays via Crowdmark |
+| Midterm     | 30%    | Week of June 22–26, in-person       |
+| Final Exam  | 50%    | August 7–20, in-person              |
 
 If the midterm is missed with a valid documented reason, its weight transfers to the final exam.
 GenAI (e.g. Copilot) is permitted on assignments with proper citation — use the UW Copilot instance.
