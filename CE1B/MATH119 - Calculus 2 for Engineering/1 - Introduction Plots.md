@@ -7,13 +7,12 @@ Each code block saves an SVG to `media/` relative to this file. Run the setup ce
 ## Setup
 
 ```python
-import matplotlib
-matplotlib.use("Agg")
+%matplotlib inline
 import matplotlib.pyplot as plt
 import numpy as np
 from pathlib import Path
 
-OUT = Path(__file__).parent / "media" if "__file__" in dir() else Path("CE1B/MATH119 - Calculus 2 for Engineering/media")
+OUT = Path("media")
 OUT.mkdir(exist_ok=True)
 
 plt.rcParams.update({
@@ -99,7 +98,6 @@ ax.text(0.58, 0.75, r"$f(x) \Rightarrow (y_1, y_2, y_3)$",
 
 fig.tight_layout(pad=1.5)
 fig.savefig(OUT / "function_types.svg", **SAVE)
-plt.close()
 print("saved function_types.svg")
 ```
 
@@ -128,7 +126,6 @@ ax.set_title(r"$f(x,y)=x^2+y^2$")
 
 fig.tight_layout()
 fig.savefig(OUT / "level_curves_circles.svg", **SAVE)
-plt.close()
 print("saved level_curves_circles.svg")
 ```
 
@@ -158,6 +155,5 @@ ax.set_title(r"$f(x,y)=4x^2+y^2$")
 
 fig.tight_layout()
 fig.savefig(OUT / "level_curves_ellipses.svg", **SAVE)
-plt.close()
 print("saved level_curves_ellipses.svg")
 ```

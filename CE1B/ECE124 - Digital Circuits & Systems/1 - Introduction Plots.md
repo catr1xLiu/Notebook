@@ -1,3 +1,19 @@
+---
+jupyter:
+  jupytext:
+    cell_metadata_filter: -all
+    formats: ipynb,md
+    text_representation:
+      extension: .md
+      format_name: markdown
+      format_version: '1.3'
+      jupytext_version: 1.19.2
+  kernelspec:
+    display_name: Python 3
+    language: python
+    name: python3
+---
+
 # ECE124 — Introduction Plots
 
 Logic gate diagrams generated with **SchemDraw**. Each cell saves an SVG to `media/`.
@@ -14,11 +30,12 @@ import schemdraw.elements as elm
 from schemdraw import logic as lg
 from pathlib import Path
 
-OUT = Path(__file__).parent / "media" if "__file__" in dir() else Path("CE1B/ECE124 - Digital Circuits & Systems/media")
-OUT.mkdir(exist_ok=True)
+schemdraw.use('svg')
+
+OUT = Path("media")
 
 def sd_save(d, name):
-    d.save(str(OUT / name), transparent=True, dpi=300)
+    d.save(str(OUT / name))
     print(f"saved {name}")
 ```
 
@@ -29,7 +46,7 @@ def sd_save(d, name):
 Two-input AND gate: output is 1 only when both inputs are 1.
 
 ```python
-with schemdraw.Drawing(show=False) as d:
+with schemdraw.Drawing() as d:
     d.config(unit=3, fontsize=13, color="white")
     lx = d.add(elm.Line().right(1.5).label("$x$", loc="left"))
     gate = d.add(lg.And(inputs=2).anchor("in1").at(lx.end).right())
@@ -46,7 +63,7 @@ with schemdraw.Drawing(show=False) as d:
 Two-input OR gate: output is 1 when at least one input is 1.
 
 ```python
-with schemdraw.Drawing(show=False) as d:
+with schemdraw.Drawing() as d:
     d.config(unit=3, fontsize=13, color="white")
     lx = d.add(elm.Line().right(1.5).label("$x$", loc="left"))
     gate = d.add(lg.Or(inputs=2).anchor("in1").at(lx.end).right())
@@ -63,7 +80,7 @@ with schemdraw.Drawing(show=False) as d:
 Inverter: output is the complement of the input.
 
 ```python
-with schemdraw.Drawing(show=False) as d:
+with schemdraw.Drawing() as d:
     d.config(unit=3, fontsize=13, color="white")
     d.add(elm.Line().right(1.0).label("$x$", loc="left"))
     gate = d.add(lg.Not().anchor("in1").right())
@@ -78,7 +95,7 @@ with schemdraw.Drawing(show=False) as d:
 Simplified circuit after Boolean reduction: NOT gate on $x_1$ feeding into a 2-input OR gate.
 
 ```python
-with schemdraw.Drawing(show=False) as d:
+with schemdraw.Drawing() as d:
     d.config(unit=3, fontsize=13, color="white")
     lx1 = d.add(elm.Line().right(1.0).label("$x_1$", loc="left"))
     notg = d.add(lg.Not().anchor("in1").at(lx1.end).right())

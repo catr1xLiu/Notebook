@@ -1,3 +1,19 @@
+---
+jupyter:
+  jupytext:
+    cell_metadata_filter: -all
+    formats: ipynb,md
+    text_representation:
+      extension: .md
+      format_name: markdown
+      format_version: '1.3'
+      jupytext_version: 1.19.2
+  kernelspec:
+    display_name: Python 3
+    language: python
+    name: python3
+---
+
 # ECE140 — Introduction Plots
 
 Each code block saves an SVG to `media/` relative to this file. Run cells top-to-bottom; the setup cell must run first.
@@ -7,13 +23,11 @@ Each code block saves an SVG to `media/` relative to this file. Run cells top-to
 ## Setup
 
 ```python
-import matplotlib
-matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import numpy as np
 from pathlib import Path
 
-OUT = Path(__file__).parent / "media" if "__file__" in dir() else Path("CE1B/ECE140 - Linear Circuits/media")
+OUT = Path("media")
 OUT.mkdir(exist_ok=True)
 
 plt.rcParams.update({
@@ -65,7 +79,6 @@ ax.text(1.2, 1.85, r"$I=\frac{V}{R}$", fontsize=12, color="white")
 
 fig.tight_layout()
 fig.savefig(OUT / "resistor_iv.svg", **SAVE)
-plt.close()
 print("saved resistor_iv.svg")
 ```
 
@@ -106,7 +119,6 @@ ax.annotate(
 
 fig.tight_layout()
 fig.savefig(OUT / "diode_iv.svg", **SAVE)
-plt.close()
 print("saved diode_iv.svg")
 ```
 
@@ -134,7 +146,6 @@ ax.legend(loc="upper right")
 
 fig.tight_layout()
 fig.savefig(OUT / "waveform_example.svg", **SAVE)
-plt.close()
 print("saved waveform_example.svg")
 ```
 
@@ -159,6 +170,5 @@ ax.grid(True)
 
 fig.tight_layout()
 fig.savefig(OUT / "ac_dc_decomposition.svg", **SAVE)
-plt.close()
 print("saved ac_dc_decomposition.svg")
 ```

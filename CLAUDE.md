@@ -72,6 +72,18 @@ Full spec in `WebPage/Aging-Motion-Project/AGENTS.md`. Reference design: `WebPag
 
 Access via the Notion MCP tools (`mcp__claude_ai_Notion__*`). Notion is used for drafting; finished content is converted to one of the three output types above using the relevant skill.
 
+### JupyMD Notebooks
+
+Obsidian's JupyMD plugin executes ```` ```python ```` code blocks as Jupyter cells. The runtime is the **Flatpak's bundled Python 3.13** (not the system Python), with its venv at `.jupymd/lib/python3.13/site-packages/`. To install packages into this environment use:
+
+```bash
+python3.13 -m pip install --target="/path/to/Notebook/.jupymd/lib/python3.13/site-packages" <package>
+```
+
+Required packages (already installed): `torch` (CPU), `numpy`, `matplotlib`, `schemdraw`.
+
+Plot notebooks use `%matplotlib inline` so figures render inside the notebook and are also saved as SVGs to the note's `media/` folder. SchemDraw notebooks use `schemdraw.use('svg')` for inline SVG output. Working directory is set to the notebook's own folder, so `Path("media")` always resolves correctly.
+
 ### Circuit Diagrams (`/schemdraw`)
 
 Generates SVG circuit diagrams via SchemDraw for ECE124, ECE140, or any circuit/logic course. Write a Python script, run it through `uv` in `Python Image Processor/`, and embed the SVG directly in the note. Covers analog passives, sources, logic gates, flip-flops, transistors, and opamps.

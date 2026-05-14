@@ -1,7 +1,8 @@
 {
   "autoSync": true,
   "bidirectionalSync": false,
-  "pythonInterpreter": "python",
-  "notebookEditorCommand": "jupyter-lab",
+  "autoConvertToNotebookOnRun": true,
+  "pythonInterpreter": "/home/catr1x/Documents/Notebook/.jupymd/bin/python",
+  "notebookEditorCommand": "code",
   "enableCodeBlocks": true
 }
