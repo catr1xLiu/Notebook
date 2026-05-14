@@ -50,7 +50,7 @@ Atomic elements: h, e, l, l, o — sort by frequency (highest drop first):
 
 **Dictionary (binary tree):** h: 00 &nbsp; e: 000 &nbsp; l: 0 &nbsp; o: 01
 
-![[1.2 - Haffman Example|100%]]
+![[1.2 - Haffman Example|80%]]
 
 ---
 
@@ -106,57 +106,44 @@ Like logic gates in ECE124, we can use truth tables here to show compositions an
 
 **Claim:** If $a, b, c$ are positive integers, then at least one of $a-b$, $b-c$, $c-a$ is **even**.
 
-**Proof** (by contradiction): Assume $a-b$, $b-c$, and $c-a$ are all **odd**. ①
+> [!success]- Proof (Click to expand)
+> Assume $a-b$, $b-c$, and $c-a$ are all **odd**. ①
+>
+> Then we can write $a-b = 2k+1$ and $b-c = 2l+1$ where $k, l \in \mathbb{Z}$.
+>
+> Re-write: $a = b+2k+1$ and $c = b-2l-1$. Therefore:
+>
+> $$c - a = (b - 2l - 1) - (b + 2k + 1) = -2l - 2k - 2 = -2(l + k + 1)$$
+>
+> $-2(l+k+1)$ is **even** — this **contradicts** statement ①.
+>
+> Therefore at least one of $a-b$, $b-c$, $c-a$ is even. $\blacksquare$
 
-Then we can write $a-b = 2k+1$ and $b-c = 2l+1$ where $k, l \in \mathbb{Z}$.
-
-We can re-write: $a = b+2k+1$ and $c = b-2l-1$.
-
-Therefore:
-
-$$
-c - a = (b - 2l - 1) - (b + 2k + 1) = -2l - 2k - 2 = -2(l + k + 1)
-$$
-
-Obviously $-2(l+k+1)$ where $l, k \in \mathbb{Z}$ is **even** — this **contradicts** statement ①.
-
-Therefore, at least one of $a-b$, $b-c$, and $c-a$ is even. $\blacksquare$
-
-> [!example] Proof by Contradiction
+> [!example] Two Proof Methods
 > ## Proof Example 2 — Two Methods
 
 **Claim:** For all $x, y$ positive integers, $\left(\displaystyle\sum_{i=1}^{x} i = \sum_{i=1}^{y} i\right) \Rightarrow (x = y)$
 
-**Method 1 — Proof by contradiction:**
+> [!success]- Method 1 — Proof by Contradiction (Click to expand)
+> The claim is equivalent to $\neg\!\left(\displaystyle\sum_{i=1}^{x} i = \sum_{i=1}^{y} i\right) \vee (x = y)$.
+>
+> For contradiction, assume both ① $\displaystyle\sum_{i=1}^{x} i = \sum_{i=1}^{y} i$ and ② $x \neq y$.
+>
+> Since $x \neq y$, either $y > x$ or $x > y$:
+>
+> **(1)** $y > x$: $\displaystyle\sum_{i=1}^{y} i = \sum_{i=1}^{x} i + \sum_{i=x+1}^{y} i$. Since $y - x \geq 1$, we have $\displaystyle\sum_{i=x+1}^{y} i \geq x+1 > 0$, so $\displaystyle\sum_{i=1}^{y} i > \sum_{i=1}^{x} i$ — contradicts ①.
+>
+> **(2)** $x > y$: Same reasoning gives $\displaystyle\sum_{i=1}^{x} i > \sum_{i=1}^{y} i$ — contradicts ①.
+>
+> Therefore $\left(\displaystyle\sum_{i=1}^{x} i = \sum_{i=1}^{y} i\right) \Rightarrow (x = y)$. $\blacksquare$
 
-The claim is equivalent to $\neg\!\left(\displaystyle\sum_{i=1}^{x} i = \sum_{i=1}^{y} i\right) \vee (x = y)$.
-
-For contradiction, assume both:
-- ① $\displaystyle\sum_{i=1}^{x} i = \sum_{i=1}^{y} i$
-- ② $x \neq y$ are both true.
-
-Since $x \neq y$, either $(x > y)$ or $(x < y)$. We look at both cases:
-
-**(1)** $y > x$: Thus $\displaystyle\sum_{i=1}^{y} i = \sum_{i=1}^{x} i + \sum_{i=x+1}^{y} i$.
-
-Since $y - x \neq 0$ and $y - x \in \mathbb{Z}$, we have $y - x \geq 1$, so $\displaystyle\sum_{i=x+1}^{y} i \geq x+1 > 0$, thus $\displaystyle\sum_{i=1}^{y} i > \sum_{i=1}^{x} i$ — contradicts ①.
-
-**(2)** $x > y$: For the same reason, $\displaystyle\sum_{i=1}^{x} i > \sum_{i=1}^{y} i$ — contradicts ①.
-
-Therefore our assumption is rejected. We can state that $\neg\!\left(\displaystyle\sum_{i=1}^{x} i = \sum_{i=1}^{y} i\right) \vee (x = y)$, or equivalently $\left(\displaystyle\sum_{i=1}^{x} i = \sum_{i=1}^{y} i\right) \Rightarrow (x = y)$. $\blacksquare$
-
----
-
-**Method 2 — Direct method (from textbook):**
-
-We prove the equivalent statement $\neg(x = y) \Rightarrow \neg\!\left(\displaystyle\sum_{i=1}^{x} i = \sum_{i=1}^{y} i\right)$.
-
-Given $x \neq y$, either $x > y$ or $x < y$. We consider both cases:
-
-**(1)** $x < y$: $\displaystyle\sum_{i=1}^{y} i = \sum_{i=1}^{x} i + \sum_{i=x+1}^{y} i$, where $y \geq x+1 > 0$.
-
-Thus $\displaystyle\sum_{i=1}^{y} i \geq \sum_{i=1}^{x} i + 1$, so $\displaystyle\sum_{i=1}^{y} i \neq \sum_{i=1}^{x} i$.
-
-**(2)** $x > y$: For the same reason, $\displaystyle\sum_{i=1}^{x} i \geq \sum_{i=1}^{y} i + 1$, so $\displaystyle\sum_{i=1}^{x} i \neq \sum_{i=1}^{y} i$.
-
-Therefore $\neg(x = y) \Rightarrow \left(\displaystyle\sum_{i=1}^{x} i \neq \sum_{i=1}^{y} i\right)$ — this proves our statement. $\blacksquare$
+> [!success]- Method 2 — Direct Proof (Click to expand)
+> Prove the contrapositive: $\neg(x = y) \Rightarrow \neg\!\left(\displaystyle\sum_{i=1}^{x} i = \sum_{i=1}^{y} i\right)$.
+>
+> Given $x \neq y$, either $x < y$ or $x > y$:
+>
+> **(1)** $x < y$: $\displaystyle\sum_{i=1}^{y} i = \sum_{i=1}^{x} i + \sum_{i=x+1}^{y} i$ where $y \geq x+1 > 0$, so $\displaystyle\sum_{i=1}^{y} i \geq \sum_{i=1}^{x} i + 1$, thus $\displaystyle\sum_{i=1}^{y} i \neq \sum_{i=1}^{x} i$.
+>
+> **(2)** $x > y$: Same reasoning gives $\displaystyle\sum_{i=1}^{x} i \neq \sum_{i=1}^{y} i$.
+>
+> Therefore $\neg(x = y) \Rightarrow \left(\displaystyle\sum_{i=1}^{x} i \neq \sum_{i=1}^{y} i\right)$. $\blacksquare$

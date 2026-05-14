@@ -49,6 +49,9 @@ The expression $a_1x_1 + \cdots + a_nx_n = b$ is a <u><strong style="color:#dab1
 - Major standalone terms: `#### <u>Term</u>` (the theme handles the color for h4)
 
 **Collapsible solutions** (for examples):
+
+Every `[!example]` block shows **only the problem statement** as visible body text. The solution is always folded under `[!success]-` so the reader can attempt the problem before revealing the answer.
+
 ```markdown
 > [!example] Example
 > ## Finding the Rank
@@ -60,6 +63,8 @@ Find the rank of matrix $A$.
 > Step 2: Count pivot columns
 > Answer: $\text{rank}(A) = 2$
 ```
+
+Never put solution steps in the visible body of an `[!example]` section.
 
 Separate major sections with `---`. No multi-column layouts.
 

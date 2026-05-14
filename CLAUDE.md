@@ -46,7 +46,7 @@ The full format spec is self-contained in `.claude/commands/obsidian-note.md`. K
 - Inline terminology: `<u><strong style="color:#dab1da">term</strong></u>`. Major terms: `#### <u>Term</u>`.
 - Collapsible example solutions: `> [!success]- Solution (Click to expand)`.
 - Excalidraw drawings embedded as `![[DrawingName|100%]]`; regular images as `<img src="name.png" alt="…" width="50%">`.
-- No multi-column layouts.
+- Multi-column layouts only when the source uses them (e.g. a Notion page with side-by-side columns, or an rnote drawing whose content is horizontally arranged); otherwise single-column. Use the Multi-Column Markdown plugin syntax (`=== start-multi-column` / `=== column-break ===` / `=== end-multi-column` with a ` ```column-settings ``` ` block), not HTML.
 
 ### Technical Reports and Papers (`/technical-report`)
 

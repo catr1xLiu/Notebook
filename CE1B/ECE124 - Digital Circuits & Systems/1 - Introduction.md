@@ -70,36 +70,48 @@ Logic operators AND, OR, NOT are implemented via **logic gates** (which are impl
 
 **Operator precedence:** ( ) → NOT → AND → OR
 
+=== start-multi-column
+```column-settings
+Number of Columns: 3
+Border: off
+```
+
 #### <u>AND Gate</u>
 
-<img src="media/and_gate.svg" alt="AND gate" width="35%">
+<img src="media/and_gate.svg" alt="AND gate" width="100%">
 
 | $x$ | $y$ | $x \cdot y$ |
-|-----|-----|-------------|
-| 0   | 0   | 0 |
-| 0   | 1   | 0 |
-| 1   | 0   | 0 |
-| 1   | 1   | **1** |
+|:---:|:---:|:-----------:|
+| 0 | 0 | 0 |
+| 0 | 1 | 0 |
+| 1 | 0 | 0 |
+| 1 | 1 | **1** |
+
+=== column-break ===
 
 #### <u>OR Gate</u>
 
-<img src="media/or_gate.svg" alt="OR gate" width="35%">
+<img src="media/or_gate.svg" alt="OR gate" width="100%">
 
 | $x$ | $y$ | $x + y$ |
-|-----|-----|---------|
-| 0   | 0   | **0** |
-| 0   | 1   | 1 |
-| 1   | 0   | 1 |
-| 1   | 1   | 1 |
+|:---:|:---:|:-------:|
+| 0 | 0 | **0** |
+| 0 | 1 | 1 |
+| 1 | 0 | 1 |
+| 1 | 1 | 1 |
+
+=== column-break ===
 
 #### <u>NOT Gate</u>
 
-<img src="media/not_gate.svg" alt="NOT gate" width="30%">
+<img src="media/not_gate.svg" alt="NOT gate" width="100%">
 
 | $x$ | $x'$ |
-|-----|------|
-| 0   | 1 |
-| 1   | 0 |
+|:---:|:----:|
+| 0 | 1 |
+| 1 | 0 |
+
+=== end-multi-column
 
 > [!hint] Multiple Inputs
 > ## Multiple-Input AND and OR Gates
@@ -188,40 +200,54 @@ Where $x, y, z \in B$:
 1. For each row where $f = 1$, write a **product term** (AND of inputs) that is true **only** for that row's input values
 2. **Sum (OR)** all product terms together → canonical sum-of-products
 
-**Example:**
+---
 
-| $x_1$ | $x_2$ | $f$ | Product term |
-|-------|-------|-----|-------------|
-| 0 | 0 | 1 | $x_1' x_2'$ |
-| 0 | 1 | 1 | $x_1' x_2$ |
-| 1 | 0 | 0 | — |
-| 1 | 1 | 1 | $x_1 x_2$ |
+> [!example] Synthesis Example
+> ## Synthesis Example
 
-$$f(x_1, x_2) = x_1'x_2' + x_1'x_2 + x_1 x_2$$
+Given the truth table below, find the simplest Boolean expression for $f$ and draw the circuit.
 
-**Simplification using Boolean algebra:**
+| $x_1$ | $x_2$ | $f$ |
+|:-----:|:-----:|:---:|
+| 0 | 0 | 1 |
+| 0 | 1 | 1 |
+| 1 | 0 | 0 |
+| 1 | 1 | 1 |
 
-$$
-\begin{aligned}
-f(x_1, x_2) &= x_1'x_2' + x_1'x_2 + x_1 x_2 \\
-&= x_1'(x_2' + x_2) + x_1 x_2 \\
-&= x_1' \cdot 1 + x_1 x_2 \\
-&= x_1' + x_1 x_2 \quad \text{(simpler)}
-\end{aligned}
-$$
-
-After duplicating a term and using distributive law again:
-
-$$
-\begin{aligned}
-f &= x_1'x_2' + x_1'x_2 + \mathbf{x_1'x_2} + x_1 x_2 \\
-&= x_1'(x_2' + x_2) + x_2(x_1' + x_1) \\
-&= x_1' + x_2 \quad \textbf{(simplest)}
-\end{aligned}
-$$
-
-**Circuit Design** (implementing $f = x_1' + x_2$):
-
-<img src="media/synthesis_not_or.svg" alt="Synthesis circuit: NOT gate into OR gate" width="55%">
-
-*Analyze: (1) IF $x_1$ is false $\Rightarrow f$ is true; (2) OR, IF $x_1$ is true and $x_2$ is also true $\Rightarrow f$ is true.*
+> [!success]- Solution (Click to expand)
+> **Step 1 — Canonical sum-of-products:**
+>
+> | $x_1$ | $x_2$ | $f$ | Product term |
+> |:-----:|:-----:|:---:|:------------:|
+> | 0 | 0 | 1 | $x_1' x_2'$ |
+> | 0 | 1 | 1 | $x_1' x_2$  |
+> | 1 | 0 | 0 | —           |
+> | 1 | 1 | 1 | $x_1 x_2$   |
+>
+> $$f(x_1, x_2) = x_1'x_2' + x_1'x_2 + x_1 x_2$$
+>
+> **Step 2 — Simplify:**
+>
+> $$
+> \begin{aligned}
+> f &= x_1'x_2' + x_1'x_2 + x_1 x_2 \\
+> &= x_1'(x_2' + x_2) + x_1 x_2 \\
+> &= x_1' + x_1 x_2 \quad \text{(simpler)}
+> \end{aligned}
+> $$
+>
+> Duplicate a term and apply distributive law again:
+>
+> $$
+> \begin{aligned}
+> f &= x_1'x_2' + x_1'x_2 + \mathbf{x_1'x_2} + x_1 x_2 \\
+> &= x_1'(x_2'+x_2) + x_2(x_1'+x_1) \\
+> &= x_1' + x_2 \quad \textbf{(simplest)}
+> \end{aligned}
+> $$
+>
+> **Step 3 — Circuit** (implementing $f = x_1' + x_2$):
+>
+> <img src="media/synthesis_not_or.svg" alt="Synthesis circuit: NOT gate into OR gate" width="55%">
+>
+> *Analyze: (1) IF $x_1$ is false $\Rightarrow f$ is true; (2) OR, IF $x_1$ is true and $x_2$ is also true $\Rightarrow f$ is true.*
