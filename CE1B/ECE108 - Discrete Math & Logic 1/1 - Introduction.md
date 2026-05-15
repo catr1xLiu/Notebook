@@ -90,14 +90,154 @@ With $P$ and $Q$ being propositions:
 
 Like logic gates in ECE124, we can use truth tables here to show compositions and to prove claims.
 
+=== start-multi-column: TruthTable3Col
+```column-settings
+Number of Columns: 3
+Border: off
+```
+
+**Conjunction ($P \wedge Q$)**
+
+| $P$ | $Q$ | $P \wedge Q$ |
+|:---:|:---:|:------------:|
+| 0 | 0 | 0 |
+| 0 | 1 | 0 |
+| 1 | 0 | 0 |
+| 1 | 1 | 1 |
+
+=== column-break ===
+
+**Disjunction ($P \vee Q$)**
+
+| $P$ | $Q$ | $P \vee Q$ |
+|:---:|:---:|:----------:|
+| 0 | 0 | 0 |
+| 0 | 1 | 1 |
+| 1 | 0 | 1 |
+| 1 | 1 | 1 |
+
+=== column-break ===
+
+**Negation ($\neg P$)**
+
+| $P$ | $\neg P$ |
+|:---:|:--------:|
+| 0 | 1 |
+| 1 | 0 |
+
+=== end-multi-column
+Implications and inference:
+=== start-multi-column: TruthTable2Col
+```column-settings
+Number of Columns: 2
+Border: off
+```
+
+**Implication ($P \Rightarrow Q$)**
+
+| $P$ | $Q$ | $P \Rightarrow Q$ |
+|:---:|:---:|:-----------------:|
+| 0 | 0 | 1 |
+| 0 | 1 | 1 |
+| 1 | 0 | 0 |
+| 1 | 1 | 1 |
+
+=== column-break ===
+
+**Inference ($P \Leftarrow Q$)**
+
+| $P$ | $Q$ | $P \Leftarrow Q$ |
+|:---:|:---:|:----------------:|
+| 0 | 0 | 1 |
+| 0 | 1 | 0 |
+| 1 | 0 | 1 |
+| 1 | 1 | 1 |
+
+=== end-multi-column
+
+**Note on Implication/Inference:** $P=1, Q=1$ does **not** express a consequent relationship — it simply says $P=1, Q=1$ does **not contradict** $P \Rightarrow Q$. The case $P=1, Q=0$ **contradicts** $P \Rightarrow Q$, so **False** is written in that cell.
+
+
 > [!fact] Common Claims
 > ## Common Claims
 
-1. $(P \Rightarrow Q) \Leftrightarrow (\neg P \vee Q)$
+1. $(P \Rightarrow Q) \Leftrightarrow (\neg P \vee Q)$ — *Proof by truth table:*
 
-2. $(P \Rightarrow Q) \Leftrightarrow (\neg Q \Rightarrow \neg P)$
+| $P$ | $Q$ | $P \Rightarrow Q$ | $\neg P$ | $\neg P \vee Q$ |
+|:---:|:---:|:-----------------:|:--------:|:---------------:|
+| 0 | 0 | 1 | 1 | 1 |
+| 0 | 1 | 1 | 1 | 1 |
+| 1 | 0 | 0 | 0 | 0 |
+| 1 | 1 | 1 | 0 | 1 |
 
-3. $(P \Rightarrow Q) \Rightarrow (P \vee R) \Rightarrow (Q \vee R)$
+2. $(P \Rightarrow Q) \Leftrightarrow (\neg Q \Rightarrow \neg P)$ — *Proof by truth table:*
+
+| $P$ | $Q$ | $P \Rightarrow Q$ | $\neg Q$ | $\neg P$ | $\neg Q \Rightarrow \neg P$ |
+|:---:|:---:|:-----------------:|:--------:|:--------:|:---------------------------:|
+| 0 | 0 | 1 | 1 | 1 | 1 |
+| 0 | 1 | 1 | 0 | 1 | 1 |
+| 1 | 0 | 0 | 1 | 0 | 0 |
+| 1 | 1 | 1 | 0 | 0 | 1 |
+
+3. $(P \Rightarrow Q) \Rightarrow (P \vee R) \Rightarrow (Q \vee R)$ — *Proof by truth table:*
+
+| $P$ | $Q$ | $R$ | $P \Rightarrow Q$ | $P \vee R$ | $Q \vee R$ | $(P \vee R) \Rightarrow (Q \vee R)$ | Claim |
+|:---:|:---:|:---:|:-----------------:|:----------:|:----------:|:-----------------------------------:|:-----:|
+| 0 | 0 | 0 | 1 | 0 | 0 | 1 | 1 |
+| 0 | 0 | 1 | 1 | 1 | 1 | 1 | 1 |
+| 0 | 1 | 0 | 1 | 0 | 1 | 1 | 1 |
+| 0 | 1 | 1 | 1 | 1 | 1 | 1 | 1 |
+| 1 | 0 | 0 | 0 | 1 | 0 | 0 | 1 |
+| 1 | 0 | 1 | 0 | 1 | 1 | 1 | 1 |
+| 1 | 1 | 0 | 1 | 1 | 1 | 1 | 1 |
+| 1 | 1 | 1 | 1 | 1 | 1 | 1 | 1 |
+
+> [!quote] Definition
+> ## Converse & Contrapositive
+
+Given proposition $P \Rightarrow Q$:
+- Its <u><strong style="color:#dab1da">converse</strong></u> is $Q \Rightarrow P$
+- Its <u><strong style="color:#dab1da">contrapositive</strong></u> is $\neg Q \Rightarrow \neg P$
+
+A proposition is always equivalent to its contrapositive (claim 2), but **not** necessarily to its converse.
+
+> [!fact] Logical Equivalences
+> ## Logical Equivalences
+
+Frequently useful identities for manipulating propositions in proofs:
+
+| Equivalence | Name |
+|-------------|------|
+| $\neg(P \vee Q) \Leftrightarrow (\neg P \wedge \neg Q)$ | De Morgan's Law ($\neg$ over $\vee$) |
+| $\neg(P \wedge Q) \Leftrightarrow (\neg P \vee \neg Q)$ | De Morgan's Law ($\neg$ over $\wedge$) |
+| $(P \vee (Q \wedge R)) \Leftrightarrow ((P \vee Q) \wedge (P \vee R))$ | Distributivity of $\vee$ over $\wedge$ |
+| $(P \wedge (Q \vee R)) \Leftrightarrow ((P \wedge Q) \vee (P \wedge R))$ | Distributivity of $\wedge$ over $\vee$ |
+| $(P \Leftrightarrow Q) \Leftrightarrow ((P \Rightarrow Q) \wedge (P \Leftarrow Q))$ | Biconditional decomposition |
+
+> [!info] Quantifiers
+> ## Quantifiers
+
+=== start-multi-column: Quantifiers2Col
+```column-settings
+Number of Columns: 2
+Border: off
+```
+
+<u><strong style="color:#dab1da">$\forall$</strong></u> **— Universal Quantifier**
+
+$\forall \ldots$ = "for arbitrary …"
+
+e.g. $\forall x \in \mathbb{Z}$: "for arbitrary integer $x$"
+
+=== column-break ===
+
+<u><strong style="color:#dab1da">$\exists$</strong></u> **— Existential Quantifier**
+
+$\exists \ldots$ = "for selective / some …"
+
+e.g. $\exists y \in \mathbb{R}$ that $y^2 = 2$: "there exists some real number $y$ that $y^2 = 2$"
+
+=== end-multi-column
 
 ---
 
