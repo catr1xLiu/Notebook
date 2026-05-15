@@ -169,6 +169,21 @@ If a diagram would be helpful but doesn't exist yet, insert a placeholder commen
 <!-- TODO: Draw a diagram showing XXX and embed as ![[Drawing Name|100%]] -->
 ```
 
+#### Mermaid → Excalidraw (one-shot conversion)
+
+Flowcharts and process diagrams can be **one-shot converted** from Mermaid syntax to Excalidraw using https://github.com/excalidraw/mermaid-to-excalidraw. Use this whenever a note calls for a flow diagram (process steps, decision trees, state machines).
+
+Workflow:
+1. Output a `mermaid` code block in your response for the user to convert.
+2. In the note, replace the diagram location with a placeholder comment:
+   ```markdown
+   <!-- TODO: Convert the Mermaid below to Excalidraw and embed as ![[Drawing Name|100%]] -->
+   ```
+   Optionally include the Mermaid block in the note itself so it renders in the interim.
+3. The user converts the Mermaid, saves the result to `drawings/`, and replaces the placeholder with `![[Drawing Name|100%]]`.
+
+Keep Mermaid diagrams simple (`flowchart LR/TD`, basic nodes and edges) for best compatibility with the converter.
+
 ### Regular images
 
 Images are stored in the `media/` subdirectory of each topic folder. Embed with an HTML `<img>` tag to control width:

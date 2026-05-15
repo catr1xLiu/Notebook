@@ -108,6 +108,8 @@ When asked to convert a draft (Notion page, hand-written scan, or raw text):
 
 Drawings are stored as Obsidian markdown files in `drawings/` subdirectories (e.g., `Motion Diffusion Model Basics/drawings/1.1 - Tensors.md`). They contain raw Excalidraw JSON — do not edit the data section. Embed in notes with `![[DrawingName.md]]`. New drawings suggested by an agent should be described in a placeholder comment; the user creates them manually in Obsidian.
 
+**Mermaid → Excalidraw (one-shot):** Flowcharts and process diagrams can be converted directly from Mermaid to Excalidraw using https://github.com/excalidraw/mermaid-to-excalidraw. When a note needs a flow diagram, output a `mermaid` code block and insert a `<!-- TODO: Convert the Mermaid to Excalidraw and embed as ![[Drawing Name|100%]] -->` placeholder in the note. The user converts and saves to `drawings/`, then replaces the placeholder with `![[Drawing Name|100%]]`. Keep Mermaid simple (`flowchart LR/TD`) for best converter compatibility.
+
 ## Notion MCP
 
 Use `mcp__claude_ai_Notion__notion-fetch` to retrieve a page by URL or ID, and `mcp__claude_ai_Notion__notion-search` to locate pages by title. Authenticate first if needed (`mcp__claude_ai_Notion__notion-create-*` tools require auth).
