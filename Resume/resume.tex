@@ -1,0 +1,180 @@
+%-------------------------
+% Resume in Latex
+% Author : Jake Gutierrez
+% Based off of: https://github.com/sb2nov/resume
+% License : MIT
+%------------------------
+
+\documentclass[letterpaper,11pt]{article}
+
+\usepackage{latexsym}
+\usepackage[empty]{fullpage}
+\usepackage{titlesec}
+\usepackage{marvosym}
+\usepackage[usenames,dvipsnames]{color}
+\usepackage{verbatim}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+\usepackage{fancyhdr}
+\usepackage[english]{babel}
+\usepackage{tabularx}
+\input{glyphtounicode}
+
+
+%----------FONT OPTIONS----------
+% sans-serif
+% \usepackage[sfdefault]{FiraSans}
+% \usepackage[sfdefault]{roboto}
+% \usepackage[sfdefault]{noto-sans}
+% \usepackage[default]{sourcesanspro}
+
+% serif
+% \usepackage{CormorantGaramond}
+% \usepackage{charter}
+
+
+\pagestyle{fancy}
+\fancyhf{} % clear all header and footer fields
+\fancyfoot{}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+
+% Adjust margins
+\addtolength{\oddsidemargin}{-0.5in}
+\addtolength{\evensidemargin}{-0.5in}
+\addtolength{\textwidth}{1in}
+\addtolength{\topmargin}{-.5in}
+\addtolength{\textheight}{1.0in}
+
+\urlstyle{same}
+
+\raggedbottom
+\raggedright
+\setlength{\tabcolsep}{0in}
+
+% Sections formatting
+\titleformat{\section}{
+  \vspace{-4pt}\color{blue}\scshape\raggedright\large
+}{}{0em}{}[\color{black}\titlerule \vspace{-5pt}]
+
+% Ensure that generate pdf is machine readable/ATS parsable
+\pdfgentounicode=1
+
+%-------------------------
+% Custom commands
+\newcommand{\resumeItem}[1]{
+  \item\small{
+    {#1 \vspace{-2pt}}
+  }
+}
+
+\newcommand{\resumeSubheading}[4]{
+  \vspace{-2pt}\item
+    \begin{tabular*}{0.97\textwidth}[t]{l@{\extracolsep{\fill}}r}
+      \textbf{#1} & #2 \\
+      \textit{\small#3} & \textit{\small #4} \\
+    \end{tabular*}\vspace{-7pt}
+}
+
+\newcommand{\resumeSubSubheading}[2]{
+    \item
+    \begin{tabular*}{0.97\textwidth}{l@{\extracolsep{\fill}}r}
+      \textit{\small#1} & \textit{\small #2} \\
+    \end{tabular*}\vspace{-7pt}
+}
+
+\newcommand{\resumeProjectHeading}[2]{
+    \item
+    \begin{tabular*}{0.97\textwidth}{l@{\extracolsep{\fill}}r}
+      \small#1 & #2 \\
+    \end{tabular*}\vspace{-7pt}
+}
+
+\newcommand{\resumeSubItem}[1]{\resumeItem{#1}\vspace{-4pt}}
+
+\renewcommand\labelitemii{$\vcenter{\hbox{\tiny$\bullet$}}$}
+
+\newcommand{\resumeSubHeadingListStart}{\begin{itemize}[leftmargin=0.15in, label={}]}
+\newcommand{\resumeSubHeadingListEnd}{\end{itemize}}
+\newcommand{\resumeItemListStart}{\begin{itemize}}
+\newcommand{\resumeItemListEnd}{\end{itemize}\vspace{-5pt}}
+
+%-------------------------------------------
+%%%%%%  RESUME STARTS HERE  %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\begin{document}
+
+%----------HEADING----------
+\begin{center}
+    \textbf{\Huge \scshape Yiran Liu} \\ \vspace{1pt}
+    \small Computer Engineering Student at University of Waterloo (1st year) \\
+    +1 (437) 535 8276 $|$ \href{mailto:y3275liu@uwaterloo.ca}{\underline{y3275liu@uwaterloo.ca}} $|$ 
+    \href{https://github.com/caTr1xLiu}{\underline{github.com/caTr1xLiu}}
+\end{center}
+
+
+%-----------SKILLS-----------
+\section{Skills}
+ \resumeItemListStart
+    \resumeItem{Proficient in data processing and task automation using Python (numpy, pandas, requests), backed by solid understanding of algorithms and data structures.}
+    \resumeItem{Skilled in object-oriented software development for complex systems using Java and C++.}
+    \resumeItem{Experience with computer vision pipelines using OpenCV for image processing and AprilTag detection, as well as ML model deployment on edge devices (jetson-inference, Ultralytics).}
+    \resumeItem{Experienced in collaborative software development lifecycle using Git and CI/CD automation.}
+    \resumeItem{Working knowledge of common web frameworks (Streamlit, FastAPI, Spring, Node.js).}
+    \resumeItem{Ability to manage relational databases using SQL queries and SQLite (Python).}
+ \resumeItemListEnd
+
+
+%-----------EXPERIENCE-----------
+\section{Experience}
+  \resumeSubHeadingListStart
+
+    \resumeSubheading
+      {Software Engineering Lead \& Team Captain}{Sept. 2022 -- May 2025}
+      {First Robotics Competition}{}
+      \resumeItemListStart
+        \resumeItem{Directed the team operation of two robotics teams as team captain, recognized with Dean's List Award (Vancouver, 2024) by the committee for strategic leadership and unwavering dedication.}
+        \resumeItem{Led 30+ student engineers across both teams to achieve extraordinary innovations and engineering excellence, securing prestigious awards including the Innovation in Control Award (twice), Autonomous Award and Engineering Inspiration Award.}
+      \resumeItemListEnd
+
+    \resumeSubheading
+      {Creator \& Lead Maintainer}{Nov. 2024 -- Sept. 2025}
+      {MapleSim (Open-Source Robotics Library)}{}
+      \resumeItemListStart
+        \resumeItem{Developed MapleSim, a popular robotics simulation library with 500+ users world-wide.}
+        \resumeItem{Led the collaborative development with 20+ international contributors, shipping 80+ feature updates and maintaining community-leading innovation standards.}
+        \resumeItem{Authored 30-pages of comprehensive online documentation with MKDocs, supporting 200+ student developers to successfully adopt the simulation technologies.}
+        \resumeItem{Created GitHub Actions workflows to automate development processes including branch merging, code formatting, distribution publishing, and Javadoc generation.}
+        \resumeItem{Presented community-leading innovations at the FIRST global robotics conference upon committee invitation, inspiring 200+ youth developers.}
+      \resumeItemListEnd
+
+  \resumeSubHeadingListEnd
+
+
+%-----------PROJECTS-----------
+\section{Projects}
+    \resumeSubHeadingListStart
+      \resumeProjectHeading
+          {\textbf{MapleSim} $|$ \emph{open source robotics simulator using rigid body physics engine $|$ WPILib (Java)}}{Nov. 2024 -- Sept. 2025}
+          \resumeItemListStart
+            \resumeItem{A popular robotics code library delivering robotics simulation technology using a rigid-body physics engine.}
+            \resumeItem{Used by 500+ teams worldwide in the FIRST Robotics Competition, earning 70+ stars on GitHub.}
+          \resumeItemListEnd
+      \resumeProjectHeading
+          {\textbf{Phantom-Vision} $|$ \emph{budget-friendly robotics vision system $|$ NVIDIA Jetson (Python)}}{Feb. 2024 -- Sept. 2024}
+          \resumeItemListStart
+            \resumeItem{An open-source, budget-friendly computer vision solution for robotics teams, featuring robot navigation using AprilTags and AI object detection using Jetson-Inference.}
+            \resumeItem{Deployed on multiple competition robots with a dataset labelling toolkit based on RoboFlow for model training, and web-based telemetry dashboard using Python.}
+            \resumeItem{Reduced vision system costs by 70\%, saving \$1000+ for 6 beginner teams.}
+          \resumeItemListEnd
+      \resumeProjectHeading
+          {\textbf{IntelliScope} $|$ \emph{interactive web dashboard for FRC scouting $|$ Streamlit + SQLite (Python)}}{In Progress}
+          \resumeItemListStart
+            \resumeItem{An interactive web dashboard for scouting during the FIRST Robotics Competition.}
+            \resumeItem{Monitors team performance, processes match data, and visualizes key statistics for strategic analysis.}
+          \resumeItemListEnd
+    \resumeSubHeadingListEnd
+
+%-------------------------------------------
+\end{document}
