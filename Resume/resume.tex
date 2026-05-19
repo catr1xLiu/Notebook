@@ -20,6 +20,8 @@
 \usepackage{tabularx}
 \input{glyphtounicode}
 
+\definecolor{SubTitleBlue}{rgb}{0,0.28,0.58}
+
 
 %----------FONT OPTIONS----------
 % sans-serif
@@ -54,7 +56,7 @@
 
 % Sections formatting
 \titleformat{\section}{
-  \vspace{-4pt}\color{blue}\scshape\raggedright\large
+  \vspace{-4pt}\scshape\raggedright\large
 }{}{0em}{}[\color{black}\titlerule \vspace{-5pt}]
 
 % Ensure that generate pdf is machine readable/ATS parsable
@@ -71,22 +73,22 @@
 \newcommand{\resumeSubheading}[4]{
   \vspace{-2pt}\item
     \begin{tabular*}{0.97\textwidth}[t]{l@{\extracolsep{\fill}}r}
-      \textbf{#1} & #2 \\
-      \textit{\small#3} & \textit{\small #4} \\
+      \color{SubTitleBlue}\textbf{#1} & \color{SubTitleBlue}\textbf{#2} \\
+      \color{SubTitleBlue}\textit{\small#3} & \color{SubTitleBlue}\textit{\small #4} \\
     \end{tabular*}\vspace{-7pt}
 }
 
 \newcommand{\resumeSubSubheading}[2]{
     \item
     \begin{tabular*}{0.97\textwidth}{l@{\extracolsep{\fill}}r}
-      \textit{\small#1} & \textit{\small #2} \\
+      \color{SubTitleBlue}\textit{\small#1} & \color{SubTitleBlue}\textit{\small #2} \\
     \end{tabular*}\vspace{-7pt}
 }
 
 \newcommand{\resumeProjectHeading}[2]{
     \item
     \begin{tabular*}{0.97\textwidth}{l@{\extracolsep{\fill}}r}
-      \small#1 & #2 \\
+      \color{SubTitleBlue}\small#1 & \color{SubTitleBlue}\textbf{#2} \\
     \end{tabular*}\vspace{-7pt}
 }
 
@@ -108,8 +110,7 @@
 %----------HEADING----------
 \begin{center}
     \textbf{\Huge \scshape Yiran Liu} \\ \vspace{1pt}
-    \small Computer Engineering Student at University of Waterloo (1st year) \\
-    +1 (437) 535 8276 $|$ \href{mailto:y3275liu@uwaterloo.ca}{\underline{y3275liu@uwaterloo.ca}} $|$ 
+    \small +1 (437) 535 8276 $|$ \href{mailto:y3275liu@uwaterloo.ca}{\underline{y3275liu@uwaterloo.ca}} $|$
     \href{https://github.com/caTr1xLiu}{\underline{github.com/caTr1xLiu}}
 \end{center}
 
@@ -117,12 +118,10 @@
 %-----------SKILLS-----------
 \section{Skills}
  \resumeItemListStart
-    \resumeItem{Proficient in data processing and task automation using Python (numpy, pandas, requests), backed by solid understanding of algorithms and data structures.}
-    \resumeItem{Skilled in object-oriented software development for complex systems using Java and C++.}
-    \resumeItem{Experience with computer vision pipelines using OpenCV for image processing and AprilTag detection, as well as ML model deployment on edge devices (jetson-inference, Ultralytics).}
-    \resumeItem{Experienced in collaborative software development lifecycle using Git and CI/CD automation.}
-    \resumeItem{Working knowledge of common web frameworks (Streamlit, FastAPI, Spring, Node.js).}
-    \resumeItem{Ability to manage relational databases using SQL queries and SQLite (Python).}
+    \resumeItem{\textbf{Programming:} Python, C++, Bash; proficient with PyTorch, ROS, OpenCV, Git, and CI/CD workflows.}
+    \resumeItem{\textbf{Deep Learning:} Diffusion models, imitation learning, visuomotor policy learning (Diffusion Policy), graph neural networks (ST-GCN); multi-GPU training on SLURM-based HPC clusters.}
+    \resumeItem{\textbf{Robotics:} UR10e manipulator integration, teleoperation pipelines, real-time force/torque and vision sensor fusion; ML model deployment on NVIDIA Jetson edge devices.}
+    \resumeItem{\textbf{Tooling \& Languages:} Linux development environments, agentic AI coding workflows (Claude Code, Cursor); fluent in English, native Mandarin Chinese.}
  \resumeItemListEnd
 
 
@@ -131,21 +130,19 @@
   \resumeSubHeadingListStart
 
     \resumeSubheading
-      {Software Engineering Lead \& Team Captain}{Sept. 2022 -- May 2025}
-      {First Robotics Competition}{}
+      {Research Assistant --- Robotics \& Motion Generation}{Jan. 2026 -- Apr. 2026}
+      {National Research Council Canada $|$ Digital Technologies Research Centre}{}
       \resumeItemListStart
-        \resumeItem{Directed the team operation of two robotics teams as team captain, recognized with Dean's List Award (Vancouver, 2024) by the committee for strategic leadership and unwavering dedication.}
-        \resumeItem{Led 30+ student engineers across both teams to achieve extraordinary innovations and engineering excellence, securing prestigious awards including the Innovation in Control Award (twice), Autonomous Award and Engineering Inspiration Award.}
+        \resumeItem{Authored \href{https://catr1xliu.github.io/NRC_Diffusion_Policy_2.0/}{\underline{Diffusion Policy 2.0}} technical documentation for the lab's robot manipulation codebase, establishing the onboarding reference for incoming research students.}
+        \resumeItem{Migrated the motion generation training pipeline (ST-GCN + diffusion) to a 36-node V100 HPC cluster (SLURM), enabling distributed multi-GPU experimentation at scale.}
       \resumeItemListEnd
 
     \resumeSubheading
-      {Creator \& Lead Maintainer}{Nov. 2024 -- Sept. 2025}
-      {MapleSim (Open-Source Robotics Library)}{}
+      {Software Lead \& Team Captain}{Sept. 2022 -- May 2025}
+      {First Robotics Competition}{}
       \resumeItemListStart
-        \resumeItem{Developed MapleSim, a popular robotics simulation library with 500+ users world-wide.}
-        \resumeItem{Led the collaborative development with 20+ international contributors, shipping 80+ feature updates and maintaining community-leading innovation standards.}
-        \resumeItem{Authored 30-pages of comprehensive online documentation with MKDocs, supporting 200+ student developers to successfully adopt the simulation technologies.}
-        \resumeItem{Created GitHub Actions workflows to automate development processes including branch merging, code formatting, distribution publishing, and Javadoc generation.}
+        \resumeItem{Awarded the \textbf{FRC Dean's List Award} for exceptional leadership and technical contribution.}
+        \resumeItem{Directed two robotics teams of 30+ student engineers to win the Innovation in Control Award (twice), Autonomous Award, and Engineering Inspiration Award.}
         \resumeItem{Presented community-leading innovations at the FIRST global robotics conference upon committee invitation, inspiring 200+ youth developers.}
       \resumeItemListEnd
 
@@ -156,23 +153,22 @@
 \section{Projects}
     \resumeSubHeadingListStart
       \resumeProjectHeading
-          {\textbf{MapleSim} $|$ \emph{open source robotics simulator using rigid body physics engine $|$ WPILib (Java)}}{Nov. 2024 -- Sept. 2025}
+          {\textbf{Modeling Kinematic Signatures of Aging} $|$ \underline{\href{https://catr1xliu.github.io/Notebook/Aging-Motion-Project/}{project page}}}{Jan. 2026 -- Apr. 2026}
           \resumeItemListStart
-            \resumeItem{A popular robotics code library delivering robotics simulation technology using a rigid-body physics engine.}
-            \resumeItem{Used by 500+ teams worldwide in the FIRST Robotics Competition, earning 70+ stars on GitHub.}
+            \resumeItem{A framework combining ST-GCN and diffusion models that generates age-specific human motion from clinical C3D motion-capture recordings.}
+            \resumeItem{\textbf{First-author} poster accepted to the \underline{\href{https://motionpredictionicra2026.github.io/}{8th Long-term Human Motion Prediction Workshop at ICRA 2026}}; preliminary ideas presented earlier at the 3DV 2026 Exploratory Edge Track for early-stage research exchange.}
           \resumeItemListEnd
       \resumeProjectHeading
-          {\textbf{Phantom-Vision} $|$ \emph{budget-friendly robotics vision system $|$ NVIDIA Jetson (Python)}}{Feb. 2024 -- Sept. 2024}
+          {\textbf{Haptic-Fused Visuomotor Policy Learning} $|$ \underline{\href{https://catr1xliu.github.io/Notebook/RoboticsForceProject/}{project page}}}{Jan. 2026 -- Apr. 2026}
           \resumeItemListStart
-            \resumeItem{An open-source, budget-friendly computer vision solution for robotics teams, featuring robot navigation using AprilTags and AI object detection using Jetson-Inference.}
-            \resumeItem{Deployed on multiple competition robots with a dataset labelling toolkit based on RoboFlow for model training, and web-based telemetry dashboard using Python.}
-            \resumeItem{Reduced vision system costs by 70\%, saving \$1000+ for 6 beginner teams.}
+            \resumeItem{A controlled study evaluating haptic force feedback during teleoperation for contact-rich imitation learning on a UR10e manipulator with Diffusion Policy.}
+            \resumeItem{Demonstrated a 64\% reduction in peak contact force and 45\% improvement in surface contact maintenance; paper submitted to RoboTac 2026.}
           \resumeItemListEnd
       \resumeProjectHeading
-          {\textbf{IntelliScope} $|$ \emph{interactive web dashboard for FRC scouting $|$ Streamlit + SQLite (Python)}}{In Progress}
+          {\textbf{MapleSim} $|$ \underline{\href{https://shenzhen-robotics-alliance.github.io/maple-sim/}{project page}}}{Nov. 2024 -- Sept. 2025}
           \resumeItemListStart
-            \resumeItem{An interactive web dashboard for scouting during the FIRST Robotics Competition.}
-            \resumeItem{Monitors team performance, processes match data, and visualizes key statistics for strategic analysis.}
+            \resumeItem{An open-source robotics simulation library delivering rigid-body physics engine technology to the FIRST Robotics Competition ecosystem.}
+            \resumeItem{100+ GitHub stars and 500+ active users across the FIRST Robotics Competition community.}
           \resumeItemListEnd
     \resumeSubHeadingListEnd
 
