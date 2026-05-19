@@ -1,0 +1,126 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Stefano Cover Letter
+% LaTeX Template
+% Version 2.0 (February 14, 2023)
+%
+% This template originates from:
+% https://www.LaTeXTemplates.com
+%
+% Authors:
+% Vel (vel@latextemplates.com)
+% Stefano (https://www.kindoblue.nl)
+%
+% License:
+% CC BY-NC-SA 4.0 (https://creativecommons.org/licenses/by-nc-sa/4.0/)
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%----------------------------------------------------------------------------------------
+%	PACKAGES AND OTHER DOCUMENT CONFIGURATIONS
+%----------------------------------------------------------------------------------------
+
+\documentclass[
+	%letterpaper, % Uncomment for US letter paper size
+	parskip=half, % Vertical whitespace between paragraphs
+	%foldmarks=hp, % Uncomment to remove fold marks on the left side of the first page
+	enlargefirstpage=true, % Allow more text on the first page
+]{scrlttr2} % Use the KOMA-Script letter class
+
+\usepackage{fontsize} % Allows changing the default font size to an arbitrary value
+\changefontsize[16pt]{12pt} % Change the default font size and baselineskip
+\usepackage{anyfontsize} % Allows font sizes at arbitrary values
+
+\setlength{\parindent}{0pt} % Paragraph indentation
+
+%\pagestyle{empty} % Uncomment this for no footer on the second and onwards pages
+
+%----------------------------------------------------------------------------------------
+%	FONTS
+%----------------------------------------------------------------------------------------
+
+\usepackage[utf8]{inputenc} % Required for inputting international characters
+\usepackage[T1]{fontenc} % Output font encoding for international characters
+
+\usepackage{ebgaramond} % Use the EB Garamond font as the main serif font
+\usepackage{lato} % Use the Lato font as the sans font
+
+\usepackage[letterspace=50]{microtype} % Required for changing letter spacing
+
+\usepackage{fontawesome5} % Allows the use of Font Awesome icons
+\usepackage[hidelinks]{hyperref}
+
+%----------------------------------------------------------------------------------------
+%	COVER LETTER INFORMATION
+%----------------------------------------------------------------------------------------
+
+\setkomavar{fromname}{Yiran Liu} % Your name
+\setkomavar{signature}{Yiran Liu} % Your name as you want it to appear in the signature
+
+\newkomavar{subtitle}\setkomavar{subtitle}{Computer Engineering Student} % Set the subtitle line for the first page header, leave empty for no subtitle
+
+\setkomavar{fromaddress}{} % Your address or location
+\setkomavar{fromphone}{+1 (437) 535-8276} % Your phone number
+\setkomavar{fromemail}{\href{mailto:y3275liu@uwaterloo.ca}{y3275liu@uwaterloo.ca}} % Your email address
+
+\setkomavar{place}{} % A city or country that's output before the date automatically, add your location here if you want this
+\setkomavar{date}{\today} % Date output above the letter, use \today for today's date or leave this empty for no date
+
+\setkomavar{subject}{Application for Robotics Research Intern Position} % Bold text above the letter specifying what it's for, useful for specifying the job you are applying for. Leave this empty for no subject.
+
+% These are not used in this document, uncomment them if you would like to use them and output their values with e.g.: \usekomavar{fromurl}
+%\setkomavar{fromfax}{+1 (123) 456 7890} % Your fax number
+\setkomavar{fromurl}{\href{https://github.com/catr1xLiu/}{github.com/catr1xLiu/}} % Your personal website
+
+%------------------------------------------------
+
+\setkomavar{firsthead}{ % Style the first page header
+	\centering\scshape % Text position and styling
+	{\huge\textls{\usekomavar{fromname}}}\\[4pt] % Your name
+	{\large\usekomavar{subtitle}} % Subtitle
+}
+
+\setplength{firstheadvpos}{0.045\paperheight} % Vertical position of the header on the first page
+
+%------------------------------------------------
+
+\setkomavar{firstfoot}{ % Style the first page footer
+	\centering\normalfont % Text position and styling
+	{\small{\footnotesize\faEnvelope}\hspace{4pt}\usekomavar{fromemail}\hspace{8pt}{\footnotesize\faMobile*}\hspace{4pt}\usekomavar{fromphone}\hspace{8pt}{\footnotesize\faGithub}\hspace{4pt}\usekomavar{fromurl}}
+}
+
+\setplength{firstfootvpos}{0.96\paperheight} % Vertical position of the footer on the first page
+\setplength{refvpos}{7.5cm} % Move letter body up to reduce white space (DIN default is ~9cm)
+
+%----------------------------------------------------------------------------------------
+
+\begin{document}
+
+%----------------------------------------------------------------------------------------
+%	COVER LETTER CONTENT
+%----------------------------------------------------------------------------------------
+
+\begin{letter}{
+	% Name and address of the person to whom the letter is being sent
+	Prof. Alan Aspuru-Guzik \& Prof. Varinia Bernales \\
+	The Matter Lab \\
+	University of Toronto
+}
+
+\opening{Dear Prof. Alan Aspuru-Guzik and Prof. Varinia Bernales,}
+
+I am applying for the Robotics Research Intern position to bring my experience in contact-rich manipulation and multi-GPU policy training to the precise, safety-critical demands of your self-driving chemistry labs.
+
+At the National Research Council Canada (NRC), I built a custom Python teleoperation pipeline coupling a Haply Inverse3 haptic controller with a UR10e robot, streaming real-time force and torque data to enable force-aware demonstration collection --- well-suited to teaching robots to handle delicate lab apparatus. As reported in our RoboTac 2026 submission, this setup yields demonstrations with a 64\% reduction in peak contact force compared to the force-blind baseline. I trained the downstream Diffusion Policy in PyTorch on a 36-node V100 SLURM cluster, and led a refactor of its inference pipeline into a modular three-component architecture for codebase extensibility.
+
+While my hands-on training has centered on diffusion policies, I follow the broader VLA literature --- $\pi_0$ and force-aware variants --- which gives me useful context for deploying VLAs in your lab. I have shipped physics simulation code at scale (MapleSim, an open-source library with 500+ users across the FRC robotics community) and recently drafted MuJoCo simulation pipeline plans at the NRC for incoming students to implement, so I can come up to speed quickly on IsaacLab or IsaacSim.
+
+I would be excited to contribute to your mission of AI-accelerated scientific discovery. Thank you for your time, and I look forward to hearing from you.
+
+Sincerely yours, \\
+\usekomavar{signature}
+
+%----------------------------------------------------------------------------------------
+
+\end{letter}
+
+\end{document}
