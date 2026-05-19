@@ -65,7 +65,7 @@
 \setkomavar{place}{} % A city or country that's output before the date automatically, add your location here if you want this
 \setkomavar{date}{\today} % Date output above the letter, use \today for today's date or leave this empty for no date
 
-\setkomavar{subject}{Application for Research Intern Position} % Bold text above the letter specifying what it's for, useful for specifying the job you are applying for. Leave this empty for no subject.
+\setkomavar{subject}{Application for Robotics Software Developer Co-op Position} % Bold text above the letter specifying what it's for, useful for specifying the job you are applying for. Leave this empty for no subject.
 
 % These are not used in this document, uncomment them if you would like to use them and output their values with e.g.: \usekomavar{fromurl}
 %\setkomavar{fromfax}{+1 (123) 456 7890} % Your fax number
@@ -100,21 +100,26 @@
 %----------------------------------------------------------------------------------------
 
 \begin{letter}{
-	Waabi Recruiting Team \\
-	Waabi Innovation Inc
+	Red Rabbit AI Canada ULC \\
+	Divisional Office \\
+	6378 Silver Avenue \\
+	Burnaby, BC V5H 0J2 \\
+	Canada
 }
 
-\opening{Dear Waabi Recruiting Team,}
+\opening{Dear Hiring Manager,}
 
-I'm writing to apply for the Fall 2026 Research Intern position. I have recently been working at the National Research Council Canada (NRC) on conditional diffusion-based motion-generation models --- which directly relate to trajectory and behavior prediction in autonomous driving. I would love to bring this robotics perspective to Waabi's research.
+I'm a 1B Computer Engineering student at UWaterloo applying for the 4-month Fall 2026 Robotics Software Developer Co-op. Red Rabbit's hybrid teleop and AI approach to humanoids aligns perfectly with my recent research on creating real-time teleoperation pipelines that support learned-policy training.
 
-Here are two highlights. First, I developed a Motion Diffusion Model that is conditioned on age using ST-GCN-extracted embeddings. This model generates biomechanically-grounded human motion. I am the first author of this work, which was accepted to the 8th Long-term Human Motion Prediction Workshop at ICRA 2026. Second, I created a haptic-fused Diffusion Policy for contact-rich manipulation. I built the teleoperation pipeline, integrated Real-Time Chunking to manage ML model latency during real-time control, and led a refactor of the inference architecture into a modular three-layer design. This work was submitted to RoboTac 2026. Both projects ran on a 36-node V100 SLURM cluster using PyTorch. The toolkit includes conditional diffusion architectures, multi-modal trajectory generation, and chunked real-time deployment. This approach aligns with a research direction focused on AV planning: Flow Planner (NeurIPS 2025) uses flow matching with classifier-free guidance for interactive behavior modeling on nuPlan. Its trajectory tokenization parallels the action-chunking patterns I've used in robotics. I also keep up with related vision-language-action work, including $\pi_0$ and its successors.
+At the National Research Council (NRC) Canada, I designed a force-aware teleoperation system that allows operators to feel what the robot feels during data collection. This used a 6-DoF Haply Inverse3 haptic controller, a UR10e arm, and wrist-mounted force-and-torque sensors. I improved the policy's inference pipeline by making it modular with a three-layer architecture and by adding Real-Time Chunking to keep the robot's motion smooth, even with machine-learning model delays. In our RoboTac 2026 submission, the end-to-end system reduced peak contact force in demonstrations by 64\% compared to the force-blind baseline.
 
-Aside from ML research, I also develop simulation software. MapleSim, my open-source rigid-body physics library for FIRST Robotics, models drive dynamics, friction, and object-scene interaction. Over 500 teams rely on it in production. The fidelity is 2D and game-quality, but the engineering skills I developed from supporting that user base—like API design, debugging, and scalability—transfer well to higher-fidelity AV simulators such as Waabi World.
+I'm a practical builder, not just a researcher. Before NRC, I created MapleSim, an open-source rigid-body physics library used by over 500 FIRST Robotics teams worldwide and received more than 100 GitHub stars. During FRC, I also developed a robot localization system that accurately determines position on the field within centimeters, utilizing AprilTag fiducial markers combined with wheel odometry, which I debugged with log-replay simulation. I spent several competition seasons fixing mechanical and electrical issues on the robot. I'm skilled in Python and C++, and my experience with WPILib (Java) control code directly relates to ROS2 patterns.
 
-I would be excited to contribute to your work on motion forecasting and sensor simulation. Thank you for your time, and I look forward to hearing from you.
+For your specific environment: I'm a native Mandarin speaker. I'm also proficient in agentic engineering, regularly customizing Claude Code and OpenCode (skills, restrictions, MCP servers, inference backends) to maximize efficiency.
 
-Sincerely yours, \\
+I would love to bring my teleoperation experience and hardware troubleshooting skills to your humanoid mission this Fall. Thank you for your time, and I look forward to your response.
+
+Best, \\
 \usekomavar{signature}
 
 %----------------------------------------------------------------------------------------
