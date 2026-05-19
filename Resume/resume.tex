@@ -18,6 +18,7 @@
 \usepackage{fancyhdr}
 \usepackage[english]{babel}
 \usepackage{tabularx}
+\usepackage{amsmath}
 \input{glyphtounicode}
 
 \definecolor{SubTitleBlue}{rgb}{0,0.28,0.58}
@@ -73,8 +74,8 @@
 \newcommand{\resumeSubheading}[4]{
   \vspace{-2pt}\item
     \begin{tabular*}{0.97\textwidth}[t]{l@{\extracolsep{\fill}}r}
-      \color{SubTitleBlue}\textbf{#1} & \color{SubTitleBlue}\textbf{#2} \\
-      \color{SubTitleBlue}\textit{\small#3} & \color{SubTitleBlue}\textit{\small #4} \\
+      \textbf{#1} & \textbf{#2} \\
+      \textit{\small#3} & \textit{\small #4} \\
     \end{tabular*}\vspace{-7pt}
 }
 
@@ -90,6 +91,14 @@
     \begin{tabular*}{0.97\textwidth}{l@{\extracolsep{\fill}}r}
       \color{SubTitleBlue}\small#1 & \color{SubTitleBlue}\textbf{#2} \\
     \end{tabular*}\vspace{-7pt}
+}
+
+% Nested heading for papers under a work experience entry
+\newcommand{\resumePaperHeading}[2]{
+    \item[]\vspace{2pt}
+    \begin{tabular*}{0.92\textwidth}{l@{\extracolsep{\fill}}r}
+      \color{SubTitleBlue}\textbf{\textit{\small#1}} & \color{SubTitleBlue}\textit{\small#2} \\
+    \end{tabular*}\vspace{-2pt}
 }
 
 \newcommand{\resumeSubItem}[1]{\resumeItem{#1}\vspace{-4pt}}
@@ -118,10 +127,11 @@
 %-----------SKILLS-----------
 \section{Skills}
  \resumeItemListStart
-    \resumeItem{\textbf{Programming:} Python, C++, Bash; proficient with PyTorch, ROS, OpenCV, Git, and CI/CD workflows.}
+    \resumeItem{\textbf{Programming:} Python, C++, Bash; proficient with PyTorch, ROS, and OpenCV.}
     \resumeItem{\textbf{Deep Learning:} Diffusion models, imitation learning, visuomotor policy learning (Diffusion Policy), graph neural networks (ST-GCN); multi-GPU training on SLURM-based HPC clusters.}
-    \resumeItem{\textbf{Robotics:} UR10e manipulator integration, teleoperation pipelines, real-time force/torque and vision sensor fusion; ML model deployment on NVIDIA Jetson edge devices.}
-    \resumeItem{\textbf{Tooling \& Languages:} Linux development environments, agentic AI coding workflows (Claude Code, Cursor); fluent in English, native Mandarin Chinese.}
+    \resumeItem{\textbf{Robotics:} UR10e manipulator integration, Haply Inverse3 haptic teleoperation, force/torque and vision sensor fusion, NVIDIA Jetson edge deployment.}
+    \resumeItem{\textbf{Technical Writing:} LaTeX/Typst for academic publications and technical reports; MkDocs/Sphinx for documentation sites.}
+    \resumeItem{\textbf{Tooling:} Linux, Git, CI/CD automation; agentic AI coding workflows (Claude Code, OpenCode).}
  \resumeItemListEnd
 
 
@@ -133,13 +143,23 @@
       {Research Assistant --- Robotics \& Motion Generation}{Jan. 2026 -- Apr. 2026}
       {National Research Council Canada $|$ Digital Technologies Research Centre}{}
       \resumeItemListStart
-        \resumeItem{Authored \href{https://catr1xliu.github.io/NRC_Diffusion_Policy_2.0/}{\underline{Diffusion Policy 2.0}} technical documentation for the lab's robot manipulation codebase, establishing the onboarding reference for incoming research students.}
-        \resumeItem{Migrated the motion generation training pipeline (ST-GCN + diffusion) to a 36-node V100 HPC cluster (SLURM), enabling distributed multi-GPU experimentation at scale.}
+        \resumePaperHeading{Modeling Kinematic Signatures of Aging \enskip\textnormal{$|$\enskip\underline{\href{https://catr1xliu.github.io/Notebook/Aging-Motion-Project/}{project page}}}}{first author}
+        \resumeItem{Implemented an ST-GCN++ classifier on clinical gait data to extract biomechanical features from gait patterns, discriminating three age groups and reaching \textbf{64.6\% validation accuracy}.}
+        \resumeItem{Fine-tuned a Motion Diffusion Model (MDM) for age-conditioned motion synthesis; computed clinical gait pattern statistics (e.g., hip Range-of-Motion) on generated clips to confirm learned age-appropriate kinematic constraints.}
+        \resumeItem{Migrated the motion generation training pipeline (ST-GCN + diffusion) to a 36-node V100 HPC cluster (SLURM).}
+        \resumeItem{Accepted to the 8th Long-term Human Motion Prediction Workshop at ICRA 2026; preliminary work presented at the 3DV 2026 Exploratory Edge Track.}
+
+        \resumePaperHeading{Haptic-Fused Visuomotor Policy Learning \enskip\textnormal{$|$\enskip\underline{\href{https://catr1xliu.github.io/Notebook/RoboticsForceProject/}{project page}}}}{co-first author}
+        \resumeItem{Built a force-streamed teleoperation pipeline using a UR10e manipulator via RTDE, a Haply Inverse3 haptic controller, and a wrist-mounted SensuReal force/torque sensor for collecting demonstrations.}
+        \resumeItem{Trained and deployed a force-aware Diffusion Policy that achieved a \textbf{64\% reduction} in median peak contact force and \textbf{45\% improvement} in surface contact maintenance over the force-blind baseline; paper accepted to \href{https://www.robotac.eu/robotac-2026}{\underline{RoboTac 2026}}.}
+        \resumeItem{Led a refactor of the inference pipeline into a modular three-layer \underline{\href{https://catr1xliu.github.io/NRC_Diffusion_Policy_2.0/system/architecture/}{architecture}} comprising a model container, sampler, and inference interface, improving codebase readability and extensibility for downstream researchers.}
+
+        \resumeItem{Authored \href{https://catr1xliu.github.io/NRC_Diffusion_Policy_2.0/}{\underline{Diffusion Policy 2.0}} technical documentation for the lab's manipulation codebase, covering system architecture, hardware integration, and end-to-end training and inference cookbooks.}
       \resumeItemListEnd
 
     \resumeSubheading
       {Software Lead \& Team Captain}{Sept. 2022 -- May 2025}
-      {First Robotics Competition}{}
+      {First Robotics Competition $|$ Team 5516 "Iron Maple"}{}
       \resumeItemListStart
         \resumeItem{Awarded the \textbf{FRC Dean's List Award} for exceptional leadership and technical contribution.}
         \resumeItem{Directed two robotics teams of 30+ student engineers to win the Innovation in Control Award (twice), Autonomous Award, and Engineering Inspiration Award.}
@@ -153,21 +173,10 @@
 \section{Projects}
     \resumeSubHeadingListStart
       \resumeProjectHeading
-          {\textbf{Modeling Kinematic Signatures of Aging} $|$ \underline{\href{https://catr1xliu.github.io/Notebook/Aging-Motion-Project/}{project page}}}{Jan. 2026 -- Apr. 2026}
-          \resumeItemListStart
-            \resumeItem{A framework combining ST-GCN and diffusion models that generates age-specific human motion from clinical C3D motion-capture recordings.}
-            \resumeItem{\textbf{First-author} poster accepted to the \underline{\href{https://motionpredictionicra2026.github.io/}{8th Long-term Human Motion Prediction Workshop at ICRA 2026}}; preliminary ideas presented earlier at the 3DV 2026 Exploratory Edge Track for early-stage research exchange.}
-          \resumeItemListEnd
-      \resumeProjectHeading
-          {\textbf{Haptic-Fused Visuomotor Policy Learning} $|$ \underline{\href{https://catr1xliu.github.io/Notebook/RoboticsForceProject/}{project page}}}{Jan. 2026 -- Apr. 2026}
-          \resumeItemListStart
-            \resumeItem{A controlled study evaluating haptic force feedback during teleoperation for contact-rich imitation learning on a UR10e manipulator with Diffusion Policy.}
-            \resumeItem{Demonstrated a 64\% reduction in peak contact force and 45\% improvement in surface contact maintenance; paper submitted to RoboTac 2026.}
-          \resumeItemListEnd
-      \resumeProjectHeading
-          {\textbf{MapleSim} $|$ \underline{\href{https://shenzhen-robotics-alliance.github.io/maple-sim/}{project page}}}{Nov. 2024 -- Sept. 2025}
+          {\textbf{MapleSim} $|$ \underline{\href{https://github.com/Shenzhen-Robotics-Alliance/maple-sim}{project page}}}{Nov. 2024 -- Sept. 2025}
           \resumeItemListStart
             \resumeItem{An open-source robotics simulation library delivering rigid-body physics engine technology to the FIRST Robotics Competition ecosystem.}
+            \resumeItem{Authored comprehensive \underline{\href{https://shenzhen-robotics-alliance.github.io/maple-sim/}{technical documentation}} (tutorials, API reference, design rationale) that empowered wide community adoption.}
             \resumeItem{100+ GitHub stars and 500+ active users across the FIRST Robotics Competition community.}
           \resumeItemListEnd
     \resumeSubHeadingListEnd
