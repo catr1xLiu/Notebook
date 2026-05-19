@@ -1,0 +1,124 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Stefano Cover Letter
+% LaTeX Template
+% Version 2.0 (February 14, 2023)
+%
+% This template originates from:
+% https://www.LaTeXTemplates.com
+%
+% Authors:
+% Vel (vel@latextemplates.com)
+% Stefano (https://www.kindoblue.nl)
+%
+% License:
+% CC BY-NC-SA 4.0 (https://creativecommons.org/licenses/by-nc-sa/4.0/)
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%----------------------------------------------------------------------------------------
+%	PACKAGES AND OTHER DOCUMENT CONFIGURATIONS
+%----------------------------------------------------------------------------------------
+
+\documentclass[
+	%letterpaper, % Uncomment for US letter paper size
+	parskip=half, % Vertical whitespace between paragraphs
+	%foldmarks=hp, % Uncomment to remove fold marks on the left side of the first page
+	enlargefirstpage=true, % Allow more text on the first page
+]{scrlttr2} % Use the KOMA-Script letter class
+
+\usepackage{fontsize} % Allows changing the default font size to an arbitrary value
+\changefontsize[16pt]{12pt} % Change the default font size and baselineskip
+\usepackage{anyfontsize} % Allows font sizes at arbitrary values
+
+\setlength{\parindent}{0pt} % Paragraph indentation
+
+%\pagestyle{empty} % Uncomment this for no footer on the second and onwards pages
+
+%----------------------------------------------------------------------------------------
+%	FONTS
+%----------------------------------------------------------------------------------------
+
+\usepackage[utf8]{inputenc} % Required for inputting international characters
+\usepackage[T1]{fontenc} % Output font encoding for international characters
+
+\usepackage{ebgaramond} % Use the EB Garamond font as the main serif font
+\usepackage{lato} % Use the Lato font as the sans font
+
+\usepackage[letterspace=50]{microtype} % Required for changing letter spacing
+
+\usepackage{fontawesome5} % Allows the use of Font Awesome icons
+\usepackage[hidelinks]{hyperref}
+
+%----------------------------------------------------------------------------------------
+%	COVER LETTER INFORMATION
+%----------------------------------------------------------------------------------------
+
+\setkomavar{fromname}{Yiran Liu} % Your name
+\setkomavar{signature}{Yiran Liu} % Your name as you want it to appear in the signature
+
+\newkomavar{subtitle}\setkomavar{subtitle}{Computer Engineering Student} % Set the subtitle line for the first page header, leave empty for no subtitle
+
+\setkomavar{fromaddress}{} % Your address or location
+\setkomavar{fromphone}{+1 (437) 535-8276} % Your phone number
+\setkomavar{fromemail}{\href{mailto:y3275liu@uwaterloo.ca}{y3275liu@uwaterloo.ca}} % Your email address
+
+\setkomavar{place}{} % A city or country that's output before the date automatically, add your location here if you want this
+\setkomavar{date}{\today} % Date output above the letter, use \today for today's date or leave this empty for no date
+
+\setkomavar{subject}{Application for Research Intern Position} % Bold text above the letter specifying what it's for, useful for specifying the job you are applying for. Leave this empty for no subject.
+
+% These are not used in this document, uncomment them if you would like to use them and output their values with e.g.: \usekomavar{fromurl}
+%\setkomavar{fromfax}{+1 (123) 456 7890} % Your fax number
+\setkomavar{fromurl}{\href{https://github.com/catr1xLiu/}{github.com/catr1xLiu/}} % Your personal website
+
+%------------------------------------------------
+
+\setkomavar{firsthead}{ % Style the first page header
+	\centering\scshape % Text position and styling
+	{\huge\textls{\usekomavar{fromname}}}\\[4pt] % Your name
+	{\large\usekomavar{subtitle}} % Subtitle
+}
+
+\setplength{firstheadvpos}{0.045\paperheight} % Vertical position of the header on the first page
+
+%------------------------------------------------
+
+\setkomavar{firstfoot}{ % Style the first page footer
+	\centering\normalfont % Text position and styling
+	{\small{\footnotesize\faEnvelope}\hspace{4pt}\usekomavar{fromemail}\hspace{8pt}{\footnotesize\faMobile*}\hspace{4pt}\usekomavar{fromphone}\hspace{8pt}{\footnotesize\faGithub}\hspace{4pt}\usekomavar{fromurl}}
+}
+
+\setplength{firstfootvpos}{0.96\paperheight} % Vertical position of the footer on the first page
+\setplength{refvpos}{7.5cm} % Move letter body up to reduce white space (DIN default is ~9cm)
+
+%----------------------------------------------------------------------------------------
+
+\begin{document}
+
+%----------------------------------------------------------------------------------------
+%	COVER LETTER CONTENT
+%----------------------------------------------------------------------------------------
+
+\begin{letter}{
+	Waabi Recruiting Team \\
+	Waabi Innovation Inc
+}
+
+\opening{Dear Waabi Recruiting Team,}
+
+I am a 1B Computer Engineering student at UWaterloo. I recently worked on deep learning research at the National Research Council (NRC) Canada. I am applying for the Research Intern position because I want to explore an area in physical AI that I believe is underexplored. I want to integrate state-of-the-art visuomotor policies and diffusion-based action prediction models into autonomous vehicles.
+
+The job description emphasizes the need for new ideas in prediction and behaviors. In my current research, I use conditional diffusion networks to predict motion, representing trajectory points as rich feature vectors. For my haptic-fused robotics project, which I recently submitted to RoboTac 2026, I implemented Diffusion Policy with Real-Time Chunking (RTC) to predict a robot's future actions in real time. At the same time, my human motion synthesis project uses Motion Diffusion Models (MDM) and ST-GCNs to create complex kinematic sequences. This work was recently accepted to an ICRA 2026 workshop. Running these models required me to scale PyTorch training pipelines across a 36-node SLURM cluster. This experience gives me the research background needed to address the complex agent and pedestrian prediction challenges at Waabi.
+
+In addition to my AI research, I have a strong interest in simulation and software engineering. I created MapleSim, an open-source rigid-body physics library used by over 500 FIRST Robotics teams worldwide. Working on this large-scale Java/WPILib project gave me a solid foundation in object-oriented design and physics simulation. With the strong C++ skills from my degree, I am confident in writing the scalable, production-ready code necessary to connect AI with simulation environments like Waabi World.
+
+I would love to bring my research drive and software engineering skills to your team to help advance autonomous transportation. Thank you for your time, and I look forward to hearing from you.
+
+Sincerely yours, \\
+\usekomavar{signature}
+
+%----------------------------------------------------------------------------------------
+
+\end{letter}
+
+\end{document}
