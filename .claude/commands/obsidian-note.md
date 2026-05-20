@@ -16,7 +16,10 @@
 - All examples and exercises — they are essential for exam prep
 - All theorems, definitions, and key formulas exactly as written (correct errors, don't rewrite)
 
-**Output:** Always wrap the final note in a markdown code block so the UI doesn't auto-render it.
+**What to ask:**
+When the given material is NOT a note (e.g. lecture slides, external tutorials), agent must confirm the note structure with the user before writing a single line of markdown. You need to outline the title and content of each sub-section, where to use callouts and where to add drawings, then await the user for refinement of the plan.
+
+**Output:** Write the markdown file under this directory.
 
 ---
 

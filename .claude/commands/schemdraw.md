@@ -1,186 +1,280 @@
 # Skill: Draw Circuit Diagrams with SchemDraw
 
-Use this skill to generate circuit diagrams for ECE124 (Digital Circuits & Systems), ECE140 (Linear Circuits), or any course requiring schematics. Output is SVG, embedded directly in Obsidian notes.
+Use this skill to generate circuit diagrams for ECE124 (Digital Circuits & Systems), ECE140 (Linear Circuits), or any course requiring schematics. Output is SVG embedded in Obsidian notes.
+
+## ⚠️ MANDATORY: Read Documentation Before Drawing
+
+**Before writing any circuit, read the relevant sections of the local documentation:**
+
+```
+.claude/refs/schemdraw/usage/placement.rst   ← anchors, tox/toy, hold, move_from
+.claude/refs/schemdraw/gallery/logicgate.rst ← half adder, full adder, SR latch, JK FF patterns
+.claude/refs/schemdraw/elements/logic.rst    ← gate list, inputnots, Table, Kmap
+.claude/refs/schemdraw/usage/styles.rst      ← themes, color, dark mode
+```
+
+Do not skip this step. Prior attempts without reading docs produced incorrect wire routing.
+
+---
+
+## Dark Mode (Obsidian)
+
+Obsidian uses dark mode. SVGs must have **white strokes on a transparent background**.
+
+**Do NOT** use the matplotlib backend for final SVGs — it adds a white background rectangle.
+
+Use the SVG backend with `color='white'`:
+
+```python
+import matplotlib
+matplotlib.use('Agg')          # headless; needed for PNG verification only
+import schemdraw
+from schemdraw import logic    # use `from schemdraw import logic`, NOT `import schemdraw.logic`
+
+MEDIA = '../CE1B/ECE124 - Digital Circuits & Systems/media/'
+
+def my_circuit(d):
+    # ... circuit drawing code ...
+    pass
+
+# PNG: matplotlib backend, black strokes — for visual verification only
+with schemdraw.Drawing() as d:
+    d.config(unit=0.5, fontsize=11)
+    my_circuit(d)
+    d.save(MEDIA + 'circuit.png')
+
+# SVG: svg backend, white strokes, transparent bg — this goes in Obsidian
+schemdraw.use('svg')
+with schemdraw.Drawing(file=MEDIA + 'circuit.svg') as d:
+    d.config(unit=0.5, fontsize=11, color='white')
+    my_circuit(d)
+```
+
+After generating, **read the PNG** to verify correctness before declaring done.
+
+---
 
 ## Workflow
 
-1. **Write a Python script** with the circuit code (save as a temp file, e.g. `/tmp/circuit_name.py`).
-2. **Run it** from the repo root:
-   ```bash
-   cd "Python Image Processor" && uv run python /tmp/circuit_name.py
-   ```
-3. The script saves `output.svg` to the target `media/` folder.
-4. **Embed** in the Obsidian note:
-   ```
-   <img src="circuit_name.svg" alt="description" width="70%">
-   ```
-   SVG files embed natively in Obsidian — no conversion needed.
+1. Read the docs listed above.
+2. Write the circuit as a function `fn(d)` that accepts a Drawing.
+3. Run PNG pass (matplotlib, black) and read the PNG.
+4. Fix any errors.
+5. Run SVG pass (svg backend, white) once PNG is correct.
+6. Embed in the note: `<img src="media/circuit.svg" alt="…" width="65%">`
+
+Run script from the Python Image Processor directory:
+```bash
+cd "Python Image Processor" && uv run python /tmp/circuit.py
+```
 
 ---
 
-## Script Template
+## Logic Gate Circuits — Critical Rules
+
+### Import
+```python
+from schemdraw import logic   # NOT `import schemdraw.logic as logic`
+```
+Use `logic.Line()`, `logic.Wire()`, `logic.Dot()` for all wires in logic diagrams — not `elm.Line()`.
+
+### Gate unit
+Use `unit=0.5` for logic gate circuits. Gate separation is `d.unit * 2` (= 1.0).
+
+### Wire shapes (`logic.Wire`)
+
+| Shape | Path |
+|-------|------|
+| `'-|'` | Horizontal **then** vertical |
+| `'|-'` | Vertical **then** horizontal |
+| `'n'`  | Vertical-diagonal-vertical (N up) |
+| `'N'`  | Vertical-diagonal-vertical (N down) |
+| `'c'`  | Horizontal-vertical-horizontal |
+
+### Centering output gates between two input gates
+
+Follow the full adder pattern from `gallery/logicgate.rst`:
 
 ```python
-import schemdraw
+# Place gate1 and gate2 separated by d.unit*2
+gate1 = logic.And(inputs=2).right()
+d.move_from(gate1.in1, dy=-2.5)
+gate2 = logic.And(inputs=2).right().anchor('in1')
+
+# Center output gate between gate1 and gate2
+d.move_from(gate1.out, dy=-(gate1.out.y - gate2.out.y) / 2)
+out_gate = logic.Or(inputs=2).right()
+
+# Connect with vertical wires (gate.out.x ≈ out_gate.in.x)
+logic.Line().at(gate1.out).toy(out_gate.in1)
+logic.Line().at(gate2.out).toy(out_gate.in2)
+```
+
+### Shared inputs — stem + junction pattern
+
+When an input branches to two gates (e.g. x3 → AND1.in2 directly AND → NOT → AND2.in2), use the **vertical stem + center junction** pattern from the full adder. Do NOT route `Wire('|-')` from a deep anchor back up — this creates a large ugly loop.
+
+```python
+# NOT for the shared input, placed left of the lower gate's input
+d.move_from(gate2.in2, dx=-1.5)
+not_gate = logic.Not().right().anchor('out')
+logic.Line().right().at(not_gate.out).tox(gate2.in2)
+
+# Stem: vertical line from upper gate input DOWN to NOT level
+stem = logic.Line().down().at(gate1.in2).toy(not_gate.in1)
+
+# Branch: dot + horizontal label at the center of the stem
+with d.hold():
+    logic.Dot().at(stem.center)
+    logic.Line().left().at(stem.center).tox(not_input_ref).label('$x$', 'left')
+
+# Connect stem bottom to NOT input horizontally
+logic.Line().left().at(stem.end).tox(not_gate.in1)
+```
+
+### Input wires
+
+Draw input wires FROM gate anchors going left:
+```python
+logic.Line().left(d.unit * 2).at(gate.in1).idot().label('A', 'left')  # with junction
+logic.Line().left().at(gate.in1).tox(ref_anchor).label('B', 'left')   # align with another input
+```
+
+Use `.idot()` (dot at start = at the gate) when the same input fans to multiple places.
+
+### `tox` / `toy` auto-direction
+
+`logic.Line().at(A).toy(B)` and `logic.Line().at(A).tox(B)` automatically set direction — no need to specify `.up()` / `.right()` etc. when using these.
+
+---
+
+## Gate Reference
+
+```python
+from schemdraw import logic
+
+logic.And(inputs=2)          # AND gate; anchors: in1, in2, out
+logic.Nand(inputs=2)         # NAND gate
+logic.Or(inputs=2)           # OR gate
+logic.Nor(inputs=2)          # NOR gate
+logic.Xor(inputs=2)          # XOR gate
+logic.Xnor(inputs=2)         # XNOR gate
+logic.Not()                  # NOT gate (2-terminal, extends leads)
+logic.Buf()                  # Buffer
+
+# Pre-inverted inputs (active-low bubbles on gate inputs)
+logic.Nand(inputs=3, inputnots=[1])   # bubble on in1 only
+```
+
+Gates with >2 inputs: `logic.Nand(inputs=4)` — back of gate auto-extends.
+
+---
+
+## Analog Element Reference — `elm.*`
+
+```python
 import schemdraw.elements as elm
 
-schemdraw.use('svg')  # headless, no GUI, no matplotlib needed
-
-with schemdraw.Drawing(file='../CE1B/ECE124 - Digital Circuits & Systems/media/circuit_name.svg') as d:
-    d.config(unit=3, fontsize=12)
-    # ... add elements here ...
+elm.Resistor()       elm.Capacitor()       elm.Inductor()
+elm.Diode()          elm.Zener()           elm.LED()
+elm.SourceV()        elm.SourceI()         elm.Battery()
+elm.BjtNpn()         elm.NFet()            elm.Opamp()
+elm.Line()           elm.Wire('|-')        elm.Dot()
+elm.Ground()         elm.Gap()
 ```
 
-For **logic gates**, add:
-```python
-import schemdraw.logic as logic
-```
-Then use `logic.And()`, `logic.Or()`, etc. (see below).
-
----
-
-## Element Reference
-
-### Passive (Two-Terminal) — `elm.*`
-
-| Class | Description |
-|---|---|
-| `Resistor()` | IEEE zigzag resistor |
-| `ResistorIEC()` | IEC rectangle resistor |
-| `Capacitor()` | Non-polar capacitor |
-| `Capacitor2()` | Curved-plate capacitor |
-| `CapacitorVar()` | Variable capacitor |
-| `Inductor()` | Inductor (loops) |
-| `Inductor2()` | Inductor (arcs) |
-| `Diode()` | Standard diode |
-| `Zener()` | Zener diode |
-| `LED()` | LED |
-| `Schottky()` | Schottky diode |
-
-### Sources — `elm.*`
-
-| Class | Description |
-|---|---|
-| `SourceV()` | Voltage source (circle, +/−) |
-| `SourceI()` | Current source (circle, arrow) |
-| `SourceControlledV()` | Dependent voltage source (diamond) |
-| `SourceControlledI()` | Dependent current source (diamond) |
-| `Battery()` | Battery |
-| `MeterV()` | Voltmeter |
-| `MeterI()` | Ammeter |
-
-### Lines & Connections — `elm.*`
-
-| Class | Description |
-|---|---|
-| `Line()` | Plain wire |
-| `Wire('|-')` | L-shaped wire, horizontal then vertical |
-| `Wire('-|')` | L-shaped wire, vertical then horizontal |
-| `Wire('n')` | N-shaped (zig right-up-right) |
-| `Wire('N')` | N-shaped (zig right-down-right) |
-| `Dot()` | Junction dot |
-| `Ground()` | Ground (earth symbol) |
-| `GroundSignal()` | Signal ground |
-| `Vdd()` | Vdd power rail |
-| `Vss()` | Vss power rail |
-| `NoConnect()` | ×-mark (no connection) |
-| `Label()` | Floating text label |
-| `Gap()` | Open-circuit gap with optional label |
-
-### Logic Gates — `logic.*` (import: `import schemdraw.logic as logic`)
-
-| Class | Description |
-|---|---|
-| `logic.And(inputs=2)` | AND gate |
-| `logic.Nand(inputs=2)` | NAND gate |
-| `logic.Or(inputs=2)` | OR gate |
-| `logic.Nor(inputs=2)` | NOR gate |
-| `logic.Xor(inputs=2)` | XOR gate |
-| `logic.Xnor(inputs=2)` | XNOR gate |
-| `logic.Not()` | NOT (inverter bubble) |
-| `logic.Buf()` | Buffer |
-
-Gate anchors: `.in1`, `.in2`, `.in3`, … `.out`
-
-### Flip-Flops & MSI — `elm.*`
-
-| Class | Description |
-|---|---|
-| `DFlipFlop()` | D flip-flop |
-| `JKFlipFlop()` | JK flip-flop |
-| `Multiplexer()` | MUX |
-| `Ic()` | Generic IC box |
-
-### Transistors — `elm.*`
-
-| Class | Description |
-|---|---|
-| `BjtNpn()` | NPN BJT |
-| `BjtPnp()` | PNP BJT |
-| `NFet()` | N-channel MOSFET |
-| `PFet()` | P-channel MOSFET |
-
-BJT anchors: `.base`, `.collector`, `.emitter`  
-MOSFET anchors: `.gate`, `.drain`, `.source`
-
-### Opamp — `elm.*`
-
-```python
-op = elm.Opamp()
-# anchors: .in1 (−), .in2 (+), .out, .vs, .vd
-```
+Analog circuits: use `unit=3`, `fontsize=12`. Logic circuits: `unit=0.5`, `fontsize=11`.
 
 ---
 
 ## Placement API
 
-All placement methods **chain** on the element:
-
 | Method | Effect |
-|---|---|
-| `.right()` / `.left()` / `.up()` / `.down()` | Set drawing direction |
-| `.length(n)` | Override element length (default = `d.unit`) |
-| `.at(anchor)` | Start element at a specific anchor point |
-| `.anchor('name')` | Which of this element's anchors attaches to the current drawing position |
-| `.tox(anchor)` | Extend to the x-coordinate of `anchor` |
-| `.toy(anchor)` | Extend to the y-coordinate of `anchor` |
-| `.endpoints(p1, p2)` | Force exact start and end points |
-| `.flip()` | Mirror across the element axis |
-| `.reverse()` | Swap start and end (reverses current direction) |
-| `.dot()` | Add a junction dot at the end |
-| `.idot()` | Add a junction dot at the start |
-| `.hold()` | Place element but don't advance drawing position |
-
-**Save and restore position:**
-```python
-with d.hold():
-    # draw a branch; position restores after the block
-    elm.Line().down()
-    elm.Ground()
-```
-
-**Manual move:**
-```python
-d.move_from(element.anchor_name, dx=0, dy=-1)
-```
+|--------|--------|
+| `.right()` / `.left()` / `.up()` / `.down()` | Set direction |
+| `.at(anchor)` | Start at anchor |
+| `.anchor('name')` | Attach named anchor to current position |
+| `.tox(anchor)` | Extend to anchor's x (auto-sets direction) |
+| `.toy(anchor)` | Extend to anchor's y (auto-sets direction) |
+| `.dot()` / `.idot()` | Junction dot at end / start |
+| `.hold()` | Place without moving cursor |
+| `d.move_from(anchor, dx=, dy=)` | Move cursor relative to anchor |
+| `d.hold()` context manager | Save/restore cursor position |
 
 ---
 
 ## Labels
 
 ```python
-elm.Resistor().label('R1')                        # above (default)
-elm.Resistor().label('100Ω', loc='bot')            # below
-elm.Capacitor().label('$1\,\mu F$', loc='right')  # right, with LaTeX
-elm.Line().label(['+', '$V_o$', '−'], loc='bot')  # evenly-spaced along wire
+elm.Resistor().label('$R_1$')                    # top (default)
+elm.Resistor().label('$100\,\Omega$', loc='bot') # bottom
+logic.Line().at(gate.in1).left().label('A', 'left')  # on wire end
 ```
-
-`loc` options: `'top'` (default), `'bot'`, `'left'`, `'right'`, `'center'`, or anchor name.  
-LaTeX math: wrap in `$...$`.
 
 ---
 
-## Complete Examples
+## Verified Examples
+
+### Full Adder (from official docs — use as layout reference)
+
+```python
+with schemdraw.Drawing() as d:
+    d.config(unit=0.5)
+    X1 = logic.Xor()
+    A = logic.Line().left(d.unit*2).at(X1.in1).idot().label('A', 'left')
+    B = logic.Line().left().at(X1.in2).dot()
+    logic.Line().left().label('B', 'left')
+    logic.Line().right().at(X1.out).idot()
+    X2 = logic.Xor().anchor('in1')
+    C = logic.Line().down(d.unit*2).at(X2.in2)
+    with d.hold():
+        logic.Dot().at(C.center)
+        logic.Line().tox(A.end).label('C$_{in}$', 'left')
+    A1 = logic.And().right().anchor('in1')
+    logic.Wire('-|').at(A1.in2).to(X1.out)
+    d.move_from(A1.in2, dy=-d.unit*2)
+    A2 = logic.And().right().anchor('in1')
+    logic.Wire('-|').at(A2.in1).to(A.start)
+    logic.Wire('-|').at(A2.in2).to(B.end)
+    d.move_from(A1.out, dy=-(A1.out.y-A2.out.y)/2)
+    O1 = logic.Or().right().label('C$_{out}$', 'right')
+    logic.Line().at(A1.out).toy(O1.in1)
+    logic.Line().at(A2.out).toy(O1.in2)
+    logic.Line().at(X2.out).tox(O1.out).label('S', 'right')
+```
+
+### SOP Circuit with Shared Input (verified working)
+
+```python
+def sop(d):
+    """f = x2'x3 + x1x3'"""
+    and1 = logic.And(inputs=2).right()
+    d.move_from(and1.in1, dy=-2.5)
+    and2 = logic.And(inputs=2).right().anchor('in1')
+    d.move_from(and1.out, dy=-(and1.out.y - and2.out.y) / 2)
+    or_g = logic.Or(inputs=2).right()
+    logic.Line().at(and1.out).toy(or_g.in1)
+    logic.Line().at(and2.out).toy(or_g.in2)
+    logic.Line().right(0.5).at(or_g.out).label('$f$', 'right')
+
+    d.move_from(and1.in1, dx=-1.5)
+    not2 = logic.Not().right().anchor('out')
+    logic.Line().right().at(not2.out).tox(and1.in1)
+    logic.Line().left(0.5).at(not2.in1).label('$x_2$', 'left')
+
+    d.move_from(and2.in2, dx=-1.5)
+    not3 = logic.Not().right().anchor('out')
+    logic.Line().right().at(not3.out).tox(and2.in2)
+
+    # Stem + center junction for shared x3 input
+    x3_stem = logic.Line().down().at(and1.in2).toy(not3.in1)
+    with d.hold():
+        logic.Dot().at(x3_stem.center)
+        logic.Line().left().at(x3_stem.center).tox(not2.in1).label('$x_3$', 'left')
+    logic.Line().left().at(x3_stem.end).tox(not3.in1)
+
+    logic.Line().left().at(and2.in1).tox(not2.in1).label('$x_1$', 'left')
+```
 
 ### Voltage Divider (ECE140)
 
@@ -188,10 +282,8 @@ LaTeX math: wrap in `$...$`.
 import schemdraw
 import schemdraw.elements as elm
 
-schemdraw.use('svg')
-
-with schemdraw.Drawing(file='../CE1B/ECE140 - Linear Circuits/media/voltage_divider.svg') as d:
-    d.config(unit=3, fontsize=12)
+with schemdraw.Drawing(file='../media/voltage_divider.svg') as d:
+    d.config(unit=3, fontsize=12, color='white')  # white for dark mode
     V1 = elm.SourceV().up().label('$V_s$')
     elm.Line().right()
     R1 = elm.Resistor().down().label('$R_1$').dot()
@@ -203,57 +295,3 @@ with schemdraw.Drawing(file='../CE1B/ECE140 - Linear Circuits/media/voltage_divi
     elm.Line().left().tox(V1.start)
     elm.Line().up().toy(V1.start)
 ```
-
-### S-R Latch (ECE124)
-
-```python
-import schemdraw
-import schemdraw.elements as elm
-import schemdraw.logic as logic
-
-schemdraw.use('svg')
-
-with schemdraw.Drawing(file='../CE1B/ECE124 - Digital Circuits & Systems/media/sr_latch.svg') as d:
-    d.config(unit=0.5, fontsize=11)
-    g1 = logic.Nor()
-    d.move_from(g1.in1, dy=-2.5)
-    g2 = logic.Nor().anchor('in1')
-    g1out = elm.Line().right(.25).at(g1.out)
-    elm.Wire('N', k=.5).at(g2.in1).to(g1out.end).dot()
-    g2out = elm.Line().right(.25).at(g2.out)
-    elm.Wire('N', k=.5).at(g1.in2).to(g2out.end).dot()
-    elm.Line().at(g1.in1).left(.5).label('R', 'left')
-    elm.Line().at(g2.in2).left(.5).label('S', 'left')
-    elm.Line().at(g1.out).right(.75).label('Q', 'right')
-    elm.Line().at(g2.out).right(.75).label(r'$\overline{Q}$', 'right')
-```
-
-### Half Adder (ECE124)
-
-```python
-import schemdraw
-import schemdraw.elements as elm
-import schemdraw.logic as logic
-
-schemdraw.use('svg')
-
-with schemdraw.Drawing(file='../CE1B/ECE124 - Digital Circuits & Systems/media/half_adder.svg') as d:
-    d.config(unit=0.5)
-    S = logic.Xor().label('S', 'right')
-    elm.Line().left(d.unit * 2).at(S.in1).idot().label('A', 'left')
-    B = elm.Line().left().at(S.in2).dot()
-    elm.Line().left().label('B', 'left')
-    elm.Line().down(d.unit * 3).at(S.in1)
-    C = logic.And().right().anchor('in1').label('C', 'right')
-    elm.Wire('|-').at(B.end).to(C.in2)
-```
-
----
-
-## Tips
-
-- `d.config(unit=N)` — default element length; use `unit=0.5` for compact logic diagrams, `unit=3` for spacious analog circuits.
-- SVG output scales losslessly — use `width="80%"` for wide diagrams, `"50%"` for small ones.
-- For multi-output nodes: place the first branch with `.dot()`, then use `.at(node.end)` or `d.hold()` for branches.
-- `d.unit` accesses the current unit value inside the `with` block (e.g., `elm.Line().right(d.unit * 2)`).
-- Always run with `schemdraw.use('svg')` — avoids matplotlib GUI pop-up in headless terminal.

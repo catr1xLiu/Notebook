@@ -1,0 +1,170 @@
+Solid State
+-----------
+
+.. jupyter-execute::
+    :hide-code:
+
+    import schemdraw
+    from schemdraw import elements as elm
+    schemdraw.use('svg')
+
+
+S-R Latch (Transistors)
+^^^^^^^^^^^^^^^^^^^^^^^
+
+.. jupyter-execute::
+    :code-below:
+
+    with schemdraw.Drawing() as d:
+        Q1 = elm.BjtNpn(circle=True).reverse().label('Q1', 'left')
+        Q2 = elm.BjtNpn(circle=True).at((d.unit*2, 0)).label('Q2')
+        elm.Line().up(d.unit/2).at(Q1.collector)
+
+        R1 = elm.Resistor().up().label('R1').hold()
+        elm.Dot().label('V1', 'left')
+        elm.Resistor().right(d.unit*.75).label('R3', 'bottom').dot()
+        elm.Line().up(d.unit/8).dot(open=True).label('Set', 'right').hold()
+        elm.Line().to(Q2.base)
+
+        elm.Line().up(d.unit/2).at(Q2.collector)
+        elm.Dot().label('V2', 'right')
+        R2 = elm.Resistor().up().label('R2', 'bottom').hold()
+        elm.Resistor().left(d.unit*.75).label('R4', 'bottom').dot()
+        elm.Line().up(d.unit/8).dot(open=True).label('Reset', 'right').hold()
+        elm.Line().to(Q1.base)
+
+        elm.Line().down(d.unit/4).at(Q1.emitter)
+        BOT = elm.Line().tox(Q2.emitter)
+        elm.Line().to(Q2.emitter)
+        elm.Dot().at(BOT.center)
+        elm.Ground().at(BOT.center)
+
+        TOP = elm.Line().endpoints(R1.end, R2.end)
+        elm.Dot().at(TOP.center)
+        elm.Vdd().at(TOP.center).label('+Vcc')
+
+
+741 Opamp Internal Schematic
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. jupyter-execute::
+    :code-below:
+
+    with schemdraw.Drawing() as d:
+        d.config(fontsize=12, unit=2.5)
+        Q1 = elm.BjtNpn().label('Q1').label('+IN', 'left')
+        Q3 = elm.BjtPnp().left().at(Q1.emitter).anchor('emitter').flip().label('Q3', 'left')
+        elm.Line().down().at(Q3.collector).dot()
+        with d.hold():
+            elm.Line().right(d.unit/4)
+            Q7 = elm.BjtNpn().anchor('base').label('Q7')
+        elm.Line().down(d.unit*1.25)
+        Q5 = elm.BjtNpn().left().flip().anchor('collector').label('Q5', 'left')
+        elm.Line().left(d.unit/2).at(Q5.emitter).label('OFST\nNULL', 'left').flip()
+        elm.Resistor().down().at(Q5.emitter).label('R1\n1K')
+        elm.Line().right(d.unit*.75).dot()
+        R3 = elm.Resistor().up().label('R3\n50K')
+        elm.Line().toy(Q5.base).dot()
+        with d.hold():
+            elm.Line().left().to(Q5.base)
+            elm.Line().at(Q7.emitter).toy(Q5.base).dot()
+        elm.Line().right(d.unit/4)
+        Q6 = elm.BjtNpn().anchor('base').label('Q6')
+        elm.Line().at(Q6.emitter).length(d.unit/3).label('\nOFST\nNULL', 'right').hold()
+        elm.Resistor().down().at(Q6.emitter).label('R2\n1K').dot()
+
+        elm.Line().at(Q6.collector).toy(Q3.collector)
+        Q4 = elm.BjtPnp().right().anchor('collector').label('Q4')
+        elm.Line().at(Q4.base).tox(Q3.base)
+        elm.Line().at(Q4.emitter).toy(Q1.emitter)
+        Q2 = elm.BjtNpn().left().flip().anchor('emitter').label('Q2', 'left').label('$-$IN', 'right')
+        elm.Line().up(d.unit/3).at(Q2.collector).dot()
+        Q8 = elm.BjtPnp().left().flip().anchor('base').label('Q8', 'left')
+        elm.Line().at(Q8.collector).toy(Q2.collector).dot()
+        elm.Line().at(Q2.collector).tox(Q1.collector)
+        elm.Line().up(d.unit/4).at(Q8.emitter)
+        top = elm.Line().tox(Q7.collector)
+        elm.Line().toy(Q7.collector)
+
+        elm.Line().right(d.unit*2).at(top.start)
+        elm.Line().down(d.unit/4)
+        Q9 = elm.BjtPnp().right().anchor('emitter').label('Q9', ofst=-.1)
+        elm.Line().at(Q9.base).tox(Q8.base)
+        elm.Dot().at(Q4.base)
+        elm.Line().down(d.unit/2).at(Q4.base)
+        elm.Line().tox(Q9.collector).dot()
+        elm.Line().at(Q9.collector).toy(Q6.collector)
+        Q10 = elm.BjtNpn().left().flip().anchor('collector').label('Q10', 'left')
+        elm.Resistor().at(Q10.emitter).toy(R3.start).label('R4\n5K').dot()
+
+        Q11 = elm.BjtNpn().right().at(Q10.base).anchor('base').label('Q11')
+        elm.Dot().at(Q11.base)
+        elm.Line().up(d.unit/2)
+        elm.Line().tox(Q11.collector).dot()
+        elm.Line().at(Q11.emitter).toy(R3.start).dot()
+        elm.Line().up(d.unit*2).at(Q11.collector)
+        elm.Resistor().toy(Q9.collector).label('R5\n39K')
+        Q12 = elm.BjtPnp().left().flip().anchor('collector').label('Q12', 'left', ofst=-.1)
+        elm.Line().up(d.unit/4).at(Q12.emitter).dot()
+        elm.Line().tox(Q9.emitter).dot()
+        elm.Line().right(d.unit/4).at(Q12.base).dot()
+        elm.Wire('|-').to(Q12.collector).dot().hold()
+        elm.Line().right(d.unit*1.5)
+        Q13 = elm.BjtPnp().anchor('base').label('Q13')
+        elm.Line().up(d.unit/4).dot()
+        elm.Line().tox(Q12.emitter)
+        K = elm.Line().down(d.unit/5).at(Q13.collector).dot()
+        elm.Line().down()
+        Q16 = elm.BjtNpn().right().anchor('collector').label('Q16', ofst=-.1)
+        elm.Line().left(d.unit/3).at(Q16.base).dot()
+        R7 = elm.Resistor().up().toy(K.end).label('R7\n4.5K').dot()
+        elm.Line().tox(Q13.collector).hold()
+        R8 = elm.Resistor().down().at(R7.start).label('R8\n7.5K').dot()
+        elm.Line().tox(Q16.emitter)
+        J = elm.Dot()
+        elm.Line().toy(Q16.emitter)
+        Q15 = elm.BjtNpn().right().at(R8.end).anchor('collector').label('Q15')
+        elm.Line().left(d.unit/2).at(Q15.base).dot()
+        C1 = elm.Capacitor().toy(R7.end).label('C1\n30pF')
+        elm.Line().tox(Q13.collector)
+        elm.Line().at(C1.start).tox(Q6.collector).dot()
+        elm.Line().down(d.unit/2).at(J.center)
+        Q19 = elm.BjtNpn().right().anchor('collector').label('Q19')
+        elm.Line().at(Q19.base).tox(Q15.emitter).dot()
+        elm.Line().toy(Q15.emitter).hold()
+        elm.Line().down(d.unit/4).at(Q19.emitter).dot()
+        elm.Line().left()
+        Q22 = elm.BjtNpn().left().anchor('base').flip().label('Q22', 'left')
+        elm.Line().at(Q22.collector).toy(Q15.base).dot()
+        elm.Line().at(Q22.emitter).toy(R3.start).dot()
+        elm.Line().tox(R3.start).hold()
+        elm.Line().tox(Q15.emitter).dot()
+        with d.hold():
+            elm.Resistor().up().label('R12\n50K')
+            elm.Line().toy(Q19.base)
+        elm.Line().tox(Q19.emitter).dot()
+        R11 = elm.Resistor().up().label('R11\n50')
+        elm.Line().toy(Q19.emitter)
+
+        elm.Line().up(d.unit/4).at(Q13.emitter)
+        elm.Line().right(d.unit*1.5).dot()
+        elm.Line().length(d.unit/4).label('V+', 'right').hold()
+        elm.Line().down(d.unit*.75)
+        Q14 = elm.BjtNpn().right().anchor('collector').label('Q14')
+        elm.Line().left(d.unit/2).at(Q14.base)
+        with d.hold():
+            elm.Line().down(d.unit/2).idot()
+            Q17 = elm.BjtNpn().left().anchor('collector').flip().label('Q17', 'left', ofst=-.1)
+            elm.Line().at(Q17.base).tox(Q14.emitter).dot()
+            J = elm.Line().toy(Q14.emitter)
+        elm.Line().tox(Q13.collector).dot()
+        elm.Resistor().down().at(J.start).label('R9\n25').dot()
+        elm.Wire('-|').to(Q17.emitter).hold()
+        elm.Line().down(d.unit/4).dot()
+        elm.Line().right(d.unit/4).label('OUT', 'right').hold()
+        elm.Resistor().down().label('R10\n50')
+        Q20 = elm.BjtPnp().right().anchor('emitter').label('Q20')
+        elm.Wire('c', k=-1).at(Q20.base).to(Q15.collector)
+        elm.Line().at(Q20.collector).toy(R3.start).dot()
+        elm.Line().right(d.unit/4).label('V-', 'right').hold()
+        elm.Line().tox(R11.start)
