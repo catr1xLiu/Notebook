@@ -23,3 +23,14 @@
 # Obsidian workspace
 .obsidian/workspace.json 
 
+# Quartus build database
+db/
+
+# Quartus Generated output files
+output_files/
+
+# Generated configuration files
+*_assignment_defaults.qdf
+
+# Backup files
+*.bak
