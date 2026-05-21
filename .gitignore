@@ -20,3 +20,6 @@
 *.nav
 *.snm
 *.vrb
+# Obsidian workspace
+.obsidian/workspace.json 
+
