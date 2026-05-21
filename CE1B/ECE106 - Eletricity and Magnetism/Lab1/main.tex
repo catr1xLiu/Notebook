@@ -1,0 +1,149 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% University/School Laboratory Report
+% LaTeX Template
+% Version 4.0 (March 21, 2022)
+%
+% This template originates from:
+% https://www.LaTeXTemplates.com
+%
+% Authors:
+% Vel (vel@latextemplates.com)
+% Linux and Unix Users Group at Virginia Tech Wiki
+%
+% License:
+% CC BY-NC-SA 4.0 (https://creativecommons.org/licenses/by-nc-sa/4.0/)
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%----------------------------------------------------------------------------------------
+%	PACKAGES AND DOCUMENT CONFIGURATIONS
+%----------------------------------------------------------------------------------------
+
+\documentclass[
+	letterpaper, % Paper size, specify a4paper (A4) or letterpaper (US letter)
+	11pt, % Default font size, specify 10pt, 11pt or 12pt
+]{CSUniSchoolLabReport}
+
+\usepackage{subcaption}
+\geometry{top=2cm} % Override top margin to reduce space before title
+
+%----------------------------------------------------------------------------------------
+%	REPORT INFORMATION
+%----------------------------------------------------------------------------------------
+
+\title{Lab 1 - Eletric Field  \\ ECE106} % Report title
+
+\author{Yiran \textsc{Liu} \&  Zijin \textsc{Yang}} % Author name(s), add additional authors like: '\& James \textsc{Smith}'
+
+\date{\today} % Date of the report
+
+%----------------------------------------------------------------------------------------
+
+\begin{document}
+
+\maketitle % Insert the title, author and date using the information specified above
+
+\begin{center}
+	\begin{tabular}{l r}
+      Lab Section: 206 \\
+      Student Number: Y.L. 21184901 \& Z.Y. 21196273
+	\end{tabular}
+\end{center}
+%----------------------------------------------------------------------------------------
+%	COMPUTATIONS
+%----------------------------------------------------------------------------------------
+
+\section{Hand Computations}
+
+\subsection{Eletric field of a single point charge}
+
+A point charge of $+1\mu C$ is placed at $(x, y, z) = (0, 0, 0)$, we can compute that the eletric field at the following three coordinates using the equation:
+$$
+  \vec{E} = \frac{1}{4\pi\epsilon_{0}} \frac{q}{r^2}\hat{r}
+$$
+where $\epsilon_{0} = 8.854187 \times 10^{-12}$ and $q = 1.0 \times 10^{-6} C$
+
+\begin{enumerate}
+  \item At $\vec{r} = (0.2, 0, 0)$, we have 
+    $$
+    \vec{E} = \frac{1}{4 \pi \epsilon_{0}} \frac{1.0 \times 10^{-6}}{0.2^2} \hat{i} = (224689, 0, 0)
+    $$
+  \item At $\vec{r} = (0.4, 0, 0)$, we have 
+    $$
+    \vec{E} = \frac{1}{4 \pi \epsilon_{0}} \frac{1.0 \times 10^{-6}}{0.4^2} \hat{i} = (56172.2, 0, 0)
+    $$
+  \item At $\vec{r} = (0.6, 0, 0)$, we have 
+    $$
+    \vec{E} = \frac{1}{4 \pi \epsilon_{0}} \frac{1.0 \times 10^{-6}}{0.6^2} \hat{i} = (24965.4, 0, 0)
+    $$
+\end{enumerate}
+
+
+\subsection{Volume Charge Density Calulation}
+
+To compute the volume charge density of a sphere with $r=0.01m$ and uniform distributin of its $+1\mu C$ charge (or $+1 \times 10^{-6}$), we first compute the volume:
+$$
+V = \frac{4}{3} \pi r^3 = 4.18879 \times 10^{-6} \ m^{3}
+$$
+\[
+  \rho = \frac{q}{V} = 0.238732 \ C \cdot m^{-3}
+\]
+
+
+
+%----------------------------------------------------------------------------------------
+%	SIMULATION RESULTS ANALYSIS
+%----------------------------------------------------------------------------------------
+
+\section{COMSOL Results Analysis}
+
+Following the lab instructions, we created this physics simulation of a sphere charge of $r=0.01m$ and uniform charge density $\rho=0.238732 \ C \cdot m^{-3}$ and three observation points at $(0.2, 0, 0), (0.4, 0, 0) and (0.6, 0, 0)$, assuming electrical potential $\phi = 0V$ at $R=5m$. 
+
+\begin{figure}[H] % [H] forces the figure to be placed exactly where it appears in the text
+	\centering % Horizontally center the figure
+	\includegraphics[width=0.9\textwidth]{./Figures/Overview.png} % Include the figure
+	\caption{Overview of simulation setup, boundary sphere not shown.}
+\end{figure}
+
+\subsection{Eletric Potential}
+
+Plotting the eletric field potential at default view, we observe no significant change in the entire space ($R=5m$) since this space is too big. Zooming in, we see that eletric potential decreases rapidly as distance from charge increases. 
+
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[b]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{./Figures/Potential-Default.png}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.45\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{./Figures/Potential-2D.png}
+    \end{subfigure}
+    \caption{Eletric field potential heatmaps. (Left) Multislice plot of the entire boundary space at \textit{Default View}; (Right) 2D plot of space near the sphere charge.}
+\end{figure}
+
+\subsection{Eletric Field}
+
+We plot the eletric field strenth and the 
+
+\begin{figure}[H] % [H] forces the figure to be placed exactly where it appears in the text
+	\centering % Horizontally center the figure
+	\includegraphics[width=0.75\textwidth]{./Figures/Eletric Field Magnitude.png} % Include the figure
+	\caption{Figure caption.}
+\end{figure}
+
+\begin{figure}[H] % [H] forces the figure to be placed exactly where it appears in the text
+	\centering % Horizontally center the figure
+	\includegraphics[width=0.75\textwidth]{./Figures/Eletric Field with Contour.png} % Include the figure
+	\caption{Figure caption.}
+\end{figure}
+
+%----------------------------------------------------------------------------------------
+%	ENHANCEMENT ACTIVITY
+%----------------------------------------------------------------------------------------
+
+\section{Enhancement Activity}
+
+
+\end{document}
