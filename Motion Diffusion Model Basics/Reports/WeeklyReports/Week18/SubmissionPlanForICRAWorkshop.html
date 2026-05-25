@@ -1,0 +1,756 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>ICRA 2026 Aging-Society Workshop — 8-page Expansion Plan</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+/* Override strong tags inside headings to maintain consistent weight */
+h1 strong,
+h2 strong,
+h3 strong {
+	font-weight: 600;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 10px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+
+	table.collection-content {
+		width: 100%;
+		table-layout: fixed;
+	}
+
+	table.collection-content th,
+	table.collection-content td {
+		overflow-wrap: anywhere;
+	}
+
+	table.collection-content td > .user,
+	table.collection-content td > time {
+		white-space: pre-wrap;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content-wrapper {
+	overflow-x: auto;
+}
+
+@media only print {
+	.collection-content-wrapper {
+		overflow-x: visible;
+	}
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.collection-content td {
+	white-space: pre-wrap;
+	word-break: break-word;
+}
+
+.column-list {
+	display: flex;
+	gap: 46px;
+}
+
+.column {
+	min-width: 0;
+	overflow: hidden;
+}
+
+.column > *:first-child {
+	margin-top: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+table {
+	border-collapse: collapse;
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol.numbered-list.numbered-list-digits-2 {
+	padding-inline-start: 2em;
+}
+
+ol.numbered-list.numbered-list-digits-3plus {
+	padding-inline-start: 2.4em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.page-description {
+	margin-bottom: 2em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.callout img.notion-static-icon {
+	width: 1em;
+	height: 1em;
+}
+
+.callout p {
+	margin: 0;
+}
+
+.callout h1,
+.callout h2,
+.callout h3 {
+	margin: 0 0 0.6rem;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+blockquote.quote-large {
+	font-size: 1.25em;
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(44, 44, 43, 1);
+}
+.highlight-gray {
+	color: rgba(125, 122, 117, 1);
+	fill: rgba(125, 122, 117, 1);
+}
+.highlight-brown {
+	color: rgba(159, 118, 90, 1);
+	fill: rgba(159, 118, 90, 1);
+}
+.highlight-orange {
+	color: rgba(210, 123, 45, 1);
+	fill: rgba(210, 123, 45, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 148, 52, 1);
+	fill: rgba(203, 148, 52, 1);
+}
+.highlight-teal {
+	color: rgba(80, 148, 110, 1);
+	fill: rgba(80, 148, 110, 1);
+}
+.highlight-blue {
+	color: rgba(56, 125, 201, 1);
+	fill: rgba(56, 125, 201, 1);
+}
+.highlight-purple {
+	color: rgba(154, 107, 180, 1);
+	fill: rgba(154, 107, 180, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(207, 81, 72, 1);
+	fill: rgba(207, 81, 72, 1);
+}
+.highlight-default_background {
+	color: rgba(44, 44, 43, 1);
+}
+.highlight-gray_background {
+	background: rgba(42, 28, 0, 0.07);
+}
+.highlight-brown_background {
+	background: rgba(139, 46, 0, 0.086);
+}
+.highlight-orange_background {
+	background: rgba(224, 101, 1, 0.129);
+}
+.highlight-yellow_background {
+	background: rgba(211, 168, 0, 0.137);
+}
+.highlight-teal_background {
+	background: rgba(0, 100, 45, 0.09);
+}
+.highlight-blue_background {
+	background: rgba(0, 124, 215, 0.094);
+}
+.highlight-purple_background {
+	background: rgba(102, 0, 178, 0.078);
+}
+.highlight-pink_background {
+	background: rgba(197, 0, 93, 0.086);
+}
+.highlight-red_background {
+	background: rgba(223, 22, 0, 0.094);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(125, 122, 117, 1);
+	fill: rgba(125, 122, 117, 1);
+}
+.block-color-brown {
+	color: rgba(159, 118, 90, 1);
+	fill: rgba(159, 118, 90, 1);
+}
+.block-color-orange {
+	color: rgba(210, 123, 45, 1);
+	fill: rgba(210, 123, 45, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 148, 52, 1);
+	fill: rgba(203, 148, 52, 1);
+}
+.block-color-teal {
+	color: rgba(80, 148, 110, 1);
+	fill: rgba(80, 148, 110, 1);
+}
+.block-color-blue {
+	color: rgba(56, 125, 201, 1);
+	fill: rgba(56, 125, 201, 1);
+}
+.block-color-purple {
+	color: rgba(154, 107, 180, 1);
+	fill: rgba(154, 107, 180, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(207, 81, 72, 1);
+	fill: rgba(207, 81, 72, 1);
+}
+.block-color-default_background {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray_background {
+	background: rgba(240, 239, 237, 1);
+}
+.block-color-brown_background {
+	background: rgba(245, 237, 233, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 235, 222, 1);
+}
+.block-color-yellow_background {
+	background: rgba(249, 243, 220, 1);
+}
+.block-color-teal_background {
+	background: rgba(232, 241, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(229, 242, 252, 1);
+}
+.block-color-purple_background {
+	background: rgba(243, 235, 249, 1);
+}
+.block-color-pink_background {
+	background: rgba(250, 233, 241, 1);
+}
+.block-color-red_background {
+	background: rgba(252, 233, 231, 1);
+}
+.select-value-color-default { background-color: rgba(42, 28, 0, 0.07); }
+.select-value-color-gray { background-color: rgba(28, 19, 1, 0.11); }
+.select-value-color-brown { background-color: rgba(127, 51, 0, 0.156); }
+.select-value-color-orange { background-color: rgba(196, 88, 0, 0.203); }
+.select-value-color-yellow { background-color: rgba(209, 156, 0, 0.282); }
+.select-value-color-green { background-color: rgba(0, 96, 38, 0.156); }
+.select-value-color-blue { background-color: rgba(0, 118, 217, 0.203); }
+.select-value-color-purple { background-color: rgba(92, 0, 163, 0.141); }
+.select-value-color-pink { background-color: rgba(183, 0, 78, 0.152); }
+.select-value-color-red { background-color: rgba(206, 24, 0, 0.164); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="35f9bbab-b2ab-8114-8952-c9a1725f0f88" class="page sans"><header><div class="page-header-icon undefined"><span class="icon">📝</span></div><h1 class="page-title" dir="auto">ICRA 2026 Aging-Society Workshop — 8-page Expansion Plan</h1><p class="page-description" dir="auto"></p></header><div class="page-body"><div style="display:contents" dir="auto"><blockquote id="8da523b2-5dae-46ce-83ce-ca7375eac972" class=""><strong>Target</strong>: <a href="https://sites.google.com/view/robotic-for-aging-society/homepage/">Robotic and AI for Aging Society</a> workshop @ ICRA 2026, Vienna.</blockquote></div><div style="display:contents" dir="auto"><blockquote id="f9058e39-6772-43ff-bc6d-79da62dac87d" class=""><strong>Deadline</strong>: 2026-05-25 (11 days from 2026-05-14).</blockquote></div><div style="display:contents" dir="auto"><blockquote id="a455cb9d-72e2-4a1f-a873-cb210d7a0e81" class=""><strong>Format</strong>: IEEE conference, 2–8 pages main content (refs unlimited), poster + possible spotlight.</blockquote></div><div style="display:contents" dir="auto"><blockquote id="0481a3e0-36ac-47a1-b7ef-ef1090394ae0" class=""><strong>Starting point</strong>: 4-page extended abstract <code>main.tex</code> in <code>Motion Diffusion Model Basics/Reports/ICRASubmission/</code>, originally targeted at the <em>Long-term Human Motion Prediction</em> workshop.</blockquote></div><div style="display:contents" dir="auto"><h1 id="5e01995c-b18e-43c6-aadc-cbd0c2098311" class="">1. Assessment of paper strength</h1></div><div style="display:contents" dir="ltr"><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="3609bbab-b2ab-8009-af78-dd35f32151bd"><div style="font-size:1.5em"><span class="icon">✅</span></div><div style="width:100%"><div style="display:contents" dir="auto"><h2 id="3609bbab-b2ab-8018-8bb4-fa08d0ba866a" class="">What&#x27;s strong</h2></div><div style="display:contents" dir="auto"><ol type="1" id="3609bbab-b2ab-8015-b381-d8837595687d" class="numbered-list" start="1"><li><strong>Pipeline engineering.</strong> VPoser-based SMPL fitting, T-pose / boundary-frame filters, axis-inversion fix (W12), root_y drift fix (W14), per-joint angular-velocity diagnostic that falsified the fps hypothesis (W14). Real work, well-documented in the weekly reports, but <strong>largely absent from the current 4 pages</strong>.</li></ol></div><div style="display:contents" dir="auto"><ol type="1" id="3609bbab-b2ab-8000-8c75-dc3356d5fece" class="numbered-list" start="2"><li><strong>Dataset baseline preserves the clinical signal end-to-end.</strong> Speed 1.22 → 1.10 m/s, stride 1.34 → 1.26 m, knee RoM 54.9° → 51.5°, stride-time CV 8.9 % → 15.0 % — monotonic with age, matches clinical literature. <em>This is the paper&#x27;s strongest empirical claim.</em></li></ol></div><div style="display:contents" dir="auto"><ol type="1" id="3609bbab-b2ab-80a1-996d-c8923a659028" class="numbered-list" start="3"><li><strong>Hip RoM contracts under the Elderly token</strong> (24–25° → 21.5°). A real qualitative win on conditioning.</li></ol></div><div style="display:contents" dir="auto"><ol type="1" id="3609bbab-b2ab-80fb-bfa7-c1b9ec113cb7" class="numbered-list" start="4"><li><strong>ST-GCN 64.6 % with subject-disjoint splits.</strong> Modest but defensible. Boundary-zone behavior (7/7 near-65 rough correct, 2-block) is more compelling than the headline number.</li></ol></div></div></figure></div><div style="display:contents" dir="auto"><p id="3609bbab-b2ab-80d2-b42a-f75a67ea40da" class="">
+</p></div><div style="display:contents" dir="ltr"><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="3609bbab-b2ab-802a-b256-f4df8db7b204"><div style="font-size:1.5em"><span class="icon">⚠️</span></div><div style="width:100%"><div style="display:contents" dir="auto"><h2 id="3609bbab-b2ab-80aa-aaa2-f02f994837d4" class="">What is missing</h2></div><div style="display:contents" dir="auto"><ol type="1" id="3609bbab-b2ab-80c0-9c70-e02b00f114fd" class="numbered-list" start="1"><li><strong>CV blow-up is currently waved away as &quot;diffusion stochasticity&quot;.</strong> Generated CV is 16–19 % across <em>all three</em> age groups — including Young. The dataset baseline puts Young at ~9 %. So the generated Young condition already sits at Elderly-baseline variability. This is not noise; the temporal-consistency signal didn&#x27;t transfer. The W14 finding (&quot;ankles 2.75×, knees 1.87× HumanML3D angular velocity in VC — VC distal-joint noise, not a conversion bug&quot;) is the honest diagnosis, and it&#x27;s not in the paper.</li></ol></div><div style="display:contents" dir="auto"><ol type="1" id="3609bbab-b2ab-80e9-987e-c5204140b8f1" class="numbered-list" start="2"><li><strong>§II.C &quot;Proposed Generative Network&quot; (continuous z_age via MLP + cross-attention) is described but never run.</strong> Only the LoRA prototype was implemented. Reviewers will look for matching experiments and find none. This is the biggest narrative-credibility crack.</li></ol></div><div style="display:contents" dir="auto"><ol type="1" id="3609bbab-b2ab-800a-867c-d9f923781454" class="block-color-yellow_background numbered-list" start="3"><li><strong>No baseline comparison.</strong> No vanilla MDM, no Shape-My-Moves-style alternative, no FID / R-Precision / diversity numbers. Only clinical metrics on our own outputs, with no anchor.</li></ol></div><div style="display:contents" dir="auto"><ol type="1" id="3609bbab-b2ab-8029-ae2f-c5ddf9b9d906" class="block-color-pink_background numbered-list" start="4"><li><strong>Adult class is essentially noise</strong> (54.5 % per-class, 13/44 pushed into Elderly). &quot;Captures kinematic extremes&quot; is honest, but the abstract reads as a clean classification win.</li></ol></div><div style="display:contents" dir="auto"><ol type="1" id="3609bbab-b2ab-8066-a471-f3eef65bfa86" class="block-color-purple_background numbered-list" start="5"><li><strong>Closed-loop classifier check is missing.</strong> W14 planned to run the ST-GCN on the 9 000 generated clips; the paper doesn&#x27;t have it. Single most informative number we could add.</li></ol></div><div style="display:contents" dir="auto"><ol type="1" id="3609bbab-b2ab-80f5-86b3-fd6ebfefdb47" class="block-color-red_background numbered-list" start="6"><li><strong>&quot;Motion prediction&quot; appears 5× in intro, 0× in experiments.</strong> Workshop reviewers want assistive-robot consequences, not kinematic plots alone.</li></ol></div><div style="display:contents" dir="auto"><ol type="1" id="3609bbab-b2ab-8087-bbb8-ffb9526f4ea8" class="numbered-list" start="7"><li><strong>Single dataset.</strong> VC is a stroke-rehab cohort; W14 showed it has genuine lower-limb mocap noise. Reviewers will ask about generalization — can&#x27;t fix in 12 days but must be acknowledged.</li></ol></div></div></figure></div><div style="display:contents" dir="auto"><hr id="a4d76875-2ed2-49ba-8b1c-f27195c3ad28"/></div><div style="display:contents" dir="auto"><h1 id="7904fd66-646e-4aec-9bd5-1c6a6d66bf05" class="">2. Workshop fit</h1></div><div style="display:contents" dir="auto"><p id="88cd3319-efdf-4223-8706-1975d92d2109" class="">The new venue (<em>Robotic and AI for Aging Society</em>) is broader than the original <em>Long-term Motion Prediction</em> target. Scope covers care robots, rehab, companion robots, ethics, deployment. Reframe accordingly:</p></div><div style="display:contents" dir="auto"><ul id="65bc8e74-408c-4d46-bb11-2bd243c08856" class="block-color-red_background bulleted-list"><li style="list-style-type:disc"><strong>Out</strong>: &quot;long-horizon motion prediction for safe HRI&quot; framing</li></ul></div><div style="display:contents" dir="auto"><ul id="26a82130-53b0-44db-b541-64bd5759cf87" class="block-color-teal_background bulleted-list"><li style="list-style-type:disc"><strong>In</strong>: &quot;age-aware motion priors as a building block for assistive robots interacting with older adults — what works, what doesn&#x27;t, what to fix next&quot;</li></ul></div><div style="display:contents" dir="auto"><ul id="82fdf97b-fd4a-4f23-a347-2703b2a8f57a" class="bulleted-list"><li style="list-style-type:disc"><strong>Keep</strong>: the assistive-robotics / aging-in-place language already in §I and §IV</li></ul></div><div style="display:contents" dir="auto"><hr id="7cd48475-0c8e-44e3-8b44-2af566b8961c"/></div><div style="display:contents" dir="auto"><h1 id="bd813073-872e-4639-b62f-2ae29a3f61eb" class="">3. New experiments</h1></div><div style="display:contents" dir="auto"><p id="6fec76f9-46bd-4955-a0fc-8e0607f6466b" class="">All four use existing checkpoints / data where possible. Four new experiments are planned for this week.</p></div><div style="display:contents" dir="auto"><p id="3609bbab-b2ab-8045-a8c7-d7ebaf0df601" class="">
+</p></div><div style="display:contents" dir="ltr"><figure class="block-color-teal_background callout" style="white-space:pre-wrap;display:flex" id="3609bbab-b2ab-80a7-a4b7-fa8fa0e9f87c"><div style="font-size:1.5em"><span class="icon">🧪</span></div><div style="width:100%"><div style="display:contents" dir="auto"><h3 id="10dba2da-16f5-4d9b-83b9-d48fd61dfafa" class="">Experiment A — Margin of Stability + Minimum Foot Clearance <code>[first half complete, 1 more day]</code></h3></div><div style="display:contents" dir="auto"><p id="807ea065-7b20-4918-83bc-48a668b5d65f" class="">Add two clinical metrics from the Literature Review:</p></div><div style="display:contents" dir="auto"><ul id="f4be1e88-87d1-4d02-ae99-e3714b44e118" class="bulleted-list"><li style="list-style-type:disc"><strong>MoS</strong>: <style>@import url('https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex-swap.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi mathvariant="normal">M</mi><mi mathvariant="normal">o</mi><mi mathvariant="normal">S</mi></mrow><mo>=</mo><mrow><mi mathvariant="normal">B</mi><mi mathvariant="normal">o</mi><mi mathvariant="normal">S</mi></mrow><mtext> boundary</mtext><mo>−</mo><mi>x</mi><mtext> </mtext><mrow><mi mathvariant="normal">C</mi><mi mathvariant="normal">o</mi><mi mathvariant="normal">M</mi></mrow></mrow><annotation encoding="application/x-tex">\mathrm{MoS} = \mathrm{BoS} \ \text{boundary} - x \ \mathrm{CoM}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord"><span class="mord mathrm">MoS</span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="mord"><span class="mord mathrm">BoS</span></span><span class="mspace"> </span><span class="mord text"><span class="mord">boundary</span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal">x</span><span class="mspace"> </span><span class="mord"><span class="mord mathrm">CoM</span></span></span></span></span></span></span><em>, where </em><em><style>@import url('https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex-swap.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mtext> </mtext><mrow><mi mathvariant="normal">C</mi><mi mathvariant="normal">o</mi><mi mathvariant="normal">M</mi></mrow><mo>=</mo><mrow><mi mathvariant="normal">C</mi><mi mathvariant="normal">o</mi><mi mathvariant="normal">M</mi></mrow><mo>+</mo><mi>v</mi><mtext> </mtext><mrow><mi mathvariant="normal">C</mi><mi mathvariant="normal">o</mi><mi mathvariant="normal">M</mi></mrow><mi mathvariant="normal">/</mi><msqrt><mrow><mi>g</mi><mi mathvariant="normal">/</mi><mi>l</mi></mrow></msqrt></mrow><annotation encoding="application/x-tex">x \ \mathrm{CoM} = \mathrm{CoM} + v \ \mathrm{CoM}/ \sqrt{g/l}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal">x</span><span class="mspace"> </span><span class="mord"><span class="mord mathrm">CoM</span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.7667em;vertical-align:-0.0833em;"></span><span class="mord"><span class="mord mathrm">CoM</span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1.24em;vertical-align:-0.305em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">v</span><span class="mspace"> </span><span class="mord"><span class="mord mathrm">CoM</span></span><span class="mord">/</span><span class="mord sqrt"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.935em;"><span class="svg-align" style="top:-3.2em;"><span class="pstrut" style="height:3.2em;"></span><span class="mord" style="padding-left:1em;"><span class="mord mathnormal" style="margin-right:0.03588em;">g</span><span class="mord">/</span><span class="mord mathnormal" style="margin-right:0.01968em;">l</span></span></span><span style="top:-2.895em;"><span class="pstrut" style="height:3.2em;"></span><span class="hide-tail" style="min-width:1.02em;height:1.28em;"><svg xmlns="http://www.w3.org/2000/svg" width="400em" height="1.28em" viewBox="0 0 400000 1296" preserveAspectRatio="xMinYMin slice"><path d="M263,681c0.7,0,18,39.7,52,119
+c34,79.3,68.167,158.7,102.5,238c34.3,79.3,51.8,119.3,52.5,120
+c340,-704.7,510.7,-1060.3,512,-1067
+l0 -0
+c4.7,-7.3,11,-11,19,-11
+H40000v40H1012.3
+s-271.3,567,-271.3,567c-38.7,80.7,-84,175,-136,283c-52,108,-89.167,185.3,-111.5,232
+c-22.3,46.7,-33.8,70.3,-34.5,71c-4.7,4.7,-12.3,7,-23,7s-12,-1,-12,-1
+s-109,-253,-109,-253c-72.7,-168,-109.3,-252,-110,-252c-10.7,8,-22,16.7,-34,26
+c-22,17.3,-33.3,26,-34,26s-26,-26,-26,-26s76,-59,76,-59s76,-60,76,-60z
+M1001 80h400000v40h-400000z"/></svg></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.305em;"><span></span></span></span></span></span></span></span></span></span></span></em>. Compute frame-by-frame, report mean AP MoS per condition. Normative elderly baseline ~11.4 cm (Cordeiro 2025).</li></ul></div><div style="display:contents" dir="auto"><ul id="71db973c-6dc4-4d8f-b0d2-bc35452576c5" class="bulleted-list"><li style="list-style-type:disc"><strong>MFC</strong>: minimum vertical toe-Z during mid-swing (trim ±20 % of swing window). Normative elderly: 1.0–2.4 cm (Galasso 2024).</li></ul></div><div style="display:contents" dir="auto"><p id="5892b6e5-c960-4dcd-8ad9-5d5d4908a715" class=""><strong>Output</strong>: extend <code>violin_comparison.png</code> with two more panels — MoS and MFC distributions across age conditions, with clinical reference bands overlaid.</p></div><div style="display:contents" dir="auto"><p id="3d26ff99-feac-4df0-983d-8c2c78326771" class=""><strong>Why it matters</strong>: promotes the &quot;clinical metrics&quot; framing from 3 generic spatiotemporal numbers to gold-standard biomechanical metrics. Aligns the evaluation with the lit-review claim that subjective realism is insufficient.</p></div></div></figure></div><div style="display:contents" dir="ltr"><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="3609bbab-b2ab-803e-93fc-ce15903d723b"><div style="font-size:1.5em"><span class="icon">🧪</span></div><div style="width:100%"><div style="display:contents" dir="auto"><h3 id="9f2d9a9b-8356-42b7-901a-23b5aa1f01e1" class="">Experiment B — Closed-loop classifier check <code>[~1 day]</code></h3></div><div style="display:contents" dir="auto"><p id="8a7834bc-f3ef-412c-bade-e8a7a2772be7" class="">Run the trained 2-block ST-GCN++ classifier on the 9 000 generated clips (3 000 each: Young / Adult / Elderly token).</p></div><div style="display:contents" dir="auto"><p id="36cd38c2-d974-42a0-b436-0b6a6b3393f9" class=""><strong>Output</strong>: 3×3 confusion matrix, per-condition accuracy. Compare to ST-GCN performance on real VC validation split.</p></div><div style="display:contents" dir="auto"><p id="0068e398-6ce7-492d-9a50-1e98fff68f50" class=""><strong>Caveat to disclose openly</strong>: the classifier was trained on VC, so this is a self-consistency check, not an independent metric. Frame as such.</p></div><div style="display:contents" dir="auto"><p id="9a05b2cb-e807-44db-884b-8e74e68f6d5a" class=""><strong>Why it matters</strong>: directly answers &quot;does the model&#x27;s <em>own</em> age detector think the generations are the right age?&quot;. Sinle most informative new number. Was already in the W14 plan.</p></div></div></figure></div><div style="display:contents" dir="ltr"><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="3609bbab-b2ab-8081-887e-c1807bae4e80"><div style="font-size:1.5em"><span class="icon">🧪</span></div><div style="width:100%"><div style="display:contents" dir="auto"><h3 id="d7ef14c8-5e96-4359-88ed-d187ced3bc57" class="">Experiment C — Rank / λ_prior ablation <code>[~2 days]</code></h3></div><div style="display:contents" dir="auto"><p id="29d33d2e-da84-46dc-b96a-dce5e7049e1e" class="">Matrix of LoRA training runs:</p></div><div style="display:contents" dir="ltr"><table id="0e2b5525-d36e-4da0-96da-a16aff9267fd" class="simple-table"><thead class="simple-table-header"><div style="display:contents" dir="ltr"><tr id="6da7109a-c994-4c02-91f5-b6a8649bb3d3"><th id="WNiz" class="simple-table-header-color simple-table-header">Rank</th><th id="jYAV" class="simple-table-header-color simple-table-header">λ_prior</th><th id="JXiW" class="simple-table-header-color simple-table-header">Status</th></tr></div></thead><tbody><div style="display:contents" dir="ltr"><tr id="3c7f7e1b-3425-4acd-891d-0e78b752d508"><td id="WNiz" class="">5</td><td id="jYAV" class="">1.0</td><td id="JXiW" class="">Done (W14)</td></tr></div><div style="display:contents" dir="ltr"><tr id="30cbc6bb-5470-45d5-bf4e-3d919ab02c52"><td id="WNiz" class="">12</td><td id="jYAV" class="">1.0</td><td id="JXiW" class="">Done (current best)</td></tr></div><div style="display:contents" dir="ltr"><tr id="d4585413-d7df-42b7-b477-2508324cd6fe"><td id="WNiz" class="">16</td><td id="jYAV" class="">1.0</td><td id="JXiW" class="">Done (W14)</td></tr></div><div style="display:contents" dir="ltr"><tr id="f3972ddb-e312-4d87-81d2-2a9b7755d2ce"><td id="WNiz" class="">12</td><td id="jYAV" class="">0.3</td><td id="JXiW" class=""><strong>Run</strong></td></tr></div><div style="display:contents" dir="ltr"><tr id="02d0c4b6-982a-4486-8c59-c3c6fb61fbd6"><td id="WNiz" class="">12</td><td id="jYAV" class="">0.1</td><td id="JXiW" class=""><strong>Run</strong></td></tr></div></tbody></table></div><div style="display:contents" dir="auto"><p id="12344100-a299-4a45-bcb6-f2d68ac60de2" class="">For each: hip RoM (Young vs Elderly), stride-time CV (Young vs Elderly), classifier accuracy on generations (re-uses Exp A).</p></div><div style="display:contents" dir="auto"><p id="4651471f-3557-4b9c-857e-df0a278580b9" class=""><strong>Output</strong>: ablation table; one paragraph diagnosing whether CV blow-up tracks rank (under-parametrization) or λ_prior (over-regularization toward HumanML3D prior). W14 explicitly hypothesized rank-5 + λ=1.0 was &quot;under-parametrized and over-regularized&quot; — this confirms or refutes.</p></div><div style="display:contents" dir="auto"><p id="997c9c14-df41-442a-9fc1-d21fb3ba2f0a" class=""><strong>Why it matters</strong>: replaces &quot;we suspect diffusion stochasticity&quot; with a real diagnosis. Makes the limitation actionable instead of mysterious.</p></div></div></figure></div><div style="display:contents" dir="ltr"><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="3609bbab-b2ab-8011-a9fc-e111938d2f0b"><div style="font-size:1.5em"><span class="icon">🖥️</span></div><div style="width:100%"><div style="display:contents" dir="auto"><h3 id="f16e0e0f-708c-4437-ba9f-1d8fabe17019" class="">Experiment D — Per-age-group qualitative figure <code>[~0.5 day]</code></h3></div><div style="display:contents" dir="auto"><p id="ce7dbf15-189b-46b7-bdcb-562b91a5206c" class="">Three generated clips (one Young / Adult / Elderly token), same text prompt, rendered as:</p></div><div style="display:contents" dir="auto"><ul id="8f7e7ff4-b42a-444f-a8a9-677743d46eee" class="bulleted-list"><li style="list-style-type:disc">Stick-figure stroboscopic overlay (every 6th frame stacked)</li></ul></div><div style="display:contents" dir="auto"><ul id="08e25e65-9334-4926-bf32-bf0ec7ff7ed4" class="bulleted-list"><li style="list-style-type:disc">CoM trajectory in horizontal plane underneath</li></ul></div><div style="display:contents" dir="auto"><p id="c70adb15-8972-4612-a600-762d2335a8bb" class="">Since we have more time, it’s possible to write a python script to automate blender.</p></div></div></figure></div><div style="display:contents" dir="ltr"><figure class="block-color-red_background callout" style="white-space:pre-wrap;display:flex" id="3609bbab-b2ab-8058-859a-e9828ac1f0bc"><div style="font-size:1.5em"><span class="icon">⛔</span></div><div style="width:100%"><div style="display:contents" dir="auto"><h3 id="396725a8-8c8d-4167-81ff-bdbe7a1d438d" class="">Out of scope (<del>not planned</del>)</h3></div><div style="display:contents" dir="auto"><ul id="3e03af57-3c84-4e4a-8ef7-e039740e5226" class="bulleted-list"><li style="list-style-type:disc">Continuous z_age implementation (§II.C). <strong>Future work.</strong></li></ul></div><div style="display:contents" dir="auto"><ul id="377bf723-0345-459f-be5c-3392e0a852e2" class="bulleted-list"><li style="list-style-type:disc">Retraining ST-GCN with SupCon on AMASS (W12 proposal). <strong>Future work.</strong></li></ul></div><div style="display:contents" dir="auto"><ul id="29c3fdf0-7212-4de3-b627-ea68b27c7b82" class="bulleted-list"><li style="list-style-type:disc">Cross-dataset validation. <strong>Future work.</strong></li></ul></div><div style="display:contents" dir="auto"><ul id="f4053364-5689-4780-ac78-9bd773be0666" class="bulleted-list"><li style="list-style-type:disc">Robot-system demo / planning consequence.<strong> Future work.</strong></li></ul></div></div></figure></div><div style="display:contents" dir="auto"><hr id="892eeeb5-c908-4d41-a1e8-1a4235920d88"/></div><div style="display:contents" dir="auto"><h2 id="4b4cbcb2-fa2c-43e3-82b3-f3b6a4ab2111" class="">4. New 8-page layout</h2></div><div style="display:contents" dir="ltr"><table id="f9b615e6-fff9-4ec6-8191-181fa20eae71" class="simple-table"><thead class="simple-table-header"><div style="display:contents" dir="ltr"><tr id="fe0935f0-bde6-4aca-9616-afb18898600f"><th id="|_p^" class="simple-table-header-color simple-table-header">Section</th><th id="E:cH" class="simple-table-header-color simple-table-header">Pages</th><th id="J~mL" class="simple-table-header-color simple-table-header">Status</th><th id="&lt;k[}" class="simple-table-header-color simple-table-header">Key changes</th></tr></div></thead><tbody><div style="display:contents" dir="ltr"><tr id="6cc8fd66-e5c4-443d-93a9-0eafa4237091"><td id="|_p^" class="">Abstract + I. Introduction</td><td id="E:cH" class="">1.0</td><td id="J~mL" class="">Edit</td><td id="&lt;k[}" class="">Reframe toward assistive interaction / aging society; downplay long-horizon prediction; preview the honest CV limitation.</td></tr></div><div style="display:contents" dir="ltr"><tr id="586aab9a-10ef-460b-a9bb-c7e26a1ce840"><td id="|_p^" class="">II. Related Work <em>(new)</em></td><td id="E:cH" class="">0.75</td><td id="J~mL" class="">Write</td><td id="&lt;k[}" class="">Pulled out of §I. Three buckets: (a) generative motion bias (GAITGen, BioMoDiffuse, Shape-My-Moves, Dance-like-a-Chicken); (b) clinical gait ML (Bailey, Cordeiro, Galasso, Díaz); (c) age- / shape-conditioned synthesis.</td></tr></div><div style="display:contents" dir="ltr"><tr id="7e09c373-f229-4a0f-ba14-4b888d597ac8"><td id="|_p^" class="">III. Methodology</td><td id="E:cH" class="">1.5</td><td id="J~mL" class="">Heavy edit</td><td id="&lt;k[}" class="">Add clip-yield table (480 raw → 450 effective, rejection reasons); formal definitions of CV / MoS / MFC; LoRA training config table (rank, λ_prior, steps, batch, compute). <strong>Drop continuous-z_age from methods</strong>; move to §VI Future Work.</td></tr></div><div style="display:contents" dir="ltr"><tr id="5a3ea6df-3b28-4b8d-9669-1ccd5573dc6f"><td id="|_p^" class="">IV. Experiments &amp; Results</td><td id="E:cH" class="">3.0</td><td id="J~mL" class="">Mostly new</td><td id="&lt;k[}" class="">A. Pipeline data-quality validation (existing). B. ST-GCN classifier (existing). C. Generation results: rank/λ ablation (Exp C, new) → closed-loop classifier (Exp A, new) → clinical metric panel including MoS/MFC (Exp B, new) → per-group qualitative (Exp D, new).</td></tr></div><div style="display:contents" dir="ltr"><tr id="c0a7b1fe-815f-40eb-b73e-915b63a6b382"><td id="|_p^" class="">V. Discussion &amp; Limitations</td><td id="E:cH" class="">0.75</td><td id="J~mL" class="">Rewrite</td><td id="&lt;k[}" class="">Honest CV diagnosis (rank vs λ, VC distal-joint noise from W14); classifier circularity caveat; single-dataset limit; unimplemented continuous z_age.</td></tr></div><div style="display:contents" dir="ltr"><tr id="5b246ee0-2173-4fed-9d8e-e382f79a00bc"><td id="|_p^" class="">VI. Future Work + Conclusion</td><td id="E:cH" class="">0.5</td><td id="J~mL" class="">Rewrite</td><td id="&lt;k[}" class="">Continuous z_age architecture (former §II.C); larger age-diverse dataset; assistive-robot integration.</td></tr></div><div style="display:contents" dir="ltr"><tr id="d78cbaf1-192a-4b1e-923d-c97417677eb7"><td id="|_p^" class="">Acknowledgments</td><td id="E:cH" class="">—</td><td id="J~mL" class="">Keep</td><td id="&lt;k[}" class="">NRC Aging-in-Place + Trixie.</td></tr></div><div style="display:contents" dir="ltr"><tr id="0c90b89f-68dc-4575-803b-b093e6e56562"><td id="|_p^" class="">References</td><td id="E:cH" class="">—</td><td id="J~mL" class="">Expand</td><td id="&lt;k[}" class="">Target ~25–30 refs (currently 14). Add: GAITGen, BioMoDiffuse, Shape My Moves, Bailey, Cordeiro, Galasso, Díaz, motion-prediction in HRI, classical fall-risk biomechanics.</td></tr></div></tbody></table></div><div style="display:contents" dir="auto"><hr id="0f4896dc-10e6-4c36-9519-cf32e0611291"/></div><div style="display:contents" dir="auto"><p id="2f3d1368-9c50-465e-8c93-684df7e4cf41" class=""><strong>Critical path</strong>: Exp C training (Days 1–4) → §IV writing (Days 7–8). If λ_prior runs reveal a meaningful improvement, may want to regenerate the 9 000 clips with the best config and re-run A + B on them (adds ~1 day; cut from buffer).</p></div><div style="display:contents" dir="auto"><p id="1ad53e81-2399-479c-92c0-2be07b96cc50" class=""><strong>Buffer</strong>: ~1.5 days (Day 11 + half of Day 12). Don&#x27;t compress further.</p></div><div style="display:contents" dir="auto"><hr id="b1c94a56-3e6a-40f6-a136-327fc103c83e"/></div><div style="display:contents" dir="auto"><h2 id="d5175796-551a-4928-9b87-03c32e42c19d" class="">5. Risk register</h2></div><div style="display:contents" dir="ltr"><table id="d9e43411-7f92-424f-a2bf-9f605566f8f5" class="simple-table"><thead class="simple-table-header"><div style="display:contents" dir="ltr"><tr id="3d4c2933-7be5-45b4-9c13-750662ac59a8"><th id="BNo\" class="simple-table-header-color simple-table-header">Risk</th><th id="eq&lt;]" class="simple-table-header-color simple-table-header">Influence - Likelihood</th><th id="`;sT" class="simple-table-header-color simple-table-header">Mitigation</th></tr></div></thead><tbody><div style="display:contents" dir="ltr"><tr id="bb5e5aab-beba-4810-8a79-b9ab7c8c5798"><td id="BNo\" class="block-color-red_background">Exp C λ ablation reveals CV blow-up <em>gets worse</em> at lower λ</td><td id="eq&lt;]" class="block-color-red_background">High - Medium</td><td id="`;sT" class="block-color-red_background">Still publishable — confirms LoRA-style adaptation is fundamentally temporal-blind. Lean into the finding.</td></tr></div><div style="display:contents" dir="ltr"><tr id="645baec8-65b8-4947-8d95-d8d415dad68e"><td id="BNo\" class="block-color-yellow_background">MoS / MFC code also show no significant difference</td><td id="eq&lt;]" class="block-color-yellow_background">Medium - Medium</td><td id="`;sT" class="block-color-yellow_background">Validate on one known VC subject (Young), if results also don’t show difference, drop the experiment.</td></tr></div><div style="display:contents" dir="ltr"><tr id="54e369ae-3c74-4a89-b914-5e27d7153e40"><td id="BNo\" class="block-color-teal_background">Cliassifier not showing difference</td><td id="eq&lt;]" class="block-color-teal_background">Low - High</td><td id="`;sT" class="block-color-teal_background">As discussed before, use PCA analysis of latent vector to show observed difference rather than.</td></tr></div></tbody></table></div><div style="display:contents" dir="auto"><p id="3609bbab-b2ab-80d5-87b8-de94b939a6f0" class="">
+</p></div></div></article><span class="sans" style="font-size:14px;padding-top:2em"></span></body></html>

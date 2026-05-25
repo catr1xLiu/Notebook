@@ -1,25 +1,62 @@
 \begin{figure*}[t]
 	\centering
-	\includegraphics[width=0.8\textwidth]{sec/figs/Pipeline.png}
+	\includegraphics[width=0.9\textwidth]{sec/figs/Pipeline.png}
 	\caption{Overview of the latent-conditioned motion diffusion framework.}
 	\label{fig:framework}
 \end{figure*}
 
-Accurate human motion anticipation is foundational for safe human-robot interaction, especially when robots share space with humans, plan around future human movement, or provide proactive assistance.
-Recent deep generative architectures, particularly Motion Diffusion Models (MDMs)~\cite{tevet2023human, chen2022mld}, have demonstrated strong capability in synthesizing realistic and diverse human motions, offering a promising way to model possible future motion trajectories.
-However, widely used motion-capture datasets, such as AMASS~\cite{mahmood2019amass}, are heavily biased toward young and healthy actors~\cite{umagami2025intend}.
-As a result, existing models can synthesize diverse actions and styles~\cite{sawdayee2025dance}, but often overlook subject-specific biomechanical factors that influence how different populations move.
-While recent work has begun to incorporate physical attributes such as body shape into motion generation~\cite{liao2025shapemovestextdrivenshapeaware}, explicit modeling of age-related kinematic characteristics remains underexplored.
-This limitation is particularly critical for assistive robots and intelligent systems in aging-in-place and eldercare scenarios, where anticipating older adults' movements is essential for safe navigation, timely assistance, collision avoidance, and proactive human-robot interaction.
+Population aging is creating increasing demand for assistive robotic systems that can support older adults in daily living, mobility, rehabilitation, and safe human--robot interaction.
+For such systems, human motion models are not merely tools for animation or prediction; they provide a foundation for anticipating human movement, evaluating robot behaviors in simulation, and designing assistance strategies that are sensitive to functional diversity.
+However, many existing human motion models implicitly assume a generic healthy adult motion prior, which may be insufficient for robotics applications involving older adults, whose movement patterns can differ substantially due to changes in gait, balance, joint mobility, and physical capacity.
 
-Concurrently, clinical gait analysis has long provided a rigorous foundation for biomechanical assessment.
-Recent integration of sensor-based data acquisition and data analysis have quantified physiological and spatiotemporal gait signatures associated with aging and health conditions~\cite{diaz2025evaluating, galasso2024development}.
-Incorporating such biomechanical gait signatures into deep learning-based human motion models is essential for improving the physical validity of synthesized motion.
+Recent deep generative architectures, particularly Motion Diffusion Models (MDMs)~\cite{tevet2023human, chen2022mld}, have demonstrated strong capability in synthesizing realistic and diverse human motions.
+These models offer a promising route toward generating controllable human motion for robot simulation, planning, and interaction design.
+Nevertheless, widely used motion-capture datasets, such as AMASS~\cite{mahmood2019amass}, are heavily biased toward young and healthy actors~\cite{umagami2025intend}.
+As a result, current generative models can synthesize diverse actions and styles~\cite{sawdayee2025dance}, but often overlook population-specific biomechanical and functional factors that influence how different people move.
+While recent work has begun to incorporate physical attributes such as body shape into motion generation~\cite{liao2025shapemovestextdrivenshapeaware}, explicit modeling of age-related kinematic characteristics remains underexplored.
+This limitation is particularly important for assistive robotics in aging societies, where robots must interact with users whose motion characteristics may deviate from those represented in standard motion datasets.
+
+
+% Accurate human motion anticipation is foundational for safe human-robot interaction, especially when robots share space with humans, plan around future human movement, or provide proactive assistance.
+% Recent deep generative architectures, particularly Motion Diffusion Models (MDMs)~\cite{tevet2023human, chen2022mld}, have demonstrated strong capability in synthesizing realistic and diverse human motions, offering a promising way to model possible future motion trajectories.
+% However, widely used motion-capture datasets, such as AMASS~\cite{mahmood2019amass}, are heavily biased toward young and healthy actors~\cite{umagami2025intend}.
+% As a result, existing models can synthesize diverse actions and styles~\cite{sawdayee2025dance}, but often overlook subject-specific biomechanical factors that influence how different populations move.
+% While recent work has begun to incorporate physical attributes such as body shape into motion generation~\cite{liao2025shapemovestextdrivenshapeaware}, explicit modeling of age-related kinematic characteristics remains underexplored.
+% This limitation is particularly critical for assistive robots and intelligent systems in aging-in-place and eldercare scenarios, where anticipating older adults' movements is essential for safe navigation, timely assistance, collision avoidance, and proactive human-robot interaction.
+
+Clinical gait analysis provides a complementary foundation for addressing this limitation.
+Decades of biomechanics and rehabilitation research have shown that gait encodes important information about aging, mobility, balance, and functional health.
+Recent advances in sensor-based data acquisition and data analysis have further enabled the quantification of physiological and spatiotemporal gait signatures associated with aging and health conditions~\cite{diaz2025evaluating, galasso2024development}.
+However, clinical gait data are rarely integrated with modern generative motion models, leaving a gap between clinically meaningful motion assessment and data-driven human motion synthesis for robotics.
+
+
+% Concurrently, clinical gait analysis has long provided a rigorous foundation for biomechanical assessment.
+% Recent integration of sensor-based data acquisition and data analysis have quantified physiological and spatiotemporal gait signatures associated with aging and health conditions~\cite{diaz2025evaluating, galasso2024development}.
+% Incorporating such biomechanical gait signatures into deep learning-based human motion models is essential for improving the physical validity of synthesized motion.
 
 To address this gap, we present a proof-of-concept framework that integrates clinical gait analysis with deep generative modeling toward age-aware human motion synthesis.
-First, we develop a data processing pipeline that converts clinical gait recordings from subjects across different age groups into standardized skeletal representations.
-We then fine-tune an existing Spatial-Temporal Graph Convolutional Network (ST-GCN)~\cite{yan2018stgcn} to infer age group from individual motion clips and to encode age-related biomechanical characteristics into a latent representation.
-We train a Low-Rank Adaptation (LoRA) adapter for a Motion Diffusion Model (MDM)~\cite{tevet2023human} to generate text-driven human motions conditioned on age group.
-The generated motion clips are evaluated using established clinical and kinematic gait metrics to examine whether the model reproduces biomechanical signatures associated with aging.
-Our analysis shows that the model successfully captures spatial kinematic constraints --- Elderly-conditioned clips produce measurably reduced hip Range-of-Motion relative to Young and Adult conditions --- but fails to reproduce spatiotemporal consistency, with generated stride variability massively overshooting clinical baselines due to the inherent stochasticity of the diffusion process.
-These findings identify dataset size, data quality, and conditioning strength as critical bottlenecks for age-aware motion synthesis, and motivate the collection of larger, more diverse human motion datasets spanning age groups, health conditions, and functional mobility levels.
+Our pipeline converts clinical gait recordings into learning-ready motion representations while addressing defects from legacy motion-capture data.
+Using motion clips from younger and older adults, we first train a Spatial--Temporal Graph Convolutional Network (ST-GCN)~\cite{yan2018stgcn} to examine whether age-related signatures are detectable from motion alone.
+We then fine-tune a Motion Diffusion Model~\cite{tevet2023human} with Low-Rank Adaptation (LoRA)~\cite{hu2022lora} to generate text-conditioned human motion with age-group control.
+Finally, we evaluate generated motions using clinical and kinematic gait metrics to assess whether age-conditioned synthesis preserves meaningful aging-related motion characteristics.
+
+%To address this gap, we present a proof-of-concept framework that integrates clinical gait analysis with deep generative modeling toward age-aware human motion synthesis.
+% First, we develop a data processing pipeline that converts clinical gait recordings from subjects across different age groups into standardized skeletal representations.
+% We then fine-tune an existing Spatial-Temporal Graph Convolutional Network (ST-GCN)~\cite{yan2018stgcn} to infer age group from individual motion clips and to encode age-related biomechanical characteristics into a latent representation.
+% We train a Low-Rank Adaptation (LoRA)~\cite{hu2022lora} adapter for a Motion Diffusion Model (MDM)~\cite{tevet2023human} to generate text-driven human motions conditioned on age group.
+% The generated motion clips are evaluated using established clinical and kinematic gait metrics to examine whether the model reproduces biomechanical signatures associated with aging.
+
+Our results suggest that age-related motion signatures can be partially learned and reproduced by modern generative motion models, while also revealing important limitations in dataset size, data quality, and conditioning strength.
+These findings motivate larger and more diverse human motion datasets spanning age groups, health conditions, and functional mobility levels.
+More broadly, our work points toward age-aware human motion generation as a useful component for assistive robotics: it can support simulation of diverse users, evaluation of robot behaviors under realistic human motion variability, and future development of personalized assistance strategies for aging societies.
+
+% Our analysis shows that the model successfully captures spatial kinematic constraints --- Elderly-conditioned clips produce measurably reduced hip Range-of-Motion relative to Young and Adult conditions --- but fails to reproduce spatiotemporal consistency, with generated stride variability massively overshooting clinical baselines due to the inherent stochasticity of the diffusion process.
+% These findings identify dataset size, data quality, and conditioning strength as critical bottlenecks for age-aware motion synthesis, and motivate the collection of larger, more diverse human motion datasets spanning age groups, health conditions, and functional mobility levels.
+
+The main contributions of this work are:
+\begin{itemize}
+    \item We introduce an age-conditioned human motion generation framework that connects clinical gait recordings with modern text-conditioned motion diffusion models.
+    \item We demonstrate that age-group information can be recognized from processed clinical motion clips using an ST-GCN, providing evidence that the representation preserves aging-related motion signatures.
+    \item We fine-tune an MDM with LoRA to generate age-controllable human motions and evaluate 9,000 generated clips using clinical and kinematic gait metrics.
+    \item We discuss how age-aware motion generation can support assistive robotics through simulation of diverse users, evaluation of robot behavior, and future personalized assistance design.
+\end{itemize}

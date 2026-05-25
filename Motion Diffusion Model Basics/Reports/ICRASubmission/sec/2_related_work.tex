@@ -1,0 +1,38 @@
+\subsection{Human Motion and Gait Analysis}
+
+Human gait has long been studied as a compact yet informative representation of mobility, functional status, and individual motion characteristics.
+Early computer-vision work treated walking as a spatio-temporal signal rather than a collection of isolated poses.
+For example, Ohara et al. introduced the concept of \emph{gait volume}, in which image sequences of walking are represented as a spatio-temporal volume and analyzed in the frequency domain to capture person-specific walking rhythms~\cite{ohara2004gaitvolume}.
+This line of work is relevant to our study because it highlights that aging-related motion signatures are not only spatial, e.g., posture or limb configuration, but also temporal, e.g., rhythm, cadence, and phase relationships across body segments.
+
+In parallel, clinical gait analysis has provided a rigorous foundation for quantifying human mobility through interpretable biomechanical and spatio-temporal metrics.
+Parameters such as walking speed, step length, stride length, cadence, double-support time, and gait variability are commonly used to characterize mobility and functional decline across adulthood~\cite{herssens2020investigation}.
+Recent sensor-based and markerless approaches further suggest that gait analysis can be moved beyond specialized motion-capture laboratories, using depth cameras or wearable sensors to estimate clinically meaningful gait parameters in more accessible settings~\cite{wagner2023methods}.
+These developments are important for assistive robotics, where robots operating in homes, clinics, or care facilities must reason about human mobility from practical sensing setups rather than ideal laboratory recordings.
+
+Learning-based skeleton representations have further expanded the scope of motion analysis.
+Spatial-Temporal Graph Convolutional Networks (ST-GCNs) model the human body as a graph whose nodes correspond to joints and whose edges encode anatomical and temporal dependencies~\cite{yan2018spatial}.
+Such graph-based models are well suited for analyzing gait and full-body movement because they preserve both the structured connectivity of the body and the temporal evolution of motion.
+However, most gait-analysis and skeleton-recognition studies remain primarily discriminative: they classify actions, estimate identity, detect abnormality, or predict demographic attributes.
+They do not directly provide generative models that can synthesize controllable, age-conditioned 3D motion for downstream robotics applications.
+Our work addresses this gap by using clinical gait recordings not only for recognizing age-related motion signatures, but also for guiding age-aware human motion generation.
+
+\subsection{Motion Generation for Human-Centered Robotics}
+
+Recent progress in human motion generation has been driven by large-scale motion-capture archives and text-conditioned generative models.
+Datasets such as AMASS have unified heterogeneous motion-capture collections into parametric body representations~\cite{mahmood2019amass}, while text-motion datasets such as HumanML3D have enabled natural-language-conditioned 3D motion synthesis~\cite{guo2022generating}.
+Building on these resources, diffusion-based models have become a major paradigm for motion generation.
+The Motion Diffusion Model (MDM) adapts classifier-free diffusion to human motion and supports text-to-motion, action-to-motion, and motion editing tasks~\cite{tevet2023human}.
+Motion Latent Diffusion (MLD) improves efficiency by performing diffusion in a learned motion latent space~\cite{chen2023executing}, while MotionDiffuse demonstrates fine-grained text-driven generation through iterative denoising~\cite{zhang2024motiondiffuse}.
+These methods show that deep generative models can synthesize diverse and semantically meaningful human motions.
+
+For human-centered robotics, however, the goal is not only to generate visually plausible motion, but also to model the kinds of human movement that robots must anticipate, assist, or safely accommodate.
+Human-aware planning research has shown that robots can behave more safely and efficiently when they explicitly account for human motion, personal space, and future human trajectories~\cite{sisbot2007human,unhelkar2018human}.
+Assistive robotics further strengthens this need because the human partner may have age-related or condition-related mobility constraints.
+Simulation frameworks such as Assistive Gym explicitly model human motion, physical capabilities, and preferences in activities of daily living~\cite{erickson2020assistivegym}.
+Similarly, the HARMONIC dataset provides multimodal observations of human--robot interaction during assistive eating, supporting research on intention prediction, shared autonomy, and human-state modeling~\cite{newman2022harmonic}.
+
+Despite this progress, most existing human motion generation models are trained on general-purpose motion datasets dominated by young or healthy actors, and their conditioning mechanisms usually focus on action labels, language prompts, trajectories, or style.
+Population-level biomechanical factors, such as age, functional mobility, and clinical gait characteristics, are rarely modeled explicitly.
+This limitation is particularly important for robots intended to support aging societies, where safe and proactive assistance requires motion priors that reflect how older adults actually move.
+Our work contributes toward this direction by integrating clinical gait analysis, age-group recognition, and text-conditioned motion diffusion to study whether generated motions can preserve measurable aging-related kinematic signatures.
