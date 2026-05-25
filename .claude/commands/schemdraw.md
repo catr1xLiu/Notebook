@@ -110,27 +110,39 @@ logic.Line().at(gate1.out).toy(out_gate.in1)
 logic.Line().at(gate2.out).toy(out_gate.in2)
 ```
 
-### Shared inputs — stem + junction pattern
+### Shared inputs — prefer `inputnots` (bubble notation) over explicit NOTs
 
-When an input branches to two gates (e.g. x3 → AND1.in2 directly AND → NOT → AND2.in2), use the **vertical stem + center junction** pattern from the full adder. Do NOT route `Wire('|-')` from a deep anchor back up — this creates a large ugly loop.
+**At `unit=0.5`, the AND gate's input pitch is only 0.5 units. An explicit `logic.Not()` placed inline with `gate.in2` ends up visually tangent to wires entering `gate.in1` — readers see a NOT that isn't there.** Two prior fixes (longer leads, NOT in the gate gap with Wire routing) both still produced confusing geometry. The robust fix is to drop the explicit NOT element entirely:
 
 ```python
-# NOT for the shared input, placed left of the lower gate's input
-d.move_from(gate2.in2, dx=-1.5)
-not_gate = logic.Not().right().anchor('out')
-logic.Line().right().at(not_gate.out).tox(gate2.in2)
+# Top product:    x2' · x3   → bubble on in1, direct in2
+g1 = logic.And(inputs=2, inputnots=[1]).right()
+d.move_from(g1.in1, dy=-3.0)
+# Bottom product: x1  · x3'  → direct in1, bubble on in2
+g2 = logic.And(inputs=2, inputnots=[2]).right().anchor('in1')
 
-# Stem: vertical line from upper gate input DOWN to NOT level
-stem = logic.Line().down().at(gate1.in2).toy(not_gate.in1)
+# OR gate centred between AND outputs
+d.move_from(g1.out, dy=-(g1.out.y - g2.out.y) / 2)
+or_g = logic.Or(inputs=2).right()
+logic.Line().at(g1.out).toy(or_g.in1)
+logic.Line().at(g2.out).toy(or_g.in2)
+logic.Line().right(0.5).at(or_g.out).label('$f$', 'right')
 
-# Branch: dot + horizontal label at the center of the stem
+rail_x = g1.in1.x - 2.5
+logic.Line().at(g1.in1).tox(rail_x).label('$x_2$', 'left')
+# x3 shared: ONE vertical stem from g1.in2 to g2.in2 — the bubble at g2.in2 does the inversion
+stem = logic.Line().at(g1.in2).toy(g2.in2)
 with d.hold():
     logic.Dot().at(stem.center)
-    logic.Line().left().at(stem.center).tox(not_input_ref).label('$x$', 'left')
-
-# Connect stem bottom to NOT input horizontally
-logic.Line().left().at(stem.end).tox(not_gate.in1)
+    logic.Line().at(stem.center).tox(rail_x).label('$x_3$', 'left')
+logic.Line().at(g2.in1).tox(rail_x).label('$x_1$', 'left')
 ```
+
+The same code drives the NAND-NAND equivalent: pass `logic.Nand` for both gate roles — the bubbles still mark the input inversions, and the NAND output bubbles are intrinsic to NAND.
+
+**Only fall back to explicit `logic.Not()` elements when:**
+- A NOT acts on a literal that does *not* enter a downstream gate's input (rare in two-level synthesis).
+- The drawing must literally show three element types (NOT, AND, OR) — and even then, increase `unit` to at least 0.75 and place NOTs in the gap between gates (vertically centred, not inline with the input rail) with Wire routing.
 
 ### Input wires
 

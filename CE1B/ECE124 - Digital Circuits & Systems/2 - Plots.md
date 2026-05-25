@@ -149,36 +149,29 @@ with schemdraw.Drawing() as d:
 
 ## Specific SOP — $f = x_2'x_3 + x_1 x_3'$
 
-Two-level NOT-AND-OR implementation. $x_3$ is shared: goes directly to the first AND and through NOT to the second.
+Two-level NOT-AND-OR implementation. Use `inputnots=[i]` to mark inverted inputs as bubbles on the AND gate, so the shared $x_3$ wire becomes a single clean vertical stem from $g_1.in_2$ to $g_2.in_2$ — no separate NOT bodies that collide with the input wires.
 
 ```python
+def build(d, GateMid, GateOut):
+    g1 = GateMid(inputs=2, inputnots=[1]).right()  # bubble on in1 → x2'
+    d.move_from(g1.in1, dy=-3.0)
+    g2 = GateMid(inputs=2, inputnots=[2]).right().anchor('in1')  # bubble on in2 → x3'
+    d.move_from(g1.out, dy=-(g1.out.y - g2.out.y) / 2)
+    g_out = GateOut(inputs=2).right()
+    logic.Line().at(g1.out).toy(g_out.in1)
+    logic.Line().at(g2.out).toy(g_out.in2)
+    logic.Line().right(0.5).at(g_out.out).label('$f$', 'right')
+    rail_x = g1.in1.x - 2.5
+    logic.Line().at(g1.in1).tox(rail_x).label('$x_2$', 'left')
+    stem = logic.Line().at(g1.in2).toy(g2.in2)
+    with d.hold():
+        logic.Dot().at(stem.center)
+        logic.Line().at(stem.center).tox(rail_x).label('$x_3$', 'left')
+    logic.Line().at(g2.in1).tox(rail_x).label('$x_1$', 'left')
+
 with schemdraw.Drawing() as d:
     d.config(unit=0.5, fontsize=11, color='white')
-    and1 = logic.And(inputs=2).right()
-    d.move_from(and1.in1, dy=-4.5)
-    and2 = logic.And(inputs=2).right().anchor('in1')
-    d.move_from(and1.out, dy=-(and1.out.y - and2.out.y) / 2)
-    or_g = logic.Or(inputs=2).right()
-    logic.Line().at(and1.out).toy(or_g.in1)
-    logic.Line().at(and2.out).toy(or_g.in2)
-    logic.Line().right(0.5).at(or_g.out).label('$f$', 'right')
-    # x2' via NOT -> and1.in1
-    d.move_from(and1.in1, dx=-1.5)
-    not2 = logic.Not().right().anchor('out')
-    logic.Line().right().at(not2.out).tox(and1.in1)
-    logic.Line().left(0.5).at(not2.in1).label('$x_2$', 'left')
-    # x3' via NOT -> and2.in2
-    d.move_from(and2.in2, dx=-1.5)
-    not3 = logic.Not().right().anchor('out')
-    logic.Line().right().at(not3.out).tox(and2.in2)
-    # shared x3: stem with junction at centre
-    x3_stem = logic.Line().down().at(and1.in2).toy(not3.in1)
-    with d.hold():
-        logic.Dot().at(x3_stem.center)
-        logic.Line().left().at(x3_stem.center).tox(not2.in1).label('$x_3$', 'left')
-    logic.Line().left().at(x3_stem.end).tox(not3.in1)
-    # x1 direct -> and2.in1
-    logic.Line().left().at(and2.in1).tox(not2.in1).label('$x_1$', 'left')
+    build(d, logic.And, logic.Or)
     sd_save(d, 'sop_specific.svg')
 ```
 
@@ -186,31 +179,11 @@ with schemdraw.Drawing() as d:
 
 ## Specific NAND — $f = x_2'x_3 + x_1 x_3'$
 
-NAND-NAND equivalent: AND gates replaced by NAND, OR gate replaced by NAND. NOT gates remain.
+Same layout as SOP with AND → NAND and OR → NAND. The bubbles on $g_1.in_1$ and $g_2.in_2$ still represent the $x_2'$ and $x_3'$ inversions; the bubbles on the NAND outputs are the NAND inversions.
 
 ```python
 with schemdraw.Drawing() as d:
     d.config(unit=0.5, fontsize=11, color='white')
-    nand1 = logic.Nand(inputs=2).right()
-    d.move_from(nand1.in1, dy=-4.5)
-    nand2 = logic.Nand(inputs=2).right().anchor('in1')
-    d.move_from(nand1.out, dy=-(nand1.out.y - nand2.out.y) / 2)
-    nand3 = logic.Nand(inputs=2).right()
-    logic.Line().at(nand1.out).toy(nand3.in1)
-    logic.Line().at(nand2.out).toy(nand3.in2)
-    logic.Line().right(0.5).at(nand3.out).label('$f$', 'right')
-    d.move_from(nand1.in1, dx=-1.5)
-    not2 = logic.Not().right().anchor('out')
-    logic.Line().right().at(not2.out).tox(nand1.in1)
-    logic.Line().left(0.5).at(not2.in1).label('$x_2$', 'left')
-    d.move_from(nand2.in2, dx=-1.5)
-    not3 = logic.Not().right().anchor('out')
-    logic.Line().right().at(not3.out).tox(nand2.in2)
-    x3_stem = logic.Line().down().at(nand1.in2).toy(not3.in1)
-    with d.hold():
-        logic.Dot().at(x3_stem.center)
-        logic.Line().left().at(x3_stem.center).tox(not2.in1).label('$x_3$', 'left')
-    logic.Line().left().at(x3_stem.end).tox(not3.in1)
-    logic.Line().left().at(nand2.in1).tox(not2.in1).label('$x_1$', 'left')
+    build(d, logic.Nand, logic.Nand)
     sd_save(d, 'nand_specific.svg')
 ```
