@@ -1,31 +1,7 @@
 \subsection{Data Processing Pipeline}
 
-We adopt the clinical motion capture dataset of Van Criekinge et al.~\cite{vancriekinge2023dataset} (ages 21--86) and convert the marker recordings into a HumanML3D-compatible skeletal graph format~\cite{guo2022generating}. This is achieved through SMPL body-model fitting~\cite{mahmood2019amass} and subsequent feature extraction. 
-During preprocessing, we resolved dataset-specific artifacts, including sensor measurement errors, initialization transients, mislabeled markers, and systematic coordinate axis misalignments. We discarded irreparably polluted clips (such as those exhibiting T-pose misclassifications or sub-threshold sequence lengths), resulting in \textbf{[TODO: Final Clip Yield Number]} effective motion clips (see Table~\ref{tab:clip_yield}).
-
-\begin{table}[H]
-    \centering
-    \caption{Data Pipeline Filtering Yield (Placeholder)}
-    \begin{tabular}{lc}
-        \toprule
-        \textbf{Processing Stage} & \textbf{Clip Count} \\
-        \midrule
-        Raw Dataset Clips & \textbf{[TODO]} \\
-        Removed: T-Pose Misclassification & \textbf{[TODO]} \\
-        Removed: Sub-threshold Length & \textbf{[TODO]} \\
-        \midrule
-        \textbf{Effective Clips} & \textbf{[TODO]} \\
-        \bottomrule
-    \end{tabular}
-    \label{tab:clip_yield}
-\end{table}
-
-\begin{figure}[H]
-	\centering
-	\includegraphics[width=\linewidth]{sec/figs/18 - Data Pipeline Diagram.png}
-	\caption{Overview of the data processing pipeline for generating HumanML3D-format feature vectors.}
-	\label{fig:data_pipeline}
-\end{figure}
+We adopt the clinical motion capture dataset of Van Criekinge et al.~\cite{vancriekinge2023dataset} (ages 21--86) and convert the marker recordings into a HumanML3D-compatible skeletal graph format~\cite{guo2022generating}. This is achieved through SMPL body-model fitting~\cite{mahmood2019amass} and subsequent feature extraction.
+During preprocessing, we resolved dataset-specific artifacts, including sensor measurement errors, initialization transients, mislabeled markers, and systematic coordinate axis misalignments. We discarded irreparably polluted clips (such as those exhibiting T-pose misclassifications or sub-threshold sequence lengths).
 
 To ensure biological fidelity is preserved, we utilize a modified optimization pipeline adapted from VPoser~\cite{pavlakos2019expressivebodycapture3d}.
 We formulated a frame-by-frame minimum-loss optimization using the L-BFGS engine.
@@ -39,45 +15,20 @@ As shown in Fig.~\ref{fig:artifact}, standard priors induce crouch artifacts (le
 	\label{fig:artifact}
 \end{figure}
 
-\subsection{Age Signature Detecting Network}
+\subsection{Age Classification Network}
 
-To capture the biomechanical signatures of aging, we employ an Age Representation Learner built on a Spatial-Temporal Graph Convolutional Network (ST-GCN)~\cite{yan2018spatial}. The network is fine-tuned to classify motion clips into three distinct age groups: Young ($<$40), Adult (40--64), and Elderly ($\geq$65).
-By training the ST-GCN to successfully predict age groups from walking motions alone, the network learns to isolate demographic kinematic differences from general gait mechanics. The penultimate layer of the ST-GCN encapsulates these age-related biomechanical signatures; we extract this layer's output to serve as the latent age embedding, denoted as $\mathbf{z}_{age}$.
+To capture the biomechanical signatures of aging, we employ an age classifier built on a Spatial-Temporal Graph Convolutional Network (ST-GCN)~\cite{yan2018stgcn}. The network is fine-tuned to classify motion clips into three distinct age groups: Young ($<$35), Mid-age (35--60), and Elderly ($\geq$60).
+By training the ST-GCN to successfully predict age groups from walking motions alone, the network learns to isolate demographic kinematic differences from general gait mechanics.
 
 \subsection{Age-Conditioned Generative Network}
 
-\begin{figure*}[t]
-	\centering
-	\includegraphics[width=\textwidth]{sec/figs/24 - Revised Motion Generation Model.png}
-	\caption{Architecture of the generative network, featuring the Motion Diffusion Model equipped with LoRA adapters for age conditioning.}
-	\label{fig:revised_generative_model}
-\end{figure*}
-
-For motion synthesis, we leverage a conditional Motion Diffusion Model (MDM)~\cite{tevet2023human} capable of generating text-driven human motion. 
-As a proof of concept for age-aware motion synthesis, we adapt the pre-trained MDM using Low-Rank Adaptation (LoRA)~\cite{hu2022lora} to accept discrete age-group tokens. This provides a highly parameter-efficient mechanism to condition generation on specific demographic groups. The overall architecture is illustrated in Fig.~\ref{fig:revised_generative_model}.
-
-Our final implementation utilizes the LoRA training configuration outlined in Table~\ref{tab:lora_config}, optimized on the NRC Trixie HPC cluster.
-
-\begin{table}[H]
-    \centering
-    \caption{LoRA Training Configuration (Placeholder)}
-    \begin{tabular}{ll}
-        \toprule
-        \textbf{Hyperparameter} & \textbf{Value} \\
-        \midrule
-        Rank ($r$) & \textbf{[TODO]} \\
-        Prior Preservation ($\lambda_{prior}$) & \textbf{[TODO]} \\
-        Diffusion Steps & 1000 \\
-        Training Steps & 4000 \\
-        Batch Size & 32 \\
-        \bottomrule
-    \end{tabular}
-    \label{tab:lora_config}
-\end{table}
+For motion synthesis, we leverage a conditional Motion Diffusion Model (MDM)~\cite{tevet2023human} capable of generating text-driven human motion.
+Given the limited compute available for this proof-of-concept and the comparatively small size of our domain-specific dataset, end-to-end retraining of MDM is impractical and would also risk overwriting the strong text-to-motion prior already learned on HumanML3D.
+We therefore adapt the pre-trained MDM using Low-Rank Adaptation (LoRA)~\cite{hu2022lora}, following the recipe of Sawdayee et al.~\cite{sawdayee2025dance}, to accept discrete age-group tokens. This provides a highly parameter-efficient mechanism to condition generation on specific demographic groups while keeping the underlying motion prior intact.
 
 \subsection{Gait-Analysis Metrics for Evaluation}
 
-To rigorously evaluate whether aging signals are preserved in the processed dataset and successfully reproduced by our generative model, we utilize standard, training-free gait-analysis metrics derived from clinical literature~\cite{bailey2023smartwatch, cordeiro2025constraint, galasso2024development}:
+To rigorously evaluate whether aging signals are preserved in the processed dataset and successfully reproduced by our generative model, we utilize standard, training-free gait-analysis metrics derived from clinical literature~\cite{bailey2023smartwatch, galasso2024development}:
 
 \begin{itemize}
     \item \textbf{Spatiotemporal Parameters:} We compute the average walking speed, stride length, and cadence using heel-strike events detected via zero-velocity crossings of the ankle joints.
@@ -87,16 +38,6 @@ To rigorously evaluate whether aging signals are preserved in the processed data
     \end{equation}
     where $\sigma$ is the standard deviation and $\mu$ is the mean of the parameter across steps.
     \item \textbf{Joint Range of Motion (RoM):} We measure the peak flexion and extension angles of the hip and knee joints during the gait cycle.
-    \item \textbf{Margin of Stability (MoS):} To assess dynamic balance, we compute the anterior-posterior Margin of Stability:
-    \begin{equation}
-        \mathrm{MoS} = \mathrm{BoS}_{\mathrm{boundary}} - x_{\mathrm{CoM}}
-    \end{equation}
-    where $\mathrm{BoS}_{\mathrm{boundary}}$ is the boundary of the Base of Support, and $x_{\mathrm{CoM}}$ is the extrapolated center of mass, given by:
-    \begin{equation}
-        x_{\mathrm{CoM}} = \mathrm{CoM} + \frac{v_{\mathrm{CoM}}}{\sqrt{g/l}}
-    \end{equation}
-    where $v_{\mathrm{CoM}}$ is the CoM velocity, $g$ is gravity, and $l$ is the effective pendulum length.
-    \item \textbf{Minimum Foot Clearance (MFC):} This is defined as the minimum vertical toe displacement (Z-axis) during the mid-swing phase of the gait cycle, trimmed to exclude the initial and terminal 20\% of the swing window.
 \end{itemize}
 
 These metrics are computed deterministically on both the real ground-truth clips and the generated motion clips to provide a quantitative, biomechanically grounded evaluation.

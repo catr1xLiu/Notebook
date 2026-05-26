@@ -60,3 +60,17 @@ The `sec/4_discussion.tex` file requires text edits to present an accurate and h
 - **Classifier Circularity Caveat**: Add a paragraph noting the limitations of the closed-loop classifier evaluation.
 - **Single-Dataset Limitation**: Add a sentence acknowledging that relying solely on the VC stroke-rehab cohort limits generalization claims.
 - **Unimplemented Architecture**: Formally define the continuous $z_{age}$ architecture as future work to address the limitations of the current discrete token prototype.
+
+## Review from Previous workshop
+
+The reviews from the previous workshop might give us some clues on what to extend on.
+
+> The paper presents multiple data-based analyses on age-related human gait. First, the authors introduce a data processing pipeline to extract motion markers from clinical data, for which they use a public data set by Van Criekinge et al. Second, they introduce and validate a model based on ST-GCN to classify motion into age groups (young, mid, elderly). Third, they use a LoRA-based model to generate artificial motion trajectories and validate them with clinical baselines.
+
+> The paper presents a work in progress. The main body is written well and the figures mostly illustrate the approach and results well. However, the results are not too overwhelming. The classifier has a relatively low accuracy for discriminating the age groups. The diffusion model fails to reproduce distributions and general trends of means. However, the authors discuss both shortcomings and come to the conclusion that data is lacking and the models show a general feasibility, which I would agree with. As the content is work in progress, better quantitative results are to be expected in future work.
+
+> There are some design decisions and conclusions I cannot fully understand. First, why were the age groups split into <40yrs, 40-64yrs, and >64yrs? Second, the authors do not quantify the split in training and validation set for the classifier. Third, the converged risidual loss (Fig. 3) seems relatively high, which could explain the uncertainties in Fig. 5. Fourth, the authors claim that the data themselves are distinguishable into the three groups. However, the distributions in Fig. 7, particularly for Stride, are very similar. I would second the claim that more training data is needed, as these small deviations may be hard to learn otherwise.
+
+> The font sizes in Fig. 4 and 6 are too small and there are some incomplete sentences.
+
+> Overall, the paper is an interesting read, relevant to the workshop. The content is work in progress, which explains the subpar quantitative results. The discussions and implications are well explained. However, I think the conclusion that data is missing may be a bit too easy. I would welcome a more elaborate discussion on the methods themselves and whether better results are expected when more data becomes available.

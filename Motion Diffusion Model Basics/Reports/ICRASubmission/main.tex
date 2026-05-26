@@ -48,8 +48,8 @@
 % Evaluating the Effectiveness of Haptic Force Feedback during Data Collection for Force-Aware Visuomotor Policy Learning
 % }
 \title{\LARGE \bf
-Modeling Kinematic Signatures of Aging for Human Motion Prediction in Assistive Robotics
-%Age-Conditioned Human Motion Generation for Assistive Robot Anticipation
+Modeling Aging Signatures in Human Motion via Motion Diffusion Models for Elder Care Robotics%
+\thanks{This work was supported by the National Research Council Canada (NRC) through the Aging in Place Challenge Program.}
 }
 
 
@@ -59,7 +59,7 @@ Modeling Kinematic Signatures of Aging for Human Motion Prediction in Assistive 
 % If non-anonymized, use the standard author block:
 % \author{First Author\\Institution\\{\tt\small email} \and Second Author\\Institution\\{\tt\small email}}
 \author{
-Yiran Liu$^{1,2}$, Eugene Zhao$^{1,2}$, Karim Habashy$^{1,2}$, Jason Peng$^{3}$, Chang Shu$^{1}$, Pengcheng Xi$^{1}$ \\
+Yiran Liu$^{1,2}$, Eugene Zhao$^{1,2}$, Karim Habashy$^{1,2}$, Joanna Peng$^{1,2}$, Jason Peng$^{3}$, Chang Shu$^{1}$, Pengcheng Xi$^{1}$ \\
 $^{1}$National Research Council Canada \quad
 $^{2}$University of Waterloo \quad
 $^{3}$Simon Fraser University \\
@@ -104,13 +104,23 @@ $^{3}$Simon Fraser University \\
 \input{sec/3_experiments}
 
 
-\section{Discussion and Conclusion}
+\begin{figure*}[!t]
+    \centering
+    \IfFileExists{sec/figs/23 - Future Work Architecture.png}%
+    {\includegraphics[width=0.85\textwidth]{sec/figs/23 - Future Work Architecture.png}}%
+    {\fbox{\parbox[c][2cm][c]{0.85\textwidth}{\centering Figure missing: \texttt{sec/figs/23 - Future Work Architecture.png}}}}
+    \caption{Proposed continuous age-conditioning architecture.}
+    \label{fig:future_architecture}
+\end{figure*}
+
+\section{Discussion AND Future Work}
 
 \input{sec/4_discussion}
 
-\section*{Acknowledgment}
-This work was supported by the National Research Council Canada (NRC) through the Aging in Place Challenge Program.
-Compute resources were provided by the NRC Trixie HPC cluster.
+
+\section{Conclusion}
+
+\input{sec/5_conclusion}
 
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
