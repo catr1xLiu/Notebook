@@ -25,6 +25,7 @@
 ]{CSUniSchoolLabReport}
 
 \usepackage{subcaption}
+\usepackage{booktabs}
 \geometry{top=2cm} % Override top margin to reduce space before title
 
 %----------------------------------------------------------------------------------------
@@ -139,6 +140,22 @@ We plot the eletric field strenth and the
 	\caption{Figure caption.}
 \end{figure}
 
+\subsection{Comparison with Theoretical Value}
+
+\begin{table}[H]
+    \centering
+    \caption{Comparison of simulated electric field strength with theoretical predictions at three observation points.}
+    \label{tab:electric_field_comparison}
+    \begin{tabular}{lcrr}
+        \toprule
+        \textbf{Distance (m)} & \textbf{Simulated (V/m)} & \textbf{Theoretical (V/m)} & \textbf{\% Error} \\
+        \midrule
+        0.2 & 225139.5 & 224689.0 & 0.20 \\
+        0.4 & 56114.6 & 56172.2 & 0.10 \\
+        0.6 & 25292.7 & 24965.4 & 1.31 \\
+        \bottomrule
+    \end{tabular}
+\end{table}
 %----------------------------------------------------------------------------------------
 %	ENHANCEMENT ACTIVITY
 %----------------------------------------------------------------------------------------

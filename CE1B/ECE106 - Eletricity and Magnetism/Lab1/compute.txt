@@ -1,0 +1,59 @@
+In [1]: import numpy as np
+
+In [2]: from scipy.constants import pi
+
+In [3]: def compute_field(point, charge_loc, q):
+   ...:     e0 = 8.854187e-12
+   ...:     difference = point - charge_loc
+   ...:     distance = np.linalg.norm(difference)
+   ...:     return 1/(4 *pi *e0) * q / distance**3 * difference
+   ...: 
+
+In [4]: point = np.array([1.0, 1.0, -1.5])
+
+In [5]: charge1 = np.array([2.0, -1.5, 0.0])
+
+In [6]: charge2 = np.array([-0.5, 1.5, 1.0])
+
+In [7]: charge3
+---------------------------------------------------------------------------
+NameError                                 Traceback (most recent call last)
+Cell In[7], line 1
+----> 1 charge3
+
+NameError: name 'charge3' is not defined
+
+In [8]: charge3 = np.array([0.0, 2.0, -1.5])
+
+In [9]: E_field = np.array([0.0, 0.0, 0.0])
+
+In [10]: E_field += compute_field(point, charge1, 1e-6)
+
+In [11]: E_field += compute_field(point, charge2, -1e-6)
+
+In [12]: E_field += compute_field(point, charge3, 1e-6)
+
+In [13]: E_field
+Out[13]: array([ 2349.77835637, -2236.6053491 ,   407.68653564])
+
+In [14]: computed = np.array([3803, -3686, -491.1])
+
+In [15]: computed / np.linalg.norm(computed)
+Out[15]: array([ 0.71499889, -0.69300182, -0.09233131])
+
+In [16]: E_field / np.linalg.norm(E_field)
+Out[16]: array([ 0.71868176, -0.6840677 ,  0.12469128])
+
+In [17]: computed = np.array([2481.5, -2233.2, 220.07])
+
+In [18]: computed * q
+---------------------------------------------------------------------------
+NameError                                 Traceback (most recent call last)
+Cell In[18], line 1
+----> 1 computed * q
+
+NameError: name 'q' is not defined
+
+In [19]: computed * 1e-6
+Out[19]: array([ 0.0024815 , -0.0022332 ,  0.00022007])
+
