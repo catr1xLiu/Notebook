@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modeling Aging Signatures in Human Motion via Motion Diffusion Models for Elder Care Robotics</title>
+    <meta name="description" content="Project page for age-aware human motion synthesis using clinical gait data, ST-GCN age-signature detection, and LoRA-adapted Motion Diffusion Models.">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <meta name="robots" content="all">
+    <meta content="en_EN" property="og:locale">
+    <meta content="website" property="og:type">
+    <meta content="Modeling Aging Signatures in Human Motion via Motion Diffusion Models for Elder Care Robotics" property="og:title">
+    <meta content="Age-conditioned motion generation for elder care robotics, connecting clinical gait processing with text-conditioned Motion Diffusion Models." property="og:description">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:description" content="Age-conditioned motion generation for elder care robotics.">
+    <meta name="twitter:image:src" content="assets/figures/project/generation-result.png">
+
+    <link rel="icon" href="assets/logos/icon.png" type="image/png">
+    <link rel="stylesheet" type="text/css" media="all" href="assets/stylesheets/main_free.css">
+    <link href="assets/fontawesome-free-7.2.0-web/css/all.min.css" rel="stylesheet">
+    <script src="assets/scripts/navbar.js"></script>
+
+    <style>
+        :root {
+            --ink: #20272a;
+            --muted: #58666b;
+            --line: #dbe4e3;
+            --panel: #f3f7f6;
+            --accent: #2e6f63;
+            --accent-2: #526c8f;
+            --warm: #a2664b;
+        }
+
+        body {
+            color: var(--ink);
+        }
+
+        div.container.blog#first-content {
+            background: linear-gradient(135deg, #eff5f2 0%, #f9faf6 52%, #e2eceb 100%);
+        }
+
+        div.container.blog#first-content div.blog-title {
+            gap: 4vw;
+            grid-template-columns: minmax(0, 1fr) minmax(320px, 0.82fr);
+            min-height: 92vh;
+        }
+
+        div.container.blog#first-content div.blog-title .blog-intro {
+            width: 100%;
+        }
+
+        div.container.blog#first-content div.blog-title .blog-cover {
+            align-items: center;
+            display: flex;
+            justify-content: flex-end;
+            transform: translateX(2.5vw);
+            width: 100%;
+        }
+
+        div.container.blog#first-content div.blog-title .blog-intro p.abstract {
+            color: #334044;
+            font-style: italic;
+            max-width: 760px;
+        }
+
+        .project-kicker {
+            color: var(--accent);
+            font-family: "Poppins", sans-serif;
+            font-size: 0.82rem;
+            font-weight: 700;
+            letter-spacing: 0;
+            margin-bottom: 0.75rem;
+            text-transform: uppercase;
+        }
+
+        .author {
+            max-width: 900px;
+        }
+
+        .affiliation-logos {
+            align-items: center;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.9rem 1.4rem;
+            margin: 0.75rem 0 1rem;
+        }
+
+        .affiliation-logo {
+            align-items: center;
+            display: inline-flex;
+            gap: 0.45rem;
+            text-decoration: none;
+        }
+
+        .affiliation-logo sup {
+            color: var(--muted);
+            font-family: "Poppins", sans-serif;
+            font-size: 0.78rem;
+            font-weight: 600;
+            top: 0;
+        }
+
+        .affiliation-logo img {
+            display: block;
+            height: 28px;
+            margin: 0;
+            width: auto;
+        }
+
+        .project-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.7rem;
+            margin-top: 1.2rem;
+        }
+
+        .project-links .button.icon {
+            border-radius: 8px;
+            margin: 0;
+        }
+
+        .hero-tags {
+            color: var(--muted);
+            font-family: "Poppins", sans-serif;
+            font-size: 0.86rem;
+            margin-top: 1.2rem;
+        }
+
+        .cover-ideas {
+            background: rgba(255, 255, 255, 0.78);
+            border: 1px solid rgba(46, 111, 99, 0.18);
+            border-radius: 8px;
+            box-shadow: 0 24px 52px rgba(38, 58, 61, 0.15);
+            padding: 1.25rem;
+            width: min(100%, 520px);
+        }
+
+        .cover-ideas h2 {
+            color: var(--ink);
+            font-size: 1.08rem;
+            padding-top: 0;
+        }
+
+        .cover-ideas p,
+        .cover-ideas li {
+            color: var(--muted);
+            font-family: "Poppins", sans-serif;
+            font-size: 0.86rem;
+            line-height: 1.55;
+        }
+
+        .cover-ideas ul {
+            list-style: none;
+            margin: 0.8rem 0 0;
+        }
+
+        .cover-ideas li {
+            border-top: 1px solid var(--line);
+            padding: 0.75rem 0;
+        }
+
+        .cover-ideas li:first-child {
+            border-top: none;
+        }
+
+        .cover-ideas strong {
+            color: var(--accent);
+            display: block;
+            font-weight: 700;
+            margin-bottom: 0.15rem;
+        }
+
+        .stat-grid {
+            display: grid;
+            gap: 1rem;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            margin: 1.5rem 0 0.5rem;
+        }
+
+        .stat-card {
+            border: 1px solid var(--line);
+            border-radius: 8px;
+            padding: 1rem;
+            text-align: center;
+        }
+
+        .stat-card strong {
+            color: var(--accent);
+            display: block;
+            font-family: "Poppins", sans-serif;
+            font-size: 1.55rem;
+            line-height: 1.15;
+            margin-bottom: 0.35rem;
+        }
+
+        .stat-card span {
+            color: var(--muted);
+            font-family: "Poppins", sans-serif;
+            font-size: 0.82rem;
+        }
+
+        .figure-grid {
+            display: grid;
+            gap: 1rem;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            margin: 1rem 0;
+        }
+
+        .figure-card,
+        .single-figure,
+        .normal-figure {
+            margin: 1rem auto;
+        }
+
+        .figure-card img,
+        .single-figure img,
+        .normal-figure img,
+        .architecture-stack img,
+        .wide-figure img {
+            border-radius: 8px;
+            width: 100%;
+        }
+
+        .architecture-stack {
+            display: grid;
+            gap: 1.2rem;
+            margin: 1rem auto;
+            max-width: 1080px;
+        }
+
+        .normal-figure {
+            max-width: 880px;
+        }
+
+        .narrow-stack {
+            display: grid;
+            gap: 1rem;
+            margin: 1rem auto;
+            max-width: 640px;
+        }
+
+        .narrow-stack img {
+            border-radius: 8px;
+            width: 100%;
+        }
+
+        .stgcn-figure {
+            max-width: 700px;
+        }
+
+        .stgcn-grid {
+            gap: 1.2rem;
+            margin-left: auto;
+            margin-right: auto;
+            max-width: 700px;
+        }
+
+        .wide-figure {
+            margin: 1rem auto;
+            max-width: 1160px;
+        }
+
+        .result-figure {
+            max-width: 1180px;
+        }
+
+        .callout {
+            background: #f8faf9;
+            border-left: 4px solid var(--accent);
+            border-radius: 0 8px 8px 0;
+            color: #30393c;
+            font-family: "Poppins", sans-serif;
+            font-size: 0.93rem;
+            line-height: 1.65;
+            margin: 1.2rem 0;
+            padding: 1rem 1.2rem;
+        }
+
+        .result-table {
+            border-collapse: collapse;
+            font-family: "Poppins", sans-serif;
+            margin: 1.2rem 0;
+            width: 100%;
+        }
+
+        .result-table caption {
+            caption-side: top;
+            color: var(--ink);
+            font-size: 0.88rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            text-align: left;
+        }
+
+        .result-table th,
+        .result-table td {
+            border-bottom: 1px solid var(--line);
+            padding: 0.75rem 0.6rem;
+            text-align: left;
+            vertical-align: middle;
+        }
+
+        .result-table th {
+            border-bottom: 2px solid var(--accent);
+            color: var(--accent);
+            font-weight: 700;
+        }
+
+        .result-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .tag-pill {
+            background: var(--panel);
+            border-radius: 4px;
+            color: var(--accent);
+            display: inline-block;
+            font-family: "Poppins", sans-serif;
+            font-size: 0.78rem;
+            font-weight: 600;
+            margin: 0.15rem 0.2rem 0.15rem 0;
+            padding: 0.2rem 0.55rem;
+        }
+
+        footer.container.blog {
+            color: var(--muted);
+            font-family: "Poppins", sans-serif;
+            font-size: 0.85rem;
+            padding-bottom: 5vh;
+            text-align: center;
+        }
+
+        @media (max-width: 900px) {
+            div.container.blog#first-content div.blog-title {
+                display: block;
+                min-height: auto;
+                padding-bottom: 7vh;
+                padding-top: 7vh;
+            }
+
+            div.container.blog#first-content div.blog-title .blog-intro,
+            div.container.blog#first-content div.blog-title .blog-cover {
+                width: 100%;
+            }
+
+            div.container.blog#first-content div.blog-title .blog-cover {
+                margin-top: 2rem;
+                transform: none;
+            }
+
+            .stat-grid,
+            .figure-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container blog" id="first-content">
+        <div class="blog-title">
+            <div class="blog-intro">
+                <div>
+                    <p class="project-kicker">
+                        <a href="https://sites.google.com/view/robotic-for-aging-society/homepage/" target="_blank" rel="noopener">Robotic and AI for Aging</a> workshop &middot; under review
+                    </p>
+                    <h1 class="title">Modeling Aging Signatures in Human Motion via Motion Diffusion Models for Elder Care Robotics</h1>
+                    <p class="author">
+                        Yiran Liu<sup>1,2</sup>,
+                        Eugene Zhao<sup>1,2</sup>,
+                        Karim Habashy<sup>1,2</sup>,
+                        Joanna Peng<sup>1,2</sup>,
+                        Jason Peng<sup>3</sup>,
+                        Chang Shu<sup>1</sup>,
+                        Pengcheng Xi<sup>1</sup>
+                    </p>
+                    <div class="affiliation-logos" aria-label="Institution affiliations">
+                        <a class="affiliation-logo" href="https://nrc.canada.ca/" target="_blank" rel="noopener" aria-label="Affiliation 1: National Research Council Canada">
+                            <sup>1</sup>
+                            <img src="assets/logos/nrc.svg" alt="National Research Council Canada">
+                        </a>
+                        <a class="affiliation-logo" href="https://uwaterloo.ca/" target="_blank" rel="noopener" aria-label="Affiliation 2: University of Waterloo">
+                            <sup>2</sup>
+                            <img src="assets/logos/waterloo.svg" alt="University of Waterloo">
+                        </a>
+                        <a class="affiliation-logo" href="https://www.sfu.ca/" target="_blank" rel="noopener" aria-label="Affiliation 3: Simon Fraser University">
+                            <sup>3</sup>
+                            <img src="assets/logos/SFU_block_colour_rgb.svg" alt="Simon Fraser University">
+                        </a>
+                    </div>
+                    <p class="abstract">
+                        We present an age-conditioned human motion generation framework for elder care robotics. The pipeline converts clinical gait recordings into learning-ready motion representations, trains an ST-GCN to detect age-group signatures from motion, and fine-tunes a Motion Diffusion Model with LoRA to generate text-conditioned motions with age control. Evaluation on 9,000 generated clips shows promising spatial kinematic adaptation, while stride timing and variability remain key challenges.
+                    </p>
+                    <div class="project-links">
+                        <a href="./" class="button icon">Paper <i class="fa-regular fa-file-lines"></i></a>
+                        <a href="https://github.com/catr1xLiu/LoRA-MDM" target="_blank" rel="noopener" class="button icon">Code <i class="fa-solid fa-code"></i></a>
+                        <a href="https://github.com/catr1xLiu/LoRA-MDM-Age-Dataset" target="_blank" rel="noopener" class="button icon">Dataset <i class="fa-regular fa-folder-open"></i></a>
+                    </div>
+                    <p class="hero-tags">Age-aware motion generation &middot; Clinical gait analysis &middot; Assistive robotics</p>
+                </div>
+            </div>
+
+            <div class="blog-cover">
+                <div class="cover-ideas">
+                    <h2>Cover Plot Ideas</h2>
+                    <p>Right-side hero cover placeholder. Replace this panel with the final plot once the figures are ready.</p>
+                    <ul>
+                        <li><strong>Age axis motion strip</strong> Three walking skeleton trails labeled Young, Mid-age, Elderly, with posture and stride changes becoming more visible across the horizontal age axis.</li>
+                        <li><strong>Clinical-to-generative pipeline</strong> A clean left-to-right diagram: mocap markers to SMPL fit, gait metrics, ST-GCN age embedding, then age-conditioned MDM samples.</li>
+                        <li><strong>Biomechanics lens</strong> Overlay a walking skeleton with highlighted hip/knee range-of-motion arcs, plus small metric badges for stride length, speed, and variability.</li>
+                        <li><strong>Robot simulation angle</strong> Show an assistive robot planning around generated human walking trajectories for users with different mobility profiles.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container blog main first" id="blog-main">
+        <h1>Introduction</h1>
+        <p class="text">
+            Assistive robots must anticipate and respond to human movement in settings where users may vary widely in balance, gait speed, joint mobility, and functional capacity. Motion diffusion models are powerful tools for synthesizing diverse human actions, but widely used motion-capture datasets are biased toward young and healthy actors. This creates a mismatch for elder care robotics, where a generic adult motion prior may fail to represent age-related movement patterns that matter for safety, planning, and interaction.
+        </p>
+        <p class="text">
+            Clinical gait analysis offers a route into this problem because it measures motion features that are known to change with aging: walking speed, stride length, stride timing variability, cadence, and hip/knee range of motion. Our goal is to connect these clinically meaningful signals with modern generative motion models, then test whether age-conditioned synthesis can preserve the biomechanical structure needed for robotics use.
+        </p>
+
+        <div class="stat-grid">
+            <div class="stat-card">
+                <strong>420</strong>
+                <span>processed walking clips from 138 subjects</span>
+            </div>
+            <div class="stat-card">
+                <strong>64.6%</strong>
+                <span>ST-GCN validation accuracy for age groups</span>
+            </div>
+            <div class="stat-card">
+                <strong>9,000</strong>
+                <span>generated clips analyzed with gait metrics</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="container blog large gray-linear">
+        <div class="architecture-stack">
+            <div>
+                <img src="assets/figures/project/st-gcn model.png" alt="ST-GCN age classifier architecture for learning aging signatures from skeletal motion.">
+                <p class="caption inline center">ST-GCN age-signature classifier used to test whether processed clips preserve demographic kinematic cues.</p>
+            </div>
+            <div>
+                <img src="assets/figures/project/motion generation model.png" alt="LoRA-adapted Motion Diffusion Model architecture for age-conditioned motion generation.">
+                <p class="caption inline center">LoRA-adapted Motion Diffusion Model with discrete age tokens for text-conditioned walking synthesis.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="container blog main" id="methodology">
+        <h1>Methodology</h1>
+        <p class="text">
+            The framework has three linked components. First, clinical marker data are retargeted into a body-model representation while filtering clips affected by short sequences, initialization transients, mislabeled markers, and irrecoverable capture artifacts. Second, an ST-GCN age classifier is trained on the resulting clips to test whether the representation preserves age-related kinematic signatures. Third, a pre-trained MDM is adapted using LoRA so that walking prompts can be conditioned with discrete age tokens: <code>young</code>, <code>mid</code>, and <code>old</code>.
+        </p>
+        <p class="text">
+            Evaluation is deliberately training-free: generated and real clips are compared through clinical gait metrics, including walking speed, stride length, cadence, stride-time coefficient of variation, stride-length coefficient of variation, and hip/knee range of motion. This keeps the analysis grounded in interpretable biomechanics rather than only visual inspection.
+        </p>
+
+        <div>
+            <span class="tag-pill">SMPL + VPoser fitting</span>
+            <span class="tag-pill">ST-GCN age classifier</span>
+            <span class="tag-pill">LoRA-adapted MDM</span>
+            <span class="tag-pill">Clinical gait metrics</span>
+        </div>
+    </div>
+
+    <div class="container blog large gray">
+        <div class="normal-figure">
+            <img src="assets/figures/project/data-pipeline.png" alt="Clinical gait recordings converted through SMPL fitting and HumanML3D feature extraction.">
+            <p class="caption">
+                Data processing architecture. Clinical motion-capture recordings are cleaned, fitted to SMPL with VPoser regularization, and converted into HumanML3D-compatible motion features.
+            </p>
+        </div>
+    </div>
+
+    <div class="container blog main gray-linear">
+        <div class="narrow-stack">
+            <div>
+                <img src="assets/figures/project/body-artifacts.png" alt="Artifact analysis showing crouch artifact, optimized fit, and mesh inflation.">
+                <p class="caption inline center">Artifact analysis during clinical motion retargeting.</p>
+            </div>
+            <div>
+                <img src="assets/figures/project/heatmap.png" alt="Joint angular velocity heatmaps for young and elderly gait cycles.">
+                <p class="caption inline center">Joint angular-velocity heatmaps reveal reduced peak velocities in the elderly subject.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="container blog main" id="results">
+        <h1>Results Preview</h1>
+        <p class="text">
+            The processed clinical dataset preserves expected aging trends: Young-to-Elderly walking speed decreases, stride length decreases, knee range of motion decreases, and stride-time variability increases. The ST-GCN classifier reaches 64.6% validation accuracy while most reliably separating the kinematic extremes, Young and Elderly. The Mid-age category remains harder to classify, which is consistent with weaker age separation and larger within-group variability in that interval.
+        </p>
+        <p class="text">
+            For generation, the age-conditioned MDM produces visible stylistic differences across tokens. Quantitatively, the <code>old</code> token reduces hip range of motion relative to <code>young</code> and <code>mid</code>, suggesting that the adapter can impose spatial kinematic constraints. The main unresolved issue is temporal consistency: generated stride variability remains elevated across age tokens and overshoots clinical baselines.
+        </p>
+
+        <div class="callout">
+            Main takeaway: the model can move some high-leverage spatial statistics in the right direction, but low-rank discrete-token adaptation is not yet strong enough to reshape the full temporal gait structure.
+        </div>
+    </div>
+
+    <div class="container blog extra-large gray">
+        <div class="wide-figure result-figure">
+            <img src="assets/figures/project/generation-result.png" alt="Generated walking sequences across young, mid-age, and elderly tokens.">
+            <p class="caption">
+                Representative generated walking sequences across age tokens. Visual cues appear in posture and foot-clearance patterns, but the quantitative gait analysis is needed to judge biomechanical fidelity.
+            </p>
+        </div>
+    </div>
+
+    <div class="container blog main">
+        <div class="figure-grid stgcn-grid">
+            <div class="figure-card">
+                <img src="assets/figures/project/stgcn-train-loss.png" alt="ST-GCN training loss curve.">
+                <p class="caption inline center">ST-GCN training loss.</p>
+            </div>
+            <div class="figure-card">
+                <img src="assets/figures/project/stgcn-val-accuracy.png" alt="ST-GCN validation accuracy curve.">
+                <p class="caption inline center">ST-GCN validation accuracy.</p>
+            </div>
+        </div>
+        <div class="single-figure stgcn-figure">
+            <img src="assets/figures/project/stgcn-confusion.png" alt="Confusion matrices for ST-GCN age-group predictions.">
+            <p class="caption">Confusion matrices show stronger separation between Young and Elderly than the Mid-age interior group.</p>
+        </div>
+    </div>
+
+    <div class="container blog large gray-linear">
+        <div class="normal-figure">
+            <img src="assets/figures/project/age-regression.png" alt="Per-clip regression of clinical gait metrics against chronological age.">
+            <p class="caption">
+                Ground-truth clinical gait metrics show expected age trends, validating that the preprocessing pipeline preserves meaningful aging signatures.
+            </p>
+        </div>
+        <div class="normal-figure">
+            <img src="assets/figures/project/combined-violin.png" alt="Violin plots comparing real and generated gait metrics across age groups.">
+            <p class="caption">
+                Generated clips reproduce some spatial trends, especially range-of-motion reduction under the old token, but stride variability remains too high across generated groups.
+            </p>
+        </div>
+    </div>
+
+    <div class="container blog large">
+        <div class="figure-grid">
+            <div class="figure-card">
+                <img src="assets/figures/project/dataset-gait-cycle-speed.png" alt="Dataset joint speed over normalized gait cycle by age group.">
+                <p class="caption inline center">Ground-truth joint-speed profiles over the gait cycle.</p>
+            </div>
+            <div class="figure-card">
+                <img src="assets/figures/project/gen-gait-cycle-speed.png" alt="Generated joint speed over normalized gait cycle by age token.">
+                <p class="caption inline center">Generated joint-speed profiles over the gait cycle.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="container blog main">
+        <h1>Discussion &amp; Future Work</h1>
+        <p class="text">
+            This project is an initial step toward demographic-aware motion priors for elder care robotics. It shows that age-related information can be detected in processed clinical gait clips and partially transferred into a text-conditioned motion generator. At the same time, it makes the central bottleneck visible: small age-diverse datasets and discrete low-rank adaptation are not enough to guarantee clinically faithful gait timing and variability.
+        </p>
+        <p class="text">
+            Future work should move toward larger age-diverse datasets, continuous age or biomechanical style conditioning, and constraints that explicitly preserve gait timing, balance, and range-of-motion structure. These directions are important for using generated motion in simulation, assistive robot planning, and safer human-robot interaction for aging-in-place contexts.
+        </p>
+    </div>
+
+    <div class="container blog large gray">
+        <div class="normal-figure">
+            <img src="assets/figures/project/future-architecture.png" alt="Future continuous age-conditioning architecture.">
+            <p class="caption">
+                Future direction: replace discrete age tokens with a continuous biomechanical style representation that can support smoother age interpolation and individual mobility profiles.
+            </p>
+        </div>
+    </div>
+
+    <footer class="container blog main">
+        Built with the <a href="https://shikun.io/projects/clarity">Clarity</a> template. Workshop link: <a href="https://sites.google.com/view/robotic-for-aging-society/homepage/" target="_blank" rel="noopener">Robotic and AI for Aging</a>.
+    </footer>
+</body>
+</html>

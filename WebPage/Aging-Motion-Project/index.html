@@ -3,10 +3,10 @@
 <head>
   <meta charset="utf-8">
   <meta name="description"
-        content="Modeling Kinematic Signatures of Aging via Diffusion and Graph Networks - a framework for age-conditioned human motion synthesis using ST-GCN and diffusion models.">
-  <meta name="keywords" content="motion diffusion, aging, gait analysis, ST-GCN, HumanML3D, SMPL, motion synthesis, biomechanics">
+        content="Modeling Aging Signatures in Human Motion via Motion Diffusion Models for Elder Care Robotics — an age-conditioned motion synthesis framework combining ST-GCN gait classification with LoRA-adapted MDM.">
+  <meta name="keywords" content="motion diffusion, aging, gait analysis, ST-GCN, LoRA, MDM, HumanML3D, SMPL, motion synthesis, biomechanics, assistive robotics">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Modeling Kinematic Signatures of Aging via Diffusion and Graph Networks</title>
+  <title>Modeling Aging Signatures in Human Motion via Motion Diffusion Models</title>
 
   <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro"
         rel="stylesheet">
@@ -121,15 +121,16 @@
       <div class="columns is-centered">
         <div class="column has-text-centered">
           <h1 class="title is-1 publication-title">
-            Modeling Kinematic Signatures of Aging via Diffusion and Graph Networks
+            Modeling Aging Signatures in Human Motion via Motion Diffusion Models for Elder Care Robotics
           </h1>
 
-          <p class="author-note">Extended Abstract &mdash; 3DV 2026 Nectar Track (Submission)</p>
+          <p class="author-note">ICRA 2026 Submission</p>
 
           <div class="is-size-5 publication-authors" style="margin-top: 1rem;">
             <span class="author-block"><a href="https://www.linkedin.com/in/yiran-liu-999773381/" target="_blank">Yiran Liu</a><sup>1,2</sup>,</span>
             <span class="author-block"><a href="https://www.linkedin.com/in/jinyuan-zhao-855418323/" target="_blank">Eugene Zhao</a><sup>1,2</sup>,</span>
             <span class="author-block">Karim Habashy<sup>1,2</sup>,</span>
+            <span class="author-block">Joanna Peng<sup>1,2</sup>,</span>
             <span class="author-block">Jason Peng<sup>3</sup>,</span>
             <span class="author-block"><a href="https://nrc.canada.ca/en/corporate/contact-us/nrc-directory-science-professionals/chang-shu" target="_blank">Chang Shu</a><sup>1</sup>,</span>
             <span class="author-block"><a href="https://nrc.canada.ca/en/corporate/contact-us/nrc-directory-science-professionals/pengcheng-xi" target="_blank">Pengcheng Xi</a><sup>1</sup></span>
@@ -145,7 +146,7 @@
           <div class="column has-text-centered" style="margin-top: 1.25rem;">
             <div class="publication-links">
 
-              <!-- Extended Abstract (Google Drive) -->
+              <!-- Paper -->
               <span class="link-block">
                 <a href="https://drive.google.com/file/d/1VL6h9bPlH02eDIb4x6y7jobpd2QGzCyz/view?usp=drive_link"
                    class="external-link button is-normal is-rounded is-dark"
@@ -153,7 +154,7 @@
                   <span class="icon">
                     <i class="fas fa-file-pdf"></i>
                   </span>
-                  <span>Extended Abstract</span>
+                  <span>Paper</span>
                 </a>
               </span>
 
@@ -171,13 +172,25 @@
 
               <!-- Code -->
               <span class="link-block">
-                <a href="https://github.com/catr1xLiu/LoRA-MDM-Age-Dataset"
+                <a href="https://github.com/catr1xLiu/LoRA-MDM"
                    class="external-link button is-normal is-rounded is-dark"
                    target="_blank">
                   <span class="icon">
                     <i class="fab fa-github"></i>
                   </span>
                   <span>Code</span>
+                </a>
+              </span>
+
+              <!-- Dataset -->
+              <span class="link-block">
+                <a href="https://github.com/catr1xLiu/LoRA-MDM-Age-Dataset"
+                   class="external-link button is-normal is-rounded is-dark"
+                   target="_blank">
+                  <span class="icon">
+                    <i class="fas fa-database"></i>
+                  </span>
+                  <span>Dataset</span>
                 </a>
               </span>
 
@@ -193,18 +206,21 @@
 <!-- /Hero -->
 
 
-<!-- Teaser / Pipeline Overview -->
+<!-- Teaser / Architecture Overview -->
 <section class="hero teaser" style="background: #fafafa;">
-  <div class="container is-max-desktop">
+  <div class="container is-max-fullhd">
     <div class="hero-body">
       <div class="pipeline-figure">
-        <img src="./static/images/Pipeline.png"
-             alt="Framework pipeline: C3D mocap → SMPL fitting → HumanML3D features → ST-GCN age classifier and age-conditioned diffusion model.">
+        <img src="./static/images/framework-overview.png"
+             alt="Framework overview: an ST-GCN++ age classifier (left) verifies that processed clinical gait clips preserve aging-related biomechanical signatures; a LoRA-adapted Motion Diffusion Model (right) takes a CLIP-encoded text prompt and a discrete age-group style token (young/mid/old) to synthesize age-conditioned human motion.">
       </div>
       <p class="figure-caption" style="margin-top: 0.75rem;">
         <strong>Framework Overview.</strong>
-        Clinical motion-capture recordings are processed through a multi-stage pipeline (C3D &rarr; SMPL &rarr; HumanML3D) to produce 263-dimensional feature vectors.
-        An ST-GCN classifier extracts a latent age embedding <em>z</em><sub>age</sub>, which is injected into a text-conditioned diffusion model via cross-attention to enable age-aware motion synthesis.
+        An ST-GCN++ age classifier (left), fine-tuned on processed clinical gait clips, verifies
+        that the dataset preserves aging-related biomechanical signatures. A LoRA-adapted Motion
+        Diffusion Model (right) then takes a CLIP-encoded text prompt and a discrete age-group
+        style token (<code>young</code>, <code>mid</code>, <code>old</code>) to synthesize
+        age-conditioned human motion.
       </p>
     </div>
   </div>
@@ -220,26 +236,27 @@
         <h2 class="title is-3">Abstract</h2>
         <div class="content has-text-justified">
           <p>
-            Aging profoundly shapes the way people move. Reduced walking velocity, shortened stride length,
-            compensatory hip strategies, and increased double-support time are among the biomechanical
-            hallmarks of an aging gait. Despite the clinical importance of these kinematic signatures, most
-            generative motion models treat age as an afterthought or ignore it entirely.
+            We present an age-conditioned human motion generation framework for studying aging
+            signatures in the context of assistive robotics. Our pipeline converts clinical gait
+            recordings into learning-ready motion representations while addressing defects from
+            legacy motion-capture data.
           </p>
           <p>
-            We present a two-component framework that bridges gait analysis and motion synthesis.
-            A <strong>Spatio-Temporal Graph Convolutional Network (ST-GCN)</strong> is trained on three age
-            groups (Young, Mid-age, Elderly) to extract a latent age embedding <em>z</em><sub>age</sub>
-            from skeletal sequences. This embedding is then injected into a <strong>text-conditioned
-            diffusion model</strong> via cross-attention, enabling age-conditioned motion generation from
-            natural-language prompts.
+            Using 420 clips from 138 subjects across young, mid-age, and elderly groups, we train a
+            <strong>Spatial-Temporal Graph Convolutional Network (ST-GCN)</strong> to recognize age
+            group from motion clips, achieving <strong>64.6% classification accuracy</strong>. We
+            then fine-tune a <strong>Motion Diffusion Model (MDM) with Low-Rank Adaptation (LoRA)</strong>
+            to generate text-conditioned human motion with age-group control.
           </p>
           <p>
-            Our data pipeline transforms clinical C3D motion-capture recordings from the Van Criekinge
-            dataset (ages 21&ndash;86) into the HumanML3D representation, carefully preserving
-            age-related kinematic cues while eliminating common SMPL fitting artifacts such as mesh
-            inflation and crouch-walking. The resulting infrastructure provides a scalable foundation
-            for age-representative motion synthesis with applications in rehabilitation monitoring,
-            aging-in-place assistance, and human&ndash;robot interaction.
+            To evaluate whether generated motions preserve aging-related characteristics, we analyze
+            clinical and kinematic gait metrics on 9,000 generated clips. Our results show that the
+            model successfully reproduces spatial kinematic constraints in the Elderly condition,
+            but spatiotemporal consistency remains unresolved &mdash; generated stride variability
+            massively overshoots clinical baselines, which we attribute to the capacity ceiling of
+            low-rank, discrete-token adaptation. These findings highlight dataset size, motion
+            quality, and conditioning strength as key bottlenecks for demographic-aware motion
+            prediction and assistive robot planning.
           </p>
         </div>
       </div>
@@ -257,29 +274,31 @@
     <h2 class="title is-3 has-text-centered">Motivation</h2>
     <div class="content has-text-justified">
       <p>
-        Gait analysis has long served as a non-invasive window into physical health. Walking speed alone
-        predicts survival in older adults (Studenski et al., 2011), and systematic changes in hip
-        extension, step width, and cadence are well-documented correlates of biological age
-        (Boyer et al., 2023). Yet existing text-to-motion generative models lack the resolution to
-        reproduce these subtle but clinically meaningful differences.
+        Population aging is creating increasing demand for assistive robotic systems that can support
+        older adults in daily living, mobility, rehabilitation, and safe human&ndash;robot interaction.
+        For such systems, human motion models are not merely tools for animation or prediction; they
+        provide a foundation for anticipating human movement, evaluating robot behaviors in simulation,
+        and designing assistance strategies that are sensitive to functional diversity.
       </p>
       <p>
-        A central question motivates this work: <em>can data-driven models learn to capture
-        age-related biomechanical variation from real clinical recordings, and generate motions that
-        faithfully reflect those differences?</em>
+        Recent Motion Diffusion Models (MDMs) synthesize realistic, language-conditioned human motion,
+        but widely used motion-capture datasets such as AMASS are heavily biased toward young and
+        healthy actors. As a result, current generative models can produce diverse actions and styles,
+        yet often overlook the population-specific biomechanical factors that govern how different
+        people actually move &mdash; a gap that is particularly consequential for robots interacting
+        with older adults.
       </p>
       <p>
-        Answering this requires solving two sub-problems in tandem:
+        Clinical gait analysis provides a complementary foundation. Decades of biomechanics research
+        have shown that gait encodes important information about aging, mobility, and balance, and
+        modern sensor-based methods now allow quantification of physiological and spatiotemporal
+        gait signatures. However, clinical gait data are rarely integrated with modern generative
+        motion models.
       </p>
-      <ul>
-        <li><strong>Recognition</strong> &mdash; reliably inferring age group from a skeletal motion sequence.</li>
-        <li><strong>Generation</strong> &mdash; conditioning a high-capacity diffusion model on that age signal to produce biomechanically plausible, age-appropriate motion.</li>
-      </ul>
       <p>
-        Early experiments with a continuous age scalar (normalized to [0,1]) injected into the diffusion
-        model produced only speed variation: posture and gait style remained indistinguishable across age
-        groups. This failure guided our pivot toward a discrete latent embedding learned by a dedicated
-        graph network, which captures richer structural information about inter-joint dynamics.
+        Our work bridges this gap with a proof-of-concept framework that asks: <em>can age-related
+        motion signatures be learned from real clinical recordings, and reproduced by a modern
+        text-conditioned diffusion model under explicit demographic control?</em>
       </p>
     </div>
   </div>
@@ -292,15 +311,15 @@
     <h2 class="title is-3 has-text-centered">Dataset</h2>
     <p class="has-text-centered" style="margin-bottom: 1.5rem;">
       We use the <strong>Van Criekinge dataset</strong>, a clinical gait database spanning the adult
-      lifespan (ages 21&ndash;86), comprising 588 walking trials from 138 healthy subjects.
+      lifespan (ages 21&ndash;86), comprising walking trials from 138 healthy subjects.
     </p>
 
     <!-- Stat boxes -->
     <div class="columns is-centered" style="margin-bottom: 1.5rem;">
       <div class="column is-2">
         <div class="stat-box">
-          <div class="stat-value">588</div>
-          <div class="stat-label">Walking Trials</div>
+          <div class="stat-value">420</div>
+          <div class="stat-label">Effective Clips</div>
         </div>
       </div>
       <div class="column is-2">
@@ -329,26 +348,15 @@
       </div>
     </div>
 
-    <!-- Charts row 1 -->
+    <!-- Charts -->
     <div class="columns">
-      <div class="column">
-        <div class="result-figure">
-          <img src="./static/images/age_distribution.png"
-               alt="Age distribution histogram of dataset subjects">
-        </div>
-        <p class="figure-caption">Age distribution across 588 trials (mean age: 50.4 ± 19.7 years).</p>
-      </div>
       <div class="column">
         <div class="result-figure">
           <img src="./static/images/age_group_distribution.png"
                alt="Pie chart of age group proportions: Young, Middle, Old">
         </div>
-        <p class="figure-caption">Distribution across age groups: Young (&lt;30), Middle (30&ndash;50), Elderly (&gt;50).</p>
+        <p class="figure-caption">Distribution across age groups: Young (&lt;35), Mid-age (35&ndash;60), Elderly (&ge;60).</p>
       </div>
-    </div>
-
-    <!-- Charts row 2 -->
-    <div class="columns" style="margin-top: 1rem;">
       <div class="column">
         <div class="result-figure">
           <img src="./static/images/age_vs_walking_speed.png"
@@ -359,33 +367,33 @@
           for subjects over 50, a pronounced decline emerges (r&nbsp;=&nbsp;&minus;0.51).
         </p>
       </div>
-      <div class="column">
-        <div class="result-figure">
-          <img src="./static/images/walking_speed_distribution.png"
-               alt="Histogram of walking speeds">
-        </div>
-        <p class="figure-caption">
-          Walking speed distribution (mean 1.21 ± 0.17 m/s). Reduced speed in older adults
-          is one of the primary kinematic aging signatures this work aims to model.
-        </p>
-      </div>
     </div>
 
   </div>
 </section>
 
 
-<!-- Data Pipeline -->
+<!-- Data Processing Pipeline -->
 <section class="section" style="padding-top: 2rem;">
   <div class="container is-max-desktop">
-    <h2 class="title is-3 has-text-centered">Data Pipeline</h2>
+    <h2 class="title is-3 has-text-centered">Data Processing Pipeline</h2>
     <div class="content has-text-justified">
       <p>
         Transforming raw optical marker data into a format suitable for diffusion model training requires
-        a carefully designed multi-stage pipeline. Each stage introduces its own representation trade-offs
-        and potential failure modes.
+        a carefully designed multi-stage pipeline. We convert the Van Criekinge marker recordings into
+        the HumanML3D 263-dimensional feature representation through SMPL body-model fitting followed
+        by feature extraction, addressing defects from legacy motion-capture data along the way.
       </p>
     </div>
+
+    <!-- Pipeline diagram (moved here from teaser) -->
+    <div class="pipeline-figure" style="margin-bottom: 1.25rem;">
+      <img src="./static/images/data-pipeline-diagram.png"
+           alt="Data pipeline diagram: raw C3D marker trajectories → SMPL fitting (VPoser-regularized, multi-stage L-BFGS) → HumanML3D 22-joint skeleton → 263-D feature vector with root trajectory, joint positions/velocities/rotations, and foot contacts.">
+    </div>
+    <p class="figure-caption" style="margin-bottom: 1.5rem;">
+      Multi-stage conversion from raw C3D marker recordings to HumanML3D-compatible features.
+    </p>
 
     <!-- Stage table -->
     <div class="table-container" style="margin-bottom: 1.5rem;">
@@ -408,19 +416,19 @@
           <tr>
             <td><strong>1</strong></td>
             <td>SMPL parametric body model</td>
-            <td>θ: (T,72), β: (10,), t: (T,3)</td>
-            <td>VPoser-based marker fitting with artifact correction</td>
+            <td>&theta;: (T, 72), &beta;: (10,), t: (T, 3)</td>
+            <td>VPoser-regularized marker fitting with artifact correction</td>
           </tr>
           <tr>
             <td><strong>2</strong></td>
             <td>HumanML3D skeleton (22 joints)</td>
             <td>(T<sub>20Hz</sub>, 22, 3)</td>
-            <td>Coordinate frame change + temporal resampling (100→20 Hz)</td>
+            <td>Coordinate frame change + temporal resampling (100&rarr;20 Hz)</td>
           </tr>
           <tr>
             <td><strong>3</strong></td>
             <td>HumanML3D feature vector</td>
-            <td>(T−1, 263)</td>
+            <td>(T&minus;1, 263)</td>
             <td>Root trajectory + joint positions/velocities/rotations + foot contacts</td>
           </tr>
         </tbody>
@@ -429,7 +437,7 @@
 
     <div class="content has-text-justified">
       <p>
-        The pipeline achieves an overall <strong>85× compression</strong> from raw marker data to
+        The pipeline achieves an overall <strong>85&times; compression</strong> from raw marker data to
         training features while preserving clinically relevant kinematic cues. Motion is represented
         in a body-centered coordinate frame, making the learned representations invariant to global
         position and enabling better generalization across environments.
@@ -440,36 +448,30 @@
         systematic lean and descent artifacts that were incorrectly filtered as noise.
       </p>
     </div>
-  </div>
-</section>
 
-
-<!-- Artifact Analysis -->
-<section class="section" style="background: #f8f8f8; padding-top: 2rem; padding-bottom: 2rem;">
-  <div class="container is-max-desktop">
-    <h2 class="title is-3 has-text-centered">SMPL Fitting &amp; Artifact Correction</h2>
+    <!-- SMPL Artifact Correction subsection -->
+    <h3 class="title is-4 has-text-centered" style="margin-top: 2rem;">SMPL Fitting &amp; Artifact Correction</h3>
     <div class="content has-text-justified" style="margin-bottom: 1.25rem;">
       <p>
         Fitting SMPL to optical marker data introduces systematic artifacts that, if uncorrected,
-        corrupt the age-related kinematic signal. We identify and address three main failure modes:
+        corrupt the age-related kinematic signal. We adapt VPoser's prior-space optimization with a
+        two-stage L-BFGS schedule: a shape-free stage that recovers a local minimum in pose, followed
+        by a shape-and-prior refinement stage. This staging ensures individual biomechanical details
+        are preserved before generic pose priors take over.
       </p>
-      <ul>
-        <li><strong>Mesh inflation</strong> &mdash; over-estimated body shape parameters (β) causing unrealistic body proportions.</li>
-        <li><strong>Crouch-walking</strong> &mdash; spurious knee flexion introduced by marker occlusion or initialization errors.</li>
-        <li><strong>VPoser-corrected output</strong> &mdash; applying a learned pose prior during fitting regularizes the solution and eliminates anatomically implausible poses.</li>
-      </ul>
     </div>
 
+    <!-- Reduced-width artifact panel -->
     <div class="columns is-centered">
-      <div class="column is-10">
+      <div class="column is-7">
         <div class="result-figure">
           <img src="./static/images/body_artifacts.png"
-               alt="Three-panel comparison: mesh inflation artifact, crouch-walking artifact, VPoser-corrected mesh">
+               alt="Three-panel comparison: crouch-walking artifact, VPoser-corrected mesh, mesh inflation artifact">
         </div>
         <p class="figure-caption">
-          <strong>Left:</strong> Mesh inflation artifact (inflated β values).
-          <strong>Middle:</strong> Crouch-walking artifact (erroneous knee flexion).
-          <strong>Right:</strong> VPoser-corrected output with anatomically plausible pose.
+          <strong>Left:</strong> crouch-walking artifact induced by standard pose priors.
+          <strong>Middle:</strong> our optimized pipeline recovers a natural posture.
+          <strong>Right:</strong> mesh inflation artifact from naive marker mapping.
         </p>
       </div>
     </div>
@@ -481,8 +483,8 @@
                alt="Multi-stage VPoser fitting loss curves">
         </div>
         <p class="figure-caption">
-          Multi-stage VPoser fitting loss curves. Each optimization stage addresses a different
-          component (shape, pose, translation), with the final stage enforcing temporal smoothness.
+          Multi-stage VPoser fitting loss curves, showing rapid convergence in both the shape-free
+          and shape-refinement stages.
         </p>
       </div>
       <div class="column">
@@ -491,8 +493,8 @@
                alt="SMPL shape parameter (beta) values across subjects">
         </div>
         <p class="figure-caption">
-          SMPL shape parameters (β) across subjects before and after correction.
-          Outlier values corresponding to inflated meshes are suppressed by the fitting prior.
+          SMPL shape parameters (&beta;) across subjects. Outlier values corresponding to inflated
+          meshes are suppressed by the staged fitting prior.
         </p>
       </div>
     </div>
@@ -500,120 +502,157 @@
 </section>
 
 
-<!-- Approach -->
-<section class="section" style="padding-top: 2rem;">
-  <div class="container is-max-desktop">
-    <h2 class="title is-3 has-text-centered">Approach</h2>
-
-    <div class="columns is-vcentered" style="margin-bottom: 1rem;">
-      <div class="column is-5">
-        <h3 class="title is-4">1. Age Classification (ST-GCN)</h3>
-        <div class="content has-text-justified">
-          <p>
-            A <strong>Spatio-Temporal Graph Convolutional Network</strong> operates directly on the
-            22-joint skeletal graph, learning to discriminate between three age groups:
-            Young (&lt;30), Mid-age (30&ndash;60), and Elderly (&gt;60).
-          </p>
-          <p>
-            Rather than discarding the classifier after training, we extract its latent representation
-            <em>z</em><sub>age</sub> as a compact, biomechanically-grounded age embedding. This
-            avoids the failure mode of continuous age scalars, which lack the representational
-            capacity to encode inter-joint coordination patterns.
-          </p>
-        </div>
-      </div>
-      <div class="column is-7">
-        <h3 class="title is-4">2. Age-Conditioned Diffusion</h3>
-        <div class="content has-text-justified">
-          <p>
-            The diffusion model follows the Human Motion Diffusion Model (MDM) architecture.
-            The forward diffusion process is:
-          </p>
-          <div class="formula-block">q(x<sub>t</sub> | x<sub>0</sub>) = 𝒩(x<sub>t</sub>; √ᾱ<sub>t</sub> x<sub>0</sub>, (1 − ᾱ<sub>t</sub>) I)</div>
-          <p>
-            where <em>x<sub>t</sub> ∈ ℝ<sup>B × T × 263</sup></em> is the noisy motion sequence.
-            Age conditioning is injected by concatenating <em>z</em><sub>age</sub> with the text
-            embedding in the cross-attention layers of the denoising transformer, enabling joint
-            text-and-age control over generation.
-          </p>
-          <p>
-            The training objective minimizes the simple noise-prediction loss:
-          </p>
-          <div class="formula-block">ℒ = 𝔼<sub>x₀, ε, t</sub> [ ‖ε − ε<sub>θ</sub>(x<sub>t</sub>, t, z<sub>text</sub>, z<sub>age</sub>)‖² ]</div>
-        </div>
-      </div>
-    </div>
-
-    <!-- ST-GCN Network Breakdown -->
-    <div class="columns is-centered" style="margin-top: 1.5rem;">
-      <div class="column is-12">
-        <div class="result-figure">
-          <img src="./static/images/STGCN-Network-Breakdown.png"
-               alt="ST-GCN network architecture showing stages 1-3 with spatial and temporal graph convolutions, global average pooling, and age group classification head">
-        </div>
-        <p class="figure-caption">
-          <strong>ST-GCN Network Architecture.</strong>
-          The network processes skeletal sequences through three stages of spatio-temporal graph convolutions (ST-GCN blocks).
-          Each stage applies spatial convolutions across the joint graph and temporal convolutions along the motion sequence.
-          The perception layers aggregate features globally, and the classification head (yellow) maps the learned latent
-          age embedding <em>z</em><sub>age</sub> to discrete age group predictions (Young, Mid-age, Elderly).
-        </p>
-      </div>
-    </div>
-
-    <!-- Training vs Inference Diagram -->
-    <div class="columns is-centered" style="margin-top: 1.5rem;">
-      <div class="column is-12">
-        <div class="result-figure">
-          <img src="./static/images/Training Inference Diagram.png"
-               alt="Two-phase architecture diagram: Phase 1 training uses a frozen ST-GCN and MDM with an MLP supervised by MSE loss; Phase 2 inference uses only a text prompt and scalar age fed through CLIP and the MLP to generate motion via cross-attention.">
-        </div>
-        <p class="figure-caption">
-          <strong>Two-Phase Architecture.</strong>
-          <strong>Phase 1 (Training):</strong> A frozen ST-GCN extracts the target age embedding
-          <em>z</em><sub>age</sub> from a real motion clip. A lightweight MLP <em>g</em>(<em>a</em>)
-          is trained to reproduce this embedding from the scalar age alone, supervised by an MSE loss
-          <em>L</em><sub>MSE</sub>. Simultaneously, the frozen MDM is optimized with the diffusion
-          loss <em>L</em><sub>diff</sub> conditioned on the text prompt and
-          <em>z</em><sub>age</sub> via cross-attention.
-          <strong>Phase 2 (Inference):</strong> No input motion is required. The text prompt is
-          encoded by a frozen CLIP encoder, and the scalar age is mapped to
-          <em>z</em><sub>age</sub> by the trained MLP. Both embeddings are combined through
-          cross-attention in the frozen MDM to generate the output motion sequence
-          <em>x</em><sub>0</sub>.
-        </p>
-      </div>
-    </div>
-
-  </div>
-</section>
-
-
-<!-- Results: Kinematic Signatures -->
+<!-- Results -->
 <section class="section" style="background: #f8f8f8; padding-top: 2rem; padding-bottom: 2rem;">
   <div class="container is-max-desktop">
-    <h2 class="title is-3 has-text-centered">Kinematic Signatures</h2>
-    <div class="content has-text-justified" style="margin-bottom: 1.25rem;">
+    <h2 class="title is-3 has-text-centered">Approach &amp; Results</h2>
+
+    <!-- ST-GCN classifier -->
+    <h3 class="title is-4" style="margin-top: 1rem;">Age Classification (ST-GCN++)</h3>
+    <div class="content has-text-justified">
       <p>
-        To validate that the pipeline preserves age-related information, we compare joint angular
-        velocity profiles across the normalized gait cycle for a young subject (age 24) and an
-        elderly subject (age 78). The heatmap below visualizes per-joint angular velocities, where
-        systematic differences in hip extension, knee flexion timing, and ankle push-off amplitude
-        are consistent with established biomechanical literature on aging gait.
+        A <strong>Spatio-Temporal Graph Convolutional Network (ST-GCN++)</strong> operates directly
+        on the 22-joint skeletal graph, learning to discriminate between three age groups:
+        Young (&lt;35), Mid-age (35&ndash;60), and Elderly (&ge;60). We fine-tune from an
+        NTU-RGB+D-120 pretrained backbone, unfreezing the last two ST-GCN blocks (51.5% of parameters
+        trainable), with a class-weighted cross-entropy loss to compensate for the mild age-group
+        imbalance. The classifier serves to verify that the processed pipeline preserves
+        age-discriminative kinematic signatures end-to-end.
+      </p>
+      <p>
+        The classifier reaches <strong>64.6% validation accuracy</strong> on a strict
+        subject-disjoint split. The confusion matrix shows the model consistently segregates the
+        kinematic extremes (Young vs. Elderly); the primary failure mode is fragmentation of the
+        Mid-age category &mdash; consistent with clinical findings that the Young/Mid-age kinematic
+        gap is small relative to within-group variance.
+      </p>
+    </div>
+    <div class="columns is-centered is-vcentered">
+      <div class="column is-6">
+        <div class="result-figure">
+          <img src="./static/images/stgcn_train_loss.png"
+               alt="ST-GCN training loss curve over training epochs.">
+        </div>
+        <p class="figure-caption">
+          Training loss for the ST-GCN++ age classifier.
+        </p>
+      </div>
+      <div class="column is-6">
+        <div class="result-figure">
+          <img src="./static/images/stgcn_confusion.png"
+               alt="ST-GCN confusion matrices on training and validation splits, showing strong Young/Elderly separation and Mid-age fragmentation.">
+        </div>
+        <p class="figure-caption">
+          Validation confusion matrix: kinematic extremes are well-separated; Mid-age is the primary
+          source of confusion.
+        </p>
+      </div>
+    </div>
+
+    <!-- LoRA-adapted MDM + qualitative generation -->
+    <h3 class="title is-4" style="margin-top: 2rem;">Age-Conditioned Generation (LoRA-adapted MDM)</h3>
+    <div class="content has-text-justified">
+      <p>
+        For motion synthesis, we adapt a pre-trained <strong>Motion Diffusion Model (MDM)</strong>
+        using <strong>Low-Rank Adaptation (LoRA)</strong>, following the recipe of Sawdayee et al.
+        End-to-end retraining is impractical given our compute budget and would also risk overwriting
+        the strong text-to-motion prior already learned on HumanML3D. The LoRA update accepts
+        discrete age-group style tokens (<code>young</code>, <code>mid</code>, <code>old</code>) at
+        rank 12, with a prior-preservation loss to keep the base MDM motion distribution intact. The
+        forward diffusion process is:
+      </p>
+      <div class="formula-block">q(x<sub>t</sub> | x<sub>0</sub>) = 𝒩(x<sub>t</sub>; &radic;&#x0101;<sub>t</sub> x<sub>0</sub>, (1 &minus; &#x0101;<sub>t</sub>) I)</div>
+      <p>
+        and the model is trained with the standard noise-prediction objective conditioned on both
+        the CLIP text embedding and the age-group token.
+      </p>
+      <p>
+        We generate 9,000 motion clips (3,000 per age condition) from the walking prompt at
+        classifier-free guidance scale <em>s</em> = 1.0. The qualitative samples below already show
+        well-known coarse aging cues: the Elderly sample exhibits a noticeably hunched back, and the
+        stride-to-stride foot-clearance height differs visibly between Young and Elderly conditions.
+      </p>
+    </div>
+    <div class="columns is-centered">
+      <div class="column is-12">
+        <div class="result-figure">
+          <img src="./static/images/generation-result.png"
+               alt="Generated walking sequences across the three age tokens (Young, Mid-age, Elderly), showing posture and foot-clearance differences.">
+        </div>
+        <p class="figure-caption">
+          Generated walking sequences across the three age tokens
+          (<code>young</code>, <code>mid</code>, <code>old</code>).
+        </p>
+      </div>
+    </div>
+
+    <!-- Quantitative clinical analysis -->
+    <h3 class="title is-4" style="margin-top: 2rem;">Quantitative Clinical Analysis</h3>
+    <div class="content has-text-justified">
+      <p>
+        To rigorously evaluate whether aging signals are preserved end-to-end, we compute standard,
+        training-free gait-analysis metrics on both real and generated clips: spatiotemporal
+        parameters (walking speed, stride length, cadence, computed via zero-velocity crossings of
+        the ankle joints), gait variability via the Coefficient of Variation
+        (CV = (&sigma; / &mu;) &times; 100%), and joint Range of Motion (peak flexion / extension
+        of the hip and knee over the gait cycle).
+      </p>
+      <p>
+        Analysis of the ground-truth data confirms that the expected aging signal is preserved
+        end-to-end through our conversion pipeline. We observe monotonic Young&rarr;Elderly trends
+        consistent with clinical literature: walking speed decreases (1.22 &rarr; 1.10 m/s), stride
+        length decreases (1.34 &rarr; 1.26 m), and knee RoM decreases (54.9&deg; &rarr; 51.5&deg;).
+        Stride-time CV moves in the opposite direction, increasing from 8.9% to 15.0%.
+      </p>
+      <p>
+        Qualitatively, comparative heatmaps of joint angular velocity over a normalized gait cycle
+        show that the elderly subject (Age 78) exhibits reduced peak velocities and constrained range
+        of motion, whereas the young subject (Age 24) demonstrates distinct, high-intensity
+        kinematic bursts.
       </p>
     </div>
     <div class="columns is-centered">
       <div class="column is-10">
         <div class="result-figure">
           <img src="./static/images/heatmap.png"
-               alt="Heatmap of joint angular velocities over the gait cycle comparing young and elderly subjects">
+               alt="Heatmap of joint angular velocities over the gait cycle comparing young and elderly subjects.">
         </div>
         <p class="figure-caption">
           <strong>Kinematic signature heatmap.</strong>
-          Joint angular velocities over the normalized gait cycle. The young subject (top) shows
-          higher peak velocities and more pronounced hip extension. The elderly subject (bottom)
-          displays reduced amplitude across most joints, with a notably altered hip strategy —
-          consistent with the compensatory kinematics documented in aging gait research.
+          Joint angular velocities over the normalized gait cycle. Young subject (left) shows higher
+          peak velocities and more pronounced hip extension; the elderly subject (right) shows reduced
+          amplitude across most joints &mdash; consistent with the compensatory kinematics documented
+          in aging gait research.
+        </p>
+      </div>
+    </div>
+
+    <div class="content has-text-justified" style="margin-top: 1.5rem;">
+      <p>
+        When evaluating the generated clips conditioned on age, the metrics reveal both the potential
+        and the limitations of the LoRA-adapted model. Generated motions successfully reproduce the
+        expected age-related change in Range-of-Motion: the <code>old</code> token produces
+        significantly constrained hip RoM (<strong>21.5&deg;</strong>) compared to the
+        <code>young</code> and <code>mid</code> tokens (<strong>24&ndash;25&deg;</strong>),
+        indicating that the LoRA adapter learns and imposes spatial kinematic constraints.
+      </p>
+      <p>
+        However, the stride Coefficient of Variation is uniformly elevated
+        (<strong>16&ndash;19%</strong>) across all generated clips, far exceeding clinical reference
+        values. We attribute this to the stochastic noise introduced in the diffusion process
+        overwhelming stride consistency &mdash; a capacity ceiling of low-rank, discrete-token
+        adaptation.
+      </p>
+    </div>
+    <div class="columns is-centered">
+      <div class="column is-12">
+        <div class="result-figure">
+          <img src="./static/images/combined_violin.png"
+               alt="Violin plots comparing distributions of clinical gait metrics between the ground-truth dataset and the generated motion clips across age groups.">
+        </div>
+        <p class="figure-caption">
+          Violin plots comparing the distribution of clinical metrics between the ground-truth dataset
+          and the generated motion clips across age groups.
         </p>
       </div>
     </div>
@@ -621,45 +660,80 @@
 </section>
 
 
-<!-- Discussion -->
-<section class="section" style="padding-top: 2rem;">
+<!-- Discussion & Future Work -->
+<section class="section" style="padding-top: 2rem; padding-bottom: 2rem;">
   <div class="container is-max-desktop">
     <h2 class="title is-3 has-text-centered">Discussion &amp; Future Work</h2>
     <div class="content has-text-justified">
       <p>
-        Our pipeline reliably transforms clinical motion-capture recordings into a representation
-        suitable for diffusion model training, while retaining age-discriminative kinematic cues.
-        The ST-GCN classifier successfully separates age groups, and the age embedding shows
-        promise as a conditioning signal for generation.
+        Our preliminary findings reveal both the promise and the current limitations of data-driven
+        models in learning age-related motion signatures. The ST-GCN age-signature detector
+        successfully segregates kinematic extremes (Young vs. Elderly), confirming that motion clips
+        contain discriminative biomechanical information related to age. The LoRA-adapted MDM
+        successfully imposes spatial kinematic constraints &mdash; reducing hip RoM in
+        Elderly-conditioned clips &mdash; yet spatiotemporal consistency remains unresolved.
       </p>
       <p>
-        <strong>Current limitations:</strong>
+        We attribute this failure to the capacity ceiling of low-rank, discrete-token adaptation:
+        a rank-12 LoRA update can push a few high-leverage statistics such as hip RoM toward an
+        age-specific mean, but cannot coherently re-shape stride timing, leaving the base MDM prior
+        to dominate the temporal axis. This gap highlights an important challenge for assistive
+        robotics in eldercare: producing visually plausible age-conditioned motion is not sufficient;
+        motion prediction systems must also preserve biomechanical characteristics that affect
+        anticipation, safety, and interaction.
       </p>
+      <p><strong>Current limitations:</strong></p>
       <ul>
         <li>
-          <strong>Dataset balance</strong> — older adult cohorts are systematically underrepresented
-          in publicly available motion datasets, limiting the diversity of elderly gait patterns the
-          model can learn from.
+          <strong>Dataset size</strong> &mdash; all currently available age-diverse motion datasets
+          are too small to train modern deep generative models without overfitting.
         </li>
         <li>
-          <strong>Protocol variability</strong> — differences in clinical capture protocols
-          (marker placement, walking track length, instruction standardization) introduce
-          confounds that constrain cross-dataset generalization.
+          <strong>Conditioning strength</strong> &mdash; discrete age-group tokens through LoRA are
+          parameter-efficient but may not be expressive enough to capture gradual, continuous
+          age-related change or individual variability.
         </li>
         <li>
-          <strong>Evaluation metrics</strong> — standard motion generation metrics (FID, diversity)
-          are not designed to measure biomechanical aging fidelity; new evaluation frameworks
-          are needed.
+          <strong>Evaluation metrics</strong> &mdash; standard motion-generation metrics (FID,
+          diversity) are not designed to measure biomechanical aging fidelity; new frameworks are
+          needed.
         </li>
       </ul>
+    </div>
+
+    <h3 class="title is-4" style="margin-top: 1.5rem;">Future Architecture: Continuous Latent Age Conditioning</h3>
+    <div class="content has-text-justified">
       <p>
-        <strong>Planned extensions:</strong>
+        Future work will move beyond discrete age-group conditioning toward a continuous latent
+        conditioning architecture. A <strong>biomechanical style encoder</strong> is pretrained on
+        AMASS via supervised contrastive learning to capture per-subject kinematic identity. An
+        <strong>age head</strong> is then fine-tuned on top of the frozen encoder using clinical age
+        labels. Finally, the MDM transformer is retrained end-to-end with conditioning formed by
+        concatenating a CLIP text embedding <em>z</em><sub>text</sub> and the biomechanical style
+        embedding <em>z</em><sub>style</sub> (containing the latent age vector
+        <em>z</em><sub>age</sub>).
       </p>
-      <ul>
-        <li>Biomechanically-informed generation with joint torque estimation as an auxiliary signal.</li>
-        <li>Longitudinal data integration for personalized functional trajectory modeling.</li>
-        <li>Transition from discrete age groups to a continuous age manifold using LoRA adapter interpolation.</li>
-      </ul>
+      <p>
+        At inference, a scalar age combined with a text prompt enables <strong>continuous
+        interpolation across the age axis</strong> and personalization toward individual functional
+        ability rather than coarse demographic bins.
+      </p>
+    </div>
+
+    <div class="columns is-centered" style="margin-top: 1rem;">
+      <div class="column is-12">
+        <div class="result-figure">
+          <img src="./static/images/future-work-architecture.png"
+               alt="Proposed continuous age-conditioning architecture: a biomechanical style encoder pretrained on AMASS via supervised contrastive learning, an age head producing a latent age vector z_age, and an MDM transformer conditioned on concatenated text and biomechanical style embeddings.">
+        </div>
+        <p class="figure-caption">
+          <strong>Proposed continuous age-conditioning architecture.</strong>
+          A biomechanical style encoder pretrained on AMASS produces a latent style embedding
+          <em>z</em><sub>style</sub> that contains an age component <em>z</em><sub>age</sub>; the MDM
+          transformer is retrained end-to-end with conditioning on the concatenated CLIP text and
+          biomechanical style embeddings.
+        </p>
+      </div>
     </div>
   </div>
 </section>
