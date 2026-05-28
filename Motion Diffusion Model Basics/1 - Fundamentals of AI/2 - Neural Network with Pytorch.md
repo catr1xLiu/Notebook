@@ -66,12 +66,12 @@ The weighted sum $z'$ can be any real number, but we need the final activation t
 
 Combining all steps, the activation of a neuron is:
 
-$$ a = \sigma(z + b) = \sigma\left(\sum_{i=1}^{n} \color{#dab1da}w_i\color{white} \color{white}a_i\color{white} + \color{#ff8c00}b\color{white}\right) = \frac{1}{1 + e^{-(\sum_{i=1}^{n} \color{#dab1da}w_i\color{white} \color{white}a_i\color{white} + \color{#ff8c00}b\color{white})}} $$
+$$ a = \sigma(z + b) = \sigma\left(\sum_{i=1}^{n} \color{#8a2f8a}w_i\color{black} \color{black}a_i\color{black} + \color{#ff8c00}b\color{black}\right) = \frac{1}{1 + e^{-(\sum_{i=1}^{n} \color{#8a2f8a}w_i\color{black} \color{black}a_i\color{black} + \color{#ff8c00}b\color{black})}} $$
 
 In practice, to compute all neurons in a layer simultaneously, we organize activations into a vector $\mathbf{a}^{(\ell-1)}$, weights into a matrix $W$, and biases into a vector $\mathbf{b}$. The activations of the next layer are then:
-$$ \mathbf{a}^{(1)} = \sigma\left( \begin{bmatrix} \color{#dab1da}w_{0,0}\color{white} & \color{#dab1da}w_{0,1}\color{white} & \cdots & \color{#dab1da}w_{0,n}\color{white} \\ \color{#dab1da}w_{1,0}\color{white} & \color{#dab1da}w_{1,1}\color{white} & \cdots & \color{#dab1da}w_{1,n}\color{white} \\ \vdots & \vdots & \ddots & \vdots \\ \color{#dab1da}w_{k,0}\color{white} & \color{#dab1da}w_{k,1}\color{white} & \cdots & \color{#dab1da}w_{k,n}\color{white} \end{bmatrix} \begin{bmatrix} \color{white}a_0^{(0)}\color{white} \\ \color{white}a_1^{(0)}\color{white} \\ \vdots \\ \color{white}a_n^{(0)}\color{white} \end{bmatrix} + \begin{bmatrix} \color{#ff8c00}b_0\color{white} \\ \color{#ff8c00}b_1\color{white} \\ \vdots \\ \color{#ff8c00}b_k\color{white} \end{bmatrix} \right) $$
+$$ \mathbf{a}^{(1)} = \sigma\left( \begin{bmatrix} \color{#8a2f8a}w_{0,0}\color{black} & \color{#8a2f8a}w_{0,1}\color{black} & \cdots & \color{#8a2f8a}w_{0,n}\color{black} \\ \color{#8a2f8a}w_{1,0}\color{black} & \color{#8a2f8a}w_{1,1}\color{black} & \cdots & \color{#8a2f8a}w_{1,n}\color{black} \\ \vdots & \vdots & \ddots & \vdots \\ \color{#8a2f8a}w_{k,0}\color{black} & \color{#8a2f8a}w_{k,1}\color{black} & \cdots & \color{#8a2f8a}w_{k,n}\color{black} \end{bmatrix} \begin{bmatrix} \color{black}a_0^{(0)}\color{black} \\ \color{black}a_1^{(0)}\color{black} \\ \vdots \\ \color{black}a_n^{(0)}\color{black} \end{bmatrix} + \begin{bmatrix} \color{#ff8c00}b_0\color{black} \\ \color{#ff8c00}b_1\color{black} \\ \vdots \\ \color{#ff8c00}b_k\color{black} \end{bmatrix} \right) $$
 or in simplified form:
-$$ \mathbf{a}^{(\ell)} = \sigma(\color{#dab1da}W\color{white} \color{white}\mathbf{a}^{(\ell-1)}\color{white} + \color{#ff8c00}\mathbf{b}\color{white}) $$
+$$ \mathbf{a}^{(\ell)} = \sigma(\color{#8a2f8a}W\color{white} \color{black}\mathbf{a}^{(\ell-1)}\color{black} + \color{#ff8c00}\mathbf{b}\color{black}) $$
 where:
 - $W \in \mathbb{R}^{k \times n}$ is the weight matrix with $k$ neurons in the current layer and $n$ neurons in the previous layer
 - $\mathbf{a}^{(0)} \in \mathbb{R}^{n}$ is the activation vector from the previous layer
