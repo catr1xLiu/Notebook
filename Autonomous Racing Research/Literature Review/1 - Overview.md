@@ -1,7 +1,7 @@
 
 This note covers the fundamentals of autonomous racing systems and existing methods from the literature. 
 
-## High-Level System Architecture
+# High-Level System Architecture
 
 We divide the pipeline of an autonomous racing system to five components:
 ![[1 - System Components|100%]]
@@ -13,21 +13,27 @@ We divide the pipeline of an autonomous racing system to five components:
 
 We will focus on the **planning** and **control** part in this review.
 
-
-## Defining The Problem Scope
+# Defining The Problem Scope
 
 We define the scope of autonomous racing system to its operating environment - a standard racetrack. 
+
 ![[2 - Racetrack Environment|100%]]
+We realize that, for **planning** and **control**, the fundamental problems are:
+- **Minimizing**: We need to find the best path throughout the track yielding minimum lap-time
+- **Shifts from Desired States**: Unavoidably, the vehicle will drift away from our desired output, and we will need to adjust correspondingly
+- **Handling Limit**: 
+- **Obstacles and Opponents**:
+
+![[3 - Fundamental Problems|100%]]
+# Data through the Pipeline
 
 
-## Defining The Data Pipeline
 
-## Preliminary Approaches
+# Global Planning
 
-### Global Planning
+- Optimization using complex methods https://www.tandfonline.com/doi/full/10.1080/00423114.2019.1704804
 
-### Dynamic Re-planning
+# Dynamic Re-planning
 
-**Model Perception Control**  and **Learning-based** approaches to 
+# Control
 
-![[Approaches to Dynamic Planning.canvas]]
