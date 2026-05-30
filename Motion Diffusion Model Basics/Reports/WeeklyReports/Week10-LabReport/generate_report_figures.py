@@ -12,7 +12,7 @@ from cycler import cycler
 matplotlib.use("Agg")
 
 plt.rcParams["font.family"] = "DejaVu Sans"
-plt.rcParams["font.size"] = 10
+plt.rcParams["font.size"] = 18
 plt.rcParams["axes.facecolor"] = "#f5f5f5"
 plt.rcParams["axes.edgecolor"] = "#cccccc"
 plt.rcParams["axes.grid"] = True
@@ -100,8 +100,8 @@ def generate_figure3_training_curves():
     ax1.set_ylabel("Train Loss")
     ax1.tick_params(axis="y", colors="#444444")
     ax1.grid(True, alpha=0.3)
-    ax1.set_title("Training Loss by Backbone Configuration", fontsize=13, fontweight="bold")
-    ax1.legend(loc="upper right", fontsize=9)
+    ax1.set_title("Training Loss by Backbone Configuration", fontsize=20, fontweight="bold")
+    ax1.legend(loc="upper right", fontsize=16)
     plt.tight_layout()
     plt.savefig("figures/figure3_train_loss.png", dpi=170, bbox_inches="tight")
     plt.close()
@@ -161,7 +161,7 @@ def generate_figure3_training_curves():
         "Best: 43.68%",
         xy=(1, 43.68),
         xytext=(5, 38),
-        fontsize=9,
+        fontsize=14,
         color="#1f77b4",
         fontweight="bold",
     )
@@ -169,7 +169,7 @@ def generate_figure3_training_curves():
         "Best: 54.02%",
         xy=(17, 54.02),
         xytext=(20, 48),
-        fontsize=9,
+        fontsize=14,
         color="#ff7f0e",
         fontweight="bold",
     )
@@ -177,7 +177,7 @@ def generate_figure3_training_curves():
         "Best: 64.37%",
         xy=(4, 64.37),
         xytext=(8, 60),
-        fontsize=9,
+        fontsize=14,
         color="#2ca02c",
         fontweight="bold",
     )
@@ -187,8 +187,8 @@ def generate_figure3_training_curves():
     ax2.tick_params(axis="y", colors="#222222")
     ax2.set_ylim([25, 70])
     ax2.grid(True, alpha=0.3)
-    ax2.set_title("Validation Accuracy by Backbone Configuration", fontsize=13, fontweight="bold")
-    ax2.legend(loc="upper right", fontsize=8.5)
+    ax2.set_title("Validation Accuracy by Backbone Configuration", fontsize=20, fontweight="bold")
+    ax2.legend(loc="upper right", fontsize=15)
     plt.tight_layout()
     plt.savefig("figures/figure3_val_accuracy.png", dpi=170, bbox_inches="tight")
     plt.close()

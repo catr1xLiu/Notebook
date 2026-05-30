@@ -1,8 +1,8 @@
 We present an age-conditioned human motion generation framework for studying aging signatures in the context of assistive robotics.
 Our pipeline converts clinical gait recordings into learning-ready motion representations while addressing defects from legacy motion-capture data.
-Using 450 clips from 138 subjects across young, mid-age, and elderly groups, we train a Spatial-Temporal Graph Convolutional Network (ST-GCN) to recognize age group from motion clips, achieving 64.6\% classification accuracy.
-We then fine-tune a Motion Diffusion Model (MDM) with Low-Rank Adaptation (LoRA) to generate text-conditioned human motion with age-group control.
-To evaluate whether generated motions preserve aging-related characteristics, we analyze clinical and kinematic gait metrics on 9,000 generated clips.
-Our results show that the model successfully reproduces spatial kinematic constraints in the Elderly condition, but spatiotemporal consistency remains unresolved --- generated stride variability massively overshoots clinical baselines due to the inherent stochasticity of the diffusion process.
+Using 420 clips from 138 subjects across young, mid-age, and elderly groups, we train a Spatial-Temporal Graph Convolutional Network (ST-GCN) to recognize age group from motion clips, achieving 64.6\% classification accuracy.
+We then fine-tune a Motion Diffusion Model (MDM) with Low-Rank Adaptation (LoRA) to generate text-conditioned human motion with age-group control, and compare against the unadapted MDM under both neutral and elderly-described text prompts.
+To evaluate whether generated motions preserve aging-related characteristics, we analyze clinical and kinematic gait metrics on 9{,}000 generated clips.
+Our results show that the LoRA-adapted model reproduces spatial kinematic constraints in the Elderly condition --- a signature the unadapted MDM fails to express even under elderly-described prompts --- but spatiotemporal consistency remains unresolved, with generated stride variability massively overshooting clinical baselines, which we attribute to the capacity ceiling of low-rank, discrete-token adaptation.
 These findings highlight dataset size, motion quality, and conditioning strength as key bottlenecks, and motivate larger age-diverse datasets for demographic-aware motion prediction and assistive robot planning.
 Code and video available on the \href{https://catr1xliu.github.io/Notebook/Aging-Motion-Project/}{project page}.

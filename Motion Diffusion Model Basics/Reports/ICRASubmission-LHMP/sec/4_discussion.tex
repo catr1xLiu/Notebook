@@ -1,17 +1,7 @@
-Our preliminary findings reveal both the promise and current limitations of data-driven models in learning age-related motion signatures.
-The ST-GCN age-signature detection network successfully segregates kinematic extremes --- Young versus Elderly --- confirming that motion clips contain discriminative biomechanical information related to age group.
-However, the generated motions do not yet consistently reproduce statistically robust age-related differences across all selected clinical and kinematic metrics.
-The LoRA-adapted Motion Diffusion Model successfully learns and imposes spatial kinematic constraints --- Elderly-conditioned clips produce measurably reduced hip Range-of-Motion relative to Young and Adult conditions --- yet spatiotemporal consistency remains unresolved, with generated stride variability massively overshooting clinical baselines due to the inherent stochastic noise of the diffusion process.
-This gap highlights an important challenge for assistive robotics operating in eldercare and clinical environments: producing visually plausible age-conditioned motion is not sufficient for meaningful age-aware motion synthesis; motion prediction systems must also preserve biomechanical characteristics that affect anticipation, safety, and interaction.
+Our findings reveal both the promise and the current limitations of data-driven models for age-related motion signatures.
+The ST-GCN successfully separates the kinematic extremes (Young vs.\ Elderly), confirming that motion clips contain discriminative biomechanical information related to age group.
+The LoRA-adapted MDM learns and imposes spatial kinematic constraints that the unadapted MDM cannot express even under elderly-described prompts, yet spatiotemporal consistency remains unresolved: generated stride variability massively overshoots clinical baselines.
+We attribute this remaining failure to the capacity ceiling of low-rank, discrete-token adaptation: a rank-12 LoRA update can push high-leverage spatial statistics such as hip RoM toward an age-specific mean, but cannot coherently re-shape stride timing, leaving the base MDM prior to dominate the temporal axis of the kinematic chain.
+This gap highlights a core challenge for assistive robotics in eldercare: visually plausible age-conditioned motion is not sufficient --- prediction systems built on top of generative priors must preserve the biomechanical characteristics that affect anticipation, safety, and interaction.
 
-The main bottleneck identified in this work is the limited size and quality of available age-diverse motion datasets.
-Our experiments rely on clinical gait recordings collected from subjects across different age groups, but all available datasets are currently too small to support the training of deep-learning models, unavoidably resulting in model overfitting.
-
-Another limitation is the current conditioning strategy.
-While our proposed framework aims to condition generation on a continuous latent age representation extracted by the age-signature network, the implemented prototype uses discrete age-group conditions through LoRA adaptation.
-This provides an efficient first step, but may not be expressive enough to capture gradual age-related changes or individual variability.
-
-Future work will move beyond discrete age-group conditioning toward the continuous latent conditioning architecture proposed in Section~\ref{sec:method}, incorporating personalized representations of functional ability.
-More broadly, this work motivates the collection of larger, higher-quality, and more diverse human motion datasets that include older adults, varying health conditions, and daily living activities --- datasets essential for advancing age-aware motion prediction and safer assistive human-robot interaction.
-
-By identifying these gaps and providing an initial clinical-to-generative pipeline grounded in biomechanical evaluation, this work provides an initial step toward demographic-aware motion priors for human motion prediction, assistive robot planning, and safer human-robot interaction in aging-in-place contexts.
+Dataset scale and discrete-token conditioning capacity are the two principal bottlenecks; future work will train the continuous latent-conditioning architecture of Section~\ref{sec:method} end-to-end on larger, age-diverse datasets, with scalar age regression and t-SNE visualization of $\mathbf{z}_\text{age}$ as classifier-side next steps --- moving past the LoRA capacity ceiling toward demographic-aware motion priors for assistive eldercare.
