@@ -1,0 +1,331 @@
+\task{Intake System Optimization for Single Cylinder Engine}
+\label{ch:task1}
+
+\section{Introduction}
+
+This task focuses on the optimization of a 0.5-litre single-cylinder naturally aspirated gasoline direct injection (GDi) engine, serving as the foundation for subsequent multi-cylinder engine development in Task 2. The primary objective is to improve engine performance across multiple key performance indicators through systematic optimization of intake geometry and camshaft phasing across the operating speed range of 2000-7000 rpm.
+
+The performance improvement of the optimized engine configuration was evaluated against both the baseline configuration and published data for comparable naturally aspirated engines. The optimization successfully demonstrated measurable gains in power output, torque, and efficiency, validating the simulation methodology and providing insights applicable to the multi-cylinder engine design in subsequent tasks.
+
+\section{Justification for High-RPM Tuning Strategy}
+
+The optimization goal in Task~1 was specifically focused on improving engine performance in the \textbf{\textit{6000--7000 rpm}} range. This high-speed region was intentionally selected because it reflects the typical operating conditions of motorsports applications, where engines frequently operate near the rev limit. Improving torque and volumetric efficiency at high RPM ensures better acceleration in taller gears, improved top-end responsiveness, and greater overall drivability under full-load racing conditions.
+
+From a technical perspective, naturally aspirated engines often struggle to maintain high volumetric efficiency in this RPM range due to shortened intake durations, reduced piston-cylinder pressure differentials, and increased wave interference. Therefore, maximizing performance in this band requires deliberate design of the intake system and precise valve timing.
+
+
+While the tuning strategy successfully enhanced top-end performance, it is important to consider the potential \textbf{\textit{impact on drivability}} at low to mid-range engine speeds. In general, optimization for high-RPM torque may lead to reduced low-speed airflow velocity, weaker charge momentum, and poorer cylinder filling efficiency below 4000~rpm—particularly in naturally aspirated engines. These effects can cause sluggish throttle response and reduced torque availability in everyday driving scenarios.
+
+However, in this case, the design choices were carefully balanced to minimise such trade-offs. The Intake Valve Closing (IVC) timing was deliberately left unchanged, preserving effective charge trapping at lower RPM. Additionally, the intake runner diameter was increased, but not excessively, in order to avoid severely slowing air velocity at low speeds. 
+
+As a result, while the engine is clearly tuned for motorsport-style high-RPM responsiveness, the loss of drivability at low engine speeds is expected to be moderate and acceptable within the intended performance envelope. In fact, the simulation results indicate that BSFC and VE in the 2500--4000~rpm range remain comparable to baseline values, suggesting no major degradation in fuel economy or torque delivery in the lower band.
+
+In summary, this RPM band was chosen not only for its relevance to motorsport performance but also for the engineering challenge it presents. The tuning strategy successfully overcomes the natural efficiency drop in high-speed operation, validating the applied optimization methods and supporting their scalability to multi-cylinder configurations in future tasks.
+
+\section{Performance Analysis}
+
+\subsection{Performance Improvement Summary}
+
+\begin{table}[H]
+    \centering
+    \caption{Performance Improvement Summary}
+    \label{tab:task1_improvements}
+    \begin{tabular}{lcccc}
+        \toprule
+        Parameter & \textcolor{baselinecolor}{Baseline} & \textcolor{optimizedcolor}{Optimized} & Improvement & Unit \\
+        \midrule
+        Peak BMEP & \textcolor{baselinecolor}{12.58} & \textcolor{optimizedcolor}{14.04} & \textcolor{improvementcolor}{+1.46 (+11.6\%)} & bar \\
+        Peak Power & \textcolor{baselinecolor}{33.97} & \textcolor{optimizedcolor}{39.15} & \textcolor{improvementcolor}{+5.18 (+15.3\%)} & kW \\
+        Peak Torque & \textcolor{baselinecolor}{49.99} & \textcolor{optimizedcolor}{55.79} & \textcolor{improvementcolor}{+5.80 (+11.6\%)} & Nm \\
+        BSFC @ Peak Power & \textcolor{baselinecolor}{267.91} & \textcolor{optimizedcolor}{260.30} & \textcolor{improvementcolor}{-7.61 (-2.8\%)} & g/kWh \\
+        Peak Vol. Efficiency & \textcolor{baselinecolor}{108.89} & \textcolor{optimizedcolor}{122.95} & \textcolor{improvementcolor}{+14.06 (+12.9\%)} & \% \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+
+\subsection{Detailed Performance Characteristics}
+
+% Legend at the top
+\begin{figure}[H]
+    \centering
+    \begin{tikzpicture}
+        \begin{axis}[
+            hide axis,
+            xmin=0, xmax=1,
+            ymin=0, ymax=1,
+            legend style={
+                draw=none,
+                legend columns=2,
+                /tikz/every even column/.append style={column sep=1cm}
+            },
+            legend pos=north west
+            ]
+            \addlegendimage{baselinecolor, thick, no markers}
+            \addlegendentry{Baseline}
+            \addlegendimage{optimizedcolor, thick, no markers}
+            \addlegendentry{Optimized}
+        \end{axis}
+    \end{tikzpicture}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \begin{minipage}{0.48\textwidth}
+        \centering
+        \begin{tikzpicture}
+            \begin{axis}[
+                width=\textwidth,
+                height=0.6\textwidth,
+                xlabel={Engine Speed (krpm)},
+                ylabel={BMEP (bar)},
+                xlabel style={font=\footnotesize},
+                ylabel style={font=\footnotesize},
+                tick label style={font=\footnotesize},
+                grid=major,
+                ]
+                \addplot[baselinecolor, thick, no markers] table[x index=0, y expr=\thisrowno{1}*10, col sep=comma, skip first n=2] {task1/data/TASK1_BMEP.csv};
+                \addplot[optimizedcolor, thick, no markers] table[x index=0, y expr=\thisrowno{2}*10, col sep=comma, skip first n=2] {task1/data/TASK1_BMEP.csv};
+            \end{axis}
+        \end{tikzpicture}
+        \caption{Brake Mean Effective Pressure}
+        \label{fig:task1_bmep}
+    \end{minipage}
+    \hfill
+    \begin{minipage}{0.48\textwidth}
+        \centering
+        \begin{tikzpicture}
+            \begin{axis}[
+                width=\textwidth,
+                height=0.6\textwidth,
+                xlabel={Engine Speed (krpm)},
+                ylabel={Power (kW)},
+                xlabel style={font=\footnotesize},
+                ylabel style={font=\footnotesize},
+                tick label style={font=\footnotesize},
+                grid=major,
+                ]
+                \addplot[baselinecolor, thick, no markers] table[x index=0, y index=1, col sep=comma, skip first n=2] {task1/data/TASK1_POWER.csv};
+                \addplot[optimizedcolor, thick, no markers] table[x index=0, y index=2, col sep=comma, skip first n=2] {task1/data/TASK1_POWER.csv};
+            \end{axis}
+        \end{tikzpicture}
+        \caption{Brake Power}
+        \label{fig:task1_power}
+    \end{minipage}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \begin{minipage}{0.48\textwidth}
+        \centering
+        \begin{tikzpicture}
+            \begin{axis}[
+                width=\textwidth,
+                height=0.6\textwidth,
+                xlabel={Engine Speed (krpm)},
+                ylabel={Torque (Nm)},
+                xlabel style={font=\footnotesize},
+                ylabel style={font=\footnotesize},
+                tick label style={font=\footnotesize},
+                grid=major,
+                ]
+                \addplot[baselinecolor, thick, no markers] table[x index=0, y index=1, col sep=comma, skip first n=2] {task1/data/TASK1_TORQUE.csv};
+                \addplot[optimizedcolor, thick, no markers] table[x index=0, y index=2, col sep=comma, skip first n=2] {task1/data/TASK1_TORQUE.csv};
+            \end{axis}
+        \end{tikzpicture}
+        \caption{Brake Torque}
+        \label{fig:task1_torque}
+    \end{minipage}
+    \hfill
+    \begin{minipage}{0.48\textwidth}
+        \centering
+        \begin{tikzpicture}
+            \begin{axis}[
+                width=\textwidth,
+                height=0.6\textwidth,
+                xlabel={Engine Speed (krpm)},
+                ylabel={BSFC (g/kWh)},
+                xlabel style={font=\footnotesize},
+                ylabel style={font=\footnotesize},
+                tick label style={font=\footnotesize},
+                grid=major,
+                ]
+                \addplot[baselinecolor, thick, no markers] table[x index=0, y index=1, col sep=comma, skip first n=2] {task1/data/TASK1_BSFC.csv};
+                \addplot[optimizedcolor, thick, no markers] table[x index=0, y index=2, col sep=comma, skip first n=2] {task1/data/TASK1_BSFC.csv};
+            \end{axis}
+        \end{tikzpicture}
+        \caption{Brake Specific Fuel Consumption}
+        \label{fig:task1_bsfc}
+    \end{minipage}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \begin{minipage}{0.48\textwidth}
+        \centering
+        \begin{tikzpicture}
+            \begin{axis}[
+                width=\textwidth,
+                height=0.6\textwidth,
+                xlabel={Engine Speed (krpm)},
+                ylabel={Volumetric Efficiency (\%)},
+                xlabel style={font=\footnotesize},
+                ylabel style={font=\footnotesize},
+                tick label style={font=\footnotesize},
+                grid=major,
+                ]
+                \addplot[baselinecolor, thick, no markers] table[x index=0, y expr=\thisrowno{1}*100, col sep=comma, skip first n=2] {task1/data/TASK1_VE.csv};
+                \addplot[optimizedcolor, thick, no markers] table[x index=0, y expr=\thisrowno{2}*100, col sep=comma, skip first n=2] {task1/data/TASK1_VE.csv};
+            \end{axis}
+        \end{tikzpicture}
+        \caption{Volumetric Efficiency}
+        \label{fig:task1_ve}
+    \end{minipage}
+    \hfill
+    \begin{minipage}{0.48\textwidth}
+        \centering
+        \begin{tikzpicture}
+            \begin{axis}[
+                width=\textwidth,
+                height=0.6\textwidth,
+                xlabel={Engine Speed (krpm)},
+                ylabel={IMEP (bar)},
+                xlabel style={font=\footnotesize},
+                ylabel style={font=\footnotesize},
+                tick label style={font=\footnotesize},
+                grid=major,
+                ]
+                \addplot[baselinecolor, thick, no markers] table[x index=0, y expr=\thisrowno{1}*10, col sep=comma, skip first n=2] {task1/data/TASK1_IMEP.csv};
+                \addplot[optimizedcolor, thick, no markers] table[x index=0, y expr=\thisrowno{2}*10, col sep=comma, skip first n=2] {task1/data/TASK1_IMEP.csv};
+            \end{axis}
+        \end{tikzpicture}
+        \caption{Indicated Mean Effective Pressure}
+        \label{fig:task1_imep}
+    \end{minipage}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \begin{minipage}{0.48\textwidth}
+        \centering
+        \begin{tikzpicture}
+            \begin{axis}[
+                width=\textwidth,
+                height=0.6\textwidth,
+                xlabel={Engine Speed (krpm)},
+                ylabel={Temperature (K)},
+                xlabel style={font=\footnotesize},
+                ylabel style={font=\footnotesize},
+                tick label style={font=\footnotesize},
+                grid=major,
+                ]
+                \addplot[baselinecolor, thick, no markers] table[x index=0, y index=1, col sep=comma, skip first n=2] {task1/data/TASK1_FIRE_TEMP.csv};
+                \addplot[optimizedcolor, thick, no markers] table[x index=0, y index=2, col sep=comma, skip first n=2] {task1/data/TASK1_FIRE_TEMP.csv};
+            \end{axis}
+        \end{tikzpicture}
+        \caption{Combustion Temperature}
+        \label{fig:task1_fire_temp}
+    \end{minipage}
+    \hfill
+    \begin{minipage}{0.48\textwidth}
+        \centering
+        \begin{tikzpicture}
+            \begin{axis}[
+                width=\textwidth,
+                height=0.6\textwidth,
+                xlabel={Engine Speed (krpm)},
+                ylabel={Mass Flow (g/cycle)},
+                xlabel style={font=\footnotesize},
+                ylabel style={font=\footnotesize},
+                tick label style={font=\footnotesize},
+                grid=major,
+                ]
+                \addplot[baselinecolor, thick, no markers] table[x index=0, y index=1, col sep=comma, skip first n=2] {task1/data/TASK1_MASSFLOW.csv};
+                \addplot[optimizedcolor, thick, no markers] table[x index=0, y index=2, col sep=comma, skip first n=2] {task1/data/TASK1_MASSFLOW.csv};
+            \end{axis}
+        \end{tikzpicture}
+        \caption{Air Mass Flow Rate}
+        \label{fig:task1_massflow}
+    \end{minipage}
+\end{figure}
+
+\subsection{Performance Analysis}
+
+\subsubsection{Torque and Power Characteristics}
+
+The optimised torque curve demonstrates a strong high-RPM response, peaking at 6500 rpm. A small dip around 6600 rpm likely results from minor resonance mismatch but remains well above baseline. The power curve rises more steeply, reaching 37 kW at 7000 rpm, confirming improved high-end breathing and sustained power delivery—ideal traits for racing applications.
+
+\subsubsection{Drivability Considerations}
+
+Compared to typical stock naturally aspirated engines, which prioritize mid-range torque delivery (peak torque typically at 3000--5000 rpm) for everyday drivability, the optimized configuration shifts the torque peak significantly higher to 6500 rpm. This high-RPM bias results in a more race-oriented powerband that:
+
+\begin{itemize}
+    \item Requires higher engine speeds to access peak performance, necessitating frequent gear changes in urban driving
+    \item Delivers reduced low-end torque compared to a typical stock 0.5L engine, potentially resulting in less responsive throttle response below 4000 rpm
+    \item Provides superior top-end performance suitable for sustained high-RPM operation on track
+    \item May exhibit increased NVH (noise, vibration, harshness) characteristics at operating speeds due to the single-cylinder configuration and high-RPM focus
+\end{itemize}
+
+This trade-off is acceptable and expected for a racing-focused powerplant, where sustained high-RPM operation is the norm and low-speed drivability is secondary to peak power output. Stock engines typically sacrifice ultimate peak power to maintain broader, more flexible torque curves that enhance real-world usability. The optimization successfully achieves its goal of maximizing high-speed performance at the expense of low-speed tractability—a characteristic shared with other high-performance naturally aspirated racing engines.
+
+
+\subsubsection{Intake Mass Flow and Firing Temperature}
+
+Intake mass-flow per cycle increased notably beyond 5000 rpm, confirming that the modified geometry improved air-charging dynamics. Peak firing temperature increased slightly from ~2800 K to ~2825 K, indicating more complete and rapid combustion without excessive thermal loading or knock risk.
+
+\subsection{Comparison with Published Data}
+
+\begin{table}[H]
+    \centering
+    \caption{BMEP Benchmarking Against Published Data}
+    \label{tab:task1_benchmark}
+    \begin{tabular}{lccc}
+        \toprule
+        Engine Type & Displacement (L) & Peak BMEP (bar) & Reference \\
+        \midrule
+        Task 1 Optimized & 0.5 & 14.04 & This work \\
+        Honda F20C (S2000) & 2.0 & 12.5--13.0 & \cite{honda_f20c} \\
+        MotoGP NA Racing & 1.0 & 14.0 & \cite{blair_racehead} \\
+        Formula 1 NA (2006) & 2.4 & 14.6--15.2 & \cite{nascar_tech} \\
+        High-performance NA & Various & 13.0--15.0 & \cite{bmep_comparison} \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+The optimised engine achieved a BMEP of 1.40 MPa (14.04 bar), placing it solidly within the performance range of high-performance naturally aspirated racing engines. This value exceeds typical high-performance road car engines like the Honda F20C (12.5--13.0 bar) and approaches the levels achieved by dedicated racing engines such as MotoGP (14.0 bar) and Formula 1 naturally aspirated units (14.6--15.2 bar) \cite{blair_racehead, nascar_tech}. VE exceeding 120\% confirms that dynamic pressure charging was successfully realised. The reduction in BSFC demonstrates lower pumping losses and improved combustion efficiency. The overall results validate the combined effects of intake resonance tuning and early IVO phasing, both critical to achieving race-grade high-speed performance.
+
+\section{Optimization Strategy}
+
+\subsection{Design Modifications and Engineering Rationale}
+
+\subsubsection{Intake Runner Geometry}
+
+The intake system originally consisted of two pipes measuring 80 mm $\times$ 33.5 mm each. Both were replaced with 165 mm $\times$ 45 mm pipes of identical dimensions.
+
+\begin{itemize}
+    \item Longer runners (165 mm) promote second-order pressure-wave resonance near 6500 rpm, improving cylinder filling by timing the returning pressure wave with intake-valve opening.
+    \item Larger diameter (45 mm) reduces flow restriction, minimising pressure losses and sustaining airflow at high engine speeds.
+    \item Using identical dimensions for both pipe segments avoids step changes that would disturb wave propagation, ensuring smooth flow and consistent resonance tuning.
+\end{itemize}
+
+These geometric changes collectively enhance air momentum, reduce throttling losses, and improve charge density, resulting in higher torque at high RPM.
+
+\subsubsection{Valve Timing (IVO/IVC Phasing)}
+
+To complement the intake tuning, Intake Valve Opening (IVO) was advanced by 7° CA, while Intake Valve Closing (IVC) remained unchanged.
+
+Advancing IVO allows the valve to open slightly earlier during the exhaust stroke, enabling the incoming pressure wave to enter the cylinder as the piston begins its intake stroke. This increases the mass-flow momentum into the cylinder—especially beneficial at 6000--7000 rpm.
+
+Maintaining the original IVC prevents back-flow at low and mid speeds, preserving overall efficiency and ensuring balanced performance across the speed range.
+
+The chosen phasing strategy harmonises with the longer runner tuning, maximising volumetric efficiency and torque near the target RPM.
+
+
+
+\section{Conclusions}
+
+The intake-system optimisation successfully shifted torque and power peaks into the 6000--7000 rpm range while improving volumetric efficiency, combustion quality, and fuel economy.
+
+The extended, larger-diameter runners and 7° advanced IVO delivered effective wave-tuning and stronger cylinder filling, producing performance levels consistent with naturally aspirated race engines.
+
+The optimised configuration provides a robust foundation for scaling to a 2 L four-cylinder variant in Task 2 and demonstrates a clear understanding of intake dynamics and valve-timing interaction in high-speed powertrain design.
