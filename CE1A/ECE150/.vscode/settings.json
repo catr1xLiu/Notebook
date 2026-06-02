@@ -1,0 +1,109 @@
+{
+    // ----------------------------------------------------------------
+    // 1. Auto-Formatting on Save (Crucial)
+    // ----------------------------------------------------------------
+    "editor.formatOnSave": true,
+    // Force VS Code to use clangd for formatting, not the default C++ provider
+    "[cpp]": {
+        "editor.defaultFormatter": "llvm-vs-code-extensions.vscode-clangd"
+    },
+    // 1. Enable format on save for JSON and JSONC (JSON with comments)
+    "[json]": {
+        "editor.defaultFormatter": "vscode.json-language-features",
+        "editor.formatOnSave": true
+    },
+    "[jsonc]": {
+        "editor.defaultFormatter": "vscode.json-language-features",
+        "editor.formatOnSave": true
+    },
+    // ----------------------------------------------------------------
+    // 2. Clangd (Language Server) Setup
+    // ----------------------------------------------------------------
+    // Disable Microsoft IntelliSense to avoid conflicts
+    "C_Cpp.intelliSenseEngine": "disabled",
+    "clangd.path": "/usr/bin/clangd",
+    "clangd.arguments": [
+        "--background-index",
+        "--clang-tidy",
+        "--completion-style=detailed",
+        "--header-insertion=iwyu",
+        "--compile-commands-dir=${workspaceFolder}/build" // Tells clangd where CMake output is
+    ],
+    // ----------------------------------------------------------------
+    // 3. LLDB-DAP (Debugger) Setup
+    // ----------------------------------------------------------------
+    // IMPORTANT: If 'which lldb-dap' failed, change this to "/usr/bin/lldb-dap-18"
+    "lldb-dap.executable-path": "/usr/bin/lldb-dap-18",
+    // ----------------------------------------------------------------
+    // FORCE the editor to use 4 spaces visually
+    "editor.tabSize": 4,
+    "editor.insertSpaces": true,
+    // STOP VS Code from guessing based on file content
+    "editor.detectIndentation": false,
+    "files.associations": {
+        "array": "cpp",
+        "atomic": "cpp",
+        "bit": "cpp",
+        "bitset": "cpp",
+        "cctype": "cpp",
+        "charconv": "cpp",
+        "chrono": "cpp",
+        "clocale": "cpp",
+        "cmath": "cpp",
+        "codecvt": "cpp",
+        "compare": "cpp",
+        "concepts": "cpp",
+        "condition_variable": "cpp",
+        "cstdarg": "cpp",
+        "cstddef": "cpp",
+        "cstdint": "cpp",
+        "cstdio": "cpp",
+        "cstdlib": "cpp",
+        "cstring": "cpp",
+        "ctime": "cpp",
+        "cwchar": "cpp",
+        "cwctype": "cpp",
+        "deque": "cpp",
+        "list": "cpp",
+        "string": "cpp",
+        "unordered_map": "cpp",
+        "vector": "cpp",
+        "exception": "cpp",
+        "algorithm": "cpp",
+        "functional": "cpp",
+        "iterator": "cpp",
+        "memory": "cpp",
+        "memory_resource": "cpp",
+        "numeric": "cpp",
+        "optional": "cpp",
+        "random": "cpp",
+        "ratio": "cpp",
+        "string_view": "cpp",
+        "system_error": "cpp",
+        "tuple": "cpp",
+        "type_traits": "cpp",
+        "utility": "cpp",
+        "fstream": "cpp",
+        "initializer_list": "cpp",
+        "iomanip": "cpp",
+        "iosfwd": "cpp",
+        "iostream": "cpp",
+        "istream": "cpp",
+        "limits": "cpp",
+        "mutex": "cpp",
+        "new": "cpp",
+        "numbers": "cpp",
+        "ostream": "cpp",
+        "semaphore": "cpp",
+        "span": "cpp",
+        "sstream": "cpp",
+        "stdexcept": "cpp",
+        "stop_token": "cpp",
+        "streambuf": "cpp",
+        "thread": "cpp",
+        "typeinfo": "cpp",
+        "variant": "cpp",
+        "format": "cpp",
+        "__nullptr": "cpp"
+    }
+}

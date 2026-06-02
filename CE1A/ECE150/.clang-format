@@ -1,0 +1,34 @@
+# Based on LLVM, but modified for your "Java-like" 4-space preference
+BasedOnStyle: LLVM
+Language: Cpp
+
+# Indentation
+IndentWidth: 4
+TabWidth: 4
+UseTab: Never
+AccessModifierOffset: -4  # Aligns public/private with class definition
+ContinuationIndentWidth: 4
+
+# Line Length (120 allows for your fluent method chaining without wrapping too early)
+ColumnLimit: 120
+
+# Cleanliness: Fix namespace comments automatically
+FixNamespaceComments: true
+
+# Functional/Fluent Style Optimization
+# This makes .method().method() chains stack vertically if they get too long
+IndentWrappedFunctionNames: false
+BreakBeforeBinaryOperators: NonAssignment
+
+# Avoid "Monster" Nesting visual clutter
+# If a function call fits on one line, keep it there. If not, pack it neatly.
+AllowShortFunctionsOnASingleLine: Empty
+BinPackArguments: false     # Forces arguments to new lines if they don't fit, cleaner reading
+BinPackParameters: false    # Same for function definitions
+
+# Templates (The <T> stuff)
+AlwaysBreakTemplateDeclarations: Yes # Forces 'template <...>' to its own line (cleaner)
+
+# Pointer Alignment
+# "int* ptr" vs "int *ptr". Java users usually prefer "int* ptr" (Left)
+PointerAlignment: Left

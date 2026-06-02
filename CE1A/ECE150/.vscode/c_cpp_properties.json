@@ -1,0 +1,25 @@
+{
+	"configurations": [
+		{
+			"name": "Linux Single File",
+			"includePath": [
+				"${workspaceFolder}/**"
+			],
+			"defines": [],
+			"compilerPath": "/usr/bin/clang++",
+			"cStandard": "c17",
+			"cppStandard": "c++23",
+			"intelliSenseMode": "linux-clang-x64",
+			// REMOVED: "compileCommands": ... 
+			// ADDED: explicitly tell it to use the compiler path for info
+			"browse": {
+				"path": [
+					"${workspaceFolder}"
+				],
+				"limitSymbolsToIncludedHeaders": true,
+				"databaseFilename": ""
+			}
+		}
+	],
+	"version": 4
+}

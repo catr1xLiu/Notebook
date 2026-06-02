@@ -1,0 +1,33 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "shell",
+			"label": "Clang++: Build Active File",
+			"command": "/usr/bin/clang++",
+			"args": [
+				"-fcolor-diagnostics",
+				"-std=c++23",
+				"-stdlib=libc++", // Optional: Use LLVM's libc++ instead of GNU's libstdc++ (cleaner)
+				"-g", // Debug info
+				"-Wall", // All standard warnings
+				"-Wextra", // Extra warnings
+				"-Wpedantic", // Enforce strict ISO C++
+				"${file}",
+				"-o",
+				"${fileDirname}/${fileBasenameNoExtension}"
+			],
+			"options": {
+				"cwd": "${fileDirname}"
+			},
+			"problemMatcher": [
+				"$gcc"
+			],
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			},
+			"detail": "Compiles the current file using Clang with strict warnings."
+		}
+	]
+}

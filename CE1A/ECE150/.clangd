@@ -1,0 +1,16 @@
+Index:
+  StandardLibrary: Yes    # Changed ; to :
+
+---                       # Changed -- to --- (3 dashes)
+
+If:
+  PathMatch: .*\.c
+CompileFlags:
+  Add: [-std=c17, -xc]
+
+---                       # Changed -- to ---
+
+If:
+  PathMatch: .*\.cpp      # Fixed typo (.\cpp -> .\.cpp)
+CompileFlags:
+  Add: [-std=c++23, -Wall, -Wextra] # Added safety flags here too
