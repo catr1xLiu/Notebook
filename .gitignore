@@ -29,6 +29,7 @@
 
 # Quartus build database
 db/
+incremental_db/
 
 # Quartus Generated output files
 output_files/
