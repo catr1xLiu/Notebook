@@ -1,0 +1,95 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% University/School Laboratory Report
+% LaTeX Template
+% Version 4.0 (March 21, 2022)
+%
+% This template originates from:
+% https://www.LaTeXTemplates.com
+%
+% Authors:
+% Vel (vel@latextemplates.com)
+% Linux and Unix Users Group at Virginia Tech Wiki
+%
+% License:
+% CC BY-NC-SA 4.0 (https://creativecommons.org/licenses/by-nc-sa/4.0/)
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%----------------------------------------------------------------------------------------
+%	PACKAGES AND DOCUMENT CONFIGURATIONS
+%----------------------------------------------------------------------------------------
+
+\documentclass[
+	letterpaper, % Paper size, specify a4paper (A4) or letterpaper (US letter)
+	11pt, % Default font size, specify 10pt, 11pt or 12pt
+]{CSUniSchoolLabReport}
+
+\usepackage{subcaption}
+\usepackage{booktabs}
+\geometry{top=2cm} % Override top margin to reduce space before title
+
+%----------------------------------------------------------------------------------------
+%	REPORT INFORMATION
+%----------------------------------------------------------------------------------------
+
+\title{Lab 2 - Electric Flux  \\ ECE106} % Report title
+
+\author{Yiran \textsc{Liu} \&  Zijin \textsc{Yang}} % Author name(s), add additional authors like: '\& James \textsc{Smith}'
+
+\date{\today} % Date of the report
+
+%----------------------------------------------------------------------------------------
+
+\begin{document}
+
+\maketitle % Insert the title, author and date using the information specified above
+
+\begin{center}
+	\begin{tabular}{l r}
+      Lab Section: 206 \\
+      Student Number: Y.L. 21184901 \& Z.Y. 21196273
+	\end{tabular}
+\end{center}
+%----------------------------------------------------------------------------------------
+%	COMPUTATIONS
+%----------------------------------------------------------------------------------------
+
+\section{Pre-Lab: Theory}
+
+\subsection{Eletric Flux through Closed Sphereical Surface}
+
+A point charge of $+0.75\mu C$ is placed at $(x, y, z) = (0, 0, 0)$, we are to compute the total eletric flux through a sphereical surface of radius $R=2.0m$ from the definition of eletric flux. 
+
+\[
+  \Phi_E = \iint \vec{E} \cdot d\vec{S} = \int_{0}^{2 \pi} \int_{0}^{2 \pi} \frac{1}{4 \pi \epsilon_0} \frac{q}{R^2} \hat{r} \cdot \hat{E} \ r d\theta \ r d\phi
+\]
+where $\epsilon_{0} = 8.854187 \times 10^{-12} \ F / m$ and $q = +0.75 \times 10^{-6} C$. 
+
+We notice that the eletric field strength $\vec{E}$ is the same, and that $\hat{r} \cdot \hat{E} = 1$. Therefore, we can compute the flux as:
+\[
+  \Phi_E = S \|\vec{E}\| = 4 \pi R^2 \frac{q}{4 \pi R^2 \epsilon_0} 
+\]
+We compute for $R=2.0m$ and $R=5.0m$, $\Phi_{2m} = \Phi_{5m} = 84705.69 Nm^2/C$.
+
+\subsection{Charge Density}
+
+The charge density of a spherical charge cloud with radius $r=0.01m$ and charge of $+0.75\mu C$. The volume of the sphere is $V = \frac{4}{3} \pi r^3 = 4.1888 \times 10^{-6}$, density $\rho=\frac{q}{V} = 0.17905 C/m^3$
+
+\subsection{Eletric Flux Through Square Surfaces}
+
+We denote the the eletric flux through the three squares as $\Phi_1$, $\Phi_2$ and $\Phi_3$, respectively. We construct cubic gaussian surfaces for square 1 and 2, denote as Cube1 and Cube2. Using the Gauss' Law and considering the symetry:
+
+\[
+4\Phi_1 = 4\Phi_2 = \frac{q_\text{enclosed}}{\epsilon_0}
+\]
+
+We observe that Square 3 contains all of Square 1 and some additional area that has non-zero eletric flux. Therefore, $\Phi_3 > \Phi_1$. The final relationship is:
+
+\[
+\Phi_3 > \Phi_2 = \Phi_1
+\]
+
+\section{Simulation for Spherical Gaussian Surfaces}
+
+
+\end{document}
