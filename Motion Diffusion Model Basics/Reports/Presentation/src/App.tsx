@@ -1,14 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { 
-  Play, 
-  Pause, 
-  RotateCcw, 
-  ChevronLeft, 
-  ChevronRight, 
-  Volume2, 
-  VolumeX, 
-  Clock, 
+import {
+  RotateCcw,
+  ChevronLeft,
+  ChevronRight,
+  Clock,
   Presentation,
   Award
 } from 'lucide-react';
@@ -136,8 +132,6 @@ const SLIDES: SlideItem[] = [
 
 export default function App() {
   const [currentSlideIndex, setCurrentSlideIndex] = useState<number>(0);
-  const [isPlaying, setIsPlaying] = useState<boolean>(false);
-  const [soundEnabled, setSoundEnabled] = useState<boolean>(true);
 
   // 5 Minute Presentation Countdown timer
   const [totalTimeLeft, setTotalTimeLeft] = useState<number>(300); // 300 seconds = 5 minutes
@@ -175,44 +169,26 @@ export default function App() {
         setSlideSecondsLeft((prev) => prev - 1);
       }, 1000);
     } else if (slideSecondsLeft === 0 && !alertTriggered.current) {
-      // Flashes a visual cues or warns verbally
-      if (soundEnabled) {
-        try {
-          const audioCtx = new (window.AudioContext || (window as any).webkitAudioContext)();
-          const osc = audioCtx.createOscillator();
-          const gain = audioCtx.createGain();
-          osc.connect(gain);
-          gain.connect(audioCtx.destination);
-          osc.type = 'sine';
-          osc.frequency.setValueAtTime(440, audioCtx.currentTime); // Standard beep
-          gain.gain.setValueAtTime(0.04, audioCtx.currentTime);
-          osc.start();
-          setTimeout(() => osc.stop(), 180);
-        } catch (e) {
-          console.log("Audio not allowed by custom safety scopes yet", e);
-        }
-      }
+      try {
+        const audioCtx = new (window.AudioContext || (window as any).webkitAudioContext)();
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(440, audioCtx.currentTime);
+        gain.gain.setValueAtTime(0.04, audioCtx.currentTime);
+        osc.start();
+        setTimeout(() => osc.stop(), 180);
+      } catch (e) {}
       alertTriggered.current = true;
     }
     return () => clearInterval(interval);
-  }, [timerActive, slideSecondsLeft, soundEnabled]);
-
-  // Autoplay handler
-  useEffect(() => {
-    let interval: NodeJS.Timeout;
-    if (isPlaying) {
-      interval = setInterval(() => {
-        goToNextSlide();
-      }, 10000); // Auto advances slide every 10 seconds if autoplay enabled
-    }
-    return () => clearInterval(interval);
-  }, [isPlaying, currentSlideIndex]);
+  }, [timerActive, slideSecondsLeft]);
 
   const goToNextSlide = () => {
     if (currentSlideIndex < SLIDES.length - 1) {
       setCurrentSlideIndex((prev) => prev + 1);
-    } else {
-      setIsPlaying(false); // Stop autoplay when reaching the end
     }
   };
 
@@ -531,53 +507,10 @@ export default function App() {
             </div>
           </div>
 
-          {/* Autoplay controllers bar */}
-          <div className="bg-[#F9F8F4] border border-nat-border p-3 rounded-2xl flex items-center justify-between px-4">
-            <span className="text-[11px] text-nat-accent-light font-sans tracking-widest font-bold">AUTOPLAY CONTROLS</span>
-            <div className="flex items-center gap-4">
-              {/* Sound alarm switcher */}
-              <button 
-                onClick={() => setSoundEnabled(!soundEnabled)}
-                className={`flex items-center gap-1 px-2.5 py-1 rounded text-[11px] font-sans font-medium cursor-pointer transition-colors ${
-                  soundEnabled ? 'text-nat-accent bg-nat-nested border border-nat-border shadow-sm' : 'text-[#8C8C73]'
-                }`}
-                title={soundEnabled ? "Mute beep alerts" : "Unmute beep alerts"}
-              >
-                {soundEnabled ? <Volume2 size={12} /> : <VolumeX size={12} />}
-                <span>{soundEnabled ? 'Timer Alert On' : 'Alert Muted'}</span>
-              </button>
-
-              {/* Autoplay loop triggers */}
-              <button
-                onClick={() => setIsPlaying(!isPlaying)}
-                className={`flex items-center gap-1.5 px-3 py-1 rounded-lg text-[11px] font-sans font-medium cursor-pointer transition-colors ${
-                  isPlaying ? 'bg-nat-accent text-white border border-nat-accent shadow shadow-nat-accent/20' : 'bg-white text-nat-text-body hover:bg-nat-nested border border-nat-border'
-                }`}
-              >
-                {isPlaying ? <Pause size={12} /> : <Play size={12} />}
-                <span>{isPlaying ? 'Autoplay On' : 'Autoplay'}</span>
-              </button>
-            </div>
-          </div>
         </section>
 
       </main>
 
-      {/* FOOTER METRICS AND METADATA */}
-      <footer className="border-t border-nat-border bg-nat-card px-6 py-4 flex flex-col md:flex-row items-center justify-between text-xs text-nat-accent-light mt-6 gap-3 shadow-inner">
-        <div className="flex items-center gap-2 font-sans">
-          <span className="text-[11px] uppercase tracking-wider font-semibold">Session: Elder Care Robotics</span>
-          <span className="text-nat-border font-light">|</span>
-          <span className="font-mono text-nat-accent font-semibold flex items-center gap-1">
-            <span className="w-1.5 h-1.5 rounded-full bg-nat-accent animate-ping" /> Built for Scientific Workshop
-          </span>
-        </div>
-        <div className="flex items-center gap-1.5 font-sans">
-          <span>Paper ID: #7822-X</span>
-          <span>•</span>
-          <span>Google AI Studio Build 2026</span>
-        </div>
-      </footer>
     </div>
   );
 }

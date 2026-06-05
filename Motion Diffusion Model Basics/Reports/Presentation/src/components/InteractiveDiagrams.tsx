@@ -494,22 +494,42 @@ export const FigDiffusionArchitecture: React.FC = () => (
 // VIOLIN PLOTS: DATASET VS GENERATED
 // ==========================================
 export const FigViolinResults: React.FC = () => (
-  <div className="border border-nat-border rounded-xl bg-nat-card p-6 flex flex-col h-full">
-    <div className="flex justify-between items-center mb-3">
+  <div className="border border-nat-border rounded-xl bg-nat-card p-5 flex flex-col h-full gap-3">
+    <div className="flex justify-between items-center shrink-0">
       <span className="text-xs font-sans text-nat-accent border border-nat-border px-2.5 py-0.5 rounded-full bg-nat-nested font-medium">
-        Paper Fig 9
+        Paper Fig 9 & 10
       </span>
-      <h4 className="text-sm font-semibold font-sans text-nat-text-deep">Gait Metric Distributions: Dataset vs Generated</h4>
+      <h4 className="text-sm font-semibold font-sans text-nat-text-deep">Gait Metric Distributions & Joint Speed Curves</h4>
     </div>
-    <p className="text-xs text-nat-text-body mb-4 leading-relaxed font-serif">
-      9,000 generated clips (3,000 per age condition). Spatial metrics (Hip RoM, Cadence) align well; <strong>Stride Time CV spikes to 16–19%</strong> vs baseline 8.9–15%, revealing temporal stochasticity from diffusion noise.
+    <p className="text-xs text-nat-text-body leading-relaxed font-serif shrink-0">
+      9,000 generated clips (3,000 per age condition). Spatial metrics (Hip RoM, Cadence) align well; <strong>Stride Time CV spikes to 16–19%</strong> vs baseline 8.9–15%. Joint speed curves show Young (blue) vs Old (red) separation is preserved spatially but temporal rhythm is disrupted by diffusion noise.
     </p>
-    <div className="flex-1 flex items-center justify-center bg-[#F2F1ED] rounded-xl border border-nat-border p-3">
+    {/* Violin plots */}
+    <div className="flex-1 flex items-center justify-center bg-[#F2F1ED] rounded-xl border border-nat-border p-2 min-h-0">
       <img
         src="/figs/combined-violin.png"
-        alt="Violin plots comparing Walking Speed, Stride Time CV, Hip ROM, and Cadence between ground-truth dataset (blue) and generated motion clips (red) for Young and Old age groups"
+        alt="Violin plots comparing Walking Speed, Stride Time CV, Hip ROM, and Cadence between dataset and generated motion for Young, Mid, Old age groups"
         className="max-h-full max-w-full object-contain"
       />
+    </div>
+    {/* Gait cycle speed curves: Dataset vs Generated side by side */}
+    <div className="grid grid-cols-2 gap-3 shrink-0">
+      {[
+        { src: "/figs/gait-cycle-dataset.png", label: "Dataset — Ground Truth", tag: "GT" },
+        { src: "/figs/gait-cycle-generated.png", label: "Generated — LoRA MDM", tag: "GEN" },
+      ].map(({ src, label, tag }) => (
+        <div key={tag} className="bg-[#F2F1ED] rounded-xl border border-nat-border p-2 flex flex-col gap-1">
+          <div className="flex items-center gap-1.5">
+            <span className="text-[8px] font-sans font-bold uppercase tracking-widest text-nat-accent border border-nat-border px-1.5 py-0.5 rounded-full bg-nat-nested">{tag}</span>
+            <span className="text-[9px] font-sans font-semibold text-nat-text-deep">{label}</span>
+          </div>
+          <img
+            src={src}
+            alt={`Joint speed over gait cycle by age group — ${label}`}
+            className="w-full object-contain rounded"
+          />
+        </div>
+      ))}
     </div>
   </div>
 );
