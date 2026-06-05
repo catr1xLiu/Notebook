@@ -26,12 +26,12 @@ module LogicalStep_Lab2_top
 	wire c_out;
 	
 	wire  [3:0] pb;
-	pb_inverters(
+	pb_inverters inverter(
 		.pbin  (pb_n),
 		.pbout (pb)
 	);
 
-	full_adder_4bit (
+	full_adder_4bit u_adder (
 		.input_A   (hex_A),
 		.input_B   (hex_B),
 		.carry_out (c_out),
@@ -39,14 +39,14 @@ module LogicalStep_Lab2_top
 		);
 	
 	mux_4bit_2_to_1 mux1 (
-		.din_A    (hex_B),
+		.din_A    (hex_A),
 		.din_B    (sum),
 		.selector (pb[2]),
 		.dout     (digit1)
 		);
 	
 	mux_4bit_2_to_1 mux2 (
-		.din_A    (hex_A),
+		.din_A    (hex_B),
 		.din_B    ({3'b000, c_out}),
 		.selector (pb[2]),
 		.dout     (digit2)
