@@ -1,21 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { 
-  Database, 
-  Activity, 
-  TrendingDown, 
-  Filter, 
-  CheckCircle, 
-  AlertTriangle, 
-  RefreshCw, 
-  Layers, 
-  Cpu, 
-  Sparkles, 
+import {
+  Database,
+  Activity,
+  Layers,
+  Cpu,
+  Sparkles,
   ArrowRight,
-  User,
-  Sliders,
   Play,
   Pause,
-  AlertCircle
 } from 'lucide-react';
 
 // ==========================================
@@ -130,154 +122,56 @@ export const Fig1Overview: React.FC = () => {
 
 
 // ==========================================
-// FIGURE 2: ARTIFACT ANALYSIS RETARGETING
+// FIGURE 2: DATA PIPELINE — THREE STAGES
 // ==========================================
-export const Fig2Artifacts: React.FC = () => {
-  const [pipelineType, setPipelineType] = useState<'naive' | 'crouch' | 'optimized'>('optimized');
-  const [iterations, setIterations] = useState<number>(400);
-
-  return (
-    <div className="border border-nat-border rounded-xl bg-nat-card p-6 flex flex-col justify-between h-full">
-      <div>
-        <div className="flex justify-between items-center mb-3">
-          <span className="text-xs font-sans text-nat-accent border border-nat-border px-2.5 py-0.5 rounded-full bg-nat-nested font-medium">
-            Paper Fig 2
-          </span>
-          <h4 className="text-sm font-semibold font-sans text-nat-text-deep">Clinical Retargeting & Optimization Loss</h4>
-        </div>
-        <p className="text-xs text-nat-text-body mb-4 leading-relaxed font-serif">
-          Standard priors and naive retargeting induce crouch gait artifacts or mesh inflation. The paper's optimization pipeline leverages frame-by-frame <strong>VPoser regularization</strong> via L-BFGS to preserve biological fidelity.
-        </p>
-
-        {/* Comparison Tabs */}
-        <div className="grid grid-cols-3 gap-2 mb-4 bg-nat-nested p-1 rounded-lg font-sans">
-          {(['crouch', 'naive', 'optimized'] as const).map((type) => (
-            <button
-              key={type}
-              onClick={() => {
-                setPipelineType(type);
-                if (type === 'optimized') setIterations(400);
-                else if (type === 'crouch') setIterations(20);
-                else setIterations(80);
-              }}
-              className={`py-1.5 text-xs rounded transition-all duration-150 capitalize cursor-pointer font-medium ${
-                pipelineType === type
-                  ? 'bg-nat-accent text-white border border-nat-border shadow-sm'
-                  : 'text-nat-accent-light hover:text-nat-text-deep'
-              }`}
-            >
-              {type === 'crouch' ? 'Bent Crouch' : type === 'naive' ? 'Mesh Inflation' : 'Optimized Fit'}
-            </button>
-          ))}
-        </div>
-
-        {/* Visual skeletal representation based on select */}
-        <div className="h-44 bg-[#F2F1ED] rounded-xl border border-nat-border relative overflow-hidden flex items-center justify-center p-4">
-          <div className="absolute top-2 left-2 text-[8px] font-sans text-nat-accent-light font-bold">
-            SMPL MODEL PREVIEW
-          </div>
-
-          {pipelineType === 'crouch' && (
-            <div className="flex flex-col items-center animate-fade-in text-center px-4">
-              {/* Crouch skeleton visualization */}
-              <svg className="w-16 h-28 text-amber-700 mb-2" viewBox="0 0 100 150">
-                {/* Crouch posture skeleton */}
-                <circle cx="50" cy="25" r="8" fill="none" stroke="currentColor" strokeWidth="2.5" />
-                <path d="M50 33 L50 75 M50 75 L35 100 L40 125" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" />
-                <path d="M55 75 L45 95 L50 120" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" />
-                <path d="M50 42 L25 55 M50 42 L75 58" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" />
-                {/* Bent knee indicator */}
-                <circle cx="35" cy="100" r="3.5" fill="#B45309" />
-                <circle cx="45" cy="95" r="3.5" fill="#B45309" />
-              </svg>
-              <div className="text-[10px] text-amber-800 font-sans font-medium flex items-center gap-1">
-                <AlertTriangle size={12} /> Crouch Gait Bias Artifact (Under-optimized)
-              </div>
-            </div>
-          )}
-
-          {pipelineType === 'naive' && (
-            <div className="flex flex-col items-center animate-fade-in text-center px-4">
-              {/* Naive map with mesh inflation */}
-              <svg className="w-20 h-28 text-rose-700 mb-2" viewBox="0 0 100 150">
-                {/* Fat / inflated posture */}
-                <circle cx="50" cy="25" r="12" fill="none" stroke="currentColor" strokeWidth="3.5" />
-                <ellipse cx="50" cy="65" rx="16" ry="30" fill="none" stroke="currentColor" strokeWidth="1.5" strokeDasharray="3,3" />
-                <path d="M50 33 L50 75" fill="none" stroke="currentColor" strokeWidth="4.5" />
-                <path d="M50 75 L38 120 M50 75 L62 120" fill="none" stroke="currentColor" strokeWidth="4.5" />
-                <path d="M50 42 L25 65 M50 42 L75 65" fill="none" stroke="currentColor" strokeWidth="4.5" />
-              </svg>
-              <div className="text-[10px] text-rose-800 font-sans font-medium flex items-center gap-1">
-                <AlertCircle size={12} /> Inflated Mesh Shape Defect (High Marker Error)
-              </div>
-            </div>
-          )}
-
-          {pipelineType === 'optimized' && (
-            <div className="flex flex-col items-center animate-fade-in text-center px-4">
-              {/* Natural optimized fit */}
-              <svg className="w-16 h-28 text-[#5A5A40] mb-2" viewBox="0 0 100 150">
-                <circle cx="50" cy="22" r="8" fill="none" stroke="currentColor" strokeWidth="2.5" />
-                <path d="M50 30 L50 75 M50 75 L38 110 L38 140" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" />
-                <path d="M50 75 L62 110 L62 140" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" />
-                <path d="M50 38 L30 65 M50 38 L70 65" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" />
-                {/* Normal alignment vectors */}
-                <path d="M50 0 L50 150" stroke="rgba(90, 90, 64, 0.25)" strokeDasharray="4,4" />
-              </svg>
-              <div className="text-[10px] text-[#5A5A40] font-sans font-bold flex items-center gap-1">
-                <CheckCircle size={12} fill="rgba(90, 90, 64, 0.1)" /> Regularized Natural Posture Recovered
-              </div>
-            </div>
-          )}
-        </div>
-      </div>
-
-      {/* Dynamic L-BFGS convergence telemetry graph based on selection */}
-      <div className="mt-4 pt-3 border-t border-nat-border bg-white">
-        <div className="flex justify-between items-center text-[10px] font-sans text-nat-accent-light px-1 mb-2 font-semibold">
-          <span>L-BFGS OPTIMIZER (MAX_ITER = 400)</span>
-          <span className={pipelineType === 'optimized' ? 'text-nat-accent font-bold' : 'text-nat-accent-light'}>
-            Status: {pipelineType === 'optimized' ? 'Converged' : 'Terminated'}
-          </span>
-        </div>
-        <div className="flex items-end h-16 w-full gap-1 border-b border-l border-nat-border pl-1 pb-1 font-sans">
-          {Array.from({ length: 24 }).map((_, i) => {
-            let heightPercent = 10;
-            const factor = Math.exp(-i / 4.5);
-            if (pipelineType === 'optimized') {
-              heightPercent = 10 + factor * 85; 
-            } else if (pipelineType === 'crouch') {
-              heightPercent = 70 + (i < 5 ? (5 - i) * 5 : 0);
-            } else {
-              heightPercent = 45 + factor * 45;
-              if (i > 8) heightPercent = 45;
-            }
-            return (
-              <div key={i} className="flex-1 flex flex-col justify-end h-full group relative">
-                <div 
-                  className={`w-full rounded-t transition-all duration-500 ${
-                    pipelineType === 'optimized' 
-                      ? 'bg-[#5A5A40]/75 group-hover:bg-[#5A5A40]' 
-                      : pipelineType === 'crouch' 
-                        ? 'bg-amber-600/75 group-hover:bg-amber-500' 
-                        : 'bg-rose-500/75 group-hover:bg-rose-400'
-                  }`}
-                  style={{ height: `${heightPercent}%` }}
-                />
-              </div>
-            );
-          })}
-        </div>
-        <div className="flex justify-between text-[8px] font-sans font-bold text-nat-accent-light px-1 mt-1">
-          <span>Iter 0</span>
-          <span>Iter 150</span>
-          <span>Iter 300</span>
-          <span>Iter 400</span>
-        </div>
-      </div>
+const PipelinePanel: React.FC<{
+  src: string; alt: string; step: string; label: string; detail: string;
+}> = ({ src, alt, step, label, detail }) => (
+  <div className="flex flex-col gap-2 min-w-0">
+    <div className="flex-1 bg-[#F2F1ED] rounded-xl border border-nat-border flex items-center justify-center p-2 overflow-hidden" style={{ minHeight: 0 }}>
+      <img src={src} alt={alt} className="max-h-full max-w-full object-contain" />
     </div>
-  );
-};
+    <div className="text-center shrink-0">
+      <div className="text-[9px] font-sans font-bold uppercase tracking-widest text-nat-accent mb-0.5">{step}</div>
+      <div className="text-[11px] font-sans font-semibold text-nat-text-deep leading-tight">{label}</div>
+      <div className="text-[9px] font-sans text-nat-accent-light mt-0.5">{detail}</div>
+    </div>
+  </div>
+);
+
+export const Fig2Artifacts: React.FC = () => (
+  <div className="border border-nat-border rounded-xl bg-nat-card p-5 flex flex-col h-full gap-3">
+    <div className="flex justify-between items-center shrink-0">
+      <span className="text-xs font-sans text-nat-accent border border-nat-border px-2.5 py-0.5 rounded-full bg-nat-nested font-medium">
+        Paper Fig 1 (Top)
+      </span>
+      <h4 className="text-sm font-semibold font-sans text-nat-text-deep">Data Pipeline: MoCap → SMPL → HumanML3D</h4>
+    </div>
+    <div className="flex-1 grid grid-cols-3 gap-4 min-h-0">
+      <PipelinePanel
+        src="/figs/pipeline-mocap.png"
+        alt="Van Criekinge clinical MoCap dataset: 58 labeled 3D markers at 100Hz"
+        step="Stage 01"
+        label="Raw Clinical MoCap"
+        detail="58 markers · 100 Hz · 138 subjects"
+      />
+      <PipelinePanel
+        src="/figs/pipeline-smpl.png"
+        alt="VPoser-based SMPL mesh parameter optimization: L-BFGS with marker position, motion smoothness, and biomechanical priors"
+        step="Stage 02"
+        label="VPoser SMPL Fitting"
+        detail="θ: (T, 72)  ·  β: (10)"
+      />
+      <PipelinePanel
+        src="/figs/pipeline-humanml3d.png"
+        alt="HumanML3D convertor producing machine-learnable graph at T·20Hz with 22 joints"
+        step="Stage 03"
+        label="HumanML3D Features"
+        detail="(T · 20 Hz, 22, 3)"
+      />
+    </div>
+  </div>
+);
 
 
 // ==========================================
@@ -528,3 +422,78 @@ export const Fig11ContinuousArchitecture: React.FC = () => {
     </div>
   );
 };
+
+
+// ==========================================
+// ST-GCN CONFUSION MATRIX RESULTS
+// ==========================================
+export const FigStGcnResults: React.FC = () => (
+  <div className="border border-nat-border rounded-xl bg-nat-card p-6 flex flex-col h-full">
+    <div className="flex justify-between items-center mb-3">
+      <span className="text-xs font-sans text-nat-accent border border-nat-border px-2.5 py-0.5 rounded-full bg-nat-nested font-medium">
+        Paper Fig 8
+      </span>
+      <h4 className="text-sm font-semibold font-sans text-nat-text-deep">ST-GCN++ Age Classification Confusion Matrices</h4>
+    </div>
+    <p className="text-xs text-nat-text-body mb-4 leading-relaxed font-serif">
+      Two-block ST-GCN++ achieves <strong>64.60% validation accuracy</strong>. Mid-age confusion with adjacent groups mirrors clinical biomechanical overlap between age cohorts.
+    </p>
+    <div className="flex-1 flex items-center justify-center bg-[#F2F1ED] rounded-xl border border-nat-border p-3">
+      <img
+        src="/figs/stgcn-confusion.png"
+        alt="ST-GCN++ confusion matrices: 1-block model (60.18% val acc) and 2-block model (64.60% val acc) for Young/Adult/Elderly age groups"
+        className="max-h-full max-w-full object-contain"
+      />
+    </div>
+  </div>
+);
+
+
+// ==========================================
+// DIFFUSION / LORA ARCHITECTURE FIGURE
+// ==========================================
+export const FigDiffusionArchitecture: React.FC = () => (
+  <div className="border border-nat-border rounded-xl bg-nat-card p-6 flex flex-col h-full">
+    <div className="flex justify-between items-center mb-3">
+      <span className="text-xs font-sans text-nat-accent border border-nat-border px-2.5 py-0.5 rounded-full bg-nat-nested font-medium">
+        Paper Fig 3
+      </span>
+      <h4 className="text-sm font-semibold font-sans text-nat-text-deep">Qualitative Generation Results Across Age Conditions</h4>
+    </div>
+    <p className="text-xs text-nat-text-body mb-4 leading-relaxed font-serif">
+      LoRA-adapted MDM produces visually distinct gaits per style token: <strong>Young</strong> adults move faster with upright posture; <strong>Elderly</strong> subjects show hunched back, slower speed, and reduced stride foot height.
+    </p>
+    <div className="flex-1 flex items-center justify-center bg-[#F2F1ED] rounded-xl border border-nat-border p-3">
+      <img
+        src="/figs/generation-result.png"
+        alt="Generated walking sequences: Young (blue, faster), Middle Age (yellow), Elderly (pink, hunched back, slower, reduced stride height)"
+        className="max-h-full max-w-full object-contain"
+      />
+    </div>
+  </div>
+);
+
+
+// ==========================================
+// VIOLIN PLOTS: DATASET VS GENERATED
+// ==========================================
+export const FigViolinResults: React.FC = () => (
+  <div className="border border-nat-border rounded-xl bg-nat-card p-6 flex flex-col h-full">
+    <div className="flex justify-between items-center mb-3">
+      <span className="text-xs font-sans text-nat-accent border border-nat-border px-2.5 py-0.5 rounded-full bg-nat-nested font-medium">
+        Paper Fig 9
+      </span>
+      <h4 className="text-sm font-semibold font-sans text-nat-text-deep">Gait Metric Distributions: Dataset vs Generated</h4>
+    </div>
+    <p className="text-xs text-nat-text-body mb-4 leading-relaxed font-serif">
+      9,000 generated clips (3,000 per age condition). Spatial metrics (Hip RoM, Cadence) align well; <strong>Stride Time CV spikes to 16–19%</strong> vs baseline 8.9–15%, revealing temporal stochasticity from diffusion noise.
+    </p>
+    <div className="flex-1 flex items-center justify-center bg-[#F2F1ED] rounded-xl border border-nat-border p-3">
+      <img
+        src="/figs/combined-violin.png"
+        alt="Violin plots comparing Walking Speed, Stride Time CV, Hip ROM, and Cadence between ground-truth dataset (blue) and generated motion clips (red) for Young and Old age groups"
+        className="max-h-full max-w-full object-contain"
+      />
+    </div>
+  </div>
+);

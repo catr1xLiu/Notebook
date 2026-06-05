@@ -13,11 +13,14 @@ import {
   Award
 } from 'lucide-react';
 import { SlideItem } from './types';
-import { 
-  Fig1Overview, 
-  Fig2Artifacts, 
-  Fig3GeneratedWalking, 
-  Fig11ContinuousArchitecture 
+import {
+  Fig1Overview,
+  Fig2Artifacts,
+  Fig3GeneratedWalking,
+  Fig11ContinuousArchitecture,
+  FigStGcnResults,
+  FigDiffusionArchitecture,
+  FigViolinResults
 } from './components/InteractiveDiagrams';
 import { InteractivePlayground } from './components/InteractivePlayground';
 
@@ -385,25 +388,28 @@ export default function App() {
                 <div className="flex-1 my-2 min-h-[190px]">
                   {/* Dynamic render of matching figures based on presentation structure */}
                   {currentSlide.id === 'title' && (
-                    <div className="flex flex-col items-center justify-center p-6 border-2 border-dashed border-[#DEDBD2] bg-[#F2F1ED] rounded-2xl h-full text-center relative overflow-hidden">
-                      <div className="absolute inset-0 opacity-10 bg-[radial-gradient(#5a5a40_1px,transparent_1px)] [background-size:16px_16px]" />
-                      <div className="w-14 h-14 rounded-full border-2 border-[#8C8C73] flex items-center justify-center mb-4 text-[#8C8C73]">
-                        <svg width="24" height="24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                    <div className="border border-nat-border rounded-xl bg-nat-card p-4 flex flex-col h-full justify-between">
+                      <div className="flex justify-between items-center mb-2">
+                        <span className="text-xs font-sans text-nat-accent border border-nat-border px-2.5 py-0.5 rounded-full bg-nat-nested font-medium">
+                          Paper Fig 1
+                        </span>
+                        <h4 className="text-sm font-semibold font-sans text-nat-text-deep">Framework Overview: ST-GCN Classifier + Age-Conditioned MDM</h4>
                       </div>
-                      <div className="text-xs text-nat-text-deep font-sans font-bold uppercase tracking-widest mb-1.5">
-                        Elder Care Robotics Symposium
-                      </div>
-                      <div className="text-[10px] text-nat-accent-light font-sans max-w-[280px] leading-relaxed">
-                        Insert Pipeline Overview Figure: &ldquo;Network Architecture and Discrete Style Adaptations&rdquo;
+                      <div className="flex-1 flex items-center justify-center">
+                        <img
+                          src="/figs/framework.png"
+                          alt="Top: ST-GCN++ classifier network with frozen blocks and modified age-prediction head. Bottom: age-conditioned motion generation model injecting z_age via cross-attention to produce Young, Middle Age, Elderly walking sequences."
+                          className="max-h-full max-w-full object-contain rounded-lg"
+                        />
                       </div>
                     </div>
                   )}
 
                   {currentSlide.id === 'motivation' && <Fig1Overview />}
                   {currentSlide.id === 'pipeline' && <Fig2Artifacts />}
-                  {currentSlide.id === 'classification' && <Fig3GeneratedWalking />}
-                  {currentSlide.id === 'diffusion' && <Fig3GeneratedWalking />}
-                  {currentSlide.id === 'results' && <InteractivePlayground />}
+                  {currentSlide.id === 'classification' && <FigStGcnResults />}
+                  {currentSlide.id === 'diffusion' && <FigDiffusionArchitecture />}
+                  {currentSlide.id === 'results' && <FigViolinResults />}
                   {currentSlide.id === 'continuous' && <Fig11ContinuousArchitecture />}
                   {currentSlide.id === 'demo' && <InteractivePlayground />}
                 </div>
