@@ -32,7 +32,7 @@
 %	REPORT INFORMATION
 %----------------------------------------------------------------------------------------
 
-\title{Lab 2 - Electric Flux  \\ ECE106} % Report title
+\title{Lab 2 - Electric Flux} % Report title
 
 \author{Yiran \textsc{Liu} \&  Zijin \textsc{Yang}} % Author name(s), add additional authors like: '\& James \textsc{Smith}'
 
@@ -46,6 +46,7 @@
 
 \begin{center}
 	\begin{tabular}{l r}
+      ECE 106: 	Electricity and Magnetism \\
       Lab Section: 206 \\
       Student Number: Y.L. 21184901 \& Z.Y. 21196273
 	\end{tabular}
@@ -58,38 +59,125 @@
 
 \subsection{Eletric Flux through Closed Sphereical Surface}
 
-A point charge of $+0.75\mu C$ is placed at $(x, y, z) = (0, 0, 0)$, we are to compute the total eletric flux through a sphereical surface of radius $R=2.0m$ from the definition of eletric flux. 
+A point charge of $+0.75\mu C$ is placed at $(x, y, z) = (0, 0, 0)$, we are to compute the total eletric flux through a sphereical surface of radius $R=2.0m$ from the definition of eletric flux. We notice that the eletric field strength $\vec{E}$ is the same, and that $\hat{n} \cdot \hat{r} = 1$. Therefore:
 
 \[
-  \Phi_E = \iint \vec{E} \cdot d\vec{S} = \int_{0}^{2 \pi} \int_{0}^{2 \pi} \frac{1}{4 \pi \epsilon_0} \frac{q}{R^2} \hat{r} \cdot \hat{E} \ r d\theta \ r d\phi
+  \Phi_E = \iint \vec{E} \cdot \hat{n} \ dS
+  = S \times \|\vec{E}\|
+  = 4 \pi R^2 \frac{q}{4 \pi R^2 \epsilon_0} 
 \]
-where $\epsilon_{0} = 8.854187 \times 10^{-12} \ F / m$ and $q = +0.75 \times 10^{-6} C$. 
-
-We notice that the eletric field strength $\vec{E}$ is the same, and that $\hat{r} \cdot \hat{E} = 1$. Therefore, we can compute the flux as:
-\[
-  \Phi_E = S \|\vec{E}\| = 4 \pi R^2 \frac{q}{4 \pi R^2 \epsilon_0} 
-\]
-We compute for $R=2.0m$ and $R=5.0m$, $\Phi_{2m} = \Phi_{5m} = 84705.69 Nm^2/C$.
+Given $\epsilon_{0} = 8.854187 \times 10^{-12} \ F / m$ and $q = +0.75 \times 10^{-6} C$, we compute for $R=2.0m$ and $R=5.0m$, $\Phi_{2m} = \Phi_{5m} = 84705.69 Nm^2/C$.
 
 \subsection{Charge Density}
 
-The charge density of a spherical charge cloud with radius $r=0.01m$ and charge of $+0.75\mu C$. The volume of the sphere is $V = \frac{4}{3} \pi r^3 = 4.1888 \times 10^{-6}$, density $\rho=\frac{q}{V} = 0.17905 C/m^3$
+The charge density of a spherical charge cloud with radius $r=0.01m$ and charge of $+0.75\mu C$. The volume of the sphere is $V = \frac{4}{3} \pi r^3 = 4.1888 \times 10^{-6} m^3$, density $\rho=\frac{q}{V} = 0.17905 C/m^3$
 
 \subsection{Eletric Flux Through Square Surfaces}
 
 We denote the the eletric flux through the three squares as $\Phi_1$, $\Phi_2$ and $\Phi_3$, respectively. We construct cubic gaussian surfaces for square 1 and 2, denote as Cube1 and Cube2. Using the Gauss' Law and considering the symetry:
 
 \[
-4\Phi_1 = 4\Phi_2 = \frac{q_\text{enclosed}}{\epsilon_0}
+6\Phi_1 = 6\Phi_2 = \frac{q_\text{enclosed}}{\epsilon_0}
 \]
 
-We observe that Square 3 contains all of Square 1 and some additional area that has non-zero eletric flux. Therefore, $\Phi_3 > \Phi_1$. The final relationship is:
+We observe that Square 3 contains all of Square 1 and some additional area that has non-zero eletric flux. Therefore, $\Phi_3 > \Phi_1$. The overall relationship is:
 
 \[
 \Phi_3 > \Phi_2 = \Phi_1
 \]
 
 \section{Simulation for Spherical Gaussian Surfaces}
+We build the simulation model of a point charge ($R=0.01$ and $Q=+0.75 \mu C$) and two sphereical surfaces of $R_\text{sphere1}=2.0m$ and $R_\text{sphere2}=5.0m$ with grounded boundary at $R_\text{boundary}=10.0m$ in COMSOL.
+
+\begin{figure}[H] % [H] forces the figure to be placed exactly where it appears in the text
+	\centering % Horizontally center the figure
+	\includegraphics[width=\textwidth]{./Figures/SphereSurfaceSim} % Include the figure
+  \caption{COMSOL model of a point charge and 2 spherical surfaces.}
+\end{figure}
+
+During simulation, the surface integration is computed as:
+\[
+  \iint_S \vec{D} \cdot \hat{n} \ dA = \Phi \epsilon_0
+\]
+
+Therefore, the theoretical value for a closed surface is:
+\[
+  \oiint_S \vec{D} \cdot \hat{n} \ dA = \Phi \epsilon_0 = Q_\text{enclosed} = 0.75 \mu C
+\]
+
+\begin{table}[H]
+    \centering
+    \caption{Comparison of evaluated surface integration with theoretical value. ($\Phi \times \epsilon_0$)}
+    \label{tab:spherical_surface_comparison}
+    \begin{tabular}{lcrr}
+        \toprule
+        \textbf{Radius} ($m$) & \textbf{Simulated} ($\mu C$) & \textbf{Theoretical} ($\mu C$) & \textbf{\% Error} \\
+        \midrule
+        2.0 & 0.74356 & 0.75 & 0.859\% \\
+        5.0 & 0.74379 & 0.75 & 0.828\% \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+\pagebreak
+\section{Simulation for Square Surfaces}
+We build the simulation model of the same point charge and three open square surfaces:
+\begin{itemize}
+  \item \textbf{Surface1:} A 1.0 m by 1.0 m square surface at a distance of 0.5 m to the point charge.
+  \item \textbf{Surface2:} A 2.0 m by 2.0 m square surface at a distance of 1.0 m to the point charge.
+  \item \textbf{Surface3:} A 2.0 m by 2.0 m square surface at a distance of 0.5 m to the point charge.
+\end{itemize}
+
+\begin{figure}[H] % [H] forces the figure to be placed exactly where it appears in the text
+	\centering % Horizontally center the figure
+	\includegraphics[width=\textwidth]{./Figures/SquareSurfaceSim} % Include the figure
+  \caption{COMSOL model of a point charge and 3 square surfaces.}
+\end{figure}
+
+\begin{table}[H]
+    \centering
+    \caption{Comparison of evaluated surface integration for different squares. ($\Phi \times \epsilon_0$)}
+    \label{tab:square_surface_comparison}
+    \begin{tabular}{lcrr}
+        \toprule
+        \textbf{Side-length} ($m$) & \textbf{Distance} ($m$) & \textbf{Surface Integration ($\mu C$)} \\
+        \midrule
+        1.0 & 0.5 & 0.12478 \\
+        2.0 & 1.0 & 0.12495 \\
+        2.0 & 0.5 & 0.22128 \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+\pagebreak
+\section{Enhancement Activity: Simulation for Cubic Gaussian Surfaces}
+Both cubes contain the point charge, which means the theoretical surface integration is still:
+\[
+  \oiint_S \vec{D} \cdot \hat{n} \ dA = Q_\text{enclosed} = 0.75 \mu C
+\]
+
+Keeping the model above unchanged, and adding two more surface integral evaluation:
+
+\begin{figure}[H] % [H] forces the figure to be placed exactly where it appears in the text
+	\centering % Horizontally center the figure
+	\includegraphics[width=\textwidth]{./Figures/CubicSurfaceSim} % Include the figure
+  \caption{Evaluation of cubic gaussian sphere using the same model.}
+\end{figure}
+
+\begin{table}[H]
+    \centering
+    \caption{Comparison of evaluated surface integration with theoretical value. ($\Phi \times \epsilon_0$)}
+    \label{tab:cubic_surface_comparison}
+    \begin{tabular}{lcrr}
+        \toprule
+        \textbf{Side-length} ($m$) & \textbf{Simulated} ($\mu C$) & \textbf{Theoretical} ($\mu C$) & \textbf{\% Error} \\
+        \midrule
+        0.5 & 0.74880 & 0.75 & 0.160\% \\
+        1.0 & 0.74968 & 0.75 & 0.043\% \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
 
 
 \end{document}
