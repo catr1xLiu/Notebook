@@ -1,0 +1,6 @@
+{
+  "name": "Biomechanics Motion Presentation Deck",
+  "description": "An interactive, beautifully crafted 5-minute workshop presentation for the paper 'Modeling Aging Signatures in Human Motion via Motion Diffusion Models for Elder Care Robotics'.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

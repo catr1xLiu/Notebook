@@ -39,3 +39,16 @@ output_files/
 
 # Backup files
 *.bak
+
+# Ignore sub-project dependencies
+**/node_modules/
+
+# Ignore sub-project TypeScript build outputs
+**/dist/
+**/.next/
+**/.nuxt/
+**/out/
+
+# Ignore local environment logs and files
+**.log
+**.local
