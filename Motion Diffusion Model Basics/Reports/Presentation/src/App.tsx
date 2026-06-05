@@ -22,7 +22,6 @@ import {
   FigDiffusionArchitecture,
   FigViolinResults
 } from './components/InteractiveDiagrams';
-import { InteractivePlayground } from './components/InteractivePlayground';
 
 const SLIDES: SlideItem[] = [
   {
@@ -40,28 +39,30 @@ const SLIDES: SlideItem[] = [
   },
   {
     id: "motivation",
-    title: "The Problem: Dataset Bias & Robotics Safety Constraints",
-    subtitle: "Why Standard Motion Models Fail Domestic Robots",
+    title: "Background: The Gap in Motion Modeling",
+    subtitle: "Most motion datasets and models are built on young, healthy adults",
     section: "Introduction",
-    highlight: "Popular motion repositories like AMASS are heavily skewed toward young, athletic actors.",
+    highlight: "A field-wide bias toward healthy young adults leaves elderly and patient motion poorly understood — a critical limitation for elder and hospital care robots.",
     suggestedDuration: 45,
     speakerNotes: [
-      "Why is this work critical? As our population ages, assistive robots must handle home care, physical therapy, and daily mobility support.",
-      "To operate safely, robots must predict their users' movements. But current models assume a healthy young adult prior. An older adult has lowered stride velocity, spinal curvature, and joint ranges.",
-      "If we don't design demographic-aware systems, robots will miscalculate walking vectors, leading to unsafe collisions or failed interactions."
+      "To understand why this work is needed, consider the state of the field. The dominant motion capture datasets — HumanAct12, AMASS, HumanML3D — overwhelmingly feature young, healthy, athletic subjects.",
+      "As a result, every motion generation model trained on these datasets inherits the same demographic bias. They generate plausible motion only for the population they were trained on.",
+      "This is a critical limitation for elder care and hospital robotics, where the robot's users will walk slower, have reduced range of motion, and show spinal curvature. A robot calibrated on young adults will misread these users' intent, leading to unsafe interactions.",
+      "We lack the data and the models to understand how aging manifests in motion — and that is the gap this work begins to address."
     ]
   },
   {
     id: "pipeline",
-    title: "Methodology: SMPL Fitting & Crouch Artifact Resolution",
-    subtitle: "Optimizing Marker Data to Guarantee Biological Fidelity",
+    title: "Data Processing Pipeline",
+    subtitle: "From Clinical MoCap Markers to Learnable Motion Features",
     section: "Methodology",
-    highlight: "Standard fitting priors induce crouch gait artifacts, solved here via VPoser L-BFGS regularization.",
+    highlight: "Van Criekinge clinical dataset (138 subjects, ages 21–86) converted via VPoser SMPL fitting into HumanML3D-compatible representations.",
     suggestedDuration: 60,
     speakerNotes: [
-      "Let's dive into data conversion. We utilized clinical kinematics from the Van Criekinge dataset—composed of 138 individuals, spanning ages 21 to 86.",
-      "Traditional body-fitting approaches like priorless SMPL optimization often compress older postures, inducing severe bent-knee crouching artifacts, or inflate joint volumes.",
-      "We resolved this by staging our L-BFGS optimizer using VPoser shape priors. First, we solve shape-free translation; then, we refine body shape. The converged posture successfully recovers natural, straight joint alignments."
+      "Our data comes from the Van Criekinge clinical kinematics dataset — 138 subjects spanning ages 21 to 86, recorded with 58 optical markers at 100 Hz.",
+      "Stage one is raw clinical MoCap: high-density marker trajectories that capture full-body posture during walking trials.",
+      "Stage two is SMPL fitting via VPoser L-BFGS optimization. We convert marker positions into SMPL body parameters — pose theta and shape beta — resolving the crouch artifacts that naive fitting introduces in elderly postures.",
+      "Stage three converts the SMPL mesh into the HumanML3D feature representation compatible with MDM: a per-frame skeleton at 20 Hz with 22 joints and 263 dimensions."
     ]
   },
   {
@@ -105,28 +106,30 @@ const SLIDES: SlideItem[] = [
   },
   {
     id: "continuous",
-    title: "The Path Forward: Continuous Age Conditioning",
+    title: "Path Forward: Continuous Age Conditioning",
     subtitle: "Replacing Coarse Categorical Bins with Fluid Locomotor Representations",
     section: "Discussion",
-    highlight: "Future architectures will pre-train Style Encoders on AMASS using contrastive loss to capture individual ability gradients.",
+    highlight: "Proposed architecture pre-trains a Biomechanical Style Encoder on AMASS with contrastive loss, enabling continuous age regression rather than discrete bins.",
     suggestedDuration: 45,
     speakerNotes: [
-      "To solve these limits, we propose a shift from rigid, discrete style tokens to a continuous latent trajectory.",
-      "Rather than dividing people into 'young' or 'old', future systems must compute on a gradient of functional ability. In our proposed Figure 11 architecture, we design a Biomechanical Style Encoder pre-trained on AMASS using supervised contrastive loss.",
-      "By combining this with continuous age regressions and fusion transformers, we can synthesize fluid, patient-specific kinematics to support customized clinical rehabilitation."
+      "The core limitation of our current approach is that age is treated as three discrete bins. Real aging is a continuous gradient — every individual has a unique functional capacity profile.",
+      "The proposed architecture introduces a Biomechanical Style Encoder pre-trained on the AMASS dataset using supervised contrastive loss. This encoder learns to separate kinematic identity from action content.",
+      "A downstream Age Head regresses a continuous z-style embedding (256-D) from the encoder output. This embedding is then fused with CLIP text conditioning inside the MDM transformer, enabling truly individualized generation.",
+      "This architecture motivates collecting a larger, higher-quality clinical motion dataset with fine-grained age and health metadata."
     ]
   },
   {
-    id: "demo",
-    title: "Interactive Session Companion & Workshop Panel",
-    subtitle: "Calibrate and Diagnose ST-GCN Diagnostics Real-Time",
-    section: "Interactive Demo",
-    highlight: "Adjust posture sliders to run live simulated evaluations of the joint class ST-GCN predictions.",
-    suggestedDuration: 30,
+    id: "conclusion",
+    title: "Conclusion & Future Work",
+    subtitle: "Aging Signatures in Human Motion via Motion Diffusion Models",
+    section: "Discussion",
+    highlight: "A proof-of-concept pipeline showing that age signals can be detected and generated — with clear directions to improve fidelity.",
+    suggestedDuration: 45,
     speakerNotes: [
-      "Finally, let's open the interactive sandbox we created for today's session. You can now adjust biological attributes in real time.",
-      "See how increasing spinal hunch, restricting joint range, or tweaking stride frequency instantly shifts the age-group predictions of our model.",
-      "Most importantly, notice how adding simulated stochastic noise causes the stride variability metrics to spike, demonstrating the mechanical limitations of classical diffusion. Thank you, and I look forward to your questions!"
+      "To summarize: we identified a critical gap — motion models built on young healthy adults are not suitable for elderly care or hospital robotics.",
+      "We presented two complementary contributions: an ST-GCN++ age classifier that confirms age signals are present in gait kinematics, and a LoRA-adapted MDM that generates age-conditioned walking sequences.",
+      "The results show early promise. Spatial metrics like hip range of motion are successfully modulated. However, temporal metrics — particularly stride variability — are disrupted by diffusion stochasticity, indicating architectural limitations.",
+      "Future work focuses on improving model architecture toward continuous age conditioning, and motivates the collection of a larger, higher-quality clinical motion dataset with focus on aging and health factors. Thank you."
     ]
   }
 ];
@@ -405,13 +408,92 @@ export default function App() {
                     </div>
                   )}
 
-                  {currentSlide.id === 'motivation' && <Fig1Overview />}
-                  {currentSlide.id === 'pipeline' && <Fig2Artifacts />}
+                  {currentSlide.id === 'motivation' && (
+                    <div className="border border-nat-border rounded-xl bg-nat-card p-5 flex gap-6 h-full">
+                      {/* Text column */}
+                      <div className="flex-1 flex flex-col gap-3 justify-center">
+                        <span className="text-[9px] font-sans font-bold uppercase tracking-widest text-nat-accent border border-nat-border px-2.5 py-0.5 rounded-full bg-nat-nested self-start">
+                          Field Context
+                        </span>
+                        {[
+                          {
+                            head: "Datasets are biased toward young, healthy adults",
+                            body: "AMASS — the largest aggregated MoCap dataset — consolidates 40+ databases but overwhelmingly captures young, athletic subjects. HumanML3D, BABEL, and HumanAct12 inherit this same demographic skew."
+                          },
+                          {
+                            head: "Motion generation models inherit the bias",
+                            body: "State-of-the-art generative models (MDM, MotionDiffuse, MLD) are trained entirely on these datasets. They generate plausible motion only for the population they were trained on — young, healthy individuals."
+                          },
+                          {
+                            head: "Elderly and patient motion is poorly understood",
+                            body: "Aging introduces reduced hip range of motion, lower walking speed, spinal flexion, and increased stride variability. These signatures are absent from training data and cannot be synthesized by current models."
+                          },
+                          {
+                            head: "This limits elder and hospital care robotics",
+                            body: "A care robot must predict its users' movements to assist safely. Calibrated on young-adult priors, it will misread slower, asymmetric elderly gait — risking unsafe collisions or failed interactions."
+                          }
+                        ].map(({ head, body }) => (
+                          <div key={head} className="bg-[#F9F8F4] rounded-lg border border-nat-border p-3">
+                            <div className="text-[11px] font-sans font-semibold text-nat-text-deep mb-1">{head}</div>
+                            <p className="text-[10px] font-serif text-nat-text-body leading-relaxed">{body}</p>
+                          </div>
+                        ))}
+                      </div>
+                      {/* AMASS figure */}
+                      <div className="w-56 shrink-0 flex flex-col gap-2">
+                        <div className="flex-1 bg-[#F2F1ED] rounded-xl border border-nat-border flex items-center justify-center p-2 overflow-hidden">
+                          <img
+                            src="/figs/amass.png"
+                            alt="AMASS: Archive of Motion Capture As Surface Shapes (ICCV 2019) — shows rows of young athletic SMPL body meshes, illustrating the demographic skew of the largest MoCap dataset"
+                            className="max-h-full max-w-full object-contain rounded"
+                          />
+                        </div>
+                        <p className="text-[9px] font-sans text-nat-accent-light text-center leading-tight">
+                          AMASS (ICCV 2019) — the dominant MoCap aggregate.<br/>All subjects: young and athletic.
+                        </p>
+                      </div>
+                    </div>
+                  )}
+                  {currentSlide.id === 'pipeline' && <Fig1Overview />}
                   {currentSlide.id === 'classification' && <FigStGcnResults />}
                   {currentSlide.id === 'diffusion' && <FigDiffusionArchitecture />}
                   {currentSlide.id === 'results' && <FigViolinResults />}
                   {currentSlide.id === 'continuous' && <Fig11ContinuousArchitecture />}
-                  {currentSlide.id === 'demo' && <InteractivePlayground />}
+                  {currentSlide.id === 'conclusion' && (
+                    <div className="border border-nat-border rounded-xl bg-nat-card p-5 flex flex-col h-full gap-3">
+                      <div className="flex justify-between items-center shrink-0">
+                        <span className="text-xs font-sans text-nat-accent border border-nat-border px-2.5 py-0.5 rounded-full bg-nat-nested font-medium">
+                          Summary
+                        </span>
+                        <h4 className="text-sm font-semibold font-sans text-nat-text-deep">Aging Signatures in Human Motion</h4>
+                      </div>
+                      <div className="flex-1 grid grid-rows-4 gap-3 min-h-0">
+                        {[
+                          {
+                            tag: "01 — Problem",
+                            body: "Motion modeling research overwhelmingly focuses on young, healthy adults. Elderly and patient motion is poorly understood, creating a critical safety gap for elder and hospital care robots that must predict their users' movements."
+                          },
+                          {
+                            tag: "02 — Contribution",
+                            body: "We present two complementary models: an ST-GCN++ age classifier confirming that age signatures are encoded in gait kinematics (64.60% val acc), and a LoRA-adapted Motion Diffusion Model that synthesizes age-conditioned walking sequences using discrete style tokens."
+                          },
+                          {
+                            tag: "03 — Results",
+                            body: "Spatial gait metrics (hip range of motion, cadence) are successfully modulated. Temporal metrics — stride variability CV — spike to 16–19% vs. baseline 8.9–15%, revealing that stochastic diffusion noise disrupts the biomechanical timing chain. Limited by small data and current architecture."
+                          },
+                          {
+                            tag: "04 — Future Work",
+                            body: "Shift to continuous age conditioning via a pre-trained Biomechanical Style Encoder. This motivates collection of a larger, higher-quality clinical motion dataset with fine-grained aging and health factor annotations."
+                          }
+                        ].map(({ tag, body }) => (
+                          <div key={tag} className="bg-[#F9F8F4] rounded-xl border border-nat-border p-3 flex gap-3 items-start min-h-0">
+                            <span className="text-[9px] font-sans font-bold uppercase tracking-widest text-nat-accent border border-nat-border px-2 py-0.5 rounded-full bg-nat-nested shrink-0 mt-0.5">{tag}</span>
+                            <p className="text-[11px] font-serif text-nat-text-body leading-relaxed">{body}</p>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
                 </div>
 
               </motion.div>

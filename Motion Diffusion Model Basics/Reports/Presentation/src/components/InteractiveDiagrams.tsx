@@ -21,25 +21,29 @@ export const Fig1Overview: React.FC = () => {
       title: "1. Raw Clinical MoCap",
       desc: "Van Criekinge dataset containing 138 subjects across life spans (ages 21-86) producing clinical markers at 100Hz.",
       metric: "138 subjects, 100Hz frequency",
-      color: "bg-nat-accent/15 border-nat-accent text-nat-text-deep"
+      image: "/figs/pipeline-mocap.png",
+      imageAlt: "Van Criekinge clinical MoCap dataset: 58 labeled 3D markers at 100Hz",
     },
     {
       title: "2. VPoser Optimization",
       desc: "Converts marker recordings into SMPL body parameters using L-BFGS frame-by-frame optimization to resolve artifacts.",
       metric: "SMPL Parameters (θ: 72, β: 10)",
-      color: "bg-nat-accent/15 border-nat-accent text-nat-text-deep"
+      image: "/figs/pipeline-smpl.png",
+      imageAlt: "VPoser-based SMPL mesh parameter optimization: L-BFGS with marker position, motion smoothness, and biomechanical priors",
     },
     {
       title: "3. Feature Extraction",
       desc: "Extracted into 263-dimensional HumanML3D-compatible skeletal representation at a downsampled 20Hz frame rate.",
       metric: "263-D representation",
-      color: "bg-nat-accent/15 border-nat-accent text-nat-text-deep"
+      image: "/figs/pipeline-humanml3d.png",
+      imageAlt: "HumanML3D convertor producing machine-learnable graph at T·20Hz with 22 joints",
     },
     {
       title: "4. Dual Modeling Stream",
       desc: "Skeletal data splits to train an ST-GCN age classifier and fine-tune a Motion Diffusion Model (MDM) using LoRA adapters.",
       metric: "ST-GCN classifier & MDM LoRA",
-      color: "bg-nat-accent/15 border-nat-accent text-nat-text-deep"
+      image: null,
+      imageAlt: "",
     }
   ];
 
@@ -75,8 +79,8 @@ export const Fig1Overview: React.FC = () => {
         </div>
 
         {/* Selected Step Detail Panel */}
-        <div className="p-4 rounded-xl border border-nat-border bg-[#F9F8F4] shadow-inner">
-          <div className="flex items-center gap-2 mb-2">
+        <div className="p-4 rounded-xl border border-nat-border bg-[#F9F8F4] shadow-inner flex flex-col gap-3">
+          <div className="flex items-center gap-2">
             <span className="p-1.5 rounded-full bg-[#E8E6DF] text-nat-accent">
               {activeStep === 0 && <Database size={15} />}
               {activeStep === 1 && <Cpu size={15} />}
@@ -85,13 +89,23 @@ export const Fig1Overview: React.FC = () => {
             </span>
             <span className="text-sm font-bold font-sans text-nat-text-deep">{pipelineSteps[activeStep].title}</span>
           </div>
-          <p className="text-xs text-nat-text-body font-serif leading-relaxed min-h-[48px]">
+          <p className="text-xs text-nat-text-body font-serif leading-relaxed">
             {pipelineSteps[activeStep].desc}
           </p>
-          <div className="mt-3 pt-3 border-t border-nat-border flex justify-between items-center text-[10px] font-sans text-[#5A5A40] font-bold">
+          <div className="pt-2 border-t border-nat-border flex justify-between items-center text-[10px] font-sans text-[#5A5A40] font-bold">
             <span>KEY REPRESENTATION:</span>
             <span className="bg-white px-2 py-0.5 rounded border border-nat-border">{pipelineSteps[activeStep].metric}</span>
           </div>
+          {pipelineSteps[activeStep].image && (
+            <div className="flex justify-center pt-1">
+              <img
+                src={pipelineSteps[activeStep].image}
+                alt={pipelineSteps[activeStep].imageAlt}
+                className="object-contain rounded-lg border border-nat-border bg-white p-1"
+                style={{ maxWidth: '55%', maxHeight: '110px' }}
+              />
+            </div>
+          )}
         </div>
       </div>
 
@@ -372,52 +386,54 @@ export const Fig3GeneratedWalking: React.FC = () => {
 // ==========================================
 export const Fig11ContinuousArchitecture: React.FC = () => {
   return (
-    <div className="border border-nat-border rounded-xl bg-nat-card p-6 flex flex-col justify-between h-full font-sans">
-      <div>
-        <div className="flex justify-between items-center mb-3">
-          <span className="text-xs font-sans text-nat-accent border border-nat-border px-2.5 py-0.5 rounded-full bg-nat-nested font-medium">
-            Paper Fig 11 & Sec V
-          </span>
-          <h4 className="text-sm font-semibold text-nat-text-deep">Proposed Continuous latent Pipeline</h4>
+    <div className="border border-nat-border rounded-xl bg-nat-card p-5 flex flex-col h-full font-sans gap-3">
+      <div className="flex justify-between items-center shrink-0">
+        <span className="text-xs font-sans text-nat-accent border border-nat-border px-2.5 py-0.5 rounded-full bg-nat-nested font-medium">
+          Paper Fig 11 & Sec V
+        </span>
+        <h4 className="text-sm font-semibold text-nat-text-deep">Proposed Continuous Age Conditioning Architecture</h4>
+      </div>
+
+      <div className="flex-1 flex gap-4 min-h-0">
+        {/* Figure */}
+        <div className="flex-1 bg-[#F2F1ED] rounded-xl border border-nat-border flex items-center justify-center p-3 overflow-hidden min-h-0">
+          <img
+            src="/figs/future-architecture.png"
+            alt="Proposed architecture: Biomechanical Style Encoder pre-trained on AMASS with contrastive loss, Age Head regressing z-style (256-D), fused with CLIP text embeddings into MDM transformer for continuous age-conditioned generation"
+            className="max-h-full max-w-full object-contain"
+          />
         </div>
-        <p className="text-xs text-nat-text-body mb-4 leading-relaxed font-serif">
-          Discrete age-group constraints fall short of capturing gradual aging. The authors proposed a futuristic continuous architecture to interpolate biological progression smoothly.
-        </p>
 
-        {/* Style contrast diagram */}
-        <div className="space-y-3">
-          <div className="bg-[#F9F8F4] hover:bg-[#F2F1ED] p-3 rounded-lg border border-nat-border text-left transition-colors">
-            <span className="text-[9px] font-sans text-nat-accent font-bold bg-nat-nested border border-nat-border px-1.5 py-0.5 rounded">
-              Phase 1: AMASS Pretraining
-            </span>
-            <p className="text-[11px] text-[#2D2D2A] mt-2 leading-relaxed font-serif">
-              Train a biomechanical <strong>Style Encoder</strong> on massive AMASS datasets via supervised contrastive learning to isolate kinematic identity from action templates.
-            </p>
-          </div>
-
-          <div className="bg-[#F9F8F4] hover:bg-[#F2F1ED] p-3 rounded-lg border border-nat-border text-left transition-colors">
-            <span className="text-[9px] font-sans text-nat-accent font-bold bg-nat-nested border border-nat-border px-1.5 py-0.5 rounded">
-              Phase 2: Continuous Conditioning
-            </span>
-            <p className="text-[11px] text-[#2D2D2A] mt-2 leading-relaxed font-serif">
-              Fine-tune an <strong>Age Head</strong> using clinical label regressions. The resulting continuous <code>Z-style</code> embedding (256-D) represents fluid locomotor capacity.
-            </p>
-          </div>
-
-          <div className="bg-[#F9F8F4] hover:bg-[#F2F1ED] p-3 rounded-lg border border-nat-border text-left transition-colors">
-            <span className="text-[9px] font-sans text-nat-accent font-bold bg-nat-nested border border-nat-border px-1.5 py-0.5 rounded">
-              Phase 3: Generative Fusion
-            </span>
-            <p className="text-[11px] text-[#2D2D2A] mt-2 leading-relaxed font-serif">
-              Concatenate CLIP text tensors and <code>Z-style</code> parameters, driving the MDM transformer to synthesise highly individualized, demographic-sensitive trajectories.
-            </p>
-          </div>
+        {/* Phase annotations */}
+        <div className="w-52 shrink-0 flex flex-col gap-2 justify-center">
+          {[
+            {
+              phase: "Phase 1",
+              label: "AMASS Pretraining",
+              body: "Style Encoder trained via supervised contrastive loss to isolate kinematic identity from action content."
+            },
+            {
+              phase: "Phase 2",
+              label: "Continuous Conditioning",
+              body: "Age Head regresses a continuous z-style (256-D) embedding representing fluid locomotor capacity."
+            },
+            {
+              phase: "Phase 3",
+              label: "Generative Fusion",
+              body: "CLIP text + z-style drive the MDM transformer to synthesize patient-specific trajectories."
+            }
+          ].map(({ phase, label, body }) => (
+            <div key={phase} className="bg-[#F9F8F4] p-2.5 rounded-lg border border-nat-border">
+              <span className="text-[8px] font-sans font-bold uppercase tracking-widest text-nat-accent">{phase}: {label}</span>
+              <p className="text-[10px] font-serif text-nat-text-body leading-relaxed mt-1">{body}</p>
+            </div>
+          ))}
         </div>
       </div>
 
-      <div className="p-3 bg-nat-nested border border-nat-border rounded-lg text-[10px] text-nat-text-deep flex gap-2 items-center mt-3">
-        <Activity size={14} className="shrink-0 text-nat-accent" />
-        <span className="font-serif">Resolves binary age bins to enable patient-specific personalization in rehabilitation.</span>
+      <div className="p-2.5 bg-nat-nested border border-nat-border rounded-lg text-[10px] text-nat-text-deep flex gap-2 items-center shrink-0">
+        <Activity size={13} className="shrink-0 text-nat-accent" />
+        <span className="font-serif">Resolves binary age bins → enables patient-specific personalization and motivates collection of larger aging-focused datasets.</span>
       </div>
     </div>
   );
