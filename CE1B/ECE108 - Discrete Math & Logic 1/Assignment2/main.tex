@@ -90,16 +90,30 @@ Therefore, $A = A \cup (A \cap B)$
 \subsubsection*{Question 5}
 \textit{Prove: $\left(A\subseteq B\right) \iff \left(A\cap B = A\right) \iff \left(A\cup B = B\right) \iff \left(A\cap\overline{B} = \emptyset\right) \iff \left(\overline{A} \cup B = \mathcal{U}\right)\iff \left(\overline{B}\subseteq \overline{A}\right) \iff \left(A\setminus B = \emptyset\right)$.}
 
-\textbf{Solution: } According to definitions, we can re-write the statements to the following: \[
-	\begin{cases}
-		A \subseteq B & \iff (x \in B \implies x \in A) \\
-		A \cap B = A & \iff ((x \in A \land x \in B) \iff (x \in A)) \\ 
-		A \cup B = B & \iff ((x \in A \lor x \in B) \iff (x \in B)) \\
-		A \cap \overline{B} = \emptyset & \iff ((x \in A \land \lnot (x \in B)) = (x \in \emptyset)) \\
-		\overline{A} \cup B = \mathcal{U} & \iff (\lnot(x \in A) \or (x \in B)) = (x \in \mathcal{U}) \\
-		\overline{B} \subseteq \overline{A} & \iff \lnot(x \in A) \implies \lnot(x \in B) \\
+\textbf{Solution: } We can write the equivalence of these propositions according to the definition of sets: 
+\[
+\left\{
+\begin{aligned}
+	A \subseteq B &\iff (x \in A \implies x \in B) \\
+	A \cap B = A &\iff (x \in A \land x \in B \iff x \in A) \\ 
+	A \cup B = B &\iff (x \in A \lor x \in B \iff x \in B) \\
+	A \cap \overline{B} = \emptyset &\iff (x \in A \land \lnot(x \in B) \iff x \in \emptyset) \\
+	\overline{A} \cup B = \mathcal{U} &\iff (\lnot(x \in A) \lor x \in B \iff x \in \mathcal{U}) \\
+	\overline{B} \subseteq \overline{A} &\iff (\lnot(x \in B) \implies \lnot(x \in A)) \\
+	A \setminus B = \emptyset &\iff (x \in A \land \lnot(x \in B) \iff x \in \emptyset)
+\end{aligned}
+\right.
+\]
 
-	\end{cases}
+Let P and Q denote the propositions $x \in A$ and $x \in B$, respectively, our statement becomes theories proved in the textbook:
+\[
+	(\text{P} \implies \text{Q}) \\ 
+	\iff ((\text{P} \land \text{Q}) \iff \text{P}) \\
+	\iff ((\text{P} \lor \text{Q}) \iff \text{Q}) \\
+	\iff ((\text{P} \land \lnot \text{Q}) = \text{false}) \\
+	\iff ((\lnot \text{P} \land \text{Q}) = \text{true}) \\
+	\iff (\lnot \text{Q} \implies \lnot \text{P}) \\
+	\iff ((\text{P} \land \lnot \text{Q}) = \text{false}) \\
 \]
 
 \subsubsection*{Question 6}
