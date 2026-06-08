@@ -46,7 +46,7 @@
 
 \begin{center}
 	\begin{tabular}{l r}
-      ECE 108: Discrete Math & Logic 1 \\
+      ECE 108: Discrete Math \& Logic 1 \\
       Student Number: 21184901
 	\end{tabular}
 \end{center}
@@ -57,14 +57,53 @@
 \subsubsection*{Question 1}
 \textit{Prove, for every $n\in\mathbb{Z}^+$, that $7^n - 2^n$ is divisible by $5$:} \\
 
-\textbf{Solution:} We prove by induction on $n$. 
+\textbf{Solution:} We prove by induction on $n$. Suppose $7^n - 2^n = 5i$ where $i \in \mathbf{Z^+}$:
+
+\begin{align*}
+	7^{n+1} - 2^{n+1} & = 7^n \times 7 - 2^n \times 2 \\
+	& = 7 \times (7^n - 2^n \times \frac{2}{7}) \\
+	& = 7 \times (7^n - 2^n + \frac{5}{7} \times 2^n) \\
+	& = 7 \times (7^n - 2^n) + 5 \times 2^n \\
+	& = 7 \times (5i) + 5 \times 2^n \\
+	& = 5 (7i + 2^n)
+\end{align*}
+
+This proves that $7^n - 2^n \pmod{5} = 0 \implies 7^{n+1} - 2^{n+1} \pmod{5} = 0$
+
+We observe that for $n=1$, $7^1 - 2^1 = 5$ is divisible by 5. Therefore, we can induce that $7^n - 2^n$ is divisible by $5$ for $\forall n\in\mathbb{Z}^+$.
+
+\pagebreak
 
 \subsubsection*{Question 2}
-\textit{Prove, for every $n\in\mathbb{Z}^+$, where $n = \left(n_{k-1}\,n_{k-2}\,\ldots\,n_0\right)_{10}$, where each $n_i \in\set{0,\ldots, 9}$ is a digit, that:}
+\textit{Prove, for every $n\in\mathbb{Z}^+$, where $n = \left(n_{k-1}\,n_{k-2}\,\ldots\,n_0\right)_{10}$, where each $n_i \in\{0,\ldots, 9\}$ is a digit, that:}
 \[
 n\text{ is divisible by } 3 \implies \sum_{i=0}^{k-1} n_i \text{ is divisible by } 3
 \]
-\textbf{Solution:} 
+\textbf{Solution:} For the sake of simplicity, we only consider one way to spell the digits of a number by never putting 0 in the front.
+We define \[
+	\mathrm{digisum}(n) = \sum_{i=0}^{k-1} n_i.
+\]
+
+Observe that for a number $n$ with digits $(n_{k-1}, n_{k-2}, \ldots, n_0)$, if we increase $n$ by $3$:
+\begin{enumerate}
+	\item[\textcircled{1}] For $n_0 < 7$: $n_0 + 3 < 10$, $n_0$ increases by $3$ and all other digits stay the same,
+		$\mathrm{digisum}(n+3) = \mathrm{digisum}(n) + 3$
+	\item[\textcircled{2}] For $n_0 \geq 7$ and $n_1 \neq 9$: $n_0' = n_0 + 3 - 10 = n_0 - 7$, $n_1$ increases by $1$,
+		$\mathrm{digisum}(n+3) = \mathrm{digisum}(n) - 6$
+	\item[\textcircled{3}] For $n_0 \geq 7$ and $n_1 = 9$: $n_0' = n_0 + 3 - 10 = n_0 - 7$, $n_1' = 0$, and:
+		\begin{itemize}
+			\item For the first $a$ digits where $n_1, \ldots, n_a = 9$: $n_i' = n_i - 9 = 0$
+			\item For the very first digit that $n_i \neq 9$: $n_i' = n_i + 1$
+		\end{itemize}
+		\[ \mathrm{digisum}(n+3) = \mathrm{digisum}(n) - 7 - 9a + 1 = \mathrm{digisum}(n) - 3(2+3a) \]
+		where $a \in \mathbb{Z}^+$
+\end{enumerate}
+
+For each case in \textcircled{1}\textcircled{2}\textcircled{3}: $\mathrm{digisum}(n+3) \pmod 3 = \mathrm{digisum}(n) \pmod 3$.
+
+For the base case ($n=3$), $\text{digisum(3)=3}$. We can therefore induce that $\forall n \in \mathbf{Z^+} \mid n \pmod{3} = 0$, $\text{digisum}(n) \pmod{3} = 0$ 
+
+\pagebreak
 
 \subsubsection*{Question 3}
 \begin{itemize}
@@ -72,8 +111,10 @@ n\text{ is divisible by } 3 \implies \sum_{i=0}^{k-1} n_i \text{ is divisible by
 	\textbf{Solution: } Yes. Since $x \in \emptyset$ is always false, the proposition $\text{false} \implies \text{false}$ is vacuously \textbf{true}. 
 	\item With the restriction $\mathcal{X} \not= \emptyset$ no longer enforced and with $\mathbb{N}$ as the universal set, what is $\bigcap \mathcal{X}$ when $\mathcal{X} = \emptyset$?
 
-	\textbf{Solution: } $\bigcap \mathcal{X} = \{x \in \mathbb{N} \| \forall A \in \mathcal{X}, x \in A\}$. But since $\mathcal{X} = \emptyset$ there is no such $A \in \mathcal{X}$. Again, the proposition $\text{false} \implies \text{false}$ is \textbf{true}. Therefore, $\bigcap \mathcal{X} = \mathbb{N}$
+	\textbf{Solution: } $\bigcap \mathcal{X} = \{x \in \mathbb{N} \mid \forall A \in \mathcal{X}, x \in A\}$. But since $\mathcal{X} = \emptyset$ there is no such $A \in \mathcal{X}$. Again, the proposition $\text{false} \implies \text{false}$ is \textbf{true}. Therefore, $\bigcap \mathcal{X} = \mathbb{N}$
 \end{itemize}
+
+\pagebreak
 
 \subsubsection*{Question 4}
 \textit{Prove: $A\cap \left(A \cup B\right) = A \cup \left(A \cap B\right) = A$} \\
@@ -86,6 +127,8 @@ As for the second half, by definition: \[
 	\iff (x \in A) \lor ((x \in A) \land (x \in B)) \iff (x \in A)
 	\]
 Therefore, $A = A \cup (A \cap B)$
+
+\pagebreak
 
 \subsubsection*{Question 5}
 \textit{Prove: $\left(A\subseteq B\right) \iff \left(A\cap B = A\right) \iff \left(A\cup B = B\right) \iff \left(A\cap\overline{B} = \emptyset\right) \iff \left(\overline{A} \cup B = \mathcal{U}\right)\iff \left(\overline{B}\subseteq \overline{A}\right) \iff \left(A\setminus B = \emptyset\right)$.}
@@ -106,29 +149,62 @@ Therefore, $A = A \cup (A \cap B)$
 \]
 
 Let P and Q denote the propositions $x \in A$ and $x \in B$, respectively, our statement becomes theories proved in the textbook:
+
 \[
-	(\text{P} \implies \text{Q}) \\ 
-	\iff ((\text{P} \land \text{Q}) \iff \text{P}) \\
-	\iff ((\text{P} \lor \text{Q}) \iff \text{Q}) \\
-	\iff ((\text{P} \land \lnot \text{Q}) = \text{false}) \\
-	\iff ((\lnot \text{P} \land \text{Q}) = \text{true}) \\
-	\iff (\lnot \text{Q} \implies \lnot \text{P}) \\
-	\iff ((\text{P} \land \lnot \text{Q}) = \text{false}) \\
+\begin{aligned}
+	  &(\text{P} \implies \text{Q}) \\
+	\iff{} &((\text{P} \land \text{Q}) \iff \text{P}) \\
+	\iff{} &((\text{P} \lor \text{Q}) \iff \text{Q}) \\
+	\iff{} &((\text{P} \land \lnot \text{Q}) = \text{false}) \\
+	\iff{} &((\lnot \text{P} \land \text{Q}) = \text{true}) \\
+	\iff{} &(\lnot \text{Q} \implies \lnot \text{P}) \\
+	\iff{} &((\text{P} \land \lnot \text{Q}) = \text{false})
+\end{aligned}
 \]
+
+\pagebreak
 
 \subsubsection*{Question 6}
 Suppose $A, B, C$ are sets. First clearly state true or false, then prove or disprove:
 \begin{itemize}
-	\item $A\cap B = \emptyset \iff A = A\setminus B$.
-	\item $A\setminus\left(B\setminus C\right) = A\cap \left(\overline{B} \cup C\right)$.
-	\item $A \subseteq B \implies A\times C \subseteq B\times C$.
-	\item $A\times C \subseteq B\times C \implies A\subseteq B$.
+	\item $A\cap B = \emptyset \iff A = A\setminus B$. \textbf{True.}
+
+	\textbf{Solution: } Since $A \setminus B = \{x \in A \mid x \notin B\}$:
+	\begin{itemize}
+		\item If $A \cap B = \emptyset$, then for any $x \in A$, $x \notin B$, so $x \in A \setminus B$. Also $A \setminus B \subseteq A$. Therefore $A = A \setminus B$.
+		\item If $A = A \setminus B$, every $x \in A$ satisfies $x \notin B$, so $A \cap B = \emptyset$.
+	\end{itemize}
+
+	\item $A\setminus\left(B\setminus C\right) = A\cap \left(\overline{B} \cup C\right)$. \textbf{True.}
+
+	\textbf{Solution: }
+	\[
+	\begin{aligned}
+		x \in A\setminus(B\setminus C)
+		&\iff (x \in A) \land \lnot\left((x \in B) \land (x \notin C)\right) \\
+		&\iff (x \in A) \land \left((x \notin B) \lor (x \in C)\right) \\
+		&\iff x \in A \cap \left(\overline{B} \cup C\right)
+	\end{aligned}
+	\]
+
+	\item $A \subseteq B \implies A\times C \subseteq B\times C$. \textbf{True.}
+
+	\textbf{Solution: } Suppose $A \subseteq B$. Let $(x, y) \in A \times C$; then $x \in A$ and $y \in C$.
+	Since $A \subseteq B$, $x \in B$, so $(x, y) \in B \times C$.
+
+	\item $A\times C \subseteq B\times C \implies A\subseteq B$. \textbf{False.}
+
+	\textbf{Solution: } Counterexample: $A = \{1\}$, $B = \{2\}$, $C = \emptyset$.
+	Then $A \times C = \emptyset \subseteq \emptyset = B \times C$, but $1 \in A$ and $1 \notin B$, so $A \not\subseteq B$.
 \end{itemize}
+
+\pagebreak
 
 \subsubsection*{Question 7}
 
-\textit{Suppose $\mathcal{X} = \{\[a, \infty\),\|a\| < 0\}$. Prove that $\bigcup \mathcal{X} = \mathbb{R}$.} \\
+\textit{Suppose $\mathcal{X} = \{[a, \infty) \mid a < 0\}$. Prove that $\bigcup \mathcal{X} = \mathbb{R}$.} \\
 
-\textbf{Solution: }
+\textbf{Solution: } Since for $\forall x \in \mathbf(R)$, we can find $\exists a \in \mathbf(R), a < 0$ such that $y < x$. We can find at least one $\exists a \in \mathbf{R}, a < 0$ such that $x \in [a, \infty)$. 
+This means that $x \in \mathbf{R} \implies (\exists A \in \mathcal{X} \mid x \in A)$, therefore, $\bigcup \mathcal(X) = \mathbf(R)$
 
 \end{document}
