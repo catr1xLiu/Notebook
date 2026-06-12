@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jacobian Local Linearity - React</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+</head>
+<body class="bg-white text-gray-800 p-6 flex justify-center font-sans">
+
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState } = React;
+
+        const JacobianExplorer = () => {
+            const [r, setR] = useState(3.0);
+            const [theta, setTheta] = useState(0.79);
+
+            // Mathematical Conversions
+            const x = r * Math.cos(theta);
+            const y = r * Math.sin(theta);
+            
+            // Jacobian partial derivatives
+            const dx_dr = Math.cos(theta);
+            const dy_dr = Math.sin(theta);
+            const dx_dt = -r * Math.sin(theta);
+            const dy_dt = r * Math.cos(theta);
+
+            // Vector scaling for visualization clarity
+            const dr_scale = 1.0;
+            const dt_scale = 0.5;
+
+            // Render the mathematical geometry
+            const renderGraphics = () => (
+                <g transform="scale(1, -1)">
+                    {/* SVG Definitions for Arrowheads */}
+                    <defs>
+                        <marker id="arrowRed" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="3" markerHeight="3" orient="auto-start-reverse">
+                            <path d="M 0 0 L 10 5 L 0 10 z" fill="#ef4444" />
+                        </marker>
+                        <marker id="arrowGreen" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="3" markerHeight="3" orient="auto-start-reverse">
+                            <path d="M 0 0 L 10 5 L 0 10 z" fill="#22c55e" />
+                        </marker>
+                    </defs>
+
+                    {/* Cartesian Grid lines */}
+                    {[...Array(21)].map((_, i) => (
+                        <g key={`grid-${i}`}>
+                            <line x1={-10} y1={i-10} x2={10} y2={i-10} stroke="#f3f4f6" strokeWidth="0.05" />
+                            <line x1={i-10} y1={-10} x2={i-10} y2={10} stroke="#f3f4f6" strokeWidth="0.05" />
+                        </g>
+                    ))}
+
+                    {/* Axes */}
+                    <line x1={-10} y1={0} x2={10} y2={0} stroke="#9ca3af" strokeWidth="0.08" />
+                    <line x1={0} y1={-10} x2={0} y2={10} stroke="#9ca3af" strokeWidth="0.08" />
+
+                    {/* True Non-Linear Transformation Curves */}
+                    <circle cx="0" cy="0" r={r} fill="none" stroke="rgba(0,0,0,0.15)" strokeWidth="0.1" />
+                    <line x1="0" y1="0" x2={10 * Math.cos(theta)} y2={10 * Math.sin(theta)} stroke="rgba(0,0,0,0.15)" strokeWidth="0.1" />
+
+                    {/* Local Linear Approximation Parallelogram */}
+                    <polygon 
+                        points={`${x},${y} ${x + dx_dr*dr_scale},${y + dy_dr*dr_scale} ${x + dx_dr*dr_scale + dx_dt*dt_scale},${y + dy_dr*dr_scale + dy_dt*dt_scale} ${x + dx_dt*dt_scale},${y + dy_dt*dt_scale}`} 
+                        fill="rgba(59, 130, 246, 0.2)" 
+                        stroke="rgba(59, 130, 246, 0.5)"
+                        strokeWidth="0.03"
+                    />
+
+                    {/* Vectors */}
+                    <line x1={x} y1={y} x2={x + dx_dr*dr_scale} y2={y + dy_dr*dr_scale} stroke="#ef4444" strokeWidth="0.1" markerEnd="url(#arrowRed)" />
+                    <line x1={x} y1={y} x2={x + dx_dt*dt_scale} y2={y + dy_dt*dt_scale} stroke="#22c55e" strokeWidth="0.1" markerEnd="url(#arrowGreen)" />
+
+                    {/* Evaluation Point */}
+                    <circle cx={x} cy={y} r="0.15" fill="#111" />
+                </g>
+            );
+
+            return (
+                <div className="flex flex-col md:flex-row gap-6 bg-gray-50 p-6 rounded-xl shadow-sm border border-gray-100 max-w-4xl w-full">
+                    
+                    {/* Visualizer Panel */}
+                    <div className="relative bg-white border border-gray-200 rounded-lg shadow-inner overflow-hidden" style={{ width: '400px', height: '400px' }}>
+                        {/* Main Full-Scale SVG */}
+                        <svg viewBox="-6 -6 12 12" width="100%" height="100%">
+                            {renderGraphics()}
+                        </svg>
+
+                        {/* The Magnifier Lens (A second SVG zoomed in on the point) */}
+                        <div className="absolute top-3 right-3 w-32 h-32 bg-white rounded-full border-2 border-gray-300 shadow-lg overflow-hidden pointer-events-none">
+                            {/* We invert the Y coordinate for the viewBox because SVG native coordinates have Y going down */}
+                            <svg viewBox={`${x - 1.5} ${-y - 1.5} 3 3`} width="100%" height="100%">
+                                {renderGraphics()}
+                            </svg>
+                            {/* Crosshair overlay */}
+                            <div className="absolute inset-0 flex items-center justify-center opacity-30">
+                                <div className="w-full h-px bg-black"></div>
+                                <div className="h-full w-px bg-black absolute"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Controls Panel */}
+                    <div className="flex flex-col justify-between w-64">
+                        <div>
+                            <h2 className="text-xl font-bold mb-1">Transformation</h2>
+                            <code className="text-sm bg-gray-100 px-2 py-1 rounded block mb-6 text-gray-700">
+                                x = r * cos(θ)<br/>
+                                y = r * sin(θ)
+                            </code>
+
+                            <div className="mb-4">
+                                <label className="flex justify-between font-semibold mb-1 text-sm">
+                                    <span>Radius (r)</span>
+                                    <span>{r.toFixed(2)}</span>
+                                </label>
+                                <input type="range" min="0.5" max="5.0" step="0.1" value={r} onChange={(e) => setR(parseFloat(e.target.value))} className="w-full accent-blue-600" />
+                            </div>
+
+                            <div className="mb-6">
+                                <label className="flex justify-between font-semibold mb-1 text-sm">
+                                    <span>Angle (θ)</span>
+                                    <span>{theta.toFixed(2)} rad</span>
+                                </label>
+                                <input type="range" min="0" max="6.28" step="0.01" value={theta} onChange={(e) => setTheta(parseFloat(e.target.value))} className="w-full accent-blue-600" />
+                            </div>
+                        </div>
+
+                        {/* Math Matrix Panel */}
+                        <div className="bg-gray-100 p-4 rounded-lg border-l-4 border-blue-500">
+                            <div className="text-sm font-bold mb-1">Jacobian Matrix [J]</div>
+                            <div className="text-xs text-gray-500 mb-3">Local linear approximation</div>
+                            
+                            <div className="flex items-center justify-center font-mono text-sm bg-white p-2 rounded border border-gray-200">
+                                <span className="text-2xl font-light text-gray-400 mr-2">[</span>
+                                <table className="text-center">
+                                    <tbody>
+                                        <tr>
+                                            <td className="px-2 py-1">{dx_dr.toFixed(2)}</td>
+                                            <td className="px-2 py-1">{dx_dt.toFixed(2)}</td>
+                                        </tr>
+                                        <tr>
+                                            <td className="px-2 py-1">{dy_dr.toFixed(2)}</td>
+                                            <td className="px-2 py-1">{dy_dt.toFixed(2)}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <span className="text-2xl font-light text-gray-400 ml-2">]</span>
+                            </div>
+                            
+                            <div className="mt-4 text-xs font-semibold">
+                                <div className="flex items-center gap-2 mb-1"><div className="w-3 h-3 bg-red-500 rounded-sm"></div> ∂T/∂r vector</div>
+                                <div className="flex items-center gap-2"><div className="w-3 h-3 bg-green-500 rounded-sm"></div> ∂T/∂θ vector</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<JacobianExplorer />);
+    </script>
+</body>
+</html>
