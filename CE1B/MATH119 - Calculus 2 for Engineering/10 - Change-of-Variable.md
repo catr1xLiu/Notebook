@@ -31,3 +31,6 @@ Note when integrating over area, the **determinant** of the Jacobian matrix, acc
 
 <iframe src="file:///home/catr1x/Coding/Notebook/CE1B/MATH119%20-%20Calculus%202%20for%20Engineering/10%20-%20Visuals.html" width="100%" height="600px"></iframe>
 
+
+## Jacobian Function for Integral Evaluation
+
