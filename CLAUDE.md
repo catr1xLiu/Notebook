@@ -14,8 +14,11 @@ Notebook/
 │   ├── MATH115 - Linear Algebra/   # Obsidian notes + drawings + media
 │   └── MATH117 - Calculus 1/       # Obsidian notes + drawings + media
 ├── CE1B/                           # 1B term coursework
+│   ├── ECE106 - Eletricity and Magnetism/  # rnote notes + tutorials
 │   ├── ECE108 - Discrete Math & Logic 1/   # Obsidian notes + drawings + media
-│   └── ECE124 - Digital Circuits & Systems/ # Obsidian notes + drawings + media
+│   ├── ECE124 - Digital Circuits & Systems/ # Obsidian notes + drawings + media
+│   ├── ECE140 - Linear Circuits/           # rnote notes + Obsidian + tutorials
+│   └── MATH119 - Calculus 2 for Engineering/ # rnote notes + Obsidian + tutorials
 ├── Motion Diffusion Model Basics/  # Research notes, drawings, media
 │   ├── drawings/                   # Excalidraw .md files
 │   ├── media/                      # PNG/SVG figures
@@ -109,6 +112,31 @@ When asked to convert a draft (Notion page, hand-written scan, or raw text):
 Drawings are stored as Obsidian markdown files in `drawings/` subdirectories (e.g., `Motion Diffusion Model Basics/drawings/1.1 - Tensors.md`). They contain raw Excalidraw JSON — do not edit the data section. Embed in notes with `![[DrawingName.md]]`. New drawings suggested by an agent should be described in a placeholder comment; the user creates them manually in Obsidian.
 
 **Mermaid → Excalidraw (one-shot):** Flowcharts and process diagrams can be converted directly from Mermaid to Excalidraw using https://github.com/excalidraw/mermaid-to-excalidraw. When a note needs a flow diagram, output a `mermaid` code block and insert a `<!-- TODO: Convert the Mermaid to Excalidraw and embed as ![[Drawing Name|100%]] -->` placeholder in the note. The user converts and saves to `drawings/`, then replaces the placeholder with `![[Drawing Name|100%]]`. Keep Mermaid simple (`flowchart LR/TD`) for best converter compatibility.
+
+## Locating and Viewing `.rnote` Files
+
+Each course directory under `CE1B/` contains an `index.md` with keyword-rich descriptions of every note file's contents (specific topics, formulas, problem types, and worked examples). To find which rnote file covers a given topic:
+
+1. **Keyword search** the index files: `grep -ri "keyword" CE1B/*/index.md`. The index entries are designed to match specific concepts (e.g. "Thévenin", "Lagrange multipliers", "Shannon expansion", "spherical capacitor") and point to the exact file and problem number.
+2. **Export the rnote file** to SVG once located:
+
+```bash
+flatpak run --command=rnote-cli com.github.flxzt.rnote export doc --output-file /tmp/output.svg --on-conflict overwrite input.rnote
+```
+
+Supported output formats: `.svg`, `.pdf`, `.xopp` (`.png` is **not** supported by rnote-cli despite being listed).
+
+3. **Convert SVG to PNG before reading.** Exported SVGs are multi-MB files that exceed the Read tool's size limit. Convert with `rsvg-convert`:
+
+```bash
+rsvg-convert /tmp/output.svg -o /tmp/output.png
+```
+
+The resulting PNG can be read as an image by the Read tool.
+
+**Flatpak sandbox limitation:** The rnote Flatpak only has filesystem access to `xdg-documents`, `xdg-pictures`, and `xdg-desktop`. Files outside these directories (e.g. under `~/Coding/`) must be copied to `~/Documents/` before export. Alternatively, grant broader access: `flatpak override --user --filesystem=home com.github.flxzt.rnote`.
+
+**Flatpak /tmp/ redirect:** The Flatpak sandbox maps `/tmp/` to `/run/user/1000/.flatpak/com.github.flxzt.rnote/tmp/` on the host. Exported files appear there, not at `/tmp/`.
 
 ## Notion MCP
 
