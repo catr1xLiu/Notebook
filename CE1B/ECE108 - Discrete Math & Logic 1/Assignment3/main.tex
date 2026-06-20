@@ -1,0 +1,221 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% University/School Laboratory Report
+% LaTeX Template
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%----------------------------------------------------------------------------------------
+%	PACKAGES AND DOCUMENT CONFIGURATIONS
+%----------------------------------------------------------------------------------------
+
+\documentclass[
+	letterpaper, % Paper size, specify a4paper (A4) or letterpaper (US letter)
+	11pt, % Default font size, specify 10pt, 11pt or 12pt
+]{CSUniSchoolLabReport}
+
+\usepackage{subcaption}
+\usepackage{booktabs}
+\geometry{top=2cm} % Override top margin to reduce space before title
+
+%----------------------------------------------------------------------------------------
+%	REPORT INFORMATION
+%----------------------------------------------------------------------------------------
+
+\title{Assignment 3} % Report title
+
+\author{Yiran \textsc{Liu}} % Author name(s)
+
+\date{\today} % Date of the report
+
+%----------------------------------------------------------------------------------------
+
+\begin{document}
+
+\maketitle % Insert the title, author and date using the information specified above
+
+\begin{center}
+	\begin{tabular}{l r}
+      ECE 108: Discrete Math \& Logic 1 \\
+      Student Number: 21184901
+	\end{tabular}
+\end{center}
+
+%----------------------------------------------------------------------------------------
+%	QUESTIONS
+%----------------------------------------------------------------------------------------
+
+\subsubsection*{Question 1}
+\textit{Let $f, g, h$ be the following functions. Which ones of the three are injective? Which are surjective? Which are both, i.e., bijective?}
+\begin{align*}
+&f\!:\mathbb{R}\to\mathbb{R},\quad f: x\mapsto x+2 \\
+&g\!:\mathbb{R}^+\to\mathbb{R},\quad g: x\mapsto +\sqrt{x}, \text{ i.e., the non-negative square root of } x \\
+&h\!:(\mathbb{R}\times\mathbb{R}^+)\to \mathbb{R},\quad h: \langle x,y \rangle\mapsto x/y
+\end{align*}
+
+\textbf{Solution:}
+\begin{itemize}
+	\item Since $x_1 \neq x_2 \implies x_1+2 \neq x_2+2$ and we can write $f^{-1}(x):\mathbb{R} \to \mathbb{R} = x - 2$ whose domain is the entire codomain of $f$, we conclude that $f$ is \textbf{bijective}.
+
+	\item Since $x_1 \neq x_2 \implies +\sqrt{x_1} \neq +\sqrt{x_2}$, we know $g$ is \textbf{injective}.
+	But $+\sqrt{x} \geq 0$, so $\exists\, y \in \mathbb{Z}$ with $y < 0$ such that there is no $x \in \mathbb{Z}^+$ with $f(x) = y$.
+	So $f$ is \textbf{not surjective}.
+
+	\item Since we can find $h(4,2) \neq (2,1)$ but $h(4,2) = h(2,1) = 2$, the function is \textbf{not injective}.
+	Since we can define $p: \mathbb{R} \to (\mathbb{R} \times \mathbb{R}^+),\ p(x) = (x, 1)$ whose domain is the entire codomain of $h$, the function is \textbf{surjective}.
+\end{itemize}
+
+\pagebreak
+
+\subsubsection*{Question 2}
+\textit{Prove that the following function is injective:}
+\begin{align*}
+&f\!:\,\mathbb{Z} \to \mathbb{Z} \\
+&f(x) = x^3 + x
+\end{align*}
+
+\textbf{Solution:} $f'(x) = 3x^2 + 1 > 0$, so $f$ is strictly increasing for $x \in \mathbb{R}$.
+\[
+x_1 \neq x_2 \iff (x_1 < x_2) \lor (x_1 > x_2) \iff (f(x_1) < f(x_2)) \lor (f(x_1) > f(x_2))
+\]
+Therefore, $x_1 \neq x_2 \implies f(x_1) \neq f(x_2)$.
+We conclude that $f$ is \textbf{injective}.
+
+\subsubsection*{Question 3}
+\textit{Prove or disprove: the following function is a bijection.}
+\begin{align*}
+&f\!:\,(\mathbb{Z}^+_0 \times \mathbb{Z}^+_0) \to \mathbb{Z}^+_0 \\
+&f\!: \langle x,y \rangle \mapsto x + \frac{(x+y)(x+y+1)}{2}
+\end{align*}
+
+\pagebreak
+
+\textbf{Solution:} We can rewrite this expression as
+\[
+f(x,y) = x + \sum_{i=1}^{x+y} i \quad (i \in \mathbb{Z}^+)
+\]
+
+\textbf{Step 1: Prove Injection.}
+That is to prove that $(x_1,y_1) \neq (x_2,y_2) \implies f(x_1,y_1) \neq f(x_2,y_2)$.
+
+We assume, without loss of generality, that $(x_1,y_1)$ is the pair with smaller (or equal) sum:
+\[
+f(x_2,y_2) - f(x_1,y_1) = x_2 - x_1 + \sum_{i=x_1+y_1}^{x_2+y_2} i
+\]
+We prove by case analysis:
+\begin{itemize}
+	\item \textbf{Case 1:} $x_1 + y_1 < x_2 + y_2$.
+	\begin{align*}
+		&\implies \sum_{i=x_1+y_1}^{x_2+y_2} i \geq x_1 + y_1 > x_1 > x_1 - x_2 \\
+		&\implies f(x_2,y_2) - f(x_1,y_1) > 0 \\
+		&\implies f(x_1,y_1) \neq f(x_2,y_2)
+	\end{align*}
+
+	\item \textbf{Case 2:} $x_1 + y_1 = x_2 + y_2$.
+	\begin{align*}
+		&\implies \sum_{i=x_1+y_1}^{x_2+y_2} i = 0 \\
+		\text{Also, } &x_2 \neq x_1 \implies x_2 - x_1 \neq 0 \\
+		&\implies x_2 - x_1 + \sum_{i=x_1+y_1}^{x_2+y_2} i \neq 0 \\
+		&\implies f(x_1,y_1) \neq f(x_2,y_2)
+	\end{align*}
+\end{itemize}
+
+\textbf{Step 2: Prove Surjection.}
+That is to prove $\forall\, y \in \mathbb{Z}^+$ there exists at least one $(a,b)$ such that $f(a,b) = y$.
+
+We prove by induction on $y$.
+Assuming that $\exists\, (a,b) \in (\mathbb{Z}^+ \times \mathbb{Z}^+),\ \exists\, y \in \mathbb{Z}^+$ such that $f(a,b) = y$.
+Thus, $a + \sum_{i=1}^{a+b} i = y$.
+
+For $b \neq 0$, if we let $a' = a+1,\ b' = b-1$, compute:
+\[
+f(a',b') = a' + \sum_{i=1}^{a'+b'} i = a+1 + \sum_{i=1}^{a+b} i = y+1
+\]
+
+For $b = 0$, if we let $a' = 0,\ b' = a+1$, compute:
+\[
+f(a',b') = a' + \sum_{i=1}^{a'+b'} i = 0 + \sum_{i=1}^{a+1} i = \sum_{i=1}^{a} i + a + 1 = y + 1
+\]
+
+\pagebreak
+
+\subsubsection*{Question 4}
+\textit{Suppose $n \in \mathbb{Z}^+$, i.e., $n$ is some finite positive integer. Denote $\mathbb{Z}^+_n = \{1, 2, \ldots, n\}$. Prove that there exists no surjection with domain $\mathbb{Z}^+_n$ and codomain $\mathbb{Z}^+$.} \\
+
+\textbf{Solution:} We prove by contradiction; assume there is such \textbf{surjection}:
+\[
+\exists\, n \in \mathbb{Z}^+ \quad f:\mathbb{Z}^+_n \to \mathbb{Z}^+
+\]
+
+Since $f$ is surjective, for $\forall\, b \in \mathbb{Z}^+$ there must be $\exists\, a \in \mathbb{Z}^+_n$ such that $f(a) = b$.
+
+We write the range of $f$ as: $R = \mathrm{range}(f) = \{f(1), f(2), \ldots, f(n)\}$.
+Now let $b = \sum_{i=1}^{n} f(i)$; since each $f(i) \geq 1$, we have $b \in \mathbb{Z}^+$.
+For $n \geq 2$, $b = \sum_{i=1}^{n} f(i) \geq f(j) + (n-1) > f(j)$ for all $j$, so $b \notin R$.
+This contradicts the surjectivity of $f$.
+
+Therefore, we conclude that $f$ must \textbf{not} be a \textbf{surjection}.
+
+\pagebreak
+
+\subsubsection*{Question 5}
+\textit{Suppose $f: S \to \mathbb{Z}^+$ is a bijection, and let $A = \{a_1, a_2, \ldots, a_n\}$, for some $n \in \mathbb{Z}^+$, be some set. Propose a bijection $g: (S \cup A) \to \mathbb{Z}^+$.} \\
+
+\textbf{Solution:} Since $A = \{a_1, a_2, \ldots, a_n\}$, we can write bijection $h: A \to \mathbb{Z}^+$ as $h(a_i) = i$.
+
+\[
+g: (S \cup A) \to \mathbb{Z}^+ \quad g(x) = \begin{cases}
+n + f(x) & \quad (x \in S) \\
+h(x) & \quad (x \in A \setminus S)
+\end{cases}
+\]
+
+\pagebreak
+
+\subsubsection*{Question 6}
+\textit{Suppose $A_1, A_2, \ldots, A_n$, for some $n \in \mathbb{Z}^+$, are sets such that each $A_i$ is finite. Prove that $A_1 \cup A_2 \cup \ldots \cup A_n$ is finite.} \\
+
+\textbf{Solution:} We prove by induction on $n$.
+
+Observe that for the base case $n=1$, $A_1$ is finite.
+
+Assume that $A_1 \cup \ldots \cup A_{n-1}$ is finite; we need to show that $A_1 \cup \ldots \cup A_n$ is also finite.
+Based on the definition of bijection, we can define bijection:
+\[
+\exists\, s \in \mathbb{Z}^+ \quad f_{n-1}: (A_1 \cup \ldots \cup A_{n-1}) \to \mathbb{Z}^+_s
+\]
+
+Since $A_n$ is also finite, we can define bijection $\exists\, m \in \mathbb{Z}^+ \quad g_n: A_n \to \mathbb{Z}^+_m$.
+
+Using the two functions above, we can write $\exists\, t \in \mathbb{Z}^+ \quad f_n: (A_1 \cup \ldots \cup A_n) \to \mathbb{Z}^+_t$:
+\[
+f_n(x) = \begin{cases}
+m + f_{n-1}(x) & \quad (x \in A_1 \cup \ldots \cup A_{n-1}) \\
+g_n(x) & \quad (x \in A_n \setminus (A_1 \cup \ldots \cup A_{n-1}))
+\end{cases}
+\]
+
+Since $f_{n-1}$ and $g_n$ are both bijections, and:
+\begin{itemize}
+	\item For any $x \in A_1 \cup \ldots \cup A_{n-1}$, $f_n(x) = m + f_{n-1}(x) > m$.
+	\item For any $x \in A_n \setminus (A_1 \cup \ldots \cup A_{n-1})$, $f_n(x) = g_n(x) \in \mathbb{Z}^+_m \leq m$.
+\end{itemize}
+
+$x_1 \neq x_2 \implies f_n(x_1) \neq f_n(x_2)$, therefore, $f_n$ is an injection.
+
+Based on Claim 28 in the textbook, we conclude that $A_1 \cup A_2 \cup \ldots \cup A_n$ is finite.
+
+\pagebreak
+
+\subsubsection*{Question 7}
+\textit{Suppose $S = \{n^2 \mid n \in \mathbb{Z}\}$, i.e., the set of perfect squares. Prove that $|S| = \aleph_0$.} \\
+
+\textbf{Solution:} We let $f(x) = x^2$ for $\forall\, x \in \mathbb{Z}^+$.
+It is obvious that
+\[
+\forall\, x_1, x_2 \in \mathbb{Z}^+ \quad x_1 \neq x_2 \implies f(x_1) \neq f(x_2)
+\]
+
+Also, $\mathrm{range}(f) = S$, so $f: \mathbb{Z}^+ \to S$ is a \textbf{bijection}.
+
+Therefore, we conclude that $S$ is \textbf{countably infinite}.
+
+\end{document}
