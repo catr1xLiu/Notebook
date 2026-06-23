@@ -26,7 +26,7 @@
 
 \usepackage{subcaption}
 \usepackage{booktabs}
-\geometry{top=2cm} % Override top margin to reduce space before title
+\geometry{top=1cm} % Override top margin to reduce space before title
 
 %----------------------------------------------------------------------------------------
 %	REPORT INFORMATION
@@ -57,7 +57,7 @@
 We consider the system of two spherical uniform charges ($a=0.01m$, $Q=+1.0 \mu C$) placed $r=0.2m$ apart. We compute the total electrical energy:
 
 \[
-  W_\text{total} = n \times W_\text{formation} + W_\text{assembly} = 2 \times \frac{3}{5} \frac{Q^2}{4\pi \epsilon_0 a} + \frac{1}{4} \frac{Q^2}{r} = 1.1234 J
+  W_\text{total} = n \times W_\text{formation} + W_\text{assembly} = 2 \times \frac{3}{5} \frac{Q^2}{4\pi \epsilon_0 a} + \frac{1}{4\pi\epsilon_0} \frac{Q^2}{r} = 1.1234 J
 \]
 
 \section{System of two like charges}
@@ -65,7 +65,7 @@ We build the simulation model of two point charges ($R=0.01$ and $Q=+1.0 \mu C$)
 
 \begin{figure}[H] % [H] forces the figure to be placed exactly where it appears in the text
 	\centering % Horizontally center the figure
-	\includegraphics[width=0.8\textwidth]{./figures/two_like_charges_energy} % Include the figure
+	\includegraphics[width=0.85\textwidth]{./figures/two_like_charges_energy} % Include the figure
   \caption{Energy in system of two like charges measured in COMSOL.}
 \end{figure}
 
@@ -73,29 +73,103 @@ We build the simulation model of two point charges ($R=0.01$ and $Q=+1.0 \mu C$)
     \centering
     \begin{tabular}{lcrr}
         \toprule
-        \textbf{Simulated} ($J$) & \textbf{Theoretical} ($J$) & \textbf{\% Error} \\
+        \textbf{Simulated} & \textbf{Theoretical} & \textbf{\% Error} \\
         \midrule
-        1.2229 & 1.1234 & 0.0484\% \\
+        $1.2229J$ & $1.1234J$ & 8.857\% \\
         \bottomrule
     \end{tabular}
 \end{table}
 
 \begin{figure}[H] % [H] forces the figure to be placed exactly where it appears in the text
 	\centering % Horizontally center the figure
-	\includegraphics[width=\textwidth]{./figures/two_like_charges_energy_increased} % Include the figure
+	\includegraphics[width=0.85\textwidth]{./figures/two_like_charges_energy_increased} % Include the figure
   \caption{Energy in system of two like charges, increased (right in table).}
 \end{figure}
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{lcrr}
+        \toprule
+        \textbf{Measurement} & \textbf{New Position} & \textbf{Increased Measurement} & \textbf{\% Increased} \\
+        \midrule
+        $1.2229J$ & $(0.02, 0, 0)m$ & $1.5273J$ & $36.014\%$ \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
 
 \section{System of two opposite charges}
 We build the simulation model of two opposite charges.
 
 \begin{figure}[H] % [H] forces the figure to be placed exactly where it appears in the text
 	\centering % Horizontally center the figure
-	\includegraphics[width=\textwidth]{./figures/opposite_charges_energy_increased.png} % Include the figure
+	\includegraphics[width=0.85\textwidth]{./figures/opposite_charges_energy_increased.png} % Include the figure
   \caption{Energy in the system of two opposite charges (left in table) compared to increased value (right in table). }
 \end{figure}
 
+\begin{table}[H]
+    \centering
+    \begin{tabular}{lcrr}
+        \toprule
+        \textbf{Measurement} & \textbf{New Position} & \textbf{Increased Measurement} & \textbf{\% Increased} \\
+        \midrule
+        $0.98846J$ & $(10, 10, 10)m$ & $1.0778J$ & $9.038\%$ \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
 \section{Analysis of Electric Potential}
 
+With the required 5-charge set-up, with point charges of $+1.0 \mu C$ each, located in: 
+\[ 
+(0.75, 0.25, 0.0),\ (-0.5, 0.0, 0.0),\ (1.0,-0.75,0.0),\ (0.5, -1.0, 0.0)\ (0.0, -0.5, 0.0)
+\]
+
+We can compute the electric potential change when moving a $+0.65\mu C$ test charge. 
+
+\begin{figure}[H] % [H] forces the figure to be placed exactly where it appears in the text
+	\centering % Horizontally center the figure
+	\includegraphics[width=0.85\textwidth]{./figures/3DResults.png} % Include the figure
+  \caption{Measured electric potential at starting and ending position.}
+\end{figure}
+
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{lcrr}
+        \toprule
+        \textbf{Start Position} & \textbf{Potential} & \textbf{End Position} & \textbf{Potential} \\
+        \midrule
+        $(-0.4, 0, 0)m$ & $1.0480 \times 10^5 J$ & $(-0.75, -0.8, 0)m$ & $75041 J$ \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+The change in energy is:
+\[
+  \delta E = \delta P \times q = (75041 - 104800) \text{V} \times 0.65 \mu C = -0.01934 J
+\]
+
+\begin{figure}[H] % [H] forces the figure to be placed exactly where it appears in the text
+	\centering % Horizontally center the figure
+	\includegraphics[width=0.5\textwidth]{./figures/SurfaceWithHeight.png} % Include the figure
+  \caption{Three paths on the surface to go from starting to ending point.}
+\end{figure}
+
+\textbf{Answers:}
+
+\begin{itemize}
+  \item The elevation/ height corresponds to the \textbf{electric potential} at the projected point on the x-y plane. 
+  \item The net amount of energy transferred does not vary depending on path take, because electric force is a conservative force and the energy transffered is equal to the change in electric potential energy.
+  \item Electric field lines would correspond to tangent lines on the surface $(-\nabla)$, they will point downwards the surface, and the magnitude corresponds to the slope of the surface. 
+\end{itemize}
+
+\begin{figure}[H] % [H] forces the figure to be placed exactly where it appears in the text
+	\centering % Horizontally center the figure
+	\includegraphics[width=0.75\textwidth]{./figures/ContourMap.png} % Include the figure
+  \caption{Contour plot of electric potential (blue-red) and approximate sketch of electric field lines (purple).}
+\end{figure}
+
+The electric field arrows are perpendicular to the countour lines.
 
 \end{document}
