@@ -1,0 +1,4 @@
+# Track this specific large review file with Git LFS as binary.
+# Overrides the root `*.rnote filter=rnote` for this one file only;
+# all other .rnote files keep the default rnote filter.
+MidtermReview.rnote filter=lfs diff=lfs merge=lfs -text
