@@ -1,3 +1,8 @@
+---
+name: embed-image
+description: Process and embed images into Obsidian Notes using Python Image Processor.
+---
+
 # Skill: Process and Embed Images into Obsidian Notes
 
 **Only use this skill when explicitly asked to process or embed an image.** Not every image in the repo needs background removal — use it on demand.

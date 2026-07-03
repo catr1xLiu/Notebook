@@ -1,3 +1,8 @@
+---
+name: obsidian-note
+description: Convert or format drafts into well-structured Obsidian notes with custom styling, LaTeX math, and Excalidraw embeddings.
+---
+
 # Skill: Convert Draft to Obsidian Note
 
 ## 1. Task Overview

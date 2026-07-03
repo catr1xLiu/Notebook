@@ -1,3 +1,8 @@
+---
+name: project-webpage
+description: Build or update a research project webpage under WebPage/ using Bulma CSS and jQuery.
+---
+
 # Skill: Create / Update Project Webpage
 
 Build or update a research project webpage under `WebPage/`, following the conventions in `WebPage/Aging-Motion-Project/AGENTS.md`.

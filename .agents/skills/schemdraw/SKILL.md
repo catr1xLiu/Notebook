@@ -1,3 +1,8 @@
+---
+name: schemdraw
+description: Generate dark-mode circuit diagrams via SchemDraw, exporting as SVG with white stroke and transparent background for Obsidian.
+---
+
 # Skill: Draw Circuit Diagrams with SchemDraw
 
 Use this skill to generate circuit diagrams for ECE124 (Digital Circuits & Systems), ECE140 (Linear Circuits), or any course requiring schematics. Output is SVG embedded in Obsidian notes.
@@ -7,10 +12,10 @@ Use this skill to generate circuit diagrams for ECE124 (Digital Circuits & Syste
 **Before writing any circuit, read the relevant sections of the local documentation:**
 
 ```
-.claude/refs/schemdraw/usage/placement.rst   ← anchors, tox/toy, hold, move_from
-.claude/refs/schemdraw/gallery/logicgate.rst ← half adder, full adder, SR latch, JK FF patterns
-.claude/refs/schemdraw/elements/logic.rst    ← gate list, inputnots, Table, Kmap
-.claude/refs/schemdraw/usage/styles.rst      ← themes, color, dark mode
+references/placement.rst   ← anchors, tox/toy, hold, move_from
+references/logicgate.rst ← half adder, full adder, SR latch, JK FF patterns
+references/logic.rst    ← gate list, inputnots, Table, Kmap
+references/styles.rst      ← themes, color, dark mode
 ```
 
 Do not skip this step. Prior attempts without reading docs produced incorrect wire routing.

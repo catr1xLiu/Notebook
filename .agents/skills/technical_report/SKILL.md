@@ -1,3 +1,8 @@
+---
+name: technical-report
+description: Convert or format drafts into weekly reports (Typst) or conference papers (LaTeX).
+---
+
 # Skill: Convert Draft to Technical Report / Paper
 
 Convert or format a draft into a polished technical report (Typst) or conference/journal paper (LaTeX), following the rules in `Motion Diffusion Model Basics/Reports/AGENTS.md`.
