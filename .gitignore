@@ -34,6 +34,11 @@ incremental_db/
 # Quartus Generated output files
 output_files/
 
+# Qaurtus Simulation files
+**/simulation/qsim/
+**/simulation/modelsim/
+**/simulation/questa/
+
 # Generated configuration files
 *_assignment_defaults.qdf
 

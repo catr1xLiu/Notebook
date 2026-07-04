@@ -50,10 +50,12 @@ always@(posedge(hvac_clock))
 // update the cnt value based on inputs run, increase, decrease and the cn value NOT 
 // going above decimal 15  or below decimal 0..
 	
-			if()
+			if((cnt<15)&& (run == 1'b1) && (increase == 1'b1))
+				cnt<=cnt+1;
 					// Increment only if not at maxvalue
 					
-			else if ()
+			else if ((cnt>0) && (run == 1'b1) && (decrease == 1'b1))
+				cnt<=cnt-1;
 					// Decrement only if not at minvalue
 	end
 	
