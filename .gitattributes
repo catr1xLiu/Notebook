@@ -1,3 +1,7 @@
 *.rnote filter=rnote
 *.mph filter=lfs diff=lfs merge=lfs -text
 *.bdf binary
+
+# Large Midterm rnote files tracked with LFS
+CE1B/ECE140-Linear-Circuits/Midterm.rnote filter=lfs diff=lfs merge=lfs -text
+CE1B/MATH119-Calculus-2-for-Engineers/Midterm.rnote filter=lfs diff=lfs merge=lfs -text
