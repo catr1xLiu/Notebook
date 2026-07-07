@@ -1,0 +1,161 @@
+\documentclass[11pt,onecolumn]{article}
+\usepackage{amsmath,amssymb,graphicx,algorithmic,xspace,url}
+\usepackage{latexsym}
+\usepackage[titlenotnumbered,noend,noline]{algorithm2e}
+\usepackage{enumerate}
+\usepackage{mathrsfs}
+\usepackage{multirow}
+\usepackage{colortbl}
+\usepackage{tikz}
+\newcommand*\circled[1]{\tikz[baseline=(char.base)]{
+            \node[shape=circle,draw,inner sep=2pt] (char) {#1};}}
+\usepackage[normalem]{ulem}
+\usepackage{listings}
+
+\setlength{\pdfpagewidth}{8.5in}
+\setlength{\pdfpageheight}{11in}
+\setlength{\evensidemargin}{-0.1in} \setlength{\oddsidemargin}{-0.1in}
+\setlength{\textwidth}{6.5in} \setlength{\textheight}{8.5in}
+\setlength{\topmargin}{-0.25in}
+%\setlength{\headheight}{0in}
+
+%\setlength{\parindent}{0in}
+%\setlength{\parskip}{0.125in}
+
+\newcommand{\tuple}[1]{\ensuremath{\left\langle #1 \right\rangle}\xspace}
+\newcommand{\rpair}[1]{\ensuremath{\left( \mathit{#1} \right)}\xspace}
+\newcommand{\set}[1]{\ensuremath{\left\{#1\right\}}\xspace}
+\newcommand{\size}[1]{\ensuremath{\left|#1\right|}\xspace}
+\newcommand{\true}{\ensuremath{\mathsf{true}}\xspace}
+\newcommand{\false}{\ensuremath{\mathsf{false}}\xspace}
+\newcommand{\mypr}[1]{\ensuremath{\text{Pr}\left\{#1\right\}}\xspace}
+\newcommand{\myfloor}[1]{\ensuremath{\left\lfloor#1\right\rfloor}\xspace}
+\newcommand{\myceil}[1]{\ensuremath{\left\lceil#1\right\rceil}\xspace}
+\newcommand{\python}{\textbf{[python3]}\xspace}
+\newcommand*\mon[1]{\tikz[baseline=(char.base)]{
+            \node[shape=circle,draw,inner sep=2pt] (char) {#1};}}
+\newcommand{\cl}{\ensuremath{\textbf{L}}\xspace}
+\newcommand{\cp}{\ensuremath{\textbf{P}}\xspace}
+\newcommand{\cnl}{\ensuremath{\textbf{NL}}\xspace}
+\newcommand{\cconp}{\ensuremath{\textbf{co-NP}}\xspace}
+\newcommand{\cnp}{\ensuremath{\textbf{NP}}\xspace}
+\newcommand{\cnpc}{\ensuremath{\textbf{NP}\text{-complete}}\xspace}
+\newcommand{\ccomplete}{\ensuremath{\mathcal{C}\text{-complete}}\xspace}
+\newcommand{\cnph}{\ensuremath{\textbf{NP}\text{-hard}}\xspace}
+\newcommand{\cph}{\ensuremath{\textbf{P}\text{-hard}}\xspace}
+\newcommand{\chard}{\ensuremath{\mathcal{C}\text{-hard}}\xspace}
+\newcommand{\cpspace}{\ensuremath{\textbf{PSPACE}}\xspace}
+\newcommand{\cnpspace}{\ensuremath{\textbf{NPSPACE}}\xspace}
+\newcommand{\cexp}{\ensuremath{\textbf{EXP}}\xspace}
+\newcommand{\cnexp}{\ensuremath{\textbf{NEXP}}\xspace}
+\newcommand{\cdecidable}{\ensuremath{\textbf{DECIDABLE}}\xspace}
+\newcommand{\cundecidable}{\ensuremath{\textbf{UNDECIDABLE}}\xspace}
+\newcommand{\comment}[1]{ }
+
+
+\let\originalleft\left
+\let\originalright\right
+\renewcommand{\left}{\mathopen{}\mathclose\bgroup\originalleft}
+\renewcommand{\right}{\aftergroup\egroup\originalright}
+
+\sloppypar
+\begin{document}
+\pagestyle{empty}
+
+\renewcommand{\ULthickness}{1.4pt}
+
+\begin{center}
+\begin{large}
+ECE 108, Spring 2026, Assignment 4\\
+Due: Fri, July 10, 11:59pm ET\\
+Absolutely \emph{\underline{no}} extensions!
+\end{large}
+\end{center}
+
+\vspace*{0.125in}\noindent
+Instructions: same as for Assignment 1.
+
+\begin{enumerate}
+\item At this point in the course, you should be able to intuit proofs related to algorithms. Consider the following (algorithmic) problem: given as inputs: (i) an array $A[0,\ldots,n-1]$ that is sorted non-decreasing, (ii) a start and end index, where we assume $0\le\mathit{start} \le \mathit{end}\le n-1$, and, (iii) an $\mathit{item}$, the following is an algorithm that purports to output \true if the $\mathit{item}$ is in $A[\mathit{start}, \ldots, \mathit{end}]$, and \false otherwise.
+
+\hspace*{0.5in}
+\begin{minipage}[t]{0.85\linewidth}
+\noindent
+
+\LinesNumbered
+\DontPrintSemicolon
+$\textsc{BinSearch}(A[0,\ldots,n-1], \mathit{item}, \mathit{start}, \mathit{end})$
+
+\begin{algorithm}[H]
+\SetAlgoLongEnd
+$\mathit{lo}\gets\mathit{start}$\;
+$\mathit{hi}\gets\mathit{end}$\;
+\While{$\mathit{lo} \le \mathit{hi}$}{
+    $\mathit{mid} \gets \myfloor{\frac{\mathit{lo} + \mathit{hi}}{2}}$\;
+    \lIf{$A[\mathit{mid}] == \mathit{item}$}{
+        \Return{$\true$}
+    }
+    \lElseIf{$A[\mathit{mid}] < \mathit{item}$}{
+        $\mathit{lo}\gets\mathit{mid} + 1$
+    }
+    \lElse{
+        $\mathit{hi}\gets\mathit{mid} - 1$
+    }
+}
+\Return{$\false$}
+\end{algorithm}
+\end{minipage}
+
+For example, suppose our input array $A[0,\ldots,4]$ is: $\boxed{4}\boxed{5}\boxed{5}\boxed{62}\boxed{81}$, $\mathit{start} = 1, \mathit{end} = 3$ and $\mathit{item} = 56$. Then the correct output is \false because $81$ is not in $A[1,\ldots,3]$. If we run $\textsc{BinSearch}$ with those inputs it first sets $\mathit{lo}$ to $1$ and $\mathit{hi}$ to $3$. It enters the $\mathbf{while}$ loop, and computes $\mathit{mid} = \myfloor{\frac{1+3}{2}} = 2$. As $A[2] = 5 < \mathit{item} = 56$, it sets the new value of $\mathit{lo} = 3$. It enters the $\mathbf{while}$ loop again, and now, $\mathit{mid}$ is computed as $3$, and $A[3] = 62 > \mathit{item} = 56$. So it sets the new value of $\mathit{hi}$ to $2$. Now, as $\mathit{lo} > \mathit{hi}$, we exit the $\mathbf{while}$ loop and return \false correctly.
+
+That was an example only. We want to address things in general. We want to ensure that if the algorithm returns \true on some inputs, then indeed $\mathit{item}$ is in the input array $A[0,\ldots,n-1]$. Towards this, prove the following:
+
+\begin{quote}
+In a run of the algorithm with valid inputs, at any moment immediately after we compute a $\mathit{mid}$ value in Line (4), it is true that $\mathit{start} \le \mathit{lo} \le \mathit{mid}\le \mathit{hi}\le \mathit{end}$.
+\end{quote}
+
+Notes:
+\begin{itemize}
+\item Hint: induction on the iteration number of the \textbf{while} loop. For the step, suppose the values of $\mathit{lo}, \mathit{hi}, \mathit{mid}$ in two successive iterations are $\mathit{lo}_1, \mathit{hi}_1, \mathit{mid}_1$ and $\mathit{lo}_2, \mathit{hi}_2, \mathit{mid}_2$ respectively. From the induction assumption, we know that
+$\mathit{start}\le \mathit{lo}_1 \le\mathit{mid}_1 \le \mathit{hi}_1 \le\mathit{end}$.
+Now, you need to prove that 
+$\mathit{start}\le \mathit{lo}_2 \le\mathit{mid}_2 \le \mathit{hi}_2 \le\mathit{end}$.
+\item As we have successfully entered the \textbf{while} loop in this instance, we know that $\mathit{lo}_2\le\mathit{hi}_2$.
+\item Once you prove the above claim, we will have proven that if the algorithm returns \true, it is indeed the case that $\mathit{item}\in A[\mathit{start},\ldots,\mathit{end}]$.
+\item I'll put the other case, i.e., if a run of the algorithm returns \false, then indeed $\mathit{item}\not\in A[\mathit{start},\ldots,\mathit{end}]$ in your practice problem set.
+\end{itemize}
+
+\item Let $A = \set{1,2,3}$, and $R\subseteq A^2$ be the relation: $R = \set{\tuple{1,2}, \tuple{2,3}, \tuple{3,1}}$.
+\begin{enumerate}
+\item True or false $+$ justification: $R$ is antisymmetric.
+\item True or false $+$ justification: $R$ is asymmetric.
+\end{enumerate}
+
+\item Alice claims that a relation $R$ with $|R| > 1$ cannot be both an equivalence and a partial order. Do you concur with Alice? Justify.
+
+\item Let $\mathbb{Z}$ be the set of integers, i.e., $\mathbb{Z} = \set{\ldots,-2,-1,0,1,\ldots}$. And let $R\subseteq \mathbb{Z}^2$ be the relation:
+\begin{align*}
+R &=\set{\tuple{x,y}\in\mathbb{Z}^2\,|\, x^2 \ge y^2}
+\end{align*}
+
+Prove or disprove:
+\begin{enumerate}
+\item $R$ is an equivalence relation.
+\item $R$ is a partial order.
+\end{enumerate}
+
+\item A relation $R\subseteq A^2$ is said to be \emph{euclidean} if: $\forall \tuple{x,y,z}\in A^3, \tuple{x,y}\in R \wedge \tuple{x,z}\in R \implies \tuple{y,z}\in R$.
+
+Prove that if $R\subseteq A^2$ is symmetric, then $R$ is transitive if and only if it is euclidean.
+
+\item How many different rearrangements of the letters do we have of the word, ``bookkeeper?''
+
+\item A set $S$ has at least $100$ different subsets of size $5$. What is the smallest $\left|S\right|$ can be?
+
+\item We have $10$ distinct dresses to hang on a rack. We have three each of black, white and red dresses, and one blue dress. In how many ways can we hang them so that:
+\begin{enumerate}
+\item Dresses of the same colour are adjacent.
+\item The blue dress is at one end, and the other dresses are arranged black, red, white, black, red, white, black, red, white, left to right.
+\end{enumerate}
+\end{enumerate}
+\end{document}
