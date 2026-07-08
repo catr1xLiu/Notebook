@@ -1660,3 +1660,88 @@
 
 ### 17.04:_Series_Solutions_of_Differential_Equations
 
+
+## 10:_Power_Series
+
+### 10.00:_Prelude_to_Power_Series
+
+**10_00_fig_1.png**
+
+![Figure \(\PageIndex{1}\): If you win a lottery, do you get more money by taking a lump-sum payment or by accepting fixed payments over time? (credit: modification of work by Robert Huffstutter, Flickr)](./media/textbook/10_00_fig_1.png)
+
+*Figure \(\PageIndex{1}\): If you win a lottery, do you get more money by taking a lump-sum payment or by accepting fixed payments over time? (credit: modification of work by Robert Huffstutter, Flickr)*
+
+### 10.01:_Power_Series_and_Functions
+
+**10_01_fig_1.png**
+
+![Figure \(\PageIndex{1}\): For a series \(\displaystyle \sum_{n=0}^∞c_n(x−a)^n\) graph (a) shows a radius of convergence at \(R=0\), graph (b) shows a radius of convergence at \(R=∞\), and graph (c) shows a radius of convergence at \(R\). For graph (c) we note that the series may or may not converge at the endpoints \(x=a+R\) and \(x=a−R\).](./media/textbook/10_01_fig_1.png)
+
+*Figure \(\PageIndex{1}\): For a series \(\displaystyle \sum_{n=0}^∞c_n(x−a)^n\) graph (a) shows a radius of convergence at \(R=0\), graph (b) shows a radius of convergence at \(R=∞\), and graph (c) shows a radius of convergence at \(R\). For graph (c) we note that the series may or may not converge at the endpoints \(x=a+R\) and \(x=a−R\).*
+
+**10_01_fig_2.png**
+
+![Figure \(\PageIndex{2}\): The graph shows a function and three approximations of it by partial sums of a power series.](./media/textbook/10_01_fig_2.png)
+
+*Figure \(\PageIndex{2}\): The graph shows a function and three approximations of it by partial sums of a power series.*
+
+### 10.02:_Properties_of_Power_Series
+
+**10_02_fig_1.png**
+
+![Figure \(\PageIndex{1}\): (credit: modification of work by Robert Huffstutter, Flickr)](./media/textbook/10_02_fig_1.png)
+
+*Figure \(\PageIndex{1}\): (credit: modification of work by Robert Huffstutter, Flickr)*
+
+### 10.03:_Taylor_and_Maclaurin_Series
+
+**10_03_fig_1.png**
+
+![Figure \(\PageIndex{1}\): The function \(y=\ln x\) and the Taylor polynomials \(p_0,p_1,p_2\) and \(p_3\) at \(x=1\) are plotted on this graph.](./media/textbook/10_03_fig_1.png)
+
+*Figure \(\PageIndex{1}\): The function \(y=\ln x\) and the Taylor polynomials \(p_0,p_1,p_2\) and \(p_3\) at \(x=1\) are plotted on this graph.*
+
+**10_03_fig_2.png**
+
+![Figure \(\PageIndex{2}\):  The graph shows the function \(y=e^x\) and the Maclaurin polynomials \(p_0,\,p_1,\,p_2\) and \(p_3\).](./media/textbook/10_03_fig_2.png)
+
+*Figure \(\PageIndex{2}\):  The graph shows the function \(y=e^x\) and the Maclaurin polynomials \(p_0,\,p_1,\,p_2\) and \(p_3\).*
+
+**10_03_fig_3.png**
+
+![Figure \(\PageIndex{3}\):  The graph shows the function \(y=\sin x\) and the Maclaurin polynomials \(p_1,\, p_3\) and \(p_5\).](./media/textbook/10_03_fig_3.png)
+
+*Figure \(\PageIndex{3}\):  The graph shows the function \(y=\sin x\) and the Maclaurin polynomials \(p_1,\, p_3\) and \(p_5\).*
+
+**10_03_fig_4.png**
+
+![Figure \(\PageIndex{4}\): The function \(y=\cos x\) and the Maclaurin polynomials \(p_0,p_2\) and \(p_4\) are plotted on this graph.](./media/textbook/10_03_fig_4.png)
+
+*Figure \(\PageIndex{4}\): The function \(y=\cos x\) and the Maclaurin polynomials \(p_0,p_2\) and \(p_4\) are plotted on this graph.*
+
+**10_03_fig_5.png**
+
+![Figure \(\PageIndex{5}\):  The graphs of \(f(x)=\sqrt[3]{x}\) and the linear and quadratic approximations \(p_1(x)\) and \(p_2(x)\)](./media/textbook/10_03_fig_5.png)
+
+*Figure \(\PageIndex{5}\):  The graphs of \(f(x)=\sqrt[3]{x}\) and the linear and quadratic approximations \(p_1(x)\) and \(p_2(x)\)*
+
+### 10.04:_Working_with_Taylor_Series
+
+**10_04_fig_1.png**
+
+![Figure \(\PageIndex{1}\): The third-order Maclaurin polynomial \( p_3(x)\) provides a good approximation for \( f(x)=\sqrt{1+x}\) for \( x\) near zero.](./media/textbook/10_04_fig_1.png)
+
+*Figure \(\PageIndex{1}\): The third-order Maclaurin polynomial \( p_3(x)\) provides a good approximation for \( f(x)=\sqrt{1+x}\) for \( x\) near zero.*
+
+**10_04_fig_2.png**
+
+![Figure \(\PageIndex{2}\): If data values are normally distributed with mean \( μ\) and standard deviation \( σ\), the probability that a randomly selected data value is between \(a\) and \(b\) is the area under the curve \( y=\dfrac{1}{σ\sqrt{2π}}e^{−(x−μ)^2/(2σ^2)}\) between \( x=a\) and \( x=b\).](./media/textbook/10_04_fig_2.png)
+
+*Figure \(\PageIndex{2}\): If data values are normally distributed with mean \( μ\) and standard deviation \( σ\), the probability that a randomly selected data value is between \(a\) and \(b\) is the area under the curve \( y=\dfrac{1}{σ\sqrt{2π}}e^{−(x−μ)^2/(2σ^2)}\) between \( x=a\) and \( x=b\).*
+
+**10_04_fig_3.png**
+
+![Figure \(\PageIndex{3}\): This pendulum has length \( L\) and makes a maximum angle \( θ_{max}\) with the vertical.](./media/textbook/10_04_fig_3.png)
+
+*Figure \(\PageIndex{3}\): This pendulum has length \( L\) and makes a maximum angle \( θ_{max}\) with the vertical.*
+
