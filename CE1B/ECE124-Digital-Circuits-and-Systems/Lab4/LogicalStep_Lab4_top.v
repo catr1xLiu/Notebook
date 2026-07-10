@@ -93,23 +93,27 @@ Synch_Inverter2 U2 (
    wire	[6:0] seg7_y								; // signals for y-position
 
 // State Machine for X/Y Position Controller
-//	SM U3 (
-//	.clock (global_clk),
-//	.reset (reset),
-//	.sm_clken (global_clken),
-//	.  (),
-//	.  (),
-//	.  (),
-//	.  (),
-// 
-// 
-//	.
-//	.
-//	
-//
-//	);
+SM U3 (
+	.clock (global_clk),
+	.reset (reset),
+	.sm_clken (global_clken),
+  // Inputs for programming logic
+  .motion(motion),
+	.x_gt(x_gt), .x_lt(x_lt), .x_eq(x_eq),
+  .y_gt(y_gt), .y_lt(y_lt), .y_eq(y_eq),
+  .extended(extended),
+  // Outputs
+  .x_cnt_en (x_cnt_en),
+  .x_cnt_up1_dwn0 (x_cnt_up1_dwn0),
+  .y_cnt_en (y_cnt_en),
+  .y_cnt_up1_dwn0 (y_cnt_up1_dwn0),
+	.posc_err (posc_err),
+  .extender_enbl (extender_enbl),
+  .capture_enable(capture_enable)
+	);
 
-	assign x_target = sw[7:4];  					
+assign x_target = sw[7:4];  					
+
 // X-Co-ordinate Position capture register
 	REG_4bit U6 (
 	.clk (global_clk), 
