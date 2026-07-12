@@ -1,0 +1,287 @@
+\documentclass[
+	letterpaper, % Paper size, specify a4paper (A4) or letterpaper (US letter)
+	11pt, % Default font size, specify 10pt, 11pt or 12pt
+]{CSUniSchoolLabReport}
+
+\usepackage{subcaption}
+\usepackage{booktabs}
+\usepackage{amsmath,amssymb,graphicx,algorithmic,xspace,url}
+\usepackage{latexsym}
+\usepackage[titlenotnumbered,noend,noline]{algorithm2e}
+\usepackage{mathrsfs}
+\usepackage{multirow}
+\usepackage{colortbl}
+\usepackage{tikz}
+\newcommand*\circled[1]{\tikz[baseline=(char.base)]{
+            \node[shape=circle,draw,inner sep=2pt] (char) {#1};}}
+\usepackage[normalem]{ulem}
+\usepackage{listings}
+\geometry{top=2cm} % Override top margin to reduce space before title
+
+\newcommand{\tuple}[1]{\ensuremath{\left\langle #1 \right\rangle}\xspace}
+\newcommand{\rpair}[1]{\ensuremath{\left( \mathit{#1} \right)}\xspace}
+\newcommand{\set}[1]{\ensuremath{\left\{#1\right\}}\xspace}
+\newcommand{\size}[1]{\ensuremath{\left|#1\right|}\xspace}
+\newcommand{\true}{\ensuremath{\mathsf{true}}\xspace}
+\newcommand{\false}{\ensuremath{\mathsf{false}}\xspace}
+\newcommand{\mypr}[1]{\ensuremath{\text{Pr}\left\{#1\right\}}\xspace}
+\newcommand{\myfloor}[1]{\ensuremath{\left\lfloor#1\right\rfloor}\xspace}
+\newcommand{\myceil}[1]{\ensuremath{\left\lceil#1\right\rceil}\xspace}
+\newcommand{\python}{\textbf{[python3]}\xspace}
+\newcommand*\mon[1]{\tikz[baseline=(char.base)]{
+            \node[shape=circle,draw,inner sep=2pt] (char) {#1};}}
+\newcommand{\cl}{\ensuremath{\textbf{L}}\xspace}
+\newcommand{\cp}{\ensuremath{\textbf{P}}\xspace}
+\newcommand{\cnl}{\ensuremath{\textbf{NL}}\xspace}
+\newcommand{\cconp}{\ensuremath{\textbf{co-NP}}\xspace}
+\newcommand{\cnp}{\ensuremath{\textbf{NP}}\xspace}
+\newcommand{\cnpc}{\ensuremath{\textbf{NP}\text{-complete}}\xspace}
+\newcommand{\ccomplete}{\ensuremath{\mathcal{C}\text{-complete}}\xspace}
+\newcommand{\cnph}{\ensuremath{\textbf{NP}\text{-hard}}\xspace}
+\newcommand{\cph}{\ensuremath{\textbf{P}\text{-hard}}\xspace}
+\newcommand{\chard}{\ensuremath{\mathcal{C}\text{-hard}}\xspace}
+\newcommand{\cpspace}{\ensuremath{\textbf{PSPACE}}\xspace}
+\newcommand{\cnpspace}{\ensuremath{\textbf{NPSPACE}}\xspace}
+\newcommand{\cexp}{\ensuremath{\textbf{EXP}}\xspace}
+\newcommand{\cnexp}{\ensuremath{\textbf{NEXP}}\xspace}
+\newcommand{\cdecidable}{\ensuremath{\textbf{DECIDABLE}}\xspace}
+\newcommand{\cundecidable}{\ensuremath{\textbf{UNDECIDABLE}}\xspace}
+\newcommand{\comment}[1]{ }
+
+\let\originalleft\left
+\let\originalright\right
+\renewcommand{\left}{\mathopen{}\mathclose\bgroup\originalleft}
+\renewcommand{\right}{\aftergroup\egroup\originalright}
+
+%----------------------------------------------------------------------------------------
+%	REPORT INFORMATION
+%----------------------------------------------------------------------------------------
+
+\title{Assignment 4} % Report title
+
+\author{Yiran \textsc{Liu}} % Author name(s)
+
+\date{\today} % Date of the report
+
+%----------------------------------------------------------------------------------------
+
+\sloppypar
+\begin{document}
+
+\maketitle % Insert the title, author and date using the information specified above
+
+\begin{center}
+	\begin{tabular}{l r}
+      ECE 108: Discrete Math \& Logic 1 \\
+      Student Number: 21184901
+	\end{tabular}
+\end{center}
+
+%----------------------------------------------------------------------------------------
+%	QUESTIONS
+%----------------------------------------------------------------------------------------
+
+\subsubsection*{Question 1}
+\textit{At this point in the course, you should be able to intuit proofs related to algorithms. Consider the following (algorithmic) problem: given as inputs: (i) an array $A[0,\ldots,n-1]$ that is sorted non-decreasing, (ii) a start and end index, where we assume $0\le\mathit{start} \le \mathit{end}\le n-1$, and, (iii) an $\mathit{item}$, the following is an algorithm that purports to output \true if the $\mathit{item}$ is in $A[\mathit{start}, \ldots, \mathit{end}]$, and \false otherwise.}
+
+\hspace*{0.5in}
+\begin{minipage}[t]{0.85\linewidth}
+\noindent
+\LinesNumbered
+\DontPrintSemicolon
+$\textsc{BinSearch}(A[0,\ldots,n-1], \mathit{item}, \mathit{start}, \mathit{end})$
+
+\begin{algorithm}[H]
+\SetAlgoLongEnd
+$\mathit{lo}\gets\mathit{start}$\;
+$\mathit{hi}\gets\mathit{end}$\;
+\While{$\mathit{lo} \le \mathit{hi}$}{
+    $\mathit{mid} \gets \myfloor{\frac{\mathit{lo} + \mathit{hi}}{2}}$\;
+    \lIf{$A[\mathit{mid}] == \mathit{item}$}{
+        \Return{$\true$}
+    }
+    \lElseIf{$A[\mathit{mid}] < \mathit{item}$}{
+        $\mathit{lo}\gets\mathit{mid} + 1$
+    }
+    \lElse{
+        $\mathit{hi}\gets\mathit{mid} - 1$
+    }
+}
+\Return{$\false$}
+\end{algorithm}
+\end{minipage}
+
+\textit{We want to ensure that if the algorithm returns \true on some inputs, then indeed $\mathit{item}$ is in the input array $A[0,\ldots,n-1]$. Towards this, prove the following:\\
+In a run of the algorithm with valid inputs, at any moment immediately after we compute a $\mathit{mid}$ value in Line (4), it is true that $\mathit{start} \le \mathit{lo} \le \mathit{mid}\le \mathit{hi}\le \mathit{end}$.}
+
+\pagebreak
+\textbf{Solution:} We prove this by induction on the while loop.
+
+$lo = start$ and $hi = end$, so $start \le lo$ and $hi \le end$.
+Since the loop is entered: $lo \le hi$.
+In Line (4), $mid$ is computed as $mid = \myfloor{\frac{lo + hi}{2}}$.
+Since $lo \le hi \implies lo = \myfloor{\frac{lo + lo}{2}} \le \myfloor{\frac{lo + hi}{2}} \le \myfloor{\frac{hi + hi}{2}} = hi$.
+Thus, $lo \le mid \le hi$.
+Combining these inequalities, $start \le lo \le mid \le hi \le end$ holds for the first iteration.
+
+Assume that in the $k$-th iteration, $start \le lo_1 \le mid_1 \le hi_1 \le end$. For the $k+1$-th iteration, we do a case analysis:
+
+\begin{itemize}
+    \item \textbf{Case 1: $A[mid_1] < item$.} Then $lo$ is updated to $lo_2 = mid_1 + 1$ and $hi_2 = hi_1$.
+    Since we entered the $(k+1)$-th iteration, $lo_2 \le hi_2$.
+    By the inductive hypothesis, $start \le lo_1 \le mid_1 < mid_1 + 1 = lo_2$.
+    So $start \le lo_2 \le hi_2 = hi_1 \le end$.
+    $mid_2$ is computed as $\myfloor{\frac{lo_2 + hi_2}{2}}$, so as shown in the base case, $lo_2 \le mid_2 \le hi_2$.
+    Thus $start \le lo_2 \le mid_2 \le hi_2 \le end$.
+
+    \item \textbf{Case 2: $A[mid_1] > item$.} Then $hi$ is updated to $hi_2 = mid_1 - 1$ and $lo_2 = lo_1$.
+    Since we entered the $(k+1)$-th iteration, $lo_2 \le hi_2$.
+    By the inductive hypothesis, $lo_2 = lo_1 \ge start$. And $hi_2 = mid_1 - 1 < mid_1 \le hi_1 \le end$, so $hi_2 \le end$.
+    Again, $mid_2 = \myfloor{\frac{lo_2 + hi_2}{2}}$, so $lo_2 \le mid_2 \le hi_2$.
+    Thus $start \le lo_2 \le mid_2 \le hi_2 \le end$.
+\end{itemize}
+
+By induction, the claim holds for all iterations of the loop.
+
+\pagebreak
+
+\subsubsection*{Question 2}
+\textit{Let $A = \set{1,2,3}$, and $R\subseteq A^2$ be the relation: $R = \set{\tuple{1,2}, \tuple{2,3}, \tuple{3,1}}$.}
+\begin{enumerate}
+\item \textit{True or false $+$ justification: $R$ is antisymmetric.}
+\item \textit{True or false $+$ justification: $R$ is asymmetric.}
+\end{enumerate}
+
+\textbf{Solution:}
+\begin{enumerate}
+    \item \textbf{True.} A relation $R$ is antisymmetric if $\forall a,b \in A$, $((a,b) \in R \land (b,a) \in R) \implies a = b$.
+    Since there are no pairs $(a,b)$ and $(b,a)$ simultaneously in $R$ for $a \neq b$, the premise is always false, making the implication vacuously true. Thus, $R$ is antisymmetric.
+
+    \item \textbf{True.} A relation $R$ is asymmetric if $\forall a,b \in A$, $(a,b) \in R \implies (b,a) \notin R$.
+    For $\tuple{1,2} \in R$, $\tuple{2,1} \notin R$.
+    For $\tuple{2,3} \in R$, $\tuple{3,2} \notin R$.
+    For $\tuple{3,1} \in R$, $\tuple{1,3} \notin R$.
+    Since the condition holds for all elements in $R$, $R$ is asymmetric.
+\end{enumerate}
+
+\subsubsection*{Question 3}
+\textit{Alice claims that a relation $R$ with $|R| > 1$ cannot be both an equivalence and a partial order. Do you concur with Alice? Justify.}
+
+\textbf{Solution:} 
+
+\textbf{No.} The relation $R = \{(0,0)\}$ is both an equivalance and a partial order, because it is obviously:
+\begin{enumerate}
+    \item \textbf{reflexive}
+    \item \textbf{transtive}
+    \item \textbf{symmetric and antisymmetric}
+\end{enumerate}
+
+\pagebreak
+
+\subsubsection*{Question 4}
+\textit{Let $\mathbb{Z}$ be the set of integers, i.e., $\mathbb{Z} = \set{\ldots,-2,-1,0,1,\ldots}$. And let $R\subseteq \mathbb{Z}^2$ be the relation:
+\begin{align*}
+R &=\set{\tuple{x,y}\in\mathbb{Z}^2\,|\, x^2 \ge y^2}
+\end{align*}
+Prove or disprove:}
+\begin{enumerate}
+\item \textit{$R$ is an equivalence relation.}
+\item \textit{$R$ is a partial order.}
+\end{enumerate}
+
+\textbf{Solution:}
+\begin{enumerate}
+    \item \textbf{Disprove.} An equivalence relation must be symmetric.
+    Consider $x = 2$ and $y = 1$.
+    $\tuple{2,1} \in R$ because $2^2 \ge 1^2$ ($4 \ge 1$).
+    However, $\tuple{1,2} \notin R$ because $1^2 \not\ge 2^2$ ($1 \not\ge 4$).
+    Since $R$ is not symmetric, it cannot be an equivalence relation.
+
+    \item \textbf{Disprove.} A partial order must be antisymmetric.
+    Consider $x = 2$ and $y = -2$.
+    $\tuple{2,-2} \in R$ because $2^2 \ge (-2)^2$ ($4 \ge 4$).
+    $\tuple{-2,2} \in R$ because $(-2)^2 \ge 2^2$ ($4 \ge 4$).
+    However, $2 \neq -2$. Since $\tuple{x,y} \in R \land \tuple{y,x} \in R$ does not imply $x = y$, $R$ is not antisymmetric, and thus not a partial order.
+\end{enumerate}
+
+\subsubsection*{Question 5}
+\textit{A relation $R\subseteq A^2$ is said to be \emph{euclidean} if: $\forall \tuple{x,y,z}\in A^3, \tuple{x,y}\in R \wedge \tuple{x,z}\in R \implies \tuple{y,z}\in R$.
+Prove that if $R\subseteq A^2$ is symmetric, then $R$ is transitive if and only if it is euclidean.}
+
+\textbf{Solution:}
+Assume $R$ is symmetric. We must prove $R$ is transitive $\iff$ $R$ is euclidean.
+
+\textbf{Step 1: Prove transitive $\implies$ euclidean.}
+Assume $R$ is transitive. Let $\tuple{x,y} \in R$ and $\tuple{x,z} \in R$.
+Since $R$ is symmetric, $\tuple{x,y} \in R \implies \tuple{y,x} \in R$.
+Now we have $\tuple{y,x} \in R$ and $\tuple{x,z} \in R$.
+Since $R$ is transitive, $\tuple{y,x} \in R \land \tuple{x,z} \in R \implies \tuple{y,z} \in R$.
+Thus $R$ is euclidean.
+
+\textbf{Step 2: Prove euclidean $\implies$ transitive.}
+Assume $R$ is euclidean. Let $\tuple{x,y} \in R$ and $\tuple{y,z} \in R$.
+Since $R$ is symmetric, $\tuple{x,y} \in R \implies \tuple{y,x} \in R$.
+Since $R$ is euclidean, it satisfies $\forall a,b,c \in A, \tuple{a,b} \in R \land \tuple{a,c} \in R \implies \tuple{b,c} \in R$.
+Substitute $a = y, b = x, c = z$.
+We have $\tuple{y,x} \in R$ and $\tuple{y,z} \in R$.
+By the euclidean property, this implies $\tuple{x,z} \in R$.
+Thus $R$ is transitive.
+
+Therefore, $R$ is transitive if and only if it is euclidean.
+
+\pagebreak
+
+\subsubsection*{Question 6}
+\textit{How many different rearrangements of the letters do we have of the word, ``bookkeeper?''}
+
+\textbf{Solution:}
+The word ``bookkeeper'' consists of 10 letters with the following frequencies:
+b: 1, o: 2, k: 2, e: 3, p: 1, r: 1.
+The total number of rearrangements is the total number of permutations of the letters divided by the permutations of the identical letters:
+\[
+\frac{10!}{1! \cdot 2! \cdot 2! \cdot 3! \cdot 1! \cdot 1!} = \frac{3628800}{2 \cdot 2 \cdot 6} = \frac{3628800}{24} = 151200
+\]
+There are \textbf{151,200} different rearrangements.
+
+\subsubsection*{Question 7}
+\textit{A set $S$ has at least $100$ different subsets of size $5$. What is the smallest $\left|S\right|$ can be?}
+
+\textbf{Solution:}
+Let $n = |S|$. The number of different subsets of size 5 is given by $\binom{n}{5}$.
+We require $\binom{n}{5} \ge 100$. We can test small values of $n \ge 5$:
+\begin{itemize}
+    \item $n = 5$: $\binom{5}{5} = 1$
+    \item $n = 6$: $\binom{6}{5} = 6$
+    \item $n = 7$: $\binom{7}{5} = 21$
+    \item $n = 8$: $\binom{8}{5} = 56$
+    \item $n = 9$: $\binom{9}{5} = 126$
+\end{itemize}
+Since 126 is the first value that is greater than or equal to 100, the smallest value $n$ can be is \textbf{9}.
+
+\pagebreak
+\subsubsection*{Question 8}
+\textit{We have $10$ distinct dresses to hang on a rack. We have three each of black, white and red dresses, and one blue dress. In how many ways can we hang them so that:}
+\begin{enumerate}
+\item \textit{Dresses of the same colour are adjacent.}
+\item \textit{The blue dress is at one end, and the other dresses are arranged black, red, white, black, red, white, black, red, white, left to right.}
+\end{enumerate}
+
+\textbf{Solution:}
+\begin{enumerate}
+    \item We can treat each colour group as a single block. There are 4 blocks (Black, White, Red, Blue).
+    The number of ways to arrange the 4 blocks is $4! = 24$.
+    Within the Black block, the 3 distinct dresses can be arranged in $3! = 6$ ways.
+    Within the White block, the 3 distinct dresses can be arranged in $3! = 6$ ways.
+    Within the Red block, the 3 distinct dresses can be arranged in $3! = 6$ ways.
+    Within the Blue block, the 1 dress can be arranged in $1! = 1$ way.
+    The total number of ways is $24 \cdot 6 \cdot 6 \cdot 6 \cdot 1 = \textbf{5184}$.
+
+    \item The blue dress can be placed at either the left end or the right end, giving 2 choices.
+    For the remaining 9 dresses, the pattern must be B, R, W, B, R, W, B, R, W.
+    There are 3 positions designated for black dresses, so the 3 distinct black dresses can be placed in those positions in $3! = 6$ ways.
+    Similarly, the 3 red dresses can be placed in the 3 'R' positions in $3! = 6$ ways.
+    The 3 white dresses can be placed in the 3 'W' positions in $3! = 6$ ways.
+    The total number of ways is $2 \cdot 6 \cdot 6 \cdot 6 = \textbf{432}$.
+\end{enumerate}
+
+\end{document}
