@@ -24,8 +24,10 @@
 
 # Ignore PDFs
 *.pdf 
-# Include PDFs in sources (e.g. Papers)
+# Include PDFs in sources (e.g. Papers) and Posters
 !**/sources/*.pdf
+!**/Poster/*.pdf
+!**/assets/*.pdf
 
 # Quartus build database
 db/
