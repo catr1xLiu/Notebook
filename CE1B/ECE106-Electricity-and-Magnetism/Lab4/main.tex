@@ -1,0 +1,79 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% University/School Laboratory Report
+% LaTeX Template
+% Version 4.0 (March 21, 2022)
+%
+% This template originates from:
+% https://www.LaTeXTemplates.com
+%
+% Authors:
+% Vel (vel@latextemplates.com)
+% Linux and Unix Users Group at Virginia Tech Wiki
+%
+% License:
+% CC BY-NC-SA 4.0 (https://creativecommons.org/licenses/by-nc-sa/4.0/)
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%----------------------------------------------------------------------------------------
+%	PACKAGES AND DOCUMENT CONFIGURATIONS
+%----------------------------------------------------------------------------------------
+
+\documentclass[
+	letterpaper, % Paper size, specify a4paper (A4) or letterpaper (US letter)
+	11pt, % Default font size, specify 10pt, 11pt or 12pt
+]{CSUniSchoolLabReport}
+
+\usepackage{subcaption}
+\usepackage{booktabs}
+\geometry{top=1cm} % Override top margin to reduce space before title
+
+%----------------------------------------------------------------------------------------
+%	REPORT INFORMATION
+%----------------------------------------------------------------------------------------
+
+\title{Lab 3 - Electric Potential} % Report title
+
+\author{Yiran \textsc{Liu} \&  Zijin \textsc{Yang}} % Author name(s), add additional authors like: '\& James \textsc{Smith}'
+
+%----------------------------------------------------------------------------------------
+
+\begin{document}
+
+\maketitle % Insert the title, author and date using the information specified above
+
+\begin{center}
+	\begin{tabular}{l r}
+      Course: & ECE 106 \\
+      Student Number: & Y.L. 21184901 \& Z.Y. 21196273
+	\end{tabular}
+\end{center}
+%----------------------------------------------------------------------------------------
+%	COMPUTATIONS
+%----------------------------------------------------------------------------------------
+
+\section{Simulation}
+
+\begin{figure}[H] % [H] forces the figure to be placed exactly where it appears in the text
+	\centering % Horizontally center the figure
+	\includegraphics[width=1.0\textwidth]{./figures/Simulation30mm} % Include the figure
+  \caption{Simulation 30mm.}
+\end{figure}
+
+
+\section{System of two like charges}
+We build the simulation model of two point charges ($R=0.01$ and $Q=+1.0 \mu C$) located at $(0, 0, 0)$ and $(0.2, 0.0, 0.0)$ with zero volts boundary condition at $R = 50.0m$ in COMSOL. We compare the evaluated value with theoretical:
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{lcrr}
+        \toprule
+        \textbf{Simulated} & \textbf{Theoretical} & \textbf{\% Error} \\
+        \midrule
+        $1.2229J$ & $1.1234J$ & 8.857\% \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+
+\end{document}
