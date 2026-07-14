@@ -1,0 +1,4 @@
+# *Encountering Problems when Building the Mesh*
+
+In most cases when you build a mesh feature that generates mesh and problems are detected on some geometric entities, those entities and adjacent entities are meshed if possible, otherwise they are left unprocessed. When the mesher fails to mesh some entities, the operation continues meshing the remaining entities and stores information about the encountered problems in the feature. A feature that encountered this type of problems during the build gets a warning status (but with error nodes). If you build several mesh features in a sequence, the build is not stopped by a feature that fails to process some of its entities. However, some errors are considered as fatal and therefore stop the build process. Failure to process one or more entities in some operation will always result in an issue exception when all specified features are built, even if the build process was not stopped directly.
+

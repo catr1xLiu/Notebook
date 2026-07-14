@@ -1,0 +1,3 @@
+# Elements and Shape Function Programming
+
+This chapter contains reference information for using the API available for the shape functions (elements) in COMSOL Multiphysics. See also model.shape() in the *General Commands* chapter for details about the syntax for specifying shape functions. For an overview of the elements and shape functions, see Elements and Shape Functions in the *COMSOL Multiphysics Reference Manual*.

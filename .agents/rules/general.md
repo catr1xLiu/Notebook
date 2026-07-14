@@ -44,6 +44,7 @@ The workspace contains five custom skills defined under `.agents/skills/`:
 - **`project-webpage`**: Conventions for project webpages under `WebPage/`.
 - **`schemdraw`**: Circuit diagram generation via SchemDraw.
 - **`embed-image`**: Background removal and image cropping for notes.
+- **`comsol`**: Guidelines for retrieving COMSOL Multiphysics API documentation from the split reference files.
 
 ### Notion Documents (Drafts)
 
