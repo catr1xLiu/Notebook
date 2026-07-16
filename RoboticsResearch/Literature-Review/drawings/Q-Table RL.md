@@ -27,7 +27,7 @@ Learned Q-Value from Data ^TLIxcFkw
 Represents "how good" the action is ^HT5Z6xeR
 
 ## Embedded Files
-648687c8a74678007cf59900b1465f68b6fbb593: [[RoboticsResearch/Literature-Review-Flow-Policy-RL/media/Heatmap.png]]
+648687c8a74678007cf59900b1465f68b6fbb593: [[RoboticsResearch/Literature-Review/media/Heatmap.png]]
 
 %%
 ## Drawing

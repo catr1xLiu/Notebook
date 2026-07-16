@@ -36,69 +36,27 @@ Notebook/
 └── AI Prompt for Hand-Written Note Conversion.md  # Obsidian format spec
 ```
 
-## Document Types and Skills Overview
+## Document Types
 
-The workspace contains five custom skills defined under `.agents/skills/`:
-- **`obsidian-note`**: Rules for converting drafts into Obsidian notes.
-- **`technical-report`**: Rules for compiling Typst reports and LaTeX papers.
-- **`project-webpage`**: Conventions for project webpages under `WebPage/`.
-- **`schemdraw`**: Circuit diagram generation via SchemDraw.
-- **`embed-image`**: Background removal and image cropping for notes.
-- **`comsol`**: Guidelines for retrieving COMSOL Multiphysics API documentation from the split reference files.
-
-### Notion Documents (Drafts)
-
-Access via the Notion MCP tools. Notion is used for drafting; finished content is converted to one of the output types using the relevant skill.
-
-### JupyMD Notebooks
-
-Obsidian's JupyMD plugin executes ```` ```python ```` code blocks as Jupyter cells. The runtime is the **Flatpak's bundled Python 3.13** (not the system Python), with its venv at `.jupymd/lib/python3.13/site-packages/`. To install packages into this environment use:
-
-```bash
-python3.13 -m pip install --target="/path/to/Notebook/.jupymd/lib/python3.13/site-packages" <package>
-```
-
-Required packages (already installed): `torch` (CPU), `numpy`, `matplotlib`, `schemdraw`.
-
-Plot notebooks use `%matplotlib inline` so figures render inside the notebook and are also saved as SVGs to the note's `media/` folder. SchemDraw notebooks use `schemdraw.use('svg')` for inline SVG output. Working directory is set to the notebook's own folder, so `Path("media")` always resolves correctly.
+1. **Obsidian Notes**: Notes written for myself, designed for easy review, where the language is direct and intuitive. Detailed formatting guidelines (including Excalidraw embeddings and JupyMD notebooks) are located in the `obsidian-note` skill (`.agents/skills/obsidian_note/SKILL.md`).
+2. **Project Webpages**: Static research project sites. See the `project-webpage` skill (`.agents/skills/project_webpage/SKILL.md`) for conventions and guidelines.
+3. **Notion Drafts**: Notion is used for drafting new content before conversion. Access via the Notion MCP tools.
+4. **rnote Notes**: Treated as a read-only document type for handwritten notes and tutorials. See the `read-rnote` skill (`.agents/skills/rnote/SKILL.md`) for instructions on locating, exporting, and reading these files.
 
 ## Conversion Workflow
 
-When asked to convert a draft (Notion page, hand-written scan, or raw text):
+When asked to convert a draft (Notion page, hand-written scan, or raw text) to any document type:
 
-1. Fix minor grammar and sentence structure errors; keep the author's tone.
-2. Complete half-finished sentences automatically using surrounding context.
-3. Do **not** add new technical claims or opinions.
-4. Insert visuals: search `<topic>/media/` and `<topic>/drawings/` for relevant assets. For missing visuals, insert an `<img>` placeholder with a descriptive `alt` text (Obsidian notes) or a `\includegraphics` comment (LaTeX).
-5. Use the appropriate skill command for the target format.
+1. Fix minor grammar, spelling, and sentence structure errors; keep the author's tone and level of technical detail.
+2. Complete half-finished sentences automatically using surrounding context (e.g., add "why" between computation steps).
+3. Do **not** add new technical claims or opinions, and do not simplify or over-explain. All examples, exercises, theorems, definitions, and key formulas must be kept exactly as written.
+4. If the source material is NOT a note (e.g., lecture slides, external tutorials), you must confirm the note structure with the user before writing a single line. Outline the title and content of each sub-section, where to use callouts and where to add drawings, then await user refinement.
+5. Insert visuals: search `<topic>/media/` and `<topic>/drawings/` for relevant assets. For missing visuals, insert a placeholder comment or image tag.
+6. Use the appropriate formatting skill for the target document type.
 
-## Excalidraw Drawings
+## Other Skills
 
-Drawings are stored as Obsidian markdown files in `drawings/` subdirectories (e.g., `Motion Diffusion Model Basics/drawings/1.1 - Tensors.md`). They contain raw Excalidraw JSON — do not edit the data section. Embed in notes with `![[DrawingName.md]]`. New drawings suggested by an agent should be described in a placeholder comment; the user creates them manually in Obsidian.
-
-**Mermaid → Excalidraw (one-shot):** Flowcharts and process diagrams can be converted directly from Mermaid to Excalidraw using https://github.com/excalidraw/mermaid-to-excalidraw. When a note needs a flow diagram, output a `mermaid` code block and insert a `<!-- TODO: Convert the Mermaid to Excalidraw and embed as ![[Drawing Name|100%]] -->` placeholder in the note. The user converts and saves to `drawings/`, then replaces the placeholder with `![[Drawing Name|100%]]`. Keep Mermaid simple (`flowchart LR/TD`) for best converter compatibility.
-
-## Locating and Viewing `.rnote` Files
-
-Each course directory under `CE1B/` contains an `index.md` with keyword-rich descriptions of every note file's contents (specific topics, formulas, problem types, and worked examples). To find which rnote file covers a given topic:
-
-1. **Keyword search** the index files: `grep -ri "keyword" CE1B/*/index.md`. The index entries are designed to match specific concepts (e.g. "Thévenin", "Lagrange multipliers", "Shannon expansion", "spherical capacitor") and point to the exact file and problem number.
-2. **Export the rnote file** to SVG once located:
-
-```bash
-flatpak run --command=rnote-cli com.github.flxzt.rnote export doc --output-file /tmp/output.svg --on-conflict overwrite input.rnote
-```
-
-Supported output formats: `.svg`, `.pdf`, `.xopp` (`.png` is **not** supported by rnote-cli despite being listed).
-
-3. **Convert SVG to PNG before reading.** Exported SVGs are multi-MB files that exceed the Read tool's size limit. Convert with `rsvg-convert`:
-
-```bash
-rsvg-convert /tmp/output.svg -o /tmp/output.png
-```
-
-The resulting PNG can be read as an image by the Read tool.
-
-**Flatpak sandbox limitation:** The rnote Flatpak only has filesystem access to `xdg-documents`, `xdg-pictures`, and `xdg-desktop`. Files outside these directories (e.g. under `~/Coding/`) must be copied to `~/Documents/` before export. Alternatively, grant broader access: `flatpak override --user --filesystem=home com.github.flxzt.rnote`.
-
-**Flatpak /tmp/ redirect:** The Flatpak sandbox maps `/tmp/` to `/run/user/1000/.flatpak/com.github.flxzt.rnote/tmp/` on the host. Exported files appear there, not at `/tmp/`.
+These are useful skills for agents outside of the document converting field:
+- **`schemdraw`**: Circuit diagram generation via SchemDraw (`.agents/skills/schemdraw/SKILL.md`).
+- **`comsol`**: Guidelines for retrieving COMSOL Multiphysics API documentation from the split reference files (`.agents/skills/comsol/SKILL.md`).
+- **`embed-image`**: Background removal and image cropping for notes (`.agents/skills/embed_image/SKILL.md`).

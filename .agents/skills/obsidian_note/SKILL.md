@@ -1,34 +1,11 @@
 ---
 name: obsidian-note
-description: Convert or format drafts into well-structured Obsidian notes with custom styling, LaTeX math, and Excalidraw embeddings.
+description: Format guidelines for well-structured Obsidian notes with custom styling, LaTeX math, Excalidraw embeddings, and JupyMD notebooks.
 ---
 
-# Skill: Convert Draft to Obsidian Note
+# Skill: Obsidian Note Format Guidelines
 
-## 1. Task Overview
-
-**What to fix:**
-- Spelling mistakes, grammar errors, awkward sentence structure
-- Disorganized or unclear structure — reorganize into logical sections
-- Mathematical errors in computations
-
-**What to complete:**
-- Half-finished sentences: infer the intended meaning from context and complete them naturally
-- Missing step explanations: add "why" between computation steps when the draft skips reasoning
-
-**What to keep:**
-- The author's tone and level of technical detail — do not simplify or over-explain
-- All examples and exercises — they are essential for exam prep
-- All theorems, definitions, and key formulas exactly as written (correct errors, don't rewrite)
-
-**What to ask:**
-When the given material is NOT a note (e.g. lecture slides, external tutorials), agent must confirm the note structure with the user before writing a single line of markdown. You need to outline the title and content of each sub-section, where to use callouts and where to add drawings, then await the user for refinement of the plan.
-
-**Output:** Write the markdown file under this directory.
-
----
-
-## 2. Note Structure
+## 1. Note Structure
 
 Each section opens with a **callout header** followed by a `## Subtitle` on the next line. Callouts are section titles only — never wrap body content inside a callout block.
 
@@ -78,7 +55,7 @@ Separate major sections with `---`. No multi-column layouts.
 
 ---
 
-## 3. Math Equations
+## 2. Math Equations
 
 **Every mathematical symbol must be in LaTeX** — even single variables inline: `$x$`, `$A$`, `$\alpha$`.
 
@@ -153,7 +130,7 @@ $\{\begin{bmatrix} 1 \\ 0 \end{bmatrix}, \begin{bmatrix} 0 \\ 1 \end{bmatrix}\}$
 
 ---
 
-## 4. Using Media and Diagrams
+## 3. Using Media and Diagrams
 
 ### Excalidraw drawings
 
@@ -161,12 +138,6 @@ Drawings created in Obsidian's Excalidraw plugin are stored as `.md` files in th
 
 ```markdown
 ![[Drawing Name|100%]]
-```
-
-Example from an existing note:
-```markdown
-![[SRUN State Flow|100%]]
-![[System Diagram|100%]]
 ```
 
 The drawing file does not need a path prefix — Obsidian resolves it by filename. Do not embed the raw Excalidraw `.md` content; just use the `![[...]]` link.
@@ -207,3 +178,17 @@ Before inserting an image, check `<topic>/media/` for relevant assets. If an app
 ```
 
 Use `width="50%"` as the default; adjust to `30%` for small diagrams or `80%` for wide figures.
+
+---
+
+## 4. JupyMD Notebooks
+
+Obsidian's JupyMD plugin executes ```` ```python ```` code blocks as Jupyter cells. The runtime is the **Flatpak's bundled Python 3.13** (not the system Python), with its venv at `.jupymd/lib/python3.13/site-packages/`. To install packages into this environment use:
+
+```bash
+python3.13 -m pip install --target="/path/to/Notebook/.jupymd/lib/python3.13/site-packages" <package>
+```
+
+Required packages (already installed): `torch` (CPU), `numpy`, `matplotlib`, `schemdraw`.
+
+Plot notebooks use `%matplotlib inline` so figures render inside the notebook and are also saved as SVGs to the note's `media/` folder. SchemDraw notebooks use `schemdraw.use('svg')` for inline SVG output. Working directory is set to the notebook's own folder, so `Path("media")` always resolves correctly.
