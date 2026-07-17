@@ -29,11 +29,14 @@ We realize that, for **planning** and **control**, the fundamental problems are:
 
 
 
-# Global Planning
+## Global Planning
 
 - Optimization using complex methods https://www.tandfonline.com/doi/full/10.1080/00423114.2019.1704804
-
-# Dynamic Re-planning
-
-# Control
+- **Oldest and Most Used**: https://github.com/alexliniger/MPCC/tree/master 
+- **Modern Most Used**: TUM's optimization codebase https://github.com/TUMFTM/global_racetrajectory_optimization 
+- **Dymos**: Racecar example https://github.com/OpenMDAO/dymos/tree/master/dymos/examples/racecar 
+## Dynamic Re-planning
+- **Oldest and Most Used**: https://github.com/alexliniger/MPCC/tree/master 
+- TMU's optimization codebase https://github.com/TUMRT/online_3D_racing_line_planning 
+- **Online Optimization Backend**: https://github.com/acados/acados 
 

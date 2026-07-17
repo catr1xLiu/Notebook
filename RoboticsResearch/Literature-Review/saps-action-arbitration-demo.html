@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Interactive two-dimensional demonstration of SAPS action arbitration.">
+  <title>SAPS Action Arbitration Demo</title>
+  <style>
+    :root {
+      --ink: #1f2937;
+      --muted: #64748b;
+      --border: #d7dee8;
+      --axis: #94a3b8;
+      --grid: #dbe3ec;
+      --model: #2563eb;
+      --human: #f59e0b;
+      --final: #a855f7;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      background: #ffffff;
+      color: var(--ink);
+      font-family: Arial, Helvetica, sans-serif;
+      margin: 0;
+      min-height: 100%;
+    }
+
+    body {
+      padding: 32px 20px;
+    }
+
+    .demo {
+      margin: 0 auto;
+      max-width: 1120px;
+    }
+
+    .demo__eyebrow {
+      color: var(--model);
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      margin: 0 0 10px;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      font-size: clamp(2rem, 5vw, 3rem);
+      letter-spacing: -0.035em;
+      margin: 0;
+    }
+
+    .demo__subtitle {
+      color: var(--muted);
+      font-size: 1.08rem;
+      line-height: 1.5;
+      margin: 10px 0 28px;
+    }
+
+    .demo__layout {
+      display: grid;
+      gap: 22px;
+      grid-template-columns: minmax(0, 2fr) minmax(280px, 1fr);
+    }
+
+    .panel {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 20px;
+    }
+
+    .plot-panel__header {
+      align-items: start;
+      display: flex;
+      gap: 16px;
+      justify-content: space-between;
+      margin-bottom: 14px;
+    }
+
+    h2 {
+      font-size: 1.35rem;
+      margin: 0;
+    }
+
+    .math-label {
+      color: var(--muted);
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 0.9em;
+      font-style: italic;
+      font-weight: 400;
+    }
+
+    .help {
+      color: var(--muted);
+      font-size: 0.82rem;
+      line-height: 1.45;
+      margin: 5px 0 0;
+    }
+
+    .legend {
+      color: var(--muted);
+      display: flex;
+      flex-wrap: wrap;
+      font-size: 0.78rem;
+      gap: 10px;
+      justify-content: flex-end;
+    }
+
+    .legend span {
+      align-items: center;
+      display: inline-flex;
+      gap: 5px;
+    }
+
+    .legend__line {
+      background: currentColor;
+      border-radius: 999px;
+      display: inline-block;
+      height: 4px;
+      width: 22px;
+    }
+
+    .legend__line--model {
+      color: var(--model);
+    }
+
+    .legend__line--human {
+      background: none;
+      border-top: 3px dotted var(--human);
+      height: 0;
+    }
+
+    .legend__line--final {
+      color: var(--final);
+    }
+
+    .canvas-shell {
+      aspect-ratio: 16 / 10;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    #vector-canvas {
+      cursor: crosshair;
+      display: block;
+      height: 100%;
+      touch-action: none;
+      width: 100%;
+    }
+
+    .metrics {
+      display: grid;
+      gap: 10px;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      margin-top: 14px;
+    }
+
+    .metric {
+      border: 1px solid var(--border);
+      border-radius: 7px;
+      min-width: 0;
+      padding: 10px;
+    }
+
+    .metric__label {
+      color: var(--muted);
+      display: block;
+      font-size: 0.66rem;
+      font-weight: 700;
+      letter-spacing: 0.07em;
+      margin-bottom: 5px;
+      text-transform: uppercase;
+    }
+
+    .metric strong {
+      font-family: Consolas, "Liberation Mono", monospace;
+      font-size: 0.82rem;
+    }
+
+    .field {
+      margin-top: 18px;
+    }
+
+    .field:first-of-type {
+      margin-top: 22px;
+    }
+
+    label {
+      display: block;
+      font-size: 0.88rem;
+      font-weight: 700;
+      margin-bottom: 7px;
+    }
+
+    select,
+    button {
+      background: #ffffff;
+      border: 1px solid #b9c3cf;
+      border-radius: 6px;
+      color: var(--ink);
+      font: inherit;
+      min-height: 40px;
+      padding: 7px 10px;
+      width: 100%;
+    }
+
+    button {
+      cursor: pointer;
+      margin-top: 20px;
+    }
+
+    button:hover {
+      background: #f8fafc;
+    }
+
+    input[type="range"] {
+      accent-color: var(--model);
+      width: 100%;
+    }
+
+    .formula {
+      border: 1px solid var(--border);
+      border-radius: 7px;
+      color: #5b21b6;
+      font-family: Georgia, "Times New Roman", serif;
+      line-height: 1.45;
+      margin-top: 14px;
+      padding: 10px;
+      text-align: center;
+    }
+
+    .joystick {
+      border: 1px solid var(--border);
+      border-radius: 50%;
+      cursor: grab;
+      height: 150px;
+      margin: 20px auto 0;
+      position: relative;
+      touch-action: none;
+      width: 150px;
+    }
+
+    .joystick:active {
+      cursor: grabbing;
+    }
+
+    .joystick__axis {
+      background: #d7dee8;
+      left: 50%;
+      pointer-events: none;
+      position: absolute;
+      top: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    .joystick__axis--x {
+      height: 1px;
+      width: 76%;
+    }
+
+    .joystick__axis--y {
+      height: 76%;
+      width: 1px;
+    }
+
+    .joystick__knob {
+      background: var(--human);
+      border: 3px solid #ffffff;
+      border-radius: 50%;
+      box-shadow: 0 0 0 1px #d97706;
+      height: 44px;
+      left: 50%;
+      pointer-events: none;
+      position: absolute;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      width: 44px;
+    }
+
+    .joystick-label {
+      color: var(--muted);
+      font-size: 0.78rem;
+      margin: 8px 0 4px;
+      text-align: center;
+    }
+
+    @media (max-width: 780px) {
+      body {
+        padding: 22px 12px;
+      }
+
+      .demo__layout {
+        grid-template-columns: 1fr;
+      }
+
+      .plot-panel__header {
+        display: block;
+      }
+
+      .legend {
+        justify-content: flex-start;
+        margin-top: 12px;
+      }
+
+      .metrics {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .canvas-shell {
+        aspect-ratio: 4 / 3;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="demo">
+    <p class="demo__eyebrow">Shared Autonomy for Policy Steering</p>
+    <h1>SAPS Action Arbitration</h1>
+    <p class="demo__subtitle">A live two-dimensional view of how a human command steers a model action.</p>
+
+    <div class="demo__layout">
+      <section class="panel plot-panel">
+        <div class="plot-panel__header">
+          <div>
+            <h2>Action space <span class="math-label">a ∈ ℝ²</span></h2>
+            <p class="help">Drag in the plot to set the model action.</p>
+          </div>
+          <div class="legend" aria-label="Arrow legend">
+            <span><i class="legend__line legend__line--model"></i>Model action</span>
+            <span><i class="legend__line legend__line--human"></i>Human input</span>
+            <span><i class="legend__line legend__line--final"></i>Final output</span>
+          </div>
+        </div>
+
+        <div class="canvas-shell">
+          <canvas id="vector-canvas" aria-label="Model, human, and final action vectors"></canvas>
+        </div>
+
+        <div class="metrics">
+          <div class="metric">
+            <span class="metric__label">Model</span>
+            <strong id="model-readout">(+0.70, +0.25)</strong>
+          </div>
+          <div class="metric">
+            <span class="metric__label">Human</span>
+            <strong id="human-readout">(+0.00, +0.00)</strong>
+          </div>
+          <div class="metric">
+            <span class="metric__label">Cosine</span>
+            <strong id="cosine-readout">—</strong>
+          </div>
+          <div class="metric">
+            <span class="metric__label">VLA weight α</span>
+            <strong id="alpha-readout">1.000</strong>
+          </div>
+        </div>
+      </section>
+
+      <aside class="panel controls">
+        <h2>Controls</h2>
+
+        <div class="field">
+          <label for="method-select">Arbitration method</label>
+          <select id="method-select">
+            <option value="takeover">Takeover</option>
+            <option value="blend">Equal blending</option>
+            <option value="cosine" selected>Cosine similarity</option>
+          </select>
+        </div>
+
+        <div id="formula-readout" class="formula" aria-live="polite">α = σ(8 cos θ)</div>
+
+        <div id="virtual-joystick" class="joystick" aria-label="Virtual joystick for human input">
+          <div class="joystick__axis joystick__axis--x"></div>
+          <div class="joystick__axis joystick__axis--y"></div>
+          <div id="joystick-knob" class="joystick__knob"></div>
+        </div>
+        <p class="joystick-label">Drag for human input; release to return to zero.</p>
+
+        <div class="field">
+          <label for="model-x">Model action x</label>
+          <input id="model-x" type="range" min="-1" max="1" step="0.01" value="0.70">
+        </div>
+
+        <div class="field">
+          <label for="model-y">Model action y</label>
+          <input id="model-y" type="range" min="-1" max="1" step="0.01" value="0.25">
+        </div>
+
+        <button id="reset-button" type="button">Reset demonstration</button>
+      </aside>
+    </div>
+  </main>
+
+  <script>
+    (() => {
+      'use strict';
+
+      const EPSILON = 0.001;
+      const JOYSTICK_DEADZONE = 0.20;
+      const COSINE_GAIN = 1;
+      const COLORS = {
+        axis: '#94a3b8',
+        final: '#a855f7',
+        grid: '#dbe3ec',
+        human: '#f59e0b',
+        ink: '#334155',
+        model: '#2563eb',
+        origin: '#475569'
+      };
+
+      const state = {
+        method: 'cosine',
+        model: { x: 0.70, y: 0.25 },
+        human: { x: 0, y: 0 },
+        final: { x: 0.70, y: 0.25 },
+        alpha: 1,
+        cosine: null,
+        draggingModel: false,
+        joystickPointerId: null
+      };
+
+      const canvas = document.getElementById('vector-canvas');
+      const context = canvas.getContext('2d');
+      const joystick = document.getElementById('virtual-joystick');
+      const joystickKnob = document.getElementById('joystick-knob');
+
+      const clamp = (value, minimum, maximum) => Math.min(maximum, Math.max(minimum, value));
+      const norm = (vector) => Math.hypot(vector.x, vector.y);
+
+      const clampVector = (vector) => {
+        const magnitude = norm(vector);
+        if (magnitude <= 1) {
+          return vector;
+        }
+        return { x: vector.x / magnitude, y: vector.y / magnitude };
+      };
+
+      const applyJoystickDeadzone = (vector) => {
+        const magnitude = norm(vector);
+        if (magnitude <= JOYSTICK_DEADZONE) {
+          return { x: 0, y: 0 };
+        }
+
+        const scaledMagnitude = (magnitude - JOYSTICK_DEADZONE) / (1 - JOYSTICK_DEADZONE);
+        return {
+          x: vector.x / magnitude * scaledMagnitude,
+          y: vector.y / magnitude * scaledMagnitude
+        };
+      };
+
+      const formatVector = (vector) => {
+        const signed = (value) => `${value >= 0 ? '+' : ''}${value.toFixed(2)}`;
+        return `(${signed(vector.x)}, ${signed(vector.y)})`;
+      };
+
+      const calculateArbitration = () => {
+        const humanMagnitude = norm(state.human);
+        const modelMagnitude = norm(state.model);
+        const humanActive = humanMagnitude > EPSILON;
+
+        if (!humanActive) {
+          state.alpha = 1;
+          state.cosine = null;
+        } else {
+          state.cosine = modelMagnitude > EPSILON
+            ? clamp(
+              (state.human.x * state.model.x + state.human.y * state.model.y)
+                / (humanMagnitude * modelMagnitude),
+              -1,
+              1
+            )
+            : 0;
+
+          if (state.method === 'takeover') {
+            state.alpha = 0;
+          } else if (state.method === 'blend') {
+            state.alpha = 0.5;
+          } else {
+            state.alpha = 1 / (1 + Math.exp(-COSINE_GAIN * state.cosine));
+          }
+        }
+
+        state.final = {
+          x: state.alpha * state.model.x + (1 - state.alpha) * state.human.x,
+          y: state.alpha * state.model.y + (1 - state.alpha) * state.human.y
+        };
+      };
+
+      const resizeCanvas = () => {
+        const bounds = canvas.getBoundingClientRect();
+        const ratio = window.devicePixelRatio || 1;
+        const width = Math.max(1, Math.round(bounds.width));
+        const height = Math.max(1, Math.round(bounds.height));
+
+        if (canvas.width !== Math.round(width * ratio) || canvas.height !== Math.round(height * ratio)) {
+          canvas.width = Math.round(width * ratio);
+          canvas.height = Math.round(height * ratio);
+          context.setTransform(ratio, 0, 0, ratio, 0, 0);
+        }
+
+        return { width, height };
+      };
+
+      const drawArrow = (
+        origin,
+        vector,
+        radius,
+        color,
+        lineWidth,
+        label,
+        labelOffsetY,
+        dashPattern = []
+      ) => {
+        const endpoint = {
+          x: origin.x + vector.x * radius,
+          y: origin.y - vector.y * radius
+        };
+        const angle = Math.atan2(endpoint.y - origin.y, endpoint.x - origin.x);
+        const headLength = 13 + lineWidth;
+
+        context.save();
+        context.strokeStyle = color;
+        context.fillStyle = color;
+        context.lineCap = 'round';
+        context.lineJoin = 'round';
+        context.lineWidth = lineWidth;
+        context.setLineDash(dashPattern);
+        context.beginPath();
+        context.moveTo(origin.x, origin.y);
+        context.lineTo(endpoint.x, endpoint.y);
+        context.stroke();
+        context.setLineDash([]);
+
+        if (norm(vector) > 0.035) {
+          context.beginPath();
+          context.moveTo(endpoint.x, endpoint.y);
+          context.lineTo(
+            endpoint.x - headLength * Math.cos(angle - Math.PI / 7),
+            endpoint.y - headLength * Math.sin(angle - Math.PI / 7)
+          );
+          context.lineTo(
+            endpoint.x - headLength * Math.cos(angle + Math.PI / 7),
+            endpoint.y - headLength * Math.sin(angle + Math.PI / 7)
+          );
+          context.closePath();
+          context.fill();
+          context.font = '600 12px Arial, sans-serif';
+          context.fillText(label, endpoint.x + 9, endpoint.y + labelOffsetY);
+        }
+        context.restore();
+      };
+
+      const drawPlot = () => {
+        const size = resizeCanvas();
+        const origin = { x: size.width / 2, y: size.height / 2 };
+        const radius = Math.min(size.width, size.height) * 0.39;
+
+        context.clearRect(0, 0, size.width, size.height);
+        context.save();
+        context.strokeStyle = COLORS.grid;
+        context.lineWidth = 1;
+        for (let step = -1; step <= 1.001; step += 0.25) {
+          const x = origin.x + step * radius;
+          const y = origin.y - step * radius;
+          context.beginPath();
+          context.moveTo(x, origin.y - radius);
+          context.lineTo(x, origin.y + radius);
+          context.stroke();
+          context.beginPath();
+          context.moveTo(origin.x - radius, y);
+          context.lineTo(origin.x + radius, y);
+          context.stroke();
+        }
+
+        context.strokeStyle = COLORS.axis;
+        context.lineWidth = 1.5;
+        context.beginPath();
+        context.moveTo(origin.x - radius - 18, origin.y);
+        context.lineTo(origin.x + radius + 18, origin.y);
+        context.moveTo(origin.x, origin.y - radius - 18);
+        context.lineTo(origin.x, origin.y + radius + 18);
+        context.stroke();
+
+        context.setLineDash([5, 5]);
+        context.beginPath();
+        context.arc(origin.x, origin.y, radius, 0, Math.PI * 2);
+        context.stroke();
+        context.setLineDash([]);
+
+        context.fillStyle = COLORS.ink;
+        context.font = '12px Arial, sans-serif';
+        context.fillText('+x', origin.x + radius + 21, origin.y + 4);
+        context.fillText('+y', origin.x + 6, origin.y - radius - 20);
+        context.fillText('−1', origin.x - radius - 7, origin.y + 18);
+        context.fillText('+1', origin.x + radius - 7, origin.y + 18);
+
+        drawArrow(origin, state.model, radius, COLORS.model, 8, 'model', 17);
+        drawArrow(origin, state.human, radius, COLORS.human, 3, 'human', -23, [3, 7]);
+        drawArrow(origin, state.final, radius, COLORS.final, 3.5, 'final', -9);
+
+        context.fillStyle = COLORS.origin;
+        context.beginPath();
+        context.arc(origin.x, origin.y, 4, 0, Math.PI * 2);
+        context.fill();
+        context.restore();
+      };
+
+      const updateReadouts = () => {
+        document.getElementById('model-readout').textContent = formatVector(state.model);
+        document.getElementById('human-readout').textContent = formatVector(state.human);
+        document.getElementById('cosine-readout').textContent =
+          state.cosine === null ? '—' : state.cosine.toFixed(3);
+        document.getElementById('alpha-readout').textContent = state.alpha.toFixed(3);
+
+        const formulas = {
+          takeover: 'α = 0 while human input is active; otherwise α = 1',
+          blend: 'α = 0.5 while human input is active; otherwise α = 1',
+          cosine: 'α = σ(k cos θ) while human input is active; otherwise α = 1'
+        };
+        document.getElementById('formula-readout').textContent = formulas[state.method];
+      };
+
+      const renderFrame = () => {
+        calculateArbitration();
+        drawPlot();
+        updateReadouts();
+        window.requestAnimationFrame(renderFrame);
+      };
+
+      const setModelFromCanvas = (event) => {
+        const bounds = canvas.getBoundingClientRect();
+        const origin = { x: bounds.width / 2, y: bounds.height / 2 };
+        const radius = Math.min(bounds.width, bounds.height) * 0.39;
+        state.model = clampVector({
+          x: (event.clientX - bounds.left - origin.x) / radius,
+          y: -(event.clientY - bounds.top - origin.y) / radius
+        });
+        document.getElementById('model-x').value = state.model.x;
+        document.getElementById('model-y').value = state.model.y;
+      };
+
+      const updateJoystick = (event) => {
+        const bounds = joystick.getBoundingClientRect();
+        const radius = bounds.width / 2 - joystickKnob.offsetWidth / 2 - 4;
+        const rawJoystickInput = clampVector({
+          x: (event.clientX - bounds.left - bounds.width / 2) / radius,
+          y: -(event.clientY - bounds.top - bounds.height / 2) / radius
+        });
+        state.human = applyJoystickDeadzone(rawJoystickInput);
+        setJoystickKnob(rawJoystickInput);
+      };
+
+      const setJoystickKnob = (vector) => {
+        const bounds = joystick.getBoundingClientRect();
+        const radius = bounds.width / 2 - joystickKnob.offsetWidth / 2 - 4;
+        const knobX = `calc(-50% + ${vector.x * radius}px)`;
+        const knobY = `calc(-50% + ${-vector.y * radius}px)`;
+        joystickKnob.style.transform = `translate(${knobX}, ${knobY})`;
+      };
+
+      const resetJoystick = () => {
+        state.human = { x: 0, y: 0 };
+        setJoystickKnob(state.human);
+      };
+
+      document.getElementById('method-select').addEventListener('change', (event) => {
+        state.method = event.target.value;
+      });
+
+      document.getElementById('model-x').addEventListener('input', (event) => {
+        state.model = clampVector({ x: Number(event.target.value), y: state.model.y });
+      });
+
+      document.getElementById('model-y').addEventListener('input', (event) => {
+        state.model = clampVector({ x: state.model.x, y: Number(event.target.value) });
+      });
+
+      document.getElementById('reset-button').addEventListener('click', () => {
+        state.method = 'cosine';
+        state.model = { x: 0.70, y: 0.25 };
+        document.getElementById('method-select').value = 'cosine';
+        document.getElementById('model-x').value = '0.70';
+        document.getElementById('model-y').value = '0.25';
+        resetJoystick();
+      });
+
+      canvas.addEventListener('pointerdown', (event) => {
+        state.draggingModel = true;
+        canvas.setPointerCapture(event.pointerId);
+        setModelFromCanvas(event);
+      });
+      canvas.addEventListener('pointermove', (event) => {
+        if (state.draggingModel) {
+          setModelFromCanvas(event);
+        }
+      });
+      canvas.addEventListener('pointerup', (event) => {
+        state.draggingModel = false;
+        canvas.releasePointerCapture(event.pointerId);
+      });
+      canvas.addEventListener('pointercancel', () => {
+        state.draggingModel = false;
+      });
+
+      joystick.addEventListener('pointerdown', (event) => {
+        state.joystickPointerId = event.pointerId;
+        joystick.setPointerCapture(event.pointerId);
+        updateJoystick(event);
+      });
+      joystick.addEventListener('pointermove', (event) => {
+        if (state.joystickPointerId === event.pointerId) {
+          updateJoystick(event);
+        }
+      });
+      joystick.addEventListener('pointerup', (event) => {
+        if (state.joystickPointerId === event.pointerId) {
+          state.joystickPointerId = null;
+          joystick.releasePointerCapture(event.pointerId);
+          resetJoystick();
+        }
+      });
+      joystick.addEventListener('pointercancel', () => {
+        state.joystickPointerId = null;
+        resetJoystick();
+      });
+
+      window.addEventListener('resize', drawPlot);
+
+      window.sapsDemo = {
+        getState: () => JSON.parse(JSON.stringify(state)),
+        setHumanInput: (x, y) => {
+          const rawJoystickInput = clampVector({ x: Number(x), y: Number(y) });
+          state.human = applyJoystickDeadzone(rawJoystickInput);
+          setJoystickKnob(rawJoystickInput);
+        },
+        setMethod: (method) => {
+          if (['takeover', 'blend', 'cosine'].includes(method)) {
+            state.method = method;
+            document.getElementById('method-select').value = method;
+          }
+        },
+        setModelAction: (x, y) => {
+          state.model = clampVector({ x: Number(x), y: Number(y) });
+          document.getElementById('model-x').value = state.model.x;
+          document.getElementById('model-y').value = state.model.y;
+        }
+      };
+
+      renderFrame();
+    })();
+  </script>
+</body>
+</html>
