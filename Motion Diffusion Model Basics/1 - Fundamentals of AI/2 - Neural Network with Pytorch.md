@@ -58,7 +58,10 @@ The bias controls how easily the neuron activates. A large negative bias means t
 
 #### Step 3: Apply Sigmoid (Squishification)
 
-The weighted sum $z'$ can be any real number, but we need the final activation to be between $0$ and $1$. We apply the <u><strong style="color:#dab1da">sigmoid function</strong></u> $\sigma$ to squish the output into this range, where $\sigma(x) = \frac{1}{1 + e^{-x}}$
+The weighted sum $z'$ can be any real number, but we need the final activation to be between $0$ and $1$. We apply the <u><strong style="color:#dab1da">sigmoid function</strong></u> $\sigma$ to squish the output into this range, where $$
+
+\sigma(x) = \frac{1}{1 + e^{-x}}
+$$
 
 ![[2.3 - Sigmoid|100%]]
 

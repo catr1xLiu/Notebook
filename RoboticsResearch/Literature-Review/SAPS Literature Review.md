@@ -89,19 +89,14 @@ c=\cos(\theta)
 {\left\lVert\mathbf{a}_{\mathrm{expert}}^{(1:6)}\right\rVert_2
 \left\lVert\mathbf{a}_{\mathrm{VLA}}^{(1:6)}\right\rVert_2}
 $$
-Scale it through the **sigmoid function**: 
+Scale it through the **sigmoid function**: (see notes: [[2 - Neural Network with Pytorch#Step 3 Apply Sigmoid (Squishification)|Sigmoid Function]])
 $$
 \alpha=\sigma\!\left(8\cos(\theta)\right)
-=\frac{1}{1+e^{-8\cos(\theta)}}
 $$
-**Sigmoid Function** is the one used in machine learning activation, see notes:
-
-![[2 - Neural Network with Pytorch#Step 3 Apply Sigmoid (Squishification)]]
-
 
 <div align="center"> <img src="media/saps-cosine-arbitration.png" alt="Cosine similarity mapped to the VLA arbitration weight through a sigmoid with gain 8" width="70%"> </div>
 
-[Demo Here](saps-action-arbitration-demo.html).
+[See interactive demo written by Codex](saps-action-arbitration-demo.html).
 
 ---
 

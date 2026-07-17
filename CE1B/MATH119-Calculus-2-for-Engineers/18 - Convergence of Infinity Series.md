@@ -34,6 +34,17 @@ For two **positive** series $\sum a_k, \ \sum b_k \quad (a_k, b_k > 0)$, then: $
 \end{aligned}
 $$
 
+Extending further, if the ratio is a constant at limit for any two series $\sum a_k, \ \sum b_k$: $$
+\lim_{k \rightarrow \infty} a_k = L b_k \quad (L\neq 0)
+$$ then they converge and diverge at the same time: $$
+\sum_{k=1}^{\infty} a_k \text{ converges } \iff \sum_{k=1}^{\infty} b_k
+$$
+
+## Definition: Alternating Series
+
+A series that alternates between positive and negative is called an **alternating series** and can be written as: $$
+$$
+
 
 ## Examples
 
@@ -52,3 +63,16 @@ Therefore, $S$ also **converges**.
 For error, $$
 \left| S - S_N \right| \leq \int_{N}^{\infty}f(x) \ dx
 $$
+
+#### Comparison Test Example
+
+$$
+\sum_{n=1}^{\infty} \frac{n^3-n}{n^4+7}
+$$
+#### Limit Comparison Test Example
+$$
+\sum_{n=2}^{\infty} \frac{(\ln{n})^3}{\sqrt{n}}
+$$
+
+
+
