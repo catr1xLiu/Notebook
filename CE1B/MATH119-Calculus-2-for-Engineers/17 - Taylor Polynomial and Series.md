@@ -8,7 +8,7 @@ $$
 Check that it's $i$'th derivative is: $$
 \frac{d^iT}{dx^i} = 0+f'(a) \cdot 0 + \ ... \ + f'_i(a) \cdot 1 + f'_{i+1} \cdot0 + ... = f'_i(a)$$
 Written as formal form:$$
-T_{n, a} = \sum_{k=0}^{n}\frac{f'_k \cdot a}{k!}(x-a)^k
+T_{n, a} = \sum_{k=0}^{n}\frac{f'_k (a)}{k!}(x-a)^k
 $$At $a=0$ (*Maclaurin's Polynomial*):$$
 T_n = \sum_{k=0}^{n}\frac{f'_k(0)}{k!}x^k
 $$
@@ -21,7 +21,7 @@ We try to find an **upper bound** for the error. We first define the remainder (
 f(x) = \underbrace{ \sum_{k=0}^{n} \frac{f^{(k)}(a)}{k!} (x-a)^k }_{\textcolor{purple}{\text{Taylor Polynomial}}} + \underbrace{ R_n(x) }_{\textcolor{blue}{\text{Remaining derivatives}}}
 $$
 So that $|R_n(x)| = \left|f(x) = T_{n,a}(x)\right|$. From here, a recognition will give us its upper bound. We first find the upper bound of the $n+1$-th derivative of $f$:$$
-\left|R_n\right| \leq K
+\forall t\in [a, x]: \quad \left|f^{n+1}(t) \right| \leq K
 $$
 Now, take the $n+1$-th derivative on both sides of our equality: $$
 f(x) = T_{n,a}(x) + R_n(x) \implies \frac{d^{n+1}f}{dx^{n+1}} = \frac{d^{n+1}}{dx^{n+1}} T_{n,a}(x) + \frac{d^{n+1}}{dx^{n+1}} R_n(x)
@@ -58,7 +58,7 @@ By construction, $\frac{d^{n+1}}{dx^{n+1}} L(x) = K$, and $L(a) = 0$, $L'(a) = 0
 \int_a^x \int_a^{t_1} \dots \int_a^{t_n} K \, dt_{n+1} \, dt_n \dots dt_2 \, dt_1 = L(x)
 $$
 Therefore:$$
-|R_n(x)| \le K \frac{|x-a|^{n+1}}{(n+1)!}
+\boxed{|R_n(x)| \le K \frac{|x-a|^{n+1}}{(n+1)!}}
 $$
 
 ## Example Application: Approximating Function Value of Complex Function

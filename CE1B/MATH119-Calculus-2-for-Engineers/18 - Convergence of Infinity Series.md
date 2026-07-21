@@ -6,7 +6,7 @@
 ## Hint: Error Bound for Evaluation
 
 Similar to [[17 - Taylor Polynomial and Series]], for this converging and decreasing integral, we know the ceiling of the upper bound is: $$
-\left|S-S_n\right| \leq \int_{n}^{} f(x) \ dx
+\left|S-S_n\right| \leq \int_{n}^{\infty} f(x) \ dx
 $$
 
 ## Info: P-Series Test
@@ -33,7 +33,6 @@ For two **positive** series $\sum a_k, \ \sum b_k \quad (a_k, b_k > 0)$, then: $
 (\forall k: a_k > b_k) \  \land \  (\sum_{k=1}^{\infty}a_k \ \text{diverges}) \implies & \sum_{k=1}^{\infty}b_k \ \text{diverges}
 \end{aligned}
 $$
-
 Extending further, if the ratio is a constant at limit for any two series $\sum a_k, \ \sum b_k$: $$
 \lim_{k \rightarrow \infty} a_k = L b_k \quad (L\neq 0)
 $$ then they converge and diverge at the same time: $$
@@ -42,9 +41,30 @@ $$
 
 ## Definition: Alternating Series
 
-A series that alternates between positive and negative is called an **alternating series** and can be written as: $$
-$$
 
+![[18.2 - AST|100%]]
+A series that alternates between positive and negative is called an **alternating series** and can be written as: 
+$$ \sum_{k=1}^{\infty} (-1)^k a_k \quad (a_k \geq 0) $$
+Which converges when: 
+$$ \begin{cases}\begin{aligned}
+\exists i, \forall k > i: \ a_{k+1} < a_k \quad & \text{ (eventually decreasing)} \\
+\lim_{k \to \infty} a_k = 0 \quad & \text{ (eventually converges)}
+\end{aligned}\end{cases} $$
+The error term of approximating $S = \sum(-1)^k a_k$ using the $n^\text{th}$ partial sum $S_n$ yields inequality:
+$$\begin{aligned}
+\left|S - S_n \right| = & \left|\sum_{k=1}^{\infty} (-1)^k a_k - \sum_{k=1}^{n}(-1)^k a_k \right| \\
+= & \left| \sum_{k=n+1}^{\infty} (-1)^k a_k \right| \\
+= & \left| a_{n+1} - a_{n+2} + a_{n+3} - a_{n+4} + a_{n+5} - ...  \right| \\
+= & \left| a_{n+1} - (a_{n+2} - a_{n+3}) - (a_{n+4} - a_{n+5}) - ...\right| \\
+(\text{where } & (a_{n+i} - a_{n+i+1}) \geq 0) \\
+\left| S- S_n\right| \leq & \quad \boxed{a_{n+1}}
+\end{aligned}$$
+
+## Definition: Absolute and Conditional Convergence
+
+A series $\sum a_k$ is **absolutely convergent** if the series $\sum \left|a_k\right|$ also converges.
+
+A series $\sum a_k$ is **conditionally convergent** if $\sum a_k$ converges but $\sum \left|a_k\right|$ diverges. 
 
 ## Examples
 
