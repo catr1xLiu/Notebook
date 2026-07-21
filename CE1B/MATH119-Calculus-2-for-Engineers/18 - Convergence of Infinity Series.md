@@ -39,6 +39,23 @@ $$ then they converge and diverge at the same time: $$
 \sum_{k=1}^{\infty} a_k \text{ converges } \iff \sum_{k=1}^{\infty} b_k
 $$
 
+## Theorem: The Ratio Test
+
+If, for a series $\sum a_k$:
+$$ \lim_{k\to\infty} \left| \frac{a_{k+1}}{a_k}\right| = L$$
+- $L \lt 1 \implies \sum a_k \text{ converges absolutely}$
+- $L > 1 \implies \sum a_k \text{ diverges}$ 
+- $L=1$, test fails
+
+This is proven by **limit comparison** with geometric series:
+$$ \lim_{k\to\infty} \left|\frac{a_{k+1}}{a_k}\right| = L \implies \exists a \in \mathbb{R}:\ \lim_{k\to\infty} |a_k| = ar^L$$
+where:
+$$ \begin{aligned}
+L<1 \iff& \sum ar^L \text{ converges} \\
+L>1 \iff& \sum ar^L \text{ diverges}
+\end{aligned}
+$$
+
 ## Definition: Alternating Series
 
 
@@ -65,6 +82,8 @@ $$\begin{aligned}
 A series $\sum a_k$ is **absolutely convergent** if the series $\sum \left|a_k\right|$ also converges.
 
 A series $\sum a_k$ is **conditionally convergent** if $\sum a_k$ converges but $\sum \left|a_k\right|$ diverges. 
+
+
 
 ## Examples
 
@@ -96,3 +115,45 @@ $$
 
 
 
+#### Absolute / Conditional Convergent vs Divergent
+
+**Series 1:**
+$$ \sum_{i=1}^{n} \frac{\sin n}{n^3} $$
+**Solution:** 
+$\sum \frac{1}{n^3}$ converges (p-series), therefore:
+$$|\sin n| \leq 1 \implies \frac{|\sin n|}{n^3} \leq \frac{1}{n^3} \implies \sum_{i=1}^n \frac{|\sin n|}{n^3} \text{ converges}$$
+Therefore, the series converges absolutely. 
+
+
+**Series 2:**
+$$ \sum_{i=1}^n \frac{(-1)^n \sqrt{n^2+n}}{n^{3/2}}$$
+**Solution:**
+First check corresponding positive series, using limit comparison test with $\sum \frac{1}{\sqrt{n}}$, which diverges by p-series test: 
+$$ \lim_{n\to\infty} \frac{\sqrt{n^2+n}}{n^{3/2}} = \frac{n}{n^{3/2}} = \frac{1}{\sqrt{n}} 
+\implies \sum_{i=1}^n \frac{\sqrt{n^2+n}}{n^{3/2}} \text{ diverges} $$
+Next, we check AST:
+$$ \lim_{n\to \infty} \left| \frac{(-1)^n\sqrt{n^2+n}}{n^{3/2}} \right|  = \frac{1}{\sqrt{n}} = 0$$
+$$ 
+\lim_{n\to \infty} \frac{\sqrt{(n+1)^2 + (n+1)}}{(n+1)^{3/2}} \lt \frac{\sqrt{n^2+n}}{n^{3/2}} \impliedby \frac{1}{\sqrt{n+1}} < \frac{1}{n}
+$$
+Limit is zero, and the series is eventually decreasing, therefore it converges conditionally.
+
+**Series 3:**
+$$ \sum_{n=1}^{\infty} \frac{3^n}{n!}$$
+**Solution:**
+By ratio test:
+$$L = \lim_{n\to\infty} \left| \frac{a_{n+1}}{a_n} \right| = \lim_{n\to\infty} \left| \frac{3^{n+1}}{(n+1)!} \cdot \frac{n!}{3^n} \right| = \lim_{n\to\infty} \left| \frac{3}{n+1} \right| = 0 $$
+$L<1$ so the series converges
+
+**Series 4:**
+$$ \sum_{n=1}^{\infty} \frac{(2n)!}{(n!)^2}$$
+**Solution:**
+Ratio test:
+$$\begin{aligned} 
+L =& \lim_{n\to\infty} \left| \frac{a_{n+1}}{a_n} \right| \\
+=& \lim_{n\to\infty} \frac{(2n+2)!}{((n+1)!)^2} \cdot \frac{(n!)^2}{(2n)!} \\
+=& \lim_{n\to\infty} \frac{(2n)! \cdot (2n+1)(2n+2)}{(2n)!} \cdot \frac{(n!)^2}{(n!\cdot (n+1))^2} \\
+=& \lim_{n\to\infty} \frac{(2n+1)(2n+2)}{(n+1)^2} \\
+=& 4 \quad (\gt 1)
+\end{aligned}
+$$
