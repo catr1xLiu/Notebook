@@ -1,0 +1,13 @@
+% \section{conclusion}
+
+% This paper introduces \m{}, an efficient generative paradigm that replaces noise-based initialization with action-to-action transport. By leveraging the physical consistency of sequential motions, \m{} aligns starting and target distributions, enabling a lightweight MLP to achieve high success rates with minimal latency. This approach effectively eliminates the computational bottlenecks typical of diffusion-based policies. Beyond robotics and video generation, the framework is inherently suited for diverse continuous temporal tasks, and its potential in domains characterized by sequential continuity remains a promising avenue for future exploration.
+
+\section{Conclusion}
+This paper introduces \m{}, an efficient generative paradigm that replaces noise-based initialization with action-to-action transport. By leveraging the physical consistency of sequential motions, \m{} aligns starting and target distributions, enabling a lightweight MLP to achieve high success rates with minimal latency. Across diverse simulation and real-world robotic benchmarks, \m{} matches or surpasses state-of-the-art diffusion and flow-based policies while reducing inference to fewer steps. This approach effectively eliminates the computational bottlenecks typical of diffusion-based policies. Beyond robotics and video generation, the framework is inherently suited for diverse continuous temporal tasks, and its potential in domains characterized by sequential continuity remains a promising avenue for future exploration.
+
+% \section{Limitation}
+% The inclusion of inference consistency loss ($\mathcal{L}_{IC}$, Eq. \eqref{loss_IC}) necessitates ODE integration during training, which constrains sampling to a fixed step size. While this sacrifices some flexibility compared to vanilla flow matching, we find that $\mathcal{L}_{IC}$ is indispensable for latent-space flow and serves as a cornerstone for enabling single-step inference. For scenarios where implementing $\mathcal{L}_{IC}$ is infeasible, our experiments demonstrate that direct action-space flow matching remains a viable alternative, albeit at the cost of the single-step advantage.
+
+
+\section{Limitation}
+\m{} is grounded in the physical continuity of actions, which makes it most effective for tasks dominated by smooth, continuous control signals. For discrete or switch-like action dimensions, such as binary gripper open/close commands, this continuity prior provides limited benefit. Moreover, the current objective requires manual tuning of several loss-weighting coefficients. We leave adaptive loss weighting and support for hybrid continuous-discrete action spaces as promising directions for future work.
