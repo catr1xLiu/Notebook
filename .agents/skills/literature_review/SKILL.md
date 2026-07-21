@@ -183,11 +183,26 @@ reviewer-pleasing hedging, and generic related work (link instead).
 - **Numbering**: leave equations unnumbered when a reasonable name fits (refer to it as, e.g., "the
   VAE reconstruction loss"). If the derivation is long or has too many equations to name, number them.
 - All key math shown as multi-line `$$ … $$` blocks.
+- **Expand custom TeX macros to standard LaTeX.** Obsidian's MathJax does not know a paper's
+  `\newcommand` definitions, so a macro like `\piRLinf` renders as literal text. Inline the standard
+  form instead — e.g. `\pi_{\text{RLinf}}`, not `\piRLinf`. Check the tex preamble for `\newcommand` /
+  `\def` and substitute every use.
 
-### Algorithms
+### Algorithms and code
 
 Never reproduce pseudocode, even if the author used it. Write **fake Python** instead — readable,
-typed-looking, illustrative code that conveys the algorithm.
+strictly-typed, illustrative code that conveys the algorithm. All illustrative code (algorithms *and*
+the codebase-analysis API signatures) follows these formatting rules, because Obsidian renders code
+verbatim and wraps long lines:
+
+- **72-character hard line limit.** Obsidian wraps anything longer, which mangles alignment. Break
+  signatures across lines and keep comment lines short.
+- **Comments live on their own line, above the code they describe** — never a trailing `code  # note`.
+- **Function-level commentary goes in a `''' … '''` block** (triple-quoted, even when it is not a
+  strict docstring), placed as the first line of the body.
+- **Signatures declare name + type only.** Always annotate every parameter and the return type (write
+  as if under strict typing). Do **not** put explanations or array/tensor shapes in the signature
+  (no `def f(x  # (B, T)`); shapes and meaning go in the `''' … '''` block instead.
 
 ### Figures
 
@@ -236,14 +251,19 @@ pipelines.
 
 ### Part 1 — Status & usability
 
-Lead with a one-line **verdict**, then a compact table:
+Lead with a one-line **verdict**, then a compact table. **Keep each cell to a single sentence** —
+Obsidian collapses a table cell onto one line, so anything longer becomes unreadable. If an aspect
+genuinely needs more than a sentence, drop the table and use a `#### Completeness` subtitle per aspect
+instead (but prefer the one-sentence table). Any longer caveat that doesn't fit — a methodology
+mismatch, a reproducibility gap — goes in its own **bold-lead paragraph below the table**, not crammed
+into a cell.
 
-| Aspect | Assessment |
+| Aspect | Assessment (one sentence each) |
 |---|---|
 | **Completeness** | All experiments/components present? Notable methodology mismatch with the paper? |
 | **Adaptation** | Docs to replicate? Dataset available? Research-team-only vs. community-contributed / has real users? |
 | **Dependency** | Depends on a niche infra toolchain (e.g. RLInf)? How portable? (Exclude common big-org toolchains — PyTorch, HF, etc.) |
-| **Currency & Maintenance** | Modern libs, or pinned to a weird `torch 1.x + chumpy`? Last commit date? Active? |
+| **Currency** | Modern libs, or pinned to a weird `torch 1.x + chumpy`? Last commit date? Active? |
 
 Then a **replication-difficulty rating**:
 
@@ -259,25 +279,86 @@ Purpose: a **Data Flow Diagram**, not an execution-flow chart. Execution flow = 
 (load model → enter loop). **Data flow = the structure of data passing between layers of the API** — the
 communication protocol you'd need to graft a module into your own code.
 
+**Order: diagram first, signatures second.** The data-flow diagram gives the reader the map; the
+signature blocks give the searchable, strictly-typed detail. Keep **both** — they are complementary,
+not redundant (the diagram shows the topology and payloads; the signatures give exact types, tensor
+shapes, and a name you can grep in the IDE plus a source link).
+
 - **Which APIs**: only **layer-boundary APIs** — the arrows in the paper's pipeline figure (most papers
   provide one; map each arrow to the function that carries that data). Ignore helpers like
   `resetController()`.
-- **Signature format**: a fake-Python code block per API showing the signature with type/shape
-  annotations. Keep the real docstring if one exists (**preserve the authors' original wording**);
-  write a concise one only where missing.
 
-  ```python
-  def forward(observation: Tensor,        # (B, T_obs, C, H, W) RGB history
-              a_prev: Tensor,             # (B, T_hist, 7) past actions
-              ) -> Tensor:                # (B, T_pred, 7) predicted action chunk
-      """<authors' own description of the policy forward pass>"""
+#### Data flow diagram (a styled `classDiagram`)
+
+Draw the data flow as a **colored mermaid `classDiagram`**, not a plain flowchart — the class boxes
+give you two "tables" per layer for free: a **properties compartment** (the layer's owned state) and a
+**method compartment** (its boundary API with parameter names). Directed, labeled associations carry
+the **payload (with shapes)** for each request/response hop, so the flow direction stays explicit.
+
+Rules for the diagram:
+- **One class per layer.** Fields = the state that layer owns; methods = only the boundary API(s).
+  Add a `<<stereotype>>` line for the engine/backend or backend variants (e.g. `<<MuJoCo / Robosuite>>`,
+  `<<api · claude_code · codex>>`).
+- **Field syntax is type-first with no parens** (`+ndarray main_images`); parens make mermaid treat a
+  member as a method. Put tensor shapes on the **edge labels** or in the signature blocks, not in fields.
+- **One edge per hop, labeled with the payload** — show the round trip (request down, response up), e.g.
+  `Toolkit --> Client : env_obs {images, states}` and `Client --> Toolkit : action chunk`.
+- **Color one tier per layer** with the `style` directive (fill + stroke + text), reusing a palette like
+  `#e1f5fe/#01579b` (blue), `#fff3e0/#e65100` (orange), `#f3e5f5/#4a148c` (purple), `#e8f5e9/#1b5e20`
+  (green), `#fce4ec/#880e4f` (pink). Unicode is fine in labels (`fθ`, `Π`, `→`).
+- **Render to verify before embedding.** mermaid-to-excalidraw silently drops a diagram with a syntax
+  error, so confirm it renders first:
+
+  ```bash
+  printf '{"executablePath":"/usr/bin/google-chrome","args":["--no-sandbox"]}' > /tmp/pptr.json
+  npx -y @mermaid-js/mermaid-cli -i diagram.mmd -o diagram.png -p /tmp/pptr.json -b white -s 2
   ```
 
-- **Cross-links**: link each key API to its source on GitHub — use the repo's **original URL, or the
-  author's fork URL if they specify one** — and give local `path:line` references in prose.
-- **Data Flow diagram**: emit a `mermaid` block, then the Excalidraw conversion placeholder (same as
-  other flow diagrams — the author converts it so they can annotate their own interpretation):
+- **Then the Excalidraw placeholder** (the author converts it to annotate their own interpretation):
 
   ```markdown
   <!-- TODO: Convert the Mermaid below to Excalidraw and embed as ![[<PaperName> Data Flow|100%]] -->
   ```
+
+Skeleton:
+
+```mermaid
+classDiagram
+    direction TB
+    class Planner {
+        <<api · claude_code · codex>>
+        +str system_prompt
+        +solve(system_prompt, user_message, toolkit, max_turns) CerebrumResult
+    }
+    class Toolkit {
+        <<single action interface>>
+        +execute_tool(name, input_dict) ToolResult
+    }
+    Planner --> Toolkit : c_t = {action, kwargs}
+    Toolkit --> Planner : ToolResult(obs, status)
+    style Planner fill:#e1f5fe,stroke:#01579b,stroke-width:2px,color:#01579b
+    style Toolkit fill:#f3e5f5,stroke:#4a148c,stroke-width:2px,color:#4a148c
+```
+
+#### Signature blocks (second)
+
+A fake-Python code block per boundary API, following the code rules in *Algorithms and code* above
+(72-char lines, strict typing, no inline param comments). Put every shape and description in a
+`''' … '''` block, **preserving the authors' original wording** for any real docstring and writing a
+concise one only where missing. Keep these even though the diagram lists the same methods — they carry
+the exact types/shapes and a greppable name + source link.
+
+```python
+def forward(observation: Tensor,
+            a_prev: Tensor) -> Tensor:
+    '''
+    <authors' own description of the policy forward pass>
+    observation: (B, T_obs, C, H, W) RGB history
+    a_prev:      (B, T_hist, 7) past actions
+    returns:     (B, T_pred, 7) predicted action chunk
+    '''
+    ...
+```
+
+- **Cross-links**: link each key API to its source on GitHub — use the repo's **original URL, or the
+  author's fork URL if they specify one** — and give local `path:line` references in prose.

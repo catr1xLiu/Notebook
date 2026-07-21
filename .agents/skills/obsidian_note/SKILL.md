@@ -26,11 +26,12 @@ Body text goes here, outside the callout block.
 > [!quote] Definition
 > ## Linear Equations
 
-The expression $a_1x_1 + \cdots + a_nx_n = b$ is a <u><strong style="color:#dab1da">linear equation</strong></u>.
+The expression $a_1x_1 + \cdots + a_nx_n = b$ is a <u><strong style="color:#a0399f">linear equation</strong></u>.
 ```
 
 **Key terminology styling:**
-- Inline terms: `<u><strong style="color:#dab1da">term</strong></u>`
+- Inline terms: `<u><strong style="color:#a0399f">term</strong></u>` (a dark orchid that stays legible on
+  the light theme; the older pastel `#dab1da` washed out on light backgrounds)
 - Major standalone terms: `#### <u>Term</u>` (the theme handles the color for h4)
 
 **Collapsible solutions** (for examples):
