@@ -12,3 +12,6 @@ When starting a conversation or task, please load the instructions from:
     *   `/embed-image` -> [.agents/skills/embed_image/SKILL.md](file:///home/catr1x/Coding/Notebook/.agents/skills/embed_image/SKILL.md)
     *   `/project-webpage` -> [.agents/skills/project_webpage/SKILL.md](file:///home/catr1x/Coding/Notebook/.agents/skills/project_webpage/SKILL.md)
     *   `/technical-report` -> [.agents/skills/technical_report/SKILL.md](file:///home/catr1x/Coding/Notebook/.agents/skills/technical_report/SKILL.md)
+    *   `/comsol` -> [.agents/skills/comsol/SKILL.md](file:///home/catr1x/Coding/Notebook/.agents/skills/comsol/SKILL.md)
+    *   `/read-rnote` -> [.agents/skills/rnote/SKILL.md](file:///home/catr1x/Coding/Notebook/.agents/skills/rnote/SKILL.md)
+    *   `/literature-review` -> [.agents/skills/literature_review/SKILL.md](file:///home/catr1x/Coding/Notebook/.agents/skills/literature_review/SKILL.md)

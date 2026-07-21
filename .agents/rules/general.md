@@ -60,3 +60,4 @@ These are useful skills for agents outside of the document converting field:
 - **`schemdraw`**: Circuit diagram generation via SchemDraw (`.agents/skills/schemdraw/SKILL.md`).
 - **`comsol`**: Guidelines for retrieving COMSOL Multiphysics API documentation from the split reference files (`.agents/skills/comsol/SKILL.md`).
 - **`embed-image`**: Background removal and image cropping for notes (`.agents/skills/embed_image/SKILL.md`).
+- **`literature-review`**: End-to-end workflow for turning an arXiv paper into a dense Obsidian review note — download, marker-pdf conversion, figure post-processing, and writing guidelines (`.agents/skills/literature_review/SKILL.md`).
