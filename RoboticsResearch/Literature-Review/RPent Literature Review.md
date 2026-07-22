@@ -16,7 +16,9 @@ Harness VLA wraps a **frozen** VLA as a single contact-rich primitive, <u><stron
 > [!info] Introduction
 > ## The Wrong-Responsibility Problem
 
-Two paradigms attack language-conditioned manipulation from opposite ends, and each overloads the wrong component. **End-to-end VLAs** absorb language grounding, long-horizon composition, and low-level control into one policy — strong at contact, brittle when instructions are redirected, goals re-bound, or layouts shifted. **LLM coding agents** reason well but realize physical contact through hand-designed analytic APIs that fail at irregular grasping and articulated objects. Harness VLA's response: keep the primitive library **fixed and small**, use analytic primitives to traverse the perturbed non-contact space, and invoke the frozen VLA *only* inside local contact-rich regions where its training distribution is informative.
+Two paradigms attack language-conditioned manipulation from opposite ends, and each overloads the wrong component. **End-to-end VLAs** absorb language grounding, long-horizon composition, and low-level control into one policy — strong at contact, brittle when instructions are redirected, goals re-bound, or layouts shifted. **LLM coding agents** reason well but realize physical contact through hand-designed analytic APIs that fail at irregular grasping and articulated objects. 
+
+Harness VLA's response: keep the primitive library **fixed and small**, use analytic primitives to traverse the perturbed non-contact space, and invoke the frozen VLA *only* inside local contact-rich regions where its training distribution is informative.
 
 <div align="center"><img src="media/primitive-composition.png" alt="Deployment perturbations expand task configurations beyond the frozen VLA's in-distribution trajectories; a direct rollout fails bridging the gap, while Harness VLA decomposes into analytic motion between VLA-compatible local regions" width="80%"></div>
 
@@ -29,7 +31,7 @@ The system is an autoregressive, turn-based loop between a planner $\Pi$ and a p
 
 Symbols:
 
-| $\mathcal{E}$                  | $o_t=(I_t^{\text{rgb}},I_t^{\text{d}},q_t)$        | $\ell$        | $\mathcal{G}$               | $\Pi$                     | $f_\theta$            | $\mathcal{P}$     | $c_t$                            | $\tau$                           | $\pi_{\text{RLinf}}$                                          |
+| $\mathcal{E}$                  | $o_t=(I_t^{\text{rgb}},I_t^{\text{d}},q_t)$        | $\ell$        | $\mathcal{G}$               | $\Pi$                     | $f_\theta$            | $\mathcal{P}$     | $c_t$                            | $\tau$                           | $\pi_{\text{RLinf}}$                                |
 | ------------------------------ | -------------------------------------------------- | ------------- | --------------------------- | ------------------------- | --------------------- | ----------------- | -------------------------------- | -------------------------------- | --------------------------------------------------- |
 | Environment (MuJoCo/Robosuite) | Observation: RGB, co-aligned depth, proprioception | Task language | Binary completion predicate | Agentic planner (the LLM) | Frozen pretrained VLA | Primitive library | Primitive invocation at turn $t$ | `vla_act` early-return predicate | Frozen $\pi_{0.5}$ checkpoint used inside `vla_act` |
 
@@ -63,6 +65,18 @@ This keeps the VLA a **local contact specialist** (grasping, constrained placeme
 {"action": "release"}
 {"action": "vla_act",      "prompt": "grasp the black bowl", "max_chunks": 2, "stop": "predicate"}
 ```
+
+#### <u>Primitive Coordinates are World-Frame Metres</u>
+
+A crucial and easily-missed detail: the `xyz` in `move_to` / `move_pose` is a <u><strong style="color:#a0399f">world-frame metric target</strong></u> $(x,y,z)$ **in metres** — *not* a pixel or camera-frame $(\text{col},\text{row},\text{depth})$. The scripted servo computes `diff = target − eef_pos` against the proprioceptive end-effector position $q_t[{:}3]$ ([`robots/libero/tools.py:304`](https://github.com/catr1xLiu/RPent/blob/06bbb24/robots/libero/tools.py#L304)), so primitive targets and $q_t$ share **one frame**: robot/world metres. All rotation primitives match — `rotate_wrist` is world $z$-yaw, `rotate_pitch` is world $x$-axis.
+
+But the planner never *reasons* in metres. It perceives in **pixels** and crosses the gap with an explicit deprojection:
+
+$$
+\underbrace{(\text{col},\text{row})}_{\text{camera pixel}} \;\xrightarrow{\;\texttt{back\_project}\;(K^{-1},\,\text{depth},\,\text{calib})\;}\; \underbrace{(x,y,z)}_{\text{world metres}}
+$$
+
+So the JSON `xyz` is always the *output* of `back_project` on a chosen pixel — segment an object → pick pixels → back-project through depth+calibration → feed the world point to `move_to`. 
 
 #### <u>Two-Phase Agent Lifecycle</u>
 
@@ -172,6 +186,43 @@ Analytic primitives handle the non-contact structure around each contact phase (
 > [!fact] Reflection
 > ## My Read
 
+#### Is an intermediate work towards RL 
+
+The research team is **RLinf**, and the entire tool suite + robot/simulator is considered environment $\mathcal{E}$. These are strong signals that the research team is aiming for reinforcement learning on the planner VLM. Of course, the current bottleneck is that the models powerful enough to *learn from past experience* are currently proprietary models.
+
+#### Adaptation needs effort but manageable 
+
+The key APIs for the execution environment are clear: `reset()`, `chunk_step(actions)`. This run-loop should differ slightly for a real robot. Implementation for a real robot is not uploaded yet, but the repo is actively being updated. 
+
+#### Is a great baseline to improve on
+
+This is likely the **SOTA** VLA inference stack available to the public, given that Physical Intelligence's training-based harness system is closed source. The methodology of using VLM for planning and experience learning is reasonable, and the benchmark results are convincing. 
+
+#### A few details to explore
+
+- **Stronger VLM back-end models**: such as Gemini Robotics 1.6, which has better visual understanding capability
+-  **Real-world capability on unseen scenarios**: the shared challenge of all embodied AI. Assessment on slightly different hardware (UR10e) and unseen scenarios is the ultimate test of the effectiveness of this paper, as this will likely challenge the VLM planner to recover from errors. 
+
+---
+
+> [!example] Potential Directions
+> ## Potential Directions for Further Research
+
+#### <u>Bridge with deterministic 3D object positioning methods</u>
+
+I think this is the most promising direction for future work, because the model currently relies on a $(\text{col}, \text{row}, \text{depth}) \rightarrow (x, y, z)$ projection tool. *This is probably inefficient for VLM agents.*
+
+An alternative approach would be to use solid 3D object positioning methods, such as [Neural Memory Object (NeMO)](https://arxiv.org/html/2602.04343v1), which maps the exact 6-DoF position of an object after few-shot learning. ![[NeMO.png]]
+
+We can adapt a simple motion planner and create more powerful tools for the VLM using some basic motion planning, such as `{"action": "move_to_known_object",  "object_identifier": "YELLOW_PLATE", "relative_pose" : "grabbing_pose"}`, after recognizing objects and recording different relative transformations $T^{\text{OBJ}}_{\text{EF}}$ (the end-effector pose expressed in the object's frame) for grabbing, pulling, etc. This will free up the mental effort of the VLM to determine the exact position.
+
+The trade is a one-time ~5–10 min human enrollment per scenario, not runtime compute: (1) a few phone shots of each key object so NeMO learns it; (2) hand the object into the gripper and close on it at several steady grasp angles. Each angle yields a $T^{\text{OBJ}}_{\text{EF}}$ *for free* — NeMO solves the object pose from depth, and the end-effector pose is always known from forward kinematics, so $T^{\text{OBJ}}_{\text{EF}} = (T^{\text{world}}_{\text{OBJ}})^{-1} \cdot T^{\text{world}}_{\text{EF}}$. At runtime the primitive just re-composes $T^{\text{world}}_{\text{EF}} = T^{\text{world}}_{\text{OBJ}} \cdot T^{\text{OBJ}}_{\text{EF}}$ against NeMO's live object pose.
+
+Measurement error is handled by the invariance itself: because a steady grasp keeps $T^{\text{OBJ}}_{\text{EF}}$ constant, we move the arm-object system around the workspace and re-measure — like a human fiddling with an unseen object. Averaging the samples cuts the random error, and their spread gives an empirical tolerance for that grasp. When the spread exceeds what the task needs (e.g. a tight insertion), that is the signal to fall back to `vla_act` — keeping the deterministic primitive for well-enrolled rigid objects and the frozen VLA for the tight-tolerance contact it is meant for. 
+
+#### <u>Bridge with Shared Autonomy</u>
+
+
 ---
 
 > [!hint] Codebase Analysis
@@ -179,12 +230,12 @@ Analytic primitives handle the non-contact structure around each contact phase (
 
 **Verdict:** the released [`RLinf/RPent`](https://github.com/RLinf/RPent) repo is the clean, well-documented **harness/planner layer** only; the simulators, primitive backends, and VLA serving live in a **forked branch of RLinf** that must be cloned alongside it. The full LIBERO/$\pi_{0.5}$ path is reproducible; the RoboCasa365 (RLDX-1) and RoboTwin (LingBot-VLA) paths behind two of the three headline numbers are not fully wired in the public release.
 
-| Aspect                     | Assessment                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
-| -------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Completeness**           | Ships the harness, three planner backends, the LIBERO env client, dashboard, and prompts — but the analytic and `vla_act` primitives are registered in the RLinf fork, not here. |
-| **Adaptation**             | Community-facing with Sphinx docs, an [adding-a-new-environment](https://rpent.readthedocs.io/en/latest/rst_source/extending/new_env.html) guide, and a HuggingFace checkpoint, though the integration surface to reimplement lives in the RLinf fork.                                                                                                                                                                                                                                                                                                                                                      |
-| **Dependency**             | Heavy and partly niche — a forked RLinf branch, `uv`, `openpi`, LIBERO (+ perturbation patch), frontier-LLM SDKs with API keys, and a CUDA GPU for the VLA server.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
-| **Currency** | Modern stack (Python 3.11, `uv`, current LLM SDKs) under active development, last commit 2026-07-20.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
+| Aspect           | Assessment                                                                                                                                                                                                                                             |
+| ---------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| **Completeness** | Ships the harness, three planner backends, the LIBERO env client, dashboard, and prompts — but the analytic and `vla_act` primitives are registered in the RLinf fork, not here.                                                                       |
+| **Adaptation**   | Community-facing with Sphinx docs, an [adding-a-new-environment](https://rpent.readthedocs.io/en/latest/rst_source/extending/new_env.html) guide, and a HuggingFace checkpoint, though the integration surface to reimplement lives in the RLinf fork. |
+| **Dependency**   | Heavy and partly niche — a forked RLinf branch, `uv`, `openpi`, LIBERO (+ perturbation patch), frontier-LLM SDKs with API keys, and a CUDA GPU for the VLA server.                                                                                     |
+| **Currency**     | Modern stack (Python 3.11, `uv`, current LLM SDKs) under active development, last commit 2026-07-20.                                                                                                                                                   |
 
 **Reproducibility gap:** only the LIBERO / $\pi_{0.5}$ path is marked working in the feature matrix; the RoboCasa365 (RLDX-1) and RoboTwin (LingBot-VLA) backends behind two of the three headline numbers are unchecked, so those results are not reproducible from public code yet.
 
@@ -200,77 +251,6 @@ Data flows across four boundaries. The planner only ever sees serialized observa
 
 ![[RPent DataFlow|100%]]
 
-```mermaid
-classDiagram
-    direction TB
-
-    class Planner {
-        <<api · claude_code · codex>>
-        +str system_prompt
-        +list messages
-        +CerebrumResult finish
-        +solve(system_prompt, user_message, toolkit, max_turns) CerebrumResult
-    }
-    class TaskSpecificMemory {
-        <<per-task, parameterized>>
-        +jsonl trace
-        +json summary
-        +retrieve(task) trace
-        +write(parameterized_trace)
-    }
-    class GlobalMemory {
-        <<cross-task>>
-        +list success_rules
-        +list failure_models
-    }
-    class Toolkit {
-        <<single action interface>>
-        +get_tools_spec() schemas
-        +execute_tool(name, input_dict) ToolResult
-    }
-    class LiberoEnvClient {
-        <<analytic primitives>>
-        +chunk_step(actions) tuple
-        +raw_obs() dict
-        +reset() obs
-    }
-    class EnvServer {
-        <<MuJoCo / Robosuite>>
-        +ndarray main_images
-        +ndarray states
-        +bool success_signal
-    }
-    class VLAClient {
-        +predict_action_batch(env_obs, mode) tuple
-    }
-    class VLAServer {
-        <<frozen VLA fθ>>
-        +predict(instruction, images, state, mode) actions
-        +healthz() status
-    }
-
-    TaskSpecificMemory ..> Planner : re-grounded trace
-    GlobalMemory ..> Planner : success + failure rules
-    Planner --> Toolkit : c_t = {action, kwargs}
-    Toolkit --> Planner : ToolResult(obs, status)
-    Toolkit --> LiberoEnvClient : move_to / rotate / release …
-    LiberoEnvClient --> EnvServer : socket RPC
-    EnvServer --> LiberoEnvClient : obs main_images(H,W,3), states(D,), success
-    LiberoEnvClient --> Toolkit : obs, reward, done
-    Toolkit --> VLAClient : vla_act → env_obs {images, states, instruction}
-    VLAClient --> VLAServer : HTTP /predict {instruction, images(png b64), state, mode}
-    VLAServer --> VLAClient : actions (chunk, action_dim)
-    VLAClient --> Toolkit : action chunk
-
-    style Planner fill:#e1f5fe,stroke:#01579b,stroke-width:2px,color:#01579b
-    style TaskSpecificMemory fill:#fff3e0,stroke:#e65100,stroke-width:2px,color:#e65100
-    style GlobalMemory fill:#fff3e0,stroke:#e65100,stroke-width:2px,color:#e65100
-    style Toolkit fill:#f3e5f5,stroke:#4a148c,stroke-width:2px,color:#4a148c
-    style LiberoEnvClient fill:#e8f5e9,stroke:#1b5e20,stroke-width:2px,color:#1b5e20
-    style EnvServer fill:#e8f5e9,stroke:#1b5e20,stroke-width:2px,color:#1b5e20
-    style VLAClient fill:#fce4ec,stroke:#880e4f,stroke-width:2px,color:#880e4f
-    style VLAServer fill:#fce4ec,stroke:#880e4f,stroke-width:2px,color:#880e4f
-```
 
 #### Layer-boundary API signatures
 
