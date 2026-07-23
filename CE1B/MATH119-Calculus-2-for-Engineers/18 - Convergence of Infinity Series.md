@@ -157,3 +157,17 @@ L =& \lim_{n\to\infty} \left| \frac{a_{n+1}}{a_n} \right| \\
 =& 4 \quad (\gt 1)
 \end{aligned}
 $$
+**Series 5:**
+$$ \sum_{n=1}^{\infty}(\frac{n}{n+1})^{n^2} $$
+**Solution:**
+
+
+**Series 6:**
+$$ \sum_{n=1}^{\infty} \frac{5^{2n}}{n!} $$
+**Solution:**
+
+
+**Series 7:**
+$$ \sum_{n=1}^{\infty} (-1)^n \cdot \frac{\ln n}{\sqrt{n}} $$
+**Solution**:
+First check positive series, comparison test with $\sum \frac{1}{\sqrt{n}}$
