@@ -42,6 +42,7 @@ Notebook/
 2. **Project Webpages**: Static research project sites. See the `project-webpage` skill (`.agents/skills/project_webpage/SKILL.md`) for conventions and guidelines.
 3. **Notion Drafts**: Notion is used for drafting new content before conversion. Access via the Notion MCP tools.
 4. **rnote Notes**: Treated as a read-only document type for handwritten notes and tutorials. See the `read-rnote` skill (`.agents/skills/rnote/SKILL.md`) for instructions on locating, exporting, and reading these files.
+5. **PDFs**: Read-only source material (papers, textbooks, lab manuals, datasheets, slides). **Never open a PDF with the Read tool** — it is token-expensive and loses equations, tables, and structure. Always convert first via the `pdf` skill (`.agents/skills/pdf/SKILL.md`), then read the resulting markdown.
 
 ## Conversion Workflow
 
@@ -57,7 +58,8 @@ When asked to convert a draft (Notion page, hand-written scan, or raw text) to a
 ## Other Skills
 
 These are useful skills for agents outside of the document converting field:
+- **`pdf`**: The **only** approved way to read a PDF — page-count inspection, `qpdf` cutting, and `marker_single` conversion to markdown, including table-of-contents recon for long documents (`.agents/skills/pdf/SKILL.md`). Never use the Read tool on a `.pdf`.
 - **`schemdraw`**: Circuit diagram generation via SchemDraw (`.agents/skills/schemdraw/SKILL.md`).
 - **`comsol`**: Guidelines for retrieving COMSOL Multiphysics API documentation from the split reference files (`.agents/skills/comsol/SKILL.md`).
 - **`embed-image`**: Background removal and image cropping for notes (`.agents/skills/embed_image/SKILL.md`).
-- **`literature-review`**: End-to-end workflow for turning an arXiv paper into a dense Obsidian review note — download, marker-pdf conversion, figure post-processing, and writing guidelines (`.agents/skills/literature_review/SKILL.md`).
+- **`literature-review`**: End-to-end workflow for turning an arXiv paper into a dense Obsidian review note — download, PDF conversion (via the `pdf` skill), figure post-processing, and writing guidelines (`.agents/skills/literature_review/SKILL.md`).

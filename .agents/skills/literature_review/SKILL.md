@@ -47,10 +47,13 @@ mkdir -p "$DL/src" && tar -xf "$DL/source.tar" -C "$DL/src"
 `e-print` returns a gzipped tar (sometimes a bare `.tex`). If `tar` fails, try `tar -xzf`, or treat
 the file as a single `.tex`. The source tree holds the **high-resolution figures** used in Step 4.
 
-## Step 2 — Convert with marker-pdf
+## Step 2 — Convert the PDF to markdown
 
-`marker_single` lives in the conda `scientific` env. Output the markdown + extracted figures into the
-paper's `sources/<PaperName>/` folder.
+Follow the [`pdf`](../pdf/SKILL.md) skill — it owns the inspect → cut → `marker_single` procedure,
+the GPU page budget, and the troubleshooting table. **Never** read the PDF with the Read tool.
+
+Papers are almost always short and text-dominant enough to convert in one pass, so the usual case
+is a single direct call with the output going into the paper's `sources/<PaperName>/` folder:
 
 ```bash
 conda run -n scientific marker_single "$DL/paper.pdf" \
@@ -59,7 +62,8 @@ conda run -n scientific marker_single "$DL/paper.pdf" \
 ```
 
 Marker writes `paper.md`, `paper_meta.json`, and `_page_N_Figure_M.jpeg` screenshots. Rename the
-markdown to `Paper.md`.
+markdown to `Paper.md`. If the paper is unusually long (a survey, or a preprint with a 60-page
+appendix), split it per the `pdf` skill before converting.
 
 ## Step 3 — Sanity check
 
