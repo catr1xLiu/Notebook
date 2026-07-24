@@ -1,6 +1,6 @@
 ---
 name: obsidian-note
-description: Format guidelines for well-structured Obsidian notes with custom styling, LaTeX math, Excalidraw embeddings, and JupyMD notebooks.
+description: Format guidelines for well-structured Obsidian notes with custom styling, LaTeX math, Excalidraw embeddings, and JupyMD notebooks; plus exporting notes to Typst/LaTeX PDF.
 ---
 
 # Skill: Obsidian Note Format Guidelines
@@ -193,3 +193,57 @@ python3.13 -m pip install --target="/path/to/Notebook/.jupymd/lib/python3.13/sit
 Required packages (already installed): `torch` (CPU), `numpy`, `matplotlib`, `schemdraw`.
 
 Plot notebooks use `%matplotlib inline` so figures render inside the notebook and are also saved as SVGs to the note's `media/` folder. SchemDraw notebooks use `schemdraw.use('svg')` for inline SVG output. Working directory is set to the notebook's own folder, so `Path("media")` always resolves correctly.
+
+---
+
+## 5. Exporting a Note to Typst / LaTeX (PDF)
+
+Transcribe the note's Markdown to Typst or LaTeX — you already know both syntaxes, so
+only the two things below need spelling out. For **Typst**, always use the
+[`obsidius`](https://typst.app/universe/package/obsidius) template; for **LaTeX**, any
+class works (render callouts as `tcolorbox`/`mdframed`).
+
+```typst
+#import "@preview/obsidius:0.1.1": *
+#show: notes.with("Document Title")
+```
+
+### Step 1 — Rasterize every Excalidraw drawing first
+
+`![[Drawing Name|100%]]` embeds can't be typeset — the drawing is compressed JSON in
+`drawings/Drawing Name.md` (often with embedded LaTeX/icons only Excalidraw renders).
+Export each to **high-resolution PNG with a transparent background** via the Obsidian
+CLI, then reference the PNG as a normal figure.
+
+```bash
+# Obsidian must be RUNNING. It is a flatpak here, so bridge its sandboxed CLI socket
+# to where the host `obsidian` binary looks (once per session; `obs` = OBS Studio, not this):
+nohup flatpak run md.obsidian.Obsidian >/dev/null 2>&1 &
+ln -sf /run/user/1000/.flatpak/md.obsidian.Obsidian/xdg-run/.obsidian-cli.sock \
+       /run/user/1000/.obsidian-cli.sock
+
+# scale 3 = print res; transparent bg is the default. eval AWAITS a returned Promise:
+obsidian eval code="(async()=>{const ea=app.plugins.plugins['obsidian-excalidraw-plugin'].ea;
+  const blob=await ea.createPNG('<drawings/Name.md>', 3);
+  await app.vault.adapter.writeBinary('<media/name.png>', await blob.arrayBuffer());
+  return 'ok';})()"
+```
+
+### Step 2 — Callouts and Obsidian-isms
+
+`obsidius` ships only `#warning[]`/`#solution[]`, so define one helper per Obsidian
+callout type via its generic `callout(icon, title, body, colors)`, where `colors` is
+`(text-700, fill-100, stroke-300)`. Keep the source structure: the `[!type]` label is
+the callout title, the `## Heading` becomes a bold banner *inside* it (not a real
+heading, so it isn't numbered), and body text stays outside.
+
+```typst
+#let cl-fact(title, body) = callout(emoji.pencil, title, body,
+  (rgb("#7E22CE"), rgb("#F3E8FF"), rgb("#D8B4FE")))
+#cl-fact("Framework Details")[#text(size: 1.15em, weight: "bold")[Methodology]]
+```
+
+Other constructs that don't map by inspection: `#### <u>Sub</u>` → an unnumbered
+subheading (`#set heading(numbering: none)`); `[[Other Note]]` wiki-links → plain
+italic text (no PDF target); wide symbol tables → transpose to 2 columns
+(Symbol / Meaning). Plain math, images, and code blocks convert as you'd expect.
