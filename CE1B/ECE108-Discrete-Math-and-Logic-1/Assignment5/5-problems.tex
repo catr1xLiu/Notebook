@@ -1,0 +1,132 @@
+\documentclass[11pt,onecolumn]{article}
+\usepackage{amsmath,amssymb,graphicx,algorithmic,xspace,url}
+\usepackage{latexsym}
+\usepackage[titlenotnumbered,noend,noline]{algorithm2e}
+\usepackage{enumerate}
+\usepackage{mathrsfs}
+\usepackage{multirow}
+\usepackage{colortbl}
+\usepackage{tikz}
+\newcommand*\circled[1]{\tikz[baseline=(char.base)]{
+            \node[shape=circle,draw,inner sep=2pt] (char) {#1};}}
+\usepackage[normalem]{ulem}
+\usepackage{listings}
+
+\setlength{\pdfpagewidth}{8.5in}
+\setlength{\pdfpageheight}{11in}
+\setlength{\evensidemargin}{-0.1in} \setlength{\oddsidemargin}{-0.1in}
+\setlength{\textwidth}{6.5in} \setlength{\textheight}{8.5in}
+\setlength{\topmargin}{-0.25in}
+%\setlength{\headheight}{0in}
+
+%\setlength{\parindent}{0in}
+%\setlength{\parskip}{0.125in}
+
+\newcommand{\tuple}[1]{\ensuremath{\left\langle #1 \right\rangle}\xspace}
+\newcommand{\rpair}[1]{\ensuremath{\left( \mathit{#1} \right)}\xspace}
+\newcommand{\set}[1]{\ensuremath{\left\{#1\right\}}\xspace}
+\newcommand{\size}[1]{\ensuremath{\left|#1\right|}\xspace}
+\newcommand{\true}{\ensuremath{\mathsf{true}}\xspace}
+\newcommand{\false}{\ensuremath{\mathsf{false}}\xspace}
+\newcommand{\mypr}[1]{\ensuremath{\text{Pr}\left\{#1\right\}}\xspace}
+\newcommand{\myfloor}[1]{\ensuremath{\left\lfloor#1\right\rfloor}\xspace}
+\newcommand{\myceil}[1]{\ensuremath{\left\lceil#1\right\rceil}\xspace}
+\newcommand{\python}{\textbf{[python3]}\xspace}
+\newcommand*\mon[1]{\tikz[baseline=(char.base)]{
+            \node[shape=circle,draw,inner sep=2pt] (char) {#1};}}
+\newcommand{\cl}{\ensuremath{\textbf{L}}\xspace}
+\newcommand{\cp}{\ensuremath{\textbf{P}}\xspace}
+\newcommand{\cnl}{\ensuremath{\textbf{NL}}\xspace}
+\newcommand{\cconp}{\ensuremath{\textbf{co-NP}}\xspace}
+\newcommand{\cnp}{\ensuremath{\textbf{NP}}\xspace}
+\newcommand{\cnpc}{\ensuremath{\textbf{NP}\text{-complete}}\xspace}
+\newcommand{\ccomplete}{\ensuremath{\mathcal{C}\text{-complete}}\xspace}
+\newcommand{\cnph}{\ensuremath{\textbf{NP}\text{-hard}}\xspace}
+\newcommand{\cph}{\ensuremath{\textbf{P}\text{-hard}}\xspace}
+\newcommand{\chard}{\ensuremath{\mathcal{C}\text{-hard}}\xspace}
+\newcommand{\cpspace}{\ensuremath{\textbf{PSPACE}}\xspace}
+\newcommand{\cnpspace}{\ensuremath{\textbf{NPSPACE}}\xspace}
+\newcommand{\cexp}{\ensuremath{\textbf{EXP}}\xspace}
+\newcommand{\cnexp}{\ensuremath{\textbf{NEXP}}\xspace}
+\newcommand{\cdecidable}{\ensuremath{\textbf{DECIDABLE}}\xspace}
+\newcommand{\cundecidable}{\ensuremath{\textbf{UNDECIDABLE}}\xspace}
+\newcommand{\comment}[1]{ }
+
+
+\let\originalleft\left
+\let\originalright\right
+\renewcommand{\left}{\mathopen{}\mathclose\bgroup\originalleft}
+\renewcommand{\right}{\aftergroup\egroup\originalright}
+
+\sloppypar
+\begin{document}
+\pagestyle{empty}
+
+\renewcommand{\ULthickness}{1.4pt}
+
+\begin{center}
+\begin{large}
+ECE 108, Spring 2026, Assignment 5\\
+Due: Wed, July 29, 11:59pm ET\\
+Absolutely \emph{\underline{no}} extensions!
+\end{large}
+\end{center}
+
+\vspace*{0.125in}\noindent
+Instructions: same as for Assignment 1.
+
+\begin{enumerate}
+\item Let $n,m \in\mathbb{Z}^+$, i.e., be finite positive integers. Denote $n$-bit strings as $\set{0,1}^n$ and $m$-bit strings as $\set{0,1}^m$. E.g., $\set{0,1}^2 = \set{00, 01, 10, 11}$. 
+\begin{enumerate}
+\item How many distinct functions exist with domain $\set{0,1}^n$ and codomain $\set{0,1}^m$?
+
+\underline{\emph{Hint}}: think of each function encoded as a table with one entry per member of the domain.
+
+\item How many of those functions are bijective?
+\end{enumerate}
+
+\item A car dealer has 30 cars in stock. Of these, 20 have immobilizers, 8 have A/C’s, and 25 have fuel-injection; 20 have at least two of these features, and 6 have all three.
+\begin{enumerate}
+\item How many cars have at least one of the features?
+\item How many have none?
+\item How many have exactly one?
+\end{enumerate}
+
+\item Which is more likely: getting at least one $6$ when one rolls a fair die $6$ times, or getting at least two $6$'s when one rolls the die $12$ times?
+
+\item You have \$5 and your friend has \$3. You want to try and win all their money, and they yours. You agree on the following game. You repeatedly toss a fair coin, and for each win, the loser gives the winner \$1. For example, if you repeatedly call $H$ (heads), and the coin happens to land $THTTT$, then you will have given your friend all your money. The game ends when one of you goes bankrupt, i.e., has \$0.
+
+What is the probability that you bankrupt your friend within $10$ tosses of the coin?
+
+\item A \emph{hash table} works as follows. We allocate a table of $m$ slots. All the items we intend to store in the table are drawn from a large set $U$ of items. We adopt a function $f\!:U\to\set{0,\ldots,m-1}$ which maps an item to a slot. Suppose we seek to store $n$ items from $U$ in a hash table of $m$ slots.
+\begin{enumerate}
+\item Suppose $f$ maps every item in $U$ with equal probability to one of the $m$ slots. What is the probability, given two distinct items $i_1,i_2 \in U$, that $f(i_1) = f(i_2)$?
+
+\item Prove that if $|U| > nm$, then no matter what $f$ is, there exist $n$ items in $U$ all of which are mapped by $f$ to the same slot.
+\end{enumerate}
+
+\item Suppose $\mypr{B}\not= 0$. Prove: $\mypr{A\mid B} + \mypr{\overline{A}\mid B} = 1$.
+
+\item A prison warden has randomly picked one prisoner among three to go free. The other two will be executed. The guard knows which one will go free but is forbidden to give any prisoner information regarding his status. Let us call the prisoners $X, Y, \text{ and } Z$. Prisoner $X$ asks the guard privately which of $Y$ or $Z$ will be executed, arguing that since he already knows that at least one of them must die, the guard won't be revealing any information about his own status. The guard tells $X$ that $Y$ is to be executed. Prisoner $X$ feels happier now, since he figures that either he or prisoner $Z$ will go free, which means that his probability of going free is now $1/2$. Is he right, or are his chances still $1/3$? Assume that if both $Y$ and $Z$ are to be executed, the warden uniformly picks one of those names to tell $X$.
+
+\item A carnival game consists of three dice in a cage. A player can bet a dollar on any of the numbers 1 through 6. The cage is shaken, and the payoff is as follows. If the player's number doesn't appear on any of the dice, she loses her dollar. Otherwise, if her number appears on exactly $k$ of the three dice, for $k = 1, 2, 3$, she keeps her dollar and wins $k$ more dollars. What is her expected gain from playing the carnival game once?
+
+\item Consider the randomized algorithm for finding the median of an odd number, $n$, of distinct integers that is at the end of the textbook. Suppose we adopt the following seemingly better version instead. We assume that our original input set of integers is $A$.
+
+\DontPrintSemicolon
+\LinesNumbered
+\begin{algorithm}[H]
+$S\gets \emptyset$\;
+\While{\true}{
+    uniformly pick some $i\in A\setminus S$\;
+    check if $i$ is the median of $A$\;
+    if yes, return $i$\;
+    otherwise, $S\gets S\cup \set{i}$\;
+}
+\end{algorithm}
+
+That is, unlike the algorithm in the textbook, we keep track of failed trials in the set $S$, and exclude them from future choices. Thus, we are guaranteed to return the median in at most $n$ trials.
+
+What is the expected number of trials, i.e., number of iterations of the \textbf{while} loop, with the above algorithm?
+\end{enumerate}
+\end{document}

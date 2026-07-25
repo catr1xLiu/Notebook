@@ -15,3 +15,8 @@ When starting a conversation or task, please load the instructions from:
     *   `/comsol` -> [.agents/skills/comsol/SKILL.md](file:///home/catr1x/Coding/Notebook/.agents/skills/comsol/SKILL.md)
     *   `/read-rnote` -> [.agents/skills/rnote/SKILL.md](file:///home/catr1x/Coding/Notebook/.agents/skills/rnote/SKILL.md)
     *   `/literature-review` -> [.agents/skills/literature_review/SKILL.md](file:///home/catr1x/Coding/Notebook/.agents/skills/literature_review/SKILL.md)
+    *   `/pdf` -> [.agents/skills/pdf/SKILL.md](file:///home/catr1x/Coding/Notebook/.agents/skills/pdf/SKILL.md)
+
+## Reading PDFs
+
+**NEVER read a `.pdf` file with the Read tool.** It is token-expensive and loses equations, tables, and document structure. The `pdf` skill ([.agents/skills/pdf/SKILL.md](file:///home/catr1x/Coding/Notebook/.agents/skills/pdf/SKILL.md)) is *always* the preferred way to handle a PDF: inspect the page count, cut with `qpdf`, convert to markdown with `marker_single`, then read the markdown. This applies to every PDF — papers, textbooks, lab manuals, datasheets, slides, and scans.
