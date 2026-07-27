@@ -1,0 +1,106 @@
+[project]
+name = "notebook-env"
+version = "0.0.0"
+description = "Scientific/engineering environment for the Notebook vault (replaces the `scientific` conda env)."
+requires-python = ">=3.12,<3.14"
+
+# Core stack — always installed.
+dependencies = [
+    "numpy>=2.1",
+    "scipy>=1.14",
+    "sympy>=1.13",
+    "pandas>=2.2",
+    "matplotlib>=3.9",
+    "seaborn>=0.13",
+    "plotly>=5.24",
+    "bokeh>=3.6",
+    "scikit-learn>=1.5",
+    "jupyterlab>=4.3",
+    "ipython>=8.30",
+    "ipywidgets>=8.1",
+]
+
+# PyTorch flavour. Neither extra is enabled by default: a plain `uv sync` takes
+# torch from PyPI, which is the CUDA build on Linux/Windows and the MPS build on
+# macOS. On a machine with no NVIDIA GPU, `uv sync --extra cpu` swaps in the
+# CPU-only wheels and saves ~3 GB of unused CUDA runtime.
+[project.optional-dependencies]
+cpu = ["torch>=2.9", "torchvision>=0.24"]
+cuda = ["torch>=2.9", "torchvision>=0.24"]
+
+[dependency-groups]
+ml = [
+    "torchdiffeq>=0.2.5",
+    "transformers>=4.55",
+    "accelerate>=1.10",
+    "safetensors>=0.6",
+    "huggingface-hub>=0.34",
+    "einops>=0.8",
+    "flow-matching>=1.0",
+]
+
+optim = [
+    "casadi>=3.7",
+    "openmdao>=3.38",
+    "dymos>=1.13",
+    "scikit-fem>=10",
+]
+
+robotics = [
+    "mujoco>=3.3",
+    "trimesh>=4.5",
+    "numpy-stl>=3.1",
+    "transforms3d>=0.4",
+    "shapely>=2.0",
+    "glfw>=2.7",
+    "pyopengl>=3.1",
+    "coacd>=1.0; sys_platform == 'linux' or sys_platform == 'win32'",
+    "obj2mjcf>=0.0.25; sys_platform == 'linux'",
+    "onshape-to-robot>=1.8; sys_platform == 'linux'",
+]
+
+docs = [
+    "docling>=2.40",
+    "marker-pdf>=1.8",
+    "pypdfium2>=4.30",
+    "python-docx>=1.1",
+    "python-pptx>=1.0",
+    "openpyxl>=3.1",
+    "xlsxwriter>=3.2",
+    "pylatexenc>=2.10",
+    "latex2mathml>=3.77",
+    "markdownify>=1.1",
+]
+
+llm = [
+    "anthropic>=0.40",
+    "openai>=1.60",
+    "google-genai>=1.0",
+]
+
+hdl = ["cocotb>=2.0"]
+
+dev = [
+    "mypy>=1.14",
+    "ruff>=0.9",
+    "pre-commit>=4.0",
+]
+
+[tool.uv]
+# This is a notes vault, not an installable package.
+package = false
+
+# Everything installs by default; drop names here to slim the venv.
+default-groups = ["ml", "optim", "robotics", "docs", "llm", "hdl", "dev"]
+
+# The two PyTorch flavours resolve from different indexes and cannot coexist.
+conflicts = [[{ extra = "cpu" }, { extra = "cuda" }]]
+
+[[tool.uv.index]]
+name = "pytorch-cpu"
+url = "https://download.pytorch.org/whl/cpu"
+explicit = true
+
+[tool.uv.sources]
+torch = [{ index = "pytorch-cpu", extra = "cpu" }]
+torchvision = [{ index = "pytorch-cpu", extra = "cpu" }]

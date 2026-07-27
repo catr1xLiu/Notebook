@@ -59,3 +59,7 @@ output_files/
 # Ignore local environment logs and files
 **.log
 **.local
+
+# Python / uv
+.venv/
+__pycache__/
