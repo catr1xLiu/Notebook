@@ -57,6 +57,24 @@
   - Time-domain plot: non-inverted, amplified output
 - **Missing**: inverting amplifier (Vout = −(Rf/Ri)·Vin), summing amplifier, difference amplifier, cascaded op-amps
 
+### 9 - Practice Problems.md (Obsidian)
+- Six selected end-of-chapter problems from Nilsson 12e Ch. 9, one per technique — solutions left blank
+- **9.25**: phasor round trip on a series RLC ($v_s = 750\cos(5000t)$ mV) — find $i_o(t)$
+- **9.29**: impedance reduction of a ladder — $Z_{ab}$ in polar and rectangular form
+- **9.31**: resonance — find $\omega$ making $Z_{ab}$ purely resistive, then evaluate $Z_{ab}$
+- **9.48**: Thévenin equivalent with a $\boldsymbol{V}_o/50$ **dependent** current source
+- **9.56**: node-voltage method with two out-of-phase sources (one $\cos$, one $\sin$)
+- **9.63**: mesh-current method, three meshes with a coupling capacitor
+
+### Formula Sheet.md (Obsidian)
+- Transcription of the formula sheet handed out with the Winter 2019 final (page 22 of `sources/ECE140 2019 Final.pdf`)
+- **Inductor / Capacitor**: $v$–$i$ relations, integral forms, stored energy $\frac{1}{2}Li^2$ and $\frac{1}{2}Cv^2$
+- **Transient analysis**: first-order RC ($\tau = RC$) and RL ($\tau = L/R$) step response
+- **Sinusoids**: sine/cosine phase-shift identities
+- **Impedance**: $\boldsymbol{Z} = R + jX$, $\boldsymbol{Z}_L = j\omega L$, $\boldsymbol{Z}_C = 1/j\omega C$
+- **Power**: complex power $\boldsymbol{S} = P + jQ$, real/reactive power, power factor
+- **Quadratic formula**
+
 ### CDT 2.md (Obsidian)
 - **Node voltage analysis worked example**: Circuit with R₁=14Ω, R₂=4Ω, R₃=6Ω, R₄=5Ω, 12V source, 1A current source. Write Ohm's Law for 4 resistors, KCL at 4 nodes, reduce to 2 equations, solve via row reduction. V_b = 12.123V, V_c = 8.158V.
 
