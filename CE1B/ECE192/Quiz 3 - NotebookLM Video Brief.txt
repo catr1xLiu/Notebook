@@ -1,0 +1,24 @@
+Make a ~10 minute exam-prep explainer video from the two Comparison Methods decks. This is
+revision for a closed-book quiz of multiple-choice questions and short numerical problems, NOT a
+first introduction. Assume I already know compound interest factors and cash flow diagrams. Skip
+the introduction, the investing motivation, and the list of standing assumptions -- state them
+once in a single sentence and move on. Spend the time on DECISION RULES and WORKED ARITHMETIC.
+
+Structure and time budget:
+1. (1 min) Project types: independent vs mutually exclusive vs related-but-not-mutually-exclusive,
+   the 2^n combination rule, contingent projects, and what MARR means.
+2. (2 min) NPW: build the cash flow, discount, accept if NPW > 0; largest NPW wins among mutually
+   exclusive. Walk one full numeric example end to end, saying every factor value out loud.
+3. (1.5 min) AW and AEC: AW = NPW x (A/P,i,N), capital recovery cost, and why least annual cost
+   wins for AEC. Mention FW only briefly -- same ranking as NPW.
+4. (2.5 min) Unequal service lives. Emphasize this heavily. Contrast all three treatments:
+   repeated lives with the least common multiple, the annual worth shortcut when repetition is
+   indefinite, and the study period with a salvage value. Include the break-even salvage value
+   calculation and the rule for interpreting it.
+5. (3 min) IRR. Define it as the rate where NPW = 0. Independent projects: accept if IRR > MARR.
+   Then make the central point of the whole video: for mutually exclusive projects the highest
+   IRR does NOT win. Walk the incremental investment analysis step by step -- rank by increasing
+   first cost, compute the IRR of the increment, compare to MARR, keep or discard the challenger.
+   Use the meat slicer example in full.
+
+Do not cover payback period beyond 30 seconds. Repeat every decision rule twice.

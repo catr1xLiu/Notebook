@@ -1,0 +1,173 @@
+{
+  "table_of_contents": [
+    {
+      "title": "ECE 192: Engineering Economics and Impact on Society\nSpring 2026\nComparison Methods Part 1 and 2\nTutorial 4",
+      "heading_level": null,
+      "page_id": 0,
+      "polygon": [
+        [
+          132.703125,
+          243.390625
+        ],
+        [
+          477.265625,
+          243.390625
+        ],
+        [
+          477.265625,
+          323.113037109375
+        ],
+        [
+          132.703125,
+          323.113037109375
+        ]
+      ]
+    },
+    {
+      "title": "Solve the following problems:",
+      "heading_level": null,
+      "page_id": 0,
+      "polygon": [
+        [
+          84.39453125,
+          439.5009765625
+        ],
+        [
+          213.6522674560547,
+          439.5009765625
+        ],
+        [
+          213.6522674560547,
+          449.5234375
+        ],
+        [
+          84.39453125,
+          449.5234375
+        ]
+      ]
+    }
+  ],
+  "page_stats": [
+    {
+      "page_id": 0,
+      "text_extraction_method": "pdftext",
+      "block_counts": [
+        [
+          "Span",
+          98
+        ],
+        [
+          "Line",
+          26
+        ],
+        [
+          "TableCell",
+          12
+        ],
+        [
+          "ListItem",
+          3
+        ],
+        [
+          "SectionHeader",
+          2
+        ],
+        [
+          "Picture",
+          1
+        ],
+        [
+          "Text",
+          1
+        ],
+        [
+          "Caption",
+          1
+        ],
+        [
+          "Table",
+          1
+        ],
+        [
+          "PageFooter",
+          1
+        ],
+        [
+          "TableGroup",
+          1
+        ],
+        [
+          "ListGroup",
+          1
+        ],
+        [
+          "Reference",
+          1
+        ]
+      ],
+      "block_metadata": {
+        "llm_request_count": 0,
+        "llm_error_count": 0,
+        "llm_tokens_used": 0,
+        "previous_text": "",
+        "previous_type": "",
+        "previous_order": 0
+      }
+    },
+    {
+      "page_id": 1,
+      "text_extraction_method": "surya",
+      "block_counts": [
+        [
+          "Line",
+          31
+        ],
+        [
+          "TableCell",
+          16
+        ],
+        [
+          "Span",
+          12
+        ],
+        [
+          "ListItem",
+          6
+        ],
+        [
+          "ListGroup",
+          2
+        ],
+        [
+          "Caption",
+          1
+        ],
+        [
+          "Table",
+          1
+        ],
+        [
+          "PageFooter",
+          1
+        ],
+        [
+          "TableGroup",
+          1
+        ],
+        [
+          "Reference",
+          1
+        ]
+      ],
+      "block_metadata": {
+        "llm_request_count": 0,
+        "llm_error_count": 0,
+        "llm_tokens_used": 0,
+        "previous_text": "",
+        "previous_type": "",
+        "previous_order": 0
+      }
+    }
+  ],
+  "debug_data_path": "debug_data/Tutorial 4_Comparison Methods"
+}

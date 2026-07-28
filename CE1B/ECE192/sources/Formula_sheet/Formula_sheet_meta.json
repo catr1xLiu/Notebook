@@ -1,0 +1,118 @@
+{
+  "table_of_contents": [
+    {
+      "title": "Formula Sheet (This page will NOT be marked)",
+      "heading_level": null,
+      "page_id": 0,
+      "polygon": [
+        [
+          211.5,
+          71.25
+        ],
+        [
+          398.25,
+          71.25
+        ],
+        [
+          398.25,
+          82.5
+        ],
+        [
+          211.5,
+          82.5
+        ]
+      ]
+    },
+    {
+      "title": "Depreciation:",
+      "heading_level": null,
+      "page_id": 0,
+      "polygon": [
+        [
+          100.5,
+          416.25
+        ],
+        [
+          157.5,
+          416.25
+        ],
+        [
+          157.5,
+          426.75
+        ],
+        [
+          100.5,
+          426.75
+        ]
+      ]
+    },
+    {
+      "title": "Risk management:",
+      "heading_level": null,
+      "page_id": 0,
+      "polygon": [
+        [
+          100.5,
+          495.0
+        ],
+        [
+          178.5,
+          495.0
+        ],
+        [
+          178.5,
+          505.5
+        ],
+        [
+          100.5,
+          505.5
+        ]
+      ]
+    }
+  ],
+  "page_stats": [
+    {
+      "page_id": 0,
+      "text_extraction_method": "surya",
+      "block_counts": [
+        [
+          "TableCell",
+          23
+        ],
+        [
+          "Line",
+          13
+        ],
+        [
+          "Span",
+          11
+        ],
+        [
+          "SectionHeader",
+          3
+        ],
+        [
+          "Text",
+          2
+        ],
+        [
+          "Table",
+          1
+        ],
+        [
+          "Equation",
+          1
+        ]
+      ],
+      "block_metadata": {
+        "llm_request_count": 0,
+        "llm_error_count": 0,
+        "llm_tokens_used": 0,
+        "previous_text": "",
+        "previous_type": "",
+        "previous_order": 0
+      }
+    }
+  ],
+  "debug_data_path": "debug_data/Formula_sheet"
+}

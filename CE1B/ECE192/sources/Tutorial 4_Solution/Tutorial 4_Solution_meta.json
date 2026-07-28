@@ -1,0 +1,579 @@
+{
+  "table_of_contents": [
+    {
+      "title": "ECE 192: Engineering Economics and Impact on Society\nSpring 2026",
+      "heading_level": null,
+      "page_id": 0,
+      "polygon": [
+        [
+          133.8671875,
+          241.74609375
+        ],
+        [
+          476.1015625,
+          241.74609375
+        ],
+        [
+          476.1015625,
+          284.50390625
+        ],
+        [
+          133.8671875,
+          284.50390625
+        ]
+      ]
+    },
+    {
+      "title": "Problem 1",
+      "heading_level": null,
+      "page_id": 0,
+      "polygon": [
+        [
+          84.39453125,
+          412.85595703125
+        ],
+        [
+          159.75216674804688,
+          412.85595703125
+        ],
+        [
+          159.75216674804688,
+          427.2021484375
+        ],
+        [
+          84.39453125,
+          427.2021484375
+        ]
+      ]
+    },
+    {
+      "title": "Solution",
+      "heading_level": null,
+      "page_id": 0,
+      "polygon": [
+        [
+          85.55859375,
+          511.8603515625
+        ],
+        [
+          134.9381561279297,
+          511.8603515625
+        ],
+        [
+          134.9381561279297,
+          524.082763671875
+        ],
+        [
+          85.55859375,
+          524.082763671875
+        ]
+      ]
+    },
+    {
+      "title": "Problem 2",
+      "heading_level": null,
+      "page_id": 1,
+      "polygon": [
+        [
+          86.140625,
+          127.0400390625
+        ],
+        [
+          159.7521209716797,
+          127.0400390625
+        ],
+        [
+          159.7521209716797,
+          142.14117431640625
+        ],
+        [
+          86.140625,
+          142.14117431640625
+        ]
+      ]
+    },
+    {
+      "title": "Solution",
+      "heading_level": null,
+      "page_id": 1,
+      "polygon": [
+        [
+          85.55859375,
+          225.7119140625
+        ],
+        [
+          134.9381103515625,
+          225.7119140625
+        ],
+        [
+          134.9381103515625,
+          239.1488037109375
+        ],
+        [
+          85.55859375,
+          239.1488037109375
+        ]
+      ]
+    },
+    {
+      "title": "Problem 3",
+      "heading_level": null,
+      "page_id": 1,
+      "polygon": [
+        [
+          85.849609375,
+          538.0800170898438
+        ],
+        [
+          159.767578125,
+          538.0800170898438
+        ],
+        [
+          159.767578125,
+          552.4262084960938
+        ],
+        [
+          85.849609375,
+          552.4262084960938
+        ]
+      ]
+    },
+    {
+      "title": "Part (a): Mutually exclusive combinations",
+      "heading_level": null,
+      "page_id": 2,
+      "polygon": [
+        [
+          85.55859375,
+          72.359375
+        ],
+        [
+          336.0246276855469,
+          72.359375
+        ],
+        [
+          336.0246276855469,
+          84.68475341796875
+        ],
+        [
+          85.55859375,
+          84.68475341796875
+        ]
+      ]
+    },
+    {
+      "title": "Part (b): Selection at MARR = 12%",
+      "heading_level": null,
+      "page_id": 2,
+      "polygon": [
+        [
+          86.140625,
+          379.064453125
+        ],
+        [
+          299.17864990234375,
+          379.064453125
+        ],
+        [
+          299.17864990234375,
+          392.0828552246094
+        ],
+        [
+          86.140625,
+          392.0828552246094
+        ]
+      ]
+    },
+    {
+      "title": "Problem 4",
+      "heading_level": null,
+      "page_id": 3,
+      "polygon": [
+        [
+          86.4000015258789,
+          145.9521484375
+        ],
+        [
+          159.7521209716797,
+          145.9521484375
+        ],
+        [
+          159.7521209716797,
+          160.438232421875
+        ],
+        [
+          86.4000015258789,
+          160.438232421875
+        ]
+      ]
+    },
+    {
+      "title": "Part (a): Annual worth, repeated indefinitely",
+      "heading_level": null,
+      "page_id": 3,
+      "polygon": [
+        [
+          86.140625,
+          232.701171875
+        ],
+        [
+          354.0888671875,
+          232.701171875
+        ],
+        [
+          354.0888671875,
+          244.890869140625
+        ],
+        [
+          86.140625,
+          244.890869140625
+        ]
+      ]
+    },
+    {
+      "title": "Part (b): Study period",
+      "heading_level": null,
+      "page_id": 3,
+      "polygon": [
+        [
+          84.9765625,
+          522.7456359863281
+        ],
+        [
+          221.52963256835938,
+          522.7456359863281
+        ],
+        [
+          221.52963256835938,
+          534.7008361816406
+        ],
+        [
+          84.9765625,
+          534.7008361816406
+        ]
+      ]
+    },
+    {
+      "title": "Problem 5",
+      "heading_level": null,
+      "page_id": 4,
+      "polygon": [
+        [
+          84.9765625,
+          70.3037109375
+        ],
+        [
+          159.7521209716797,
+          70.3037109375
+        ],
+        [
+          159.7521209716797,
+          85.2071533203125
+        ],
+        [
+          84.9765625,
+          85.2071533203125
+        ]
+      ]
+    },
+    {
+      "title": "Solution",
+      "heading_level": null,
+      "page_id": 4,
+      "polygon": [
+        [
+          85.849609375,
+          146.34954833984375
+        ],
+        [
+          134.9381103515625,
+          146.34954833984375
+        ],
+        [
+          134.9381103515625,
+          158.30474853515625
+        ],
+        [
+          85.849609375,
+          158.30474853515625
+        ]
+      ]
+    },
+    {
+      "title": "Step 2 \u2014 Incremental analysis (high-capacity \u2212 standard).",
+      "heading_level": null,
+      "page_id": 4,
+      "polygon": [
+        [
+          84.39453125,
+          383.17578125
+        ],
+        [
+          381.61181640625,
+          383.17578125
+        ],
+        [
+          381.61181640625,
+          393.64349365234375
+        ],
+        [
+          84.39453125,
+          393.64349365234375
+        ]
+      ]
+    }
+  ],
+  "page_stats": [
+    {
+      "page_id": 0,
+      "text_extraction_method": "pdftext",
+      "block_counts": [
+        [
+          "Span",
+          274
+        ],
+        [
+          "Line",
+          54
+        ],
+        [
+          "Text",
+          7
+        ],
+        [
+          "SectionHeader",
+          3
+        ],
+        [
+          "ListItem",
+          3
+        ],
+        [
+          "Equation",
+          2
+        ],
+        [
+          "Picture",
+          1
+        ],
+        [
+          "PageFooter",
+          1
+        ],
+        [
+          "ListGroup",
+          1
+        ]
+      ],
+      "block_metadata": {
+        "llm_request_count": 0,
+        "llm_error_count": 0,
+        "llm_tokens_used": 0,
+        "previous_text": "",
+        "previous_type": "",
+        "previous_order": 0
+      }
+    },
+    {
+      "page_id": 1,
+      "text_extraction_method": "pdftext",
+      "block_counts": [
+        [
+          "Span",
+          267
+        ],
+        [
+          "Line",
+          45
+        ],
+        [
+          "TableCell",
+          12
+        ],
+        [
+          "Text",
+          7
+        ],
+        [
+          "Equation",
+          3
+        ],
+        [
+          "SectionHeader",
+          3
+        ],
+        [
+          "ListItem",
+          3
+        ],
+        [
+          "Caption",
+          1
+        ],
+        [
+          "Table",
+          1
+        ],
+        [
+          "PageFooter",
+          1
+        ],
+        [
+          "TableGroup",
+          1
+        ],
+        [
+          "ListGroup",
+          1
+        ],
+        [
+          "Reference",
+          1
+        ]
+      ],
+      "block_metadata": {
+        "llm_request_count": 0,
+        "llm_error_count": 0,
+        "llm_tokens_used": 0,
+        "previous_text": "",
+        "previous_type": "",
+        "previous_order": 0
+      }
+    },
+    {
+      "page_id": 2,
+      "text_extraction_method": "pdftext",
+      "block_counts": [
+        [
+          "Span",
+          347
+        ],
+        [
+          "TableCell",
+          72
+        ],
+        [
+          "Line",
+          45
+        ],
+        [
+          "Text",
+          6
+        ],
+        [
+          "Equation",
+          3
+        ],
+        [
+          "SectionHeader",
+          2
+        ],
+        [
+          "Caption",
+          2
+        ],
+        [
+          "Table",
+          2
+        ],
+        [
+          "TableGroup",
+          2
+        ],
+        [
+          "PageFooter",
+          1
+        ],
+        [
+          "Reference",
+          1
+        ]
+      ],
+      "block_metadata": {
+        "llm_request_count": 0,
+        "llm_error_count": 0,
+        "llm_tokens_used": 0,
+        "previous_text": "",
+        "previous_type": "",
+        "previous_order": 0
+      }
+    },
+    {
+      "page_id": 3,
+      "text_extraction_method": "pdftext",
+      "block_counts": [
+        [
+          "Span",
+          481
+        ],
+        [
+          "Line",
+          48
+        ],
+        [
+          "Text",
+          11
+        ],
+        [
+          "Equation",
+          8
+        ],
+        [
+          "SectionHeader",
+          3
+        ],
+        [
+          "PageFooter",
+          1
+        ]
+      ],
+      "block_metadata": {
+        "llm_request_count": 0,
+        "llm_error_count": 0,
+        "llm_tokens_used": 0,
+        "previous_text": "",
+        "previous_type": "",
+        "previous_order": 0
+      }
+    },
+    {
+      "page_id": 4,
+      "text_extraction_method": "pdftext",
+      "block_counts": [
+        [
+          "Span",
+          305
+        ],
+        [
+          "Line",
+          52
+        ],
+        [
+          "Text",
+          10
+        ],
+        [
+          "Equation",
+          7
+        ],
+        [
+          "SectionHeader",
+          3
+        ],
+        [
+          "PageFooter",
+          1
+        ]
+      ],
+      "block_metadata": {
+        "llm_request_count": 0,
+        "llm_error_count": 0,
+        "llm_tokens_used": 0,
+        "previous_text": "",
+        "previous_type": "",
+        "previous_order": 0
+      }
+    }
+  ],
+  "debug_data_path": "debug_data/Tutorial 4_Solution"
+}
