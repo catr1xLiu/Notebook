@@ -1,0 +1,713 @@
+{
+  "table_of_contents": [
+    {
+      "title": "VAIRO: A Vision-Based Adaptive Impedance-Control Robotic\nFramework",
+      "heading_level": null,
+      "page_id": 0,
+      "polygon": [
+        [
+          85.06800000000001,
+          68.112
+        ],
+        [
+          523.872,
+          68.112
+        ],
+        [
+          523.872,
+          108.29949951171875
+        ],
+        [
+          85.06800000000001,
+          108.29949951171875
+        ]
+      ]
+    },
+    {
+      "title": "I. INTRODUCTION",
+      "heading_level": null,
+      "page_id": 0,
+      "polygon": [
+        [
+          133.416,
+          369.072
+        ],
+        [
+          215.27810668945312,
+          369.072
+        ],
+        [
+          215.27810668945312,
+          381.9691162109375
+        ],
+        [
+          133.416,
+          381.9691162109375
+        ]
+      ]
+    },
+    {
+      "title": "A. Background",
+      "heading_level": null,
+      "page_id": 0,
+      "polygon": [
+        [
+          310.284,
+          646.2719999999999
+        ],
+        [
+          375.15599999999995,
+          646.2719999999999
+        ],
+        [
+          375.15599999999995,
+          660.3092041015625
+        ],
+        [
+          310.284,
+          660.3092041015625
+        ]
+      ]
+    },
+    {
+      "title": "B. Contributions",
+      "heading_level": null,
+      "page_id": 1,
+      "polygon": [
+        [
+          50.79600000000001,
+          645.48
+        ],
+        [
+          123.62400000000002,
+          645.48
+        ],
+        [
+          123.62400000000002,
+          659.9528045654297
+        ],
+        [
+          50.79600000000001,
+          659.9528045654297
+        ]
+      ]
+    },
+    {
+      "title": "II. METHODOLOGY",
+      "heading_level": null,
+      "page_id": 1,
+      "polygon": [
+        [
+          388.00800000000004,
+          351.648
+        ],
+        [
+          477.73773193359375,
+          351.648
+        ],
+        [
+          477.73773193359375,
+          364.80316162109375
+        ],
+        [
+          388.00800000000004,
+          364.80316162109375
+        ]
+      ]
+    },
+    {
+      "title": "A. Experimental Setup",
+      "heading_level": null,
+      "page_id": 1,
+      "polygon": [
+        [
+          309.06,
+          533.808
+        ],
+        [
+          406.36800000000005,
+          533.808
+        ],
+        [
+          406.36800000000005,
+          546.9854736328125
+        ],
+        [
+          309.06,
+          546.9854736328125
+        ]
+      ]
+    },
+    {
+      "title": "B. End Effector Design",
+      "heading_level": null,
+      "page_id": 2,
+      "polygon": [
+        [
+          50.79600000000001,
+          340.56
+        ],
+        [
+          150.73077392578125,
+          340.56
+        ],
+        [
+          150.73077392578125,
+          352.7503662109375
+        ],
+        [
+          50.79600000000001,
+          352.7503662109375
+        ]
+      ]
+    },
+    {
+      "title": "C. Cartesian impedance control",
+      "heading_level": null,
+      "page_id": 2,
+      "polygon": [
+        [
+          50.79600000000001,
+          498.96
+        ],
+        [
+          186.048,
+          498.96
+        ],
+        [
+          186.048,
+          511.7624206542969
+        ],
+        [
+          50.79600000000001,
+          511.7624206542969
+        ]
+      ]
+    },
+    {
+      "title": "D. Croissant Parts Instance Segmentation",
+      "heading_level": null,
+      "page_id": 2,
+      "polygon": [
+        [
+          309.06,
+          581.328
+        ],
+        [
+          485.31600000000003,
+          581.328
+        ],
+        [
+          485.31600000000003,
+          594.5882873535156
+        ],
+        [
+          309.06,
+          594.5882873535156
+        ]
+      ]
+    },
+    {
+      "title": "E. Vision-Based Stiffness Adaptation",
+      "heading_level": null,
+      "page_id": 3,
+      "polygon": [
+        [
+          310.284,
+          376.99199999999996
+        ],
+        [
+          463.4520263671875,
+          376.99199999999996
+        ],
+        [
+          463.4520263671875,
+          390.0523986816406
+        ],
+        [
+          310.284,
+          390.0523986816406
+        ]
+      ]
+    },
+    {
+      "title": "III. RESULTS",
+      "heading_level": null,
+      "page_id": 4,
+      "polygon": [
+        [
+          402.08400000000006,
+          382.536
+        ],
+        [
+          465.12,
+          382.536
+        ],
+        [
+          465.12,
+          395.2129821777344
+        ],
+        [
+          402.08400000000006,
+          395.2129821777344
+        ]
+      ]
+    },
+    {
+      "title": "A. Nominal Stiffness Identification",
+      "heading_level": null,
+      "page_id": 4,
+      "polygon": [
+        [
+          310.284,
+          525.888
+        ],
+        [
+          454.716,
+          525.888
+        ],
+        [
+          454.716,
+          538.7872467041016
+        ],
+        [
+          310.284,
+          538.7872467041016
+        ]
+      ]
+    },
+    {
+      "title": "B. Croissant Instance Segmentation",
+      "heading_level": null,
+      "page_id": 4,
+      "polygon": [
+        [
+          310.284,
+          669.24
+        ],
+        [
+          460.22399999999993,
+          669.24
+        ],
+        [
+          460.22399999999993,
+          682.0542755126953
+        ],
+        [
+          310.284,
+          682.0542755126953
+        ]
+      ]
+    },
+    {
+      "title": "C. Adaptive Impedance Dough Rolling",
+      "heading_level": null,
+      "page_id": 5,
+      "polygon": [
+        [
+          310.896,
+          272.448
+        ],
+        [
+          473.36517333984375,
+          272.448
+        ],
+        [
+          473.36517333984375,
+          286.36444091796875
+        ],
+        [
+          310.896,
+          286.36444091796875
+        ]
+      ]
+    },
+    {
+      "title": "IV. CONCLUSIONS AND FUTURE WORK",
+      "heading_level": null,
+      "page_id": 6,
+      "polygon": [
+        [
+          89.964,
+          226.51199999999997
+        ],
+        [
+          260.1,
+          226.51199999999997
+        ],
+        [
+          260.1,
+          239.3031005859375
+        ],
+        [
+          89.964,
+          239.3031005859375
+        ]
+      ]
+    },
+    {
+      "title": "REFERENCES",
+      "heading_level": null,
+      "page_id": 6,
+      "polygon": [
+        [
+          399.6360000000001,
+          129.888
+        ],
+        [
+          463.5048828125,
+          129.888
+        ],
+        [
+          463.5048828125,
+          142.64501953125
+        ],
+        [
+          399.6360000000001,
+          142.64501953125
+        ]
+      ]
+    }
+  ],
+  "page_stats": [
+    {
+      "page_id": 0,
+      "text_extraction_method": "pdftext",
+      "block_counts": [
+        [
+          "Span",
+          219
+        ],
+        [
+          "Line",
+          100
+        ],
+        [
+          "Text",
+          8
+        ],
+        [
+          "SectionHeader",
+          3
+        ],
+        [
+          "Footnote",
+          3
+        ],
+        [
+          "PageFooter",
+          3
+        ],
+        [
+          "PageHeader",
+          1
+        ],
+        [
+          "Picture",
+          1
+        ],
+        [
+          "Caption",
+          1
+        ],
+        [
+          "PictureGroup",
+          1
+        ]
+      ],
+      "block_metadata": {
+        "llm_request_count": 0,
+        "llm_error_count": 0,
+        "llm_tokens_used": 0,
+        "previous_text": "",
+        "previous_type": "",
+        "previous_order": 0
+      }
+    },
+    {
+      "page_id": 1,
+      "text_extraction_method": "pdftext",
+      "block_counts": [
+        [
+          "Span",
+          225
+        ],
+        [
+          "Line",
+          110
+        ],
+        [
+          "Text",
+          10
+        ],
+        [
+          "SectionHeader",
+          3
+        ],
+        [
+          "PageFooter",
+          2
+        ],
+        [
+          "ListItem",
+          2
+        ],
+        [
+          "ListGroup",
+          1
+        ],
+        [
+          "Footnote",
+          1
+        ]
+      ],
+      "block_metadata": {
+        "llm_request_count": 0,
+        "llm_error_count": 0,
+        "llm_tokens_used": 0,
+        "previous_text": "",
+        "previous_type": "",
+        "previous_order": 0
+      }
+    },
+    {
+      "page_id": 2,
+      "text_extraction_method": "pdftext",
+      "block_counts": [
+        [
+          "Span",
+          437
+        ],
+        [
+          "Line",
+          98
+        ],
+        [
+          "Text",
+          11
+        ],
+        [
+          "Caption",
+          5
+        ],
+        [
+          "Equation",
+          4
+        ],
+        [
+          "SectionHeader",
+          3
+        ],
+        [
+          "Footnote",
+          3
+        ],
+        [
+          "Picture",
+          2
+        ],
+        [
+          "PageFooter",
+          2
+        ],
+        [
+          "PictureGroup",
+          2
+        ],
+        [
+          "Diagram",
+          1
+        ]
+      ],
+      "block_metadata": {
+        "llm_request_count": 0,
+        "llm_error_count": 0,
+        "llm_tokens_used": 0,
+        "previous_text": "",
+        "previous_type": "",
+        "previous_order": 0
+      }
+    },
+    {
+      "page_id": 3,
+      "text_extraction_method": "pdftext",
+      "block_counts": [
+        [
+          "Span",
+          541
+        ],
+        [
+          "Line",
+          113
+        ],
+        [
+          "Text",
+          10
+        ],
+        [
+          "Caption",
+          2
+        ],
+        [
+          "PageFooter",
+          2
+        ],
+        [
+          "Picture",
+          1
+        ],
+        [
+          "SectionHeader",
+          1
+        ],
+        [
+          "Equation",
+          1
+        ],
+        [
+          "PictureGroup",
+          1
+        ]
+      ],
+      "block_metadata": {
+        "llm_request_count": 0,
+        "llm_error_count": 0,
+        "llm_tokens_used": 0,
+        "previous_text": "",
+        "previous_type": "",
+        "previous_order": 0
+      }
+    },
+    {
+      "page_id": 4,
+      "text_extraction_method": "pdftext",
+      "block_counts": [
+        [
+          "Span",
+          429
+        ],
+        [
+          "Line",
+          122
+        ],
+        [
+          "Text",
+          11
+        ],
+        [
+          "Equation",
+          4
+        ],
+        [
+          "SectionHeader",
+          3
+        ],
+        [
+          "PageFooter",
+          2
+        ]
+      ],
+      "block_metadata": {
+        "llm_request_count": 0,
+        "llm_error_count": 0,
+        "llm_tokens_used": 0,
+        "previous_text": "",
+        "previous_type": "",
+        "previous_order": 0
+      }
+    },
+    {
+      "page_id": 5,
+      "text_extraction_method": "pdftext",
+      "block_counts": [
+        [
+          "Span",
+          197
+        ],
+        [
+          "Line",
+          78
+        ],
+        [
+          "Caption",
+          4
+        ],
+        [
+          "Figure",
+          3
+        ],
+        [
+          "Text",
+          3
+        ],
+        [
+          "FigureGroup",
+          3
+        ],
+        [
+          "PageFooter",
+          2
+        ],
+        [
+          "Table",
+          1
+        ],
+        [
+          "SectionHeader",
+          1
+        ],
+        [
+          "TableGroup",
+          1
+        ]
+      ],
+      "block_metadata": {
+        "llm_request_count": 0,
+        "llm_error_count": 0,
+        "llm_tokens_used": 0,
+        "previous_text": "",
+        "previous_type": "",
+        "previous_order": 0
+      }
+    },
+    {
+      "page_id": 6,
+      "text_extraction_method": "pdftext",
+      "block_counts": [
+        [
+          "Span",
+          349
+        ],
+        [
+          "Line",
+          128
+        ],
+        [
+          "Text",
+          7
+        ],
+        [
+          "SectionHeader",
+          2
+        ],
+        [
+          "PageFooter",
+          2
+        ],
+        [
+          "ListGroup",
+          1
+        ]
+      ],
+      "block_metadata": {
+        "llm_request_count": 0,
+        "llm_error_count": 0,
+        "llm_tokens_used": 0,
+        "previous_text": "",
+        "previous_type": "",
+        "previous_order": 0
+      }
+    }
+  ],
+  "debug_data_path": "debug_data/VAIRO: A Vision-Based Adaptive Impedance-Control Robotic"
+}

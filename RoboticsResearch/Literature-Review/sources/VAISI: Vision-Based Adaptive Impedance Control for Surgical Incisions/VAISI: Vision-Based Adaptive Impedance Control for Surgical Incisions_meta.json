@@ -1,0 +1,862 @@
+{
+  "table_of_contents": [
+    {
+      "title": "VAISI: Vision-Based Adaptive Impedance-Control for Surgical Incisions",
+      "heading_level": null,
+      "page_id": 0,
+      "polygon": [
+        [
+          41.72,
+          105.25
+        ],
+        [
+          551.896,
+          105.25
+        ],
+        [
+          551.896,
+          124.7947998046875
+        ],
+        [
+          41.72,
+          124.7947998046875
+        ]
+      ]
+    },
+    {
+      "title": "I. INTRODUCTION",
+      "heading_level": null,
+      "page_id": 0,
+      "polygon": [
+        [
+          125.15999999999998,
+          436.156
+        ],
+        [
+          206.87911987304688,
+          436.156
+        ],
+        [
+          206.87911987304688,
+          449.4156799316406
+        ],
+        [
+          125.15999999999998,
+          449.4156799316406
+        ]
+      ]
+    },
+    {
+      "title": "II. BACKGROUND",
+      "heading_level": null,
+      "page_id": 1,
+      "polygon": [
+        [
+          126.35199999999999,
+          665.1800000000001
+        ],
+        [
+          206.81199999999998,
+          665.1800000000001
+        ],
+        [
+          206.81199999999998,
+          678.8451995849609
+        ],
+        [
+          126.35199999999999,
+          678.8451995849609
+        ]
+      ]
+    },
+    {
+      "title": "A. Mechanics of Soft Tissue",
+      "heading_level": null,
+      "page_id": 1,
+      "polygon": [
+        [
+          41.72,
+          681.178
+        ],
+        [
+          160.92000000000002,
+          681.178
+        ],
+        [
+          160.92000000000002,
+          695.2151794433594
+        ],
+        [
+          41.72,
+          695.2151794433594
+        ]
+      ]
+    },
+    {
+      "title": "B. Soft Material Manipulation in Robotics",
+      "heading_level": null,
+      "page_id": 1,
+      "polygon": [
+        [
+          302.17199999999997,
+          274.492
+        ],
+        [
+          480.37600000000003,
+          274.492
+        ],
+        [
+          480.37600000000003,
+          288.8507080078125
+        ],
+        [
+          302.17199999999997,
+          288.8507080078125
+        ]
+      ]
+    },
+    {
+      "title": "C. Variable Cartesian Impedance Control",
+      "heading_level": null,
+      "page_id": 1,
+      "polygon": [
+        [
+          302.17199999999997,
+          549.826
+        ],
+        [
+          476.8,
+          549.826
+        ],
+        [
+          476.8,
+          563.7287902832031
+        ],
+        [
+          302.17199999999997,
+          563.7287902832031
+        ]
+      ]
+    },
+    {
+      "title": "III. METHODOLOGY",
+      "heading_level": null,
+      "page_id": 2,
+      "polygon": [
+        [
+          121.58399999999999,
+          233.234
+        ],
+        [
+          212.77199999999996,
+          233.234
+        ],
+        [
+          212.77199999999996,
+          246.21978759765625
+        ],
+        [
+          121.58399999999999,
+          246.21978759765625
+        ]
+      ]
+    },
+    {
+      "title": "A. Design of the Stereo Vision Scalpel End-Tool",
+      "heading_level": null,
+      "page_id": 2,
+      "polygon": [
+        [
+          42.315999999999995,
+          256.81
+        ],
+        [
+          245.55199999999996,
+          256.81
+        ],
+        [
+          245.55199999999996,
+          269.09539794921875
+        ],
+        [
+          42.315999999999995,
+          269.09539794921875
+        ]
+      ]
+    },
+    {
+      "title": "B. Incision Feature Estimation using Stereo Vision",
+      "heading_level": null,
+      "page_id": 2,
+      "polygon": [
+        [
+          302.17199999999997,
+          250.07399999999998
+        ],
+        [
+          516.136,
+          250.07399999999998
+        ],
+        [
+          516.136,
+          262.37646484375
+        ],
+        [
+          302.17199999999997,
+          262.37646484375
+        ]
+      ]
+    },
+    {
+      "title": "C. Vision-Based Adaptive Cartesian Impedance Control",
+      "heading_level": null,
+      "page_id": 3,
+      "polygon": [
+        [
+          42.315999999999995,
+          394.05600000000004
+        ],
+        [
+          275.948,
+          394.05600000000004
+        ],
+        [
+          275.948,
+          408.25360107421875
+        ],
+        [
+          42.315999999999995,
+          408.25360107421875
+        ]
+      ]
+    },
+    {
+      "title": "Algorithm 2 Incision Control",
+      "heading_level": null,
+      "page_id": 3,
+      "polygon": [
+        [
+          311.70799999999997,
+          252.59999999999997
+        ],
+        [
+          437.52178955078125,
+          252.59999999999997
+        ],
+        [
+          437.52178955078125,
+          265.96331787109375
+        ],
+        [
+          311.70799999999997,
+          265.96331787109375
+        ]
+      ]
+    },
+    {
+      "title": "IV. EXPERIMENTS AND RESULTS",
+      "heading_level": null,
+      "page_id": 3,
+      "polygon": [
+        [
+          352.23599999999993,
+          500.14799999999997
+        ],
+        [
+          498.256,
+          500.14799999999997
+        ],
+        [
+          498.256,
+          514.0448303222656
+        ],
+        [
+          352.23599999999993,
+          514.0448303222656
+        ]
+      ]
+    },
+    {
+      "title": "A. Evaluation of the Stereo Vision Scalpel End-Tool",
+      "heading_level": null,
+      "page_id": 3,
+      "polygon": [
+        [
+          300.98,
+          514.462
+        ],
+        [
+          520.308,
+          514.462
+        ],
+        [
+          520.308,
+          528.9528503417969
+        ],
+        [
+          300.98,
+          528.9528503417969
+        ]
+      ]
+    },
+    {
+      "title": "B. Experimental Setup",
+      "heading_level": null,
+      "page_id": 4,
+      "polygon": [
+        [
+          42.315999999999995,
+          691.2819999999999
+        ],
+        [
+          138.868,
+          691.2819999999999
+        ],
+        [
+          138.868,
+          706.3427429199219
+        ],
+        [
+          42.315999999999995,
+          706.3427429199219
+        ]
+      ]
+    },
+    {
+      "title": "C. Results",
+      "heading_level": null,
+      "page_id": 4,
+      "polygon": [
+        [
+          300.98,
+          452.99600000000004
+        ],
+        [
+          348.65999999999997,
+          452.99600000000004
+        ],
+        [
+          348.65999999999997,
+          466.84478759765625
+        ],
+        [
+          300.98,
+          466.84478759765625
+        ]
+      ]
+    },
+    {
+      "title": "V. CONCLUSION AND FUTURE WORK",
+      "heading_level": null,
+      "page_id": 5,
+      "polygon": [
+        [
+          343.29599999999994,
+          324.17
+        ],
+        [
+          508.388,
+          324.17
+        ],
+        [
+          508.388,
+          336.4625244140625
+        ],
+        [
+          343.29599999999994,
+          336.4625244140625
+        ]
+      ]
+    },
+    {
+      "title": "(a) Porcine belly skin with 5mm desired incision depth",
+      "heading_level": null,
+      "page_id": 7,
+      "polygon": [
+        [
+          62.57999999999999,
+          160.822
+        ],
+        [
+          270.584,
+          160.822
+        ],
+        [
+          270.584,
+          173.22808837890625
+        ],
+        [
+          62.57999999999999,
+          173.22808837890625
+        ]
+      ]
+    },
+    {
+      "title": "(b) Porcine hock skin with 5mm desired incision depth",
+      "heading_level": null,
+      "page_id": 7,
+      "polygon": [
+        [
+          62.57999999999999,
+          267.75600000000003
+        ],
+        [
+          270.584,
+          267.75600000000003
+        ],
+        [
+          270.584,
+          280.227294921875
+        ],
+        [
+          62.57999999999999,
+          280.227294921875
+        ]
+      ]
+    },
+    {
+      "title": "(c) Porcine belly skin with 10mm desired incision depth",
+      "heading_level": null,
+      "page_id": 7,
+      "polygon": [
+        [
+          62.57999999999999,
+          374.69
+        ],
+        [
+          272.2014465332031,
+          374.69
+        ],
+        [
+          272.2014465332031,
+          387.2254943847656
+        ],
+        [
+          62.57999999999999,
+          387.2254943847656
+        ]
+      ]
+    },
+    {
+      "title": "(d) Porcine hock skin with 10mm desired incision depth",
+      "heading_level": null,
+      "page_id": 7,
+      "polygon": [
+        [
+          62.57999999999999,
+          481.62399999999997
+        ],
+        [
+          272.2014465332031,
+          481.62399999999997
+        ],
+        [
+          272.2014465332031,
+          494.2247009277344
+        ],
+        [
+          62.57999999999999,
+          494.2247009277344
+        ]
+      ]
+    },
+    {
+      "title": "REFERENCES",
+      "heading_level": null,
+      "page_id": 7,
+      "polygon": [
+        [
+          136.48399999999998,
+          528.776
+        ],
+        [
+          195.91053771972656,
+          528.776
+        ],
+        [
+          195.91053771972656,
+          542.1310424804688
+        ],
+        [
+          136.48399999999998,
+          542.1310424804688
+        ]
+      ]
+    }
+  ],
+  "page_stats": [
+    {
+      "page_id": 0,
+      "text_extraction_method": "pdftext",
+      "block_counts": [
+        [
+          "Span",
+          205
+        ],
+        [
+          "Line",
+          96
+        ],
+        [
+          "Text",
+          6
+        ],
+        [
+          "PageFooter",
+          4
+        ],
+        [
+          "SectionHeader",
+          2
+        ],
+        [
+          "PageHeader",
+          1
+        ],
+        [
+          "Picture",
+          1
+        ],
+        [
+          "Caption",
+          1
+        ],
+        [
+          "Footnote",
+          1
+        ]
+      ],
+      "block_metadata": {
+        "llm_request_count": 0,
+        "llm_error_count": 0,
+        "llm_tokens_used": 0,
+        "previous_text": "",
+        "previous_type": "",
+        "previous_order": 0
+      }
+    },
+    {
+      "page_id": 1,
+      "text_extraction_method": "pdftext",
+      "block_counts": [
+        [
+          "Span",
+          235
+        ],
+        [
+          "Line",
+          112
+        ],
+        [
+          "Text",
+          10
+        ],
+        [
+          "SectionHeader",
+          4
+        ],
+        [
+          "ListItem",
+          4
+        ],
+        [
+          "ListGroup",
+          1
+        ],
+        [
+          "PageFooter",
+          1
+        ]
+      ],
+      "block_metadata": {
+        "llm_request_count": 0,
+        "llm_error_count": 0,
+        "llm_tokens_used": 0,
+        "previous_text": "",
+        "previous_type": "",
+        "previous_order": 0
+      }
+    },
+    {
+      "page_id": 2,
+      "text_extraction_method": "pdftext",
+      "block_counts": [
+        [
+          "Span",
+          627
+        ],
+        [
+          "Line",
+          122
+        ],
+        [
+          "Text",
+          26
+        ],
+        [
+          "SectionHeader",
+          3
+        ],
+        [
+          "ListItem",
+          2
+        ],
+        [
+          "Equation",
+          1
+        ],
+        [
+          "Picture",
+          1
+        ],
+        [
+          "Caption",
+          1
+        ],
+        [
+          "ListGroup",
+          1
+        ],
+        [
+          "PageFooter",
+          1
+        ],
+        [
+          "PictureGroup",
+          1
+        ]
+      ],
+      "block_metadata": {
+        "llm_request_count": 0,
+        "llm_error_count": 0,
+        "llm_tokens_used": 0,
+        "previous_text": "",
+        "previous_type": "",
+        "previous_order": 0
+      }
+    },
+    {
+      "page_id": 3,
+      "text_extraction_method": "pdftext",
+      "block_counts": [
+        [
+          "Span",
+          514
+        ],
+        [
+          "Line",
+          111
+        ],
+        [
+          "Text",
+          11
+        ],
+        [
+          "SectionHeader",
+          4
+        ],
+        [
+          "PageFooter",
+          1
+        ]
+      ],
+      "block_metadata": {
+        "llm_request_count": 0,
+        "llm_error_count": 0,
+        "llm_tokens_used": 0,
+        "previous_text": "",
+        "previous_type": "",
+        "previous_order": 0
+      }
+    },
+    {
+      "page_id": 4,
+      "text_extraction_method": "pdftext",
+      "block_counts": [
+        [
+          "Span",
+          171
+        ],
+        [
+          "Line",
+          76
+        ],
+        [
+          "Caption",
+          6
+        ],
+        [
+          "Text",
+          5
+        ],
+        [
+          "SectionHeader",
+          2
+        ],
+        [
+          "Picture",
+          2
+        ],
+        [
+          "PictureGroup",
+          2
+        ],
+        [
+          "Diagram",
+          1
+        ],
+        [
+          "Figure",
+          1
+        ],
+        [
+          "Table",
+          1
+        ],
+        [
+          "PageFooter",
+          1
+        ],
+        [
+          "FigureGroup",
+          1
+        ],
+        [
+          "TableGroup",
+          1
+        ]
+      ],
+      "block_metadata": {
+        "llm_request_count": 0,
+        "llm_error_count": 0,
+        "llm_tokens_used": 0,
+        "previous_text": "",
+        "previous_type": "",
+        "previous_order": 0
+      }
+    },
+    {
+      "page_id": 5,
+      "text_extraction_method": "pdftext",
+      "block_counts": [
+        [
+          "Span",
+          195
+        ],
+        [
+          "Line",
+          87
+        ],
+        [
+          "Text",
+          8
+        ],
+        [
+          "Figure",
+          2
+        ],
+        [
+          "Caption",
+          2
+        ],
+        [
+          "FigureGroup",
+          2
+        ],
+        [
+          "SectionHeader",
+          1
+        ],
+        [
+          "PageFooter",
+          1
+        ]
+      ],
+      "block_metadata": {
+        "llm_request_count": 0,
+        "llm_error_count": 0,
+        "llm_tokens_used": 0,
+        "previous_text": "",
+        "previous_type": "",
+        "previous_order": 0
+      }
+    },
+    {
+      "page_id": 6,
+      "text_extraction_method": "pdftext",
+      "block_counts": [
+        [
+          "Span",
+          31
+        ],
+        [
+          "Line",
+          16
+        ],
+        [
+          "Figure",
+          12
+        ],
+        [
+          "Caption",
+          5
+        ],
+        [
+          "PageFooter",
+          2
+        ]
+      ],
+      "block_metadata": {
+        "llm_request_count": 0,
+        "llm_error_count": 0,
+        "llm_tokens_used": 0,
+        "previous_text": "",
+        "previous_type": "",
+        "previous_order": 0
+      }
+    },
+    {
+      "page_id": 7,
+      "text_extraction_method": "pdftext",
+      "block_counts": [
+        [
+          "Span",
+          476
+        ],
+        [
+          "Line",
+          157
+        ],
+        [
+          "SectionHeader",
+          5
+        ],
+        [
+          "Table",
+          4
+        ],
+        [
+          "Bibliography",
+          2
+        ],
+        [
+          "Caption",
+          1
+        ],
+        [
+          "PageFooter",
+          1
+        ]
+      ],
+      "block_metadata": {
+        "llm_request_count": 0,
+        "llm_error_count": 0,
+        "llm_tokens_used": 0,
+        "previous_text": "",
+        "previous_type": "",
+        "previous_order": 0
+      }
+    }
+  ],
+  "debug_data_path": "debug_data/VAISI: Vision-Based Adaptive Impedance Control for Surgical Incisions"
+}
