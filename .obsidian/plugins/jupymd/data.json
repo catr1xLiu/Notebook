@@ -2,7 +2,7 @@
   "autoSync": true,
   "bidirectionalSync": false,
   "autoConvertToNotebookOnRun": true,
-  "pythonInterpreter": "/home/catr1x/Documents/Notebook/.jupymd/bin/python",
+  "pythonInterpreter": "/home/catr1x/Coding/Notebook/.venv/bin/python",
   "notebookEditorCommand": "code",
   "enableCodeBlocks": true
 }

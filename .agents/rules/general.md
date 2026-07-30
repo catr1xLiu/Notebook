@@ -36,6 +36,17 @@ Notebook/
 └── AI Prompt for Hand-Written Note Conversion.md  # Obsidian format spec
 ```
 
+## Version Control Conventions
+
+Check `.gitignore` before advising on what to commit. Two rules are easy to get backwards:
+
+- **Source PDFs under `sources/` are tracked deliberately.** `*.pdf` is ignored globally, then re-included by `!**/sources/*.pdf`, `!**/Poster/*.pdf`, and `!**/assets/*.pdf`. A textbook, past exam, or paper placed in a `sources/` folder is meant to be committed — along with its marker-converted markdown and extracted figures. This **overrides** the `pdf` skill's advice not to commit source PDFs. Do not propose gitignoring `sources/`.
+- **`**/out/` is ignored**, a rule aimed at JS build output. Anything written into a directory named `out/` vanishes from git without warning, which includes the `pdf` skill's example `marker_single --output_dir "$WORK/out"`. Name durable conversion output by content instead: `sources/09_Sinusoidal_Steady_State_Analysis/`.
+
+Only genuinely throwaway intermediates — qpdf page cuts, TOC probes, offset checks — belong in `/tmp`. Anything the author will re-read or review goes in the working tree so it shows up in `git diff`.
+
+`.gitattributes` applies a `filter=rnote` clean/smudge pair (`gzip -d -f -c` / `gzip -c`) so `.rnote` files diff as plain XML rather than binary blobs. `*.mph` (COMSOL) is LFS-tracked, as are large `.rnote` files listed individually — a new oversized `.rnote` needs its own explicit line.
+
 ## Document Types
 
 1. **Obsidian Notes**: Notes written for myself, designed for easy review, where the language is direct and intuitive. Detailed formatting guidelines (including Excalidraw embeddings and JupyMD notebooks) are located in the `obsidian-note` skill (`.agents/skills/obsidian_note/SKILL.md`).
