@@ -2,6 +2,19 @@
 Course: ECE108
 Date: 2026-07-29
 Student: Yiran Liu (21184901)
+jupyter:
+  jupytext:
+    cell_metadata_filter: -all
+    formats: ipynb,md
+    text_representation:
+      extension: .md
+      format_name: markdown
+      format_version: '1.3'
+      jupytext_version: 1.19.5
+  kernelspec:
+    display_name: Python 3
+    language: python
+    name: python3
 ---
 
 > [!example] **Question 1**
@@ -104,7 +117,46 @@ What is the probability that you bankrupt your friend within $10$ tosses of the 
 
 > [!success]- Solution
 
+I don't think this problem can be solved using combinations, since if either me or my friend go bankrupt during one of the round, it terminates the sequence. I will use python to make a simple **dynamic programming** code to solve it
 
+```python
+MY_MONEY_INIT = 5
+FRIEND_MONEY_INIT = 3
+NUM_TOSSES = 10
+
+max_money = MY_MONEY_INIT + FRIEND_MONEY_INIT
+
+# Probablity at each possible states
+possible_states: list[list[float]] = [
+    [0.0] * (max_money + 1) for toss in range(0, NUM_TOSSES + 1)
+]
+
+# Initial state is known
+possible_states[0][MY_MONEY_INIT] = 1.0
+
+probablity = 0.0
+
+for toss in range(1, NUM_TOSSES + 1):
+    for my_money in range(0, max_money + 1):
+        win_to_this_state_prob = (
+            0.5 * possible_states[toss - 1][my_money - 1] 
+            if my_money > 1 
+            else 0.0
+        )
+        loss_to_this_state_prob = (
+            0.5 * possible_states[toss - 1][my_money + 1]
+            if my_money < max_money - 1
+            else 0.0
+        )
+        possible_states[toss][my_money] = (
+            win_to_this_state_prob + loss_to_this_state_prob
+        )
+    print("Winning at toss", toss, " prob ", possible_states[toss][max_money])
+    probablity += possible_states[toss][max_money]
+
+print(probablity)
+
+```
 
 ---
 
@@ -165,6 +217,21 @@ A prison warden has randomly picked one prisoner among three to go free. The oth
 
 > [!success]- Solution
 
+Let $R_X, R_Y, R_Z$ denote the event that each prison is **released**, let $T_Y, T_Z$ be the event that the prison warden picked that prison to **tell** me ($X$) . These events are mutually exclusive 
+($R_X \cap R_Y = \emptyset, T_Y \cap T_Z = \emptyset$) and so on.  Our sample space is:
+$$ S = \set{R_X, R_Y, R_Z} \times \set{T_Y, T_Z} $$
+We can compute:
+$$\begin{aligned} 
+\Pr(R_X \mid T_Y) &= \frac{\Pr(R_X \cap T_Y)}{\Pr(T_Y)} \\
+&= \frac{\Pr(R_x)\Pr(T_Y \mid R_x)}{\Pr(R_x)\Pr(T_Y \mid R_x) + \Pr(R_Y)\Pr(T_Y\mid R_Y) + \Pr(R_Z)\Pr(T_Y\mid R_Z)} \\
+&= \frac{\frac{1}{3} \times \frac{1}{2}}{\frac{1}{3} \times \frac{1}{2} + \frac{1}{3} \times 0 + \frac{1}{3} \times 1} \\
+&= \frac{1}{6} / \frac{3}{6} = 1/3
+\end{aligned}$$
+
+Therefore, his chance is still $1/3$.
+
+> **Notes to myself:**
+
 ---
 
 > [!example] **Question 8**
@@ -173,6 +240,25 @@ A prison warden has randomly picked one prisoner among three to go free. The oth
 A carnival game consists of three dice in a cage. A player can bet a dollar on any of the numbers 1 through 6. The cage is shaken, and the payoff is as follows. If the player's number doesn't appear on any of the dice, she loses her dollar. Otherwise, if her number appears on exactly $k$ of the three dice, for $k = 1, 2, 3$, she keeps her dollar and wins $k$ more dollars. What is her expected gain from playing the carnival game once?
 
 > [!success]- Solution
+
+Let $\set{P, N}^3$ denote the
+We compute the probability of each **mutually exclusive** cases:
+- For $k=3$ all three dies must show my number:
+$$ \Pr(k=3) = \frac{1}{6} \times \frac{1}{6} \times \frac{1}{6} = \frac{1}{216} $$
+- For $k=2$, we can choose two dies from three dies that show my number:
+$$ \Pr(k=2) = \frac{1}{6} \times \frac{1}{6} \times \frac{5}{6} \times \binom{2}{3} = \frac{15}{216}$$
+- For $k=1$ we can choose one die from three dies that show my number:
+$$ \Pr(k=1) = \frac{1}{6} \times \frac{5}{6} \times \frac{5}{6} \times \binom{1}{3}= \frac{75}{216}$$
+- For $k=0$ all three dies must not show my number:
+$$ \Pr(k=0) = \frac{5}{6} \times \frac{5}{6} \times \frac{5}{6} = \frac{125}{216} $$
+Denote the earning at each event as:
+$$i \in \set{0,1,2,3}: \quad X(k=i) $$
+Compute:
+$$\begin{aligned} 
+E[X] &= \sum_{i=0}^{3} X(k=i) \times \Pr(k=i) \\
+&= 3 \times \frac{1}{216} + 2 \times \frac{15}{216} + 1 \times \frac{75}{216} + (-1) \times \frac{125}{216} \\
+&= \boxed{-\frac{17}{216}}
+\end{aligned}$$
 
 ---
 
@@ -196,9 +282,15 @@ What is the expected number of trials, i.e., number of iterations of the **while
 
 > [!success]- Solution
 
-Total number of arrangements: n! 
-
-Probability at x is (n-1)!/n!, value x
-
-expected = sum(x) * p = (1+n) * n / 2 * p 
+Assume that the program continues to pick $i$ after the median is found, then the sequence of $i$s that we picked is an *ordered, non-replacing selection* (or **arrangement**) of $A$.  
+$$ \text{\# of Arrangments } = P(n,n) = n!$$
+The probability that median is selected at the $x$-th iteration of the while loop is: 
+$$ \Pr(\text{At}_x) = \frac{(n-1)! \text{\small{ (ways to arrange the other items)}}}{n! \text{\small{ (ways to arrange the entire sequence)}}} = \frac{1}{n} $$
+Compute expected $x$:
+$$\begin{aligned} 
+E[X] &= \sum_{x=1}^{n} x \cdot \Pr (\text{At}_x) \\
+&= \frac{1}{n} \sum_{x=1}^n x \\
+&= \frac{(1+n)n}{2n} \\
+&= \frac{1+n}{2}
+\end{aligned} $$
 
