@@ -55,6 +55,15 @@ Only genuinely throwaway intermediates — qpdf page cuts, TOC probes, offset ch
 4. **rnote Notes**: Treated as a read-only document type for handwritten notes and tutorials. See the `read-rnote` skill (`.agents/skills/rnote/SKILL.md`) for instructions on locating, exporting, and reading these files.
 5. **PDFs**: Read-only source material (papers, textbooks, lab manuals, datasheets, slides). **Never open a PDF with the Read tool** — it is token-expensive and loses equations, tables, and structure. Always convert first via the `pdf` skill (`.agents/skills/pdf/SKILL.md`), then read the resulting markdown.
 
+## Markdown Source Formatting
+
+**Never hard-wrap Markdown prose at an arbitrary column width.**
+Do not impose 72-, 80-, 100-, or any other character limit on Markdown text: it makes edits and diffs unnecessarily difficult.
+Instead, use one physical line per complete sentence, breaking only at a sentence boundary.
+Keep a long sentence intact; editors provide visual wrapping when necessary.
+This sentence-level layout is the repository's Git-friendly convention.
+Preserve the syntax of tables, code fences, math blocks, front matter, URLs, and HTML rather than reflowing them.
+
 ## Conversion Workflow
 
 When asked to convert a draft (Notion page, hand-written scan, or raw text) to any document type:
