@@ -230,13 +230,32 @@ to two-thirds of the rollout, but is not consistently faster than teleoperation.
 === 1. The Method is Highly Adaptable
 
 The paper is mainly an experiment paper; even with no source code, the heart algorithm
-is a
+can be implemented within a few lines of Python.
 
-=== 2. On the Benefit of Shared Autonomy
+And take-over actually works, in my opinion.
 
-Intervention rate measures controller activity, *not cognitive workload or attention*.
+Teleoperation can be replaced with anything that outputs a continuous delta
+$[J] in RR^6$, including *Haply Inverse*.
 
-=== 3. Worth Exploring: Will force VLA benefit from this
+=== 2. Operators are constrained, but...
+
+Operators are constrained to a simple controller, which degrades their performance.
+But this is actually a feature, not a limit. We will essentially allow operators to
+work from a remote office with a simple setup and still operate at higher performance,
+utilizing the VLA as an extension to the human operator's ability where they have a
+constrained setup.
+
+=== 3. On the Benefit of Shared Autonomy
+
+The current results of shared autonomy could be cherry-picked, and this benefit
+disappears on the real robot. Intervention rate measures controller activity,
+*not cognitive workload or attention*. Combining a shared autonomy method with
+*human cognition sensing* would be great future work.
+
+=== 4. Will force VLA benefit from this?
+
+Force VLA extends the operator's ability even more, since it is nearly impossible for
+human operators to perform force-abundant tasks during remote control.
 
 === #underline[Question 1: What is the Application of Shared Autonomy?]
 
