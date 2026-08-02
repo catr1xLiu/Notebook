@@ -60,7 +60,13 @@ Separate major sections with `---`. No multi-column layouts.
 
 **Every mathematical symbol must be in LaTeX** — even single variables inline: `$x$`, `$A$`, `$\alpha$`.
 
-### Systems of equations
+For single-line equation, put equation into a single line `$$` 
+
+```latex
+$$ y = kx + b $$
+```
+
+### Matrix and System of Equations
 
 Use `\begin{cases}` to group related equations with a bracket. Never list them as separate `$$` blocks.
 
@@ -73,20 +79,9 @@ $$
 $$
 ```
 
-For multi-line derivations without a bracket, use `\begin{aligned}`:
-```latex
-$$
-\begin{aligned}
-a_{11}x_1 + \cdots + a_{1n}x_n &= b_1 \\
-\vdots \\
-a_{m1}x_1 + \cdots + a_{mn}x_n &= b_m
-\end{aligned}
-$$
-```
+Simplification spanning over multiple lines, use `\begin{aligned}` to align the equal sign.
 
-### Matrices and vectors
-
-Always use `\\` to separate rows. Without it the matrix collapses to one line.
+For matrices, always use `\\` to separate rows. Without it the matrix collapses to one line.
 
 **Column vector:**
 ```latex

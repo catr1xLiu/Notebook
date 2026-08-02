@@ -69,7 +69,7 @@ Marker's `_page_N_Figure_M.jpeg` files are **page screenshots** — often blurry
 Upgrade them:
 
 1. **Move real figures** into `sources/<PaperName>/media/`.
-2. **Drop junk**: lab/brand logos, decorative photos, and redundant screenshots (see the keep/drop rule in Step 6's [Figures](#figures) section).
+2. **Drop junk**: lab/brand logos, decorative photos, redundant screenshots (see keep/drop rule in Step 6-C).
 3. **Replace blurry screenshots with source figures.** Locate the original in `$DL/src` (look in `Figs/`, `figures/`, `assets/`).
    If it's a PDF or vector, **convert to PNG** at high DPI:
 
@@ -97,7 +97,7 @@ Preserve math, tricks, and design-decision rationale; cut the generic-audience p
 
 ### Metadata header
 
-Open the file with a small header: arXiv link, authors as `John D. et al.`, venue, date, and a relative link back to the extracted source:
+Open the file with a small header: arXiv link, author as `John D. et al.`, venue, date, and a relative link back to the extracted source:
 
 ```markdown
 > arXiv: [2401.01234](https://arxiv.org/abs/2401.01234) · John D. et al. · CoRL 2024 · 2024-01-03
@@ -112,8 +112,8 @@ Try the standard skeleton first; **if a paper genuinely does not fit it, stop an
 | Section | Callout | Length |
 |---|---|---|
 | TL;DR | `[!abstract]` | ~15% of total length; targeting 150 words |
-| Methodology | `[!fact]` | ~40–60% of total length |
-| Experiments & Findings | `[!hint]` | ~30–50% of total length |
+| Methodology | `[!fact]` | ~40-60% of total length; |
+| Experiments & Findings | `[!hint]` | ~30-50% of total length; |
 | Reflection / "My Read" | `[!fact]` | user fills this |
 | Codebase Status and Structure *(optional, last)* | `[!hint]` | Not counted in total length |
 
@@ -131,33 +131,25 @@ Summary of the paper’s key innovation in methodology and results. This is stri
 
 This is the most important part, reserving ~40-60% of the total length. It extends beyond the typical structure of methodology:
 
-- **Scope of the problem** — The problem setting the proposed solution addresses; this is often the benchmark used for testing.
-  For example, when reviewing an algorithm paper benchmarked only in LIBERO, include the figure that shows the task types even if the paper places it in the experiments section.
-- **System design** — The model architecture, algorithm pipeline, and related components.
-  These are typically included in the paper's methodology.
-- **Justification for design choices** — Include figures that show how an alternative to, or a variant of, the paper's algorithm functions differently.
-  Include them here even if the paper places them under Experiments/Results, because they contextualize the design decisions.
+- **Scope of Problem** - The problem set that the proposed solution is aiming at; this is often the benchmark used for testing. For example, when reviewing an algorithm paper that has only been benchmarked in LIBERO, you need include the figure showcasing task types, even though they might be in the experiment section in the paper.
+- **System Design** - The model architecture, the algorithm pipeline, etc. These typically included in methodology in the paper.
+- **Justification for design choices** - This might be figures that show how an alternative to (or a variant of) the paper’s algorithm functions differently. They should be included here even though found under experiments/results section, as they are provide contextual information to how the design choices are made.
 -  **Strengthen** the paper’s unique innovations and decisions, and the subject-specific reason behind each.
 - **Weaken/compress** methods the paper merely adapts and baselines it compares against — a link is enough (just like Related work in TL;DR).
 
 
 
-Most importantly, do **not** write the detailed explanatory prose in this section.
-Start with a 100-word overview that orients the discussion.
-Then add the following technical scaffold:
+Most importantly, this is the only part you **don't complete**; instead, you write a 100-word overview at the very top to lead the discussion, and:
 
-- **Transcribe math** — Include most equations from the original paper.
-  Use Obsidian `$$ ... $$` equation blocks, with one equation per block by default unless multiple lines must be grouped.
-  Leave an empty line after every equation block.
-  If a derivation is long, state its intent in a heading, fold the derivation body using Obsidian, then show the final result at the bottom and highlight it with $\boxed{...}$.
+- **Transcribe math** - Most equations from the original paper should be included. Use the Obsidian way of creating `$$ Equations blocks $$`. In most cases, use one line of equation per block by default, unless there are specific reasons to group multiple lines into a block (e.g. system of equations).  After every equation block, leave an empty line. 
+- There is one exception, however: if a huge part of the equation is derivation/justification, show the intent in the head, use the Obsidian way to fold the derivation body, then show the final result at the buttom, result highlighted by $\boxed$.
 
-- **Explanation** — Add a **2-row, n-column symbol table** mapping each symbol to its meaning.
-  Multiple equations often use the same symbols, so use one table per equation group; use multiple tables when the section has distinct symbol groups.
+- **Symbol Table** - Add a **2-row, n-column symbol table** mapping each symbol to its meaning. Most likely multiple lines of equation will contain the same set of symbols; only one table is needed per such “equation group”. But multiple tables might be necessary for the entire section.
 - **Attach fake code** (see instructions below) when a complex algorithm is introduced.
-- **Attach illustrations** from the original paper whenever applicable.
+- **Attatch illustrations** from original paper whenever applicable.
 
-After adding this scaffold:
-- **Leave detailed explanations blank.** Reserve blank space after equations, code, and illustrations for the user's interpretation of the mechanics, design rationale, and trade-offs. The user writes that prose to strengthen their understanding.
+But then, you will:
+- **Leave detailed explanations blank.** You can imagine how detailed explanation will be written in the spaces you left between the equations, code, and illustrations to help you get the structure right. But you need to intentionally remove them when writing down the notes. This part is exactly what the user needs to complete on their own to strengthen their understanding.
 
 ### Implementation Tricks
 
@@ -184,13 +176,12 @@ Use a table when ≥3 comparable numbers, prose otherwise.
 - Ablations: one line each — “what was removed → what it cost” — and only when it changes a takeaway.
 A “trick” is a discrete decision uncommon in the field, imposed for a project-specific reason (e.g. keeping subjects mutually exclusive across train/val splits in a motion-to-age regressor).
 
-### Notes on Math Equations
+### Notes for Math Equation
 
 * Preserve the author’s exact notation and symbols — the note should read alongside the source PDF.
-* For equations dense in notation, add a 2-row, n-column symbol table mapping each symbol to its meaning (see the obsidian-note conventions and existing SAPS note).
-* Numbering: leave equations unnumbered when a reasonable name fits (refer to it as, e.g., “the VAE reconstruction loss”).
+* No Numbering: leave equations unnumbered when a reasonable name fits (refer to it as, e.g., “the VAE reconstruction loss”).
 If the derivation is long or has too many equations to name, number them.
-* All key math shown as multi-line $$ … $$ blocks.
+* All key math shown as $$ … $$ blocks.
 * Expand custom TeX macros to standard LaTeX. Obsidian’s MathJax does not know a paper’s \newcommand definitions, so a macro like \piRLinf renders as literal text.
 Inline the standard form instead — e.g., \pi_{\text{RLinf}}, not \piRLinf.
 Check the TeX preamble for \newcommand / \def and substitute every use.
@@ -356,7 +347,7 @@ classDiagram
 #### Signature blocks (second)
 
 A fake-Python code block per boundary API, following the code rules in *Algorithms and code* above (72-char lines, strict typing, no inline param comments).
-Put every shape and description in a `''' … '''` block, **preserving the authors' original wording** for any real docstring and writing a concise one only where missing.
+Put every shape and description in a `''' … '''` block, **preserving the users' original wording** for any real docstring and writing a concise one only where missing.
 Keep these even though the diagram lists the same methods — they carry the exact types/shapes and a greppable name + source link.
 
 ```python
