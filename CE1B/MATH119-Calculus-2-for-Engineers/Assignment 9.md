@@ -31,13 +31,31 @@ $$
 
 > [!success]- Solution
 
-a.
+a. **Conditionally convergent**
 
-b.
+We first apply *limit comparison* on the positive series with **divergent** harmonic series $\frac{1}{n}$: 
+$$ \lim_{n \to \infty}\frac{n}{n^2+4} = \frac{1}{n}$$
+Apply the *alternating series test*, the series is eventually decreasing:
+$$ \lim_{n\to\infty} \frac{n+1}{(n+1)^2+4} \lt \frac{n}{n^2+4} $$
+Therefore, it converges conditionally.
 
-c.
 
-d.
+b. **Absolutely Convergent** 
+
+Apply comparison test with **convergent** p-series series $\sum \frac{1}{n^2} (p=2)$
+$$ \quad \ln n < n \implies \frac{\ln n}{n^3} < \frac{n}{n^3} \implies  \sum_{n=1}^\infty\, \frac{\ln n}{n^3} \text{ also converges} $$
+
+c. **Absolutely Convergent**
+
+Apply comparison test with **convergent** geometric series $\sum \frac{1}{4^n}$ 
+$$ \sin(4n) \leq 1 \implies \frac{\sin(4n)}{4^n} \leq \frac{1}{4^n} \implies \sum_{n=1}^\infty\, \frac{\sin(4n)}{4^n} \text{ also converges} $$
+
+d. **Absolutely Convergent**
+
+Apply *limit comparison test* with **convergent** p-series $\sum\frac{\sqrt{n}}{n^2} \,(p=\frac{3}{2})$ 
+
+$$ \cos(n) \leq 1 \implies \lim_{n\to\infty}\, \frac{\sqrt{n}\cos(n)}{n^2-1} \leq \frac{\sqrt{n}}{n^2} \, (p=\frac{3}{2})$$
+Therefore, the series is also convergent. 
 
 ---
 
@@ -53,9 +71,17 @@ b. **[2]** How many terms of this series do we need to add in order to find the 
 
 > [!success]- Solution
 
-a.
+a. **Converges absolutely**
+
+Apply *comparison test* on the positive series with **convergent** geometric series $\sum \frac{1}{10^n}$
+$$ n! \geq n \implies \frac{1}{10^n \, n!} \leq \frac{1}{10^n} \implies \sum_{n=1}^\infty \,\frac{1}{10^n\, n!} \text{ also converges} $$
 
 b.
+
+Using the error term of partial sum for alternating series:
+$$ |S_N - S| \leq a_{N+1} $$
+$$ \frac{1}{10^{N+1} \, (N+1)!} \leq 5\times 10^{-7} \implies N \geq 4$$
+So we have to estimate at least four terms.
 
 ---
 
@@ -68,6 +94,8 @@ $$
 $$
 
 > [!success]- Solution
+
+
 
 ---
 

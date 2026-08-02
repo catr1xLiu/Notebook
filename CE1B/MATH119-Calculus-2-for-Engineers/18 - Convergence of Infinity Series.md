@@ -67,7 +67,7 @@ $$ \begin{cases}\begin{aligned}
 \exists i, \forall k > i: \ a_{k+1} < a_k \quad & \text{ (eventually decreasing)} \\
 \lim_{k \to \infty} a_k = 0 \quad & \text{ (eventually converges)}
 \end{aligned}\end{cases} $$
-The error term of approximating $S = \sum(-1)^k a_k$ using the $n^\text{th}$ partial sum $S_n$ yields inequality:
+**The error term** of approximating $S = \sum(-1)^k a_k$ using the $n^\text{th}$ partial sum $S_n$ yields inequality:
 $$\begin{aligned}
 \left|S - S_n \right| = & \left|\sum_{k=1}^{\infty} (-1)^k a_k - \sum_{k=1}^{n}(-1)^k a_k \right| \\
 = & \left| \sum_{k=n+1}^{\infty} (-1)^k a_k \right| \\
