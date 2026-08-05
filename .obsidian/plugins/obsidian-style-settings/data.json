@@ -1,0 +1,11 @@
+{
+  "baseline-style@@accented-interface": false,
+  "baseline-style@@color-scheme-light": "notion-light",
+  "baseline-style@@background-contrast-light": "contrast-light",
+  "baseline-style@@font-text-override": "Inter",
+  "baseline-style@@code-line-numbers": true,
+  "baseline-style@@embed-style": "embed-strict",
+  "baseline-style@@color-scheme-dark": "notion-dark",
+  "baseline-style@@background-primary-alt@@light": "#FFFFFF",
+  "baseline-style@@media-width": "media-width-full-always"
+}
