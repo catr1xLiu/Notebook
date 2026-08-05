@@ -1,6 +1,8 @@
 {
-  "cssTheme": "Baseline",
+  "cssTheme": "Catppuccin",
   "theme": "moonstone",
   "accentColor": "",
-  "baseFontSize": 18
+  "baseFontSize": 18,
+  "interfaceFontFamily": "Inter",
+  "textFontFamily": "Inter"
 }
