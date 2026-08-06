@@ -7,5 +7,10 @@
   "baseline-style@@embed-style": "embed-strict",
   "baseline-style@@color-scheme-dark": "notion-dark",
   "baseline-style@@background-primary-alt@@light": "#FFFFFF",
-  "baseline-style@@media-width": "media-width-full-always"
+  "baseline-style@@media-width": "media-width-full-always",
+  "catppuccin-theme-settings@@catppuccin-theme-accents": "ctp-full-palette",
+  "catppuccin-heading-settings@@ctp-h2": "var(--ctp-rosewater)",
+  "catppuccin-heading-settings@@ctp-h3": "var(--ctp-teal)",
+  "catppuccin-heading-settings@@ctp-page-title": "var(--ctp-subtext0)",
+  "catppuccin-heading-settings@@ctp-h4": "var(--ctp-mauve)"
 }
