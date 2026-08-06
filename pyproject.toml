@@ -62,7 +62,13 @@ robotics = [
 
 docs = [
     "docling>=2.40",
-    "marker-pdf>=1.8",
+    # Pinned below 2.0: marker 2.x drops the in-process surya models and instead
+    # auto-spawns a vllm/vllm-openai Docker container for surya-ocr-2. Its sizing
+    # table bottoms out at 16 GB and it grabs 85% of VRAM, which does not fit the
+    # 8 GB RTX 5060 Laptop — conversions hang on container boot and CUDA-graph
+    # capture. Revisit if the llama.cpp backend (SURYA_INFERENCE_BACKEND=llamacpp)
+    # becomes viable here.
+    "marker-pdf>=1.8,<2",
     "pypdfium2>=4.30",
     "python-docx>=1.1",
     "python-pptx>=1.0",

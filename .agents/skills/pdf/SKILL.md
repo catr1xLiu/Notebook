@@ -20,14 +20,26 @@ The output of this skill is a markdown file plus extracted figures. That markdow
 | --- | --- | --- |
 | `pdfinfo` | page count, page size, metadata | `/usr/bin` (poppler-utils) |
 | `qpdf` | lossless page-range cutting | `/usr/bin` |
-| `marker_single` | PDF → markdown + figures | conda env `scientific` |
+| `marker_single` | PDF → markdown + figures | repo uv venv (`marker-pdf` 1.10.x) |
 | `pdftoppm` / `pdftocairo` | vector/PDF figure → PNG | `/usr/bin` (poppler-utils) |
 
-`marker_single` **must** be invoked through the env:
+`marker_single` **must** be invoked through the repo's uv environment:
 
 ```bash
-conda run -n scientific marker_single <args>
+uv run marker_single <args>
 ```
+
+`uv run` finds the project by walking up to the repo root, so it works from any
+subdirectory of the vault.
+
+**Do not upgrade `marker-pdf` past 1.x.** `pyproject.toml` pins `marker-pdf>=1.8,<2`
+deliberately. Marker 2.x replaces the in-process surya models with a VLM served by an
+auto-spawned `vllm/vllm-openai` Docker container; its GPU sizing table bottoms out at
+16 GB and it claims 85% of VRAM, which does not fit this laptop's 8 GB RTX 5060 —
+conversions stall on container boot and CUDA-graph capture rather than failing cleanly.
+If a run is interrupted mid-spawn the container and a `surya.ocr_error.server` process
+orphan themselves and keep pinning ~6.9 GB; clear them with
+`docker stop surya-vllm-<port>` and by killing the server pid.
 
 Use a scratch working directory outside the repo for intermediate chunks (e.g.
 `/tmp/pdf-<name>/`), and write only the final markdown + media into the repo.
@@ -86,7 +98,7 @@ of the document and convert only that.
 ```bash
 WORK=/tmp/pdf-work; mkdir -p "$WORK"
 qpdf "$PDF" --pages . 1-5 -- "$WORK/probe.pdf"
-conda run -n scientific marker_single "$WORK/probe.pdf" \
+uv run marker_single "$WORK/probe.pdf" \
   --output_format markdown \
   --disable_image_extraction \
   --output_dir "$WORK/probe-out"
@@ -111,7 +123,7 @@ cover pages shift them. Verify before cutting:
 2. Cut a single page around your guess and check what landed there:
    ```bash
    qpdf "$PDF" --pages . 37 -- "$WORK/check.pdf"
-   conda run -n scientific marker_single "$WORK/check.pdf" --output_format markdown \
+   uv run marker_single "$WORK/check.pdf" --output_format markdown \
      --disable_image_extraction --output_dir "$WORK/check-out"
    ```
 3. The difference between the physical index and the printed number is the offset. Apply it to
@@ -146,7 +158,7 @@ If you only need one specific section (the common case — "what does the manual
 ## Step 5 — Convert with marker_single
 
 ```bash
-conda run -n scientific marker_single "$WORK/01_Introduction.pdf" \
+uv run marker_single "$WORK/01_Introduction.pdf" \
   --output_format markdown \
   --output_dir "$WORK/out"
 ```
@@ -175,7 +187,7 @@ Loop over chunks sequentially — **never in parallel**, they contend for the sa
 
 ```bash
 for f in "$WORK"/[0-9]*.pdf; do
-  conda run -n scientific marker_single "$f" --output_format markdown --output_dir "$WORK/out" \
+  uv run marker_single "$f" --output_format markdown --output_dir "$WORK/out" \
     || echo "FAILED: $f"
 done
 ```
@@ -243,7 +255,7 @@ figures), see the [`literature-review`](../literature_review/SKILL.md) skill.
 | CUDA out of memory | Chunk too large or too media-rich | Cut smaller (halve it), add `--disable_multiprocessing`, lower `--highres_image_dpi`, or `--disable_image_extraction` if figures aren't needed |
 | Run hangs with no progress | Multiprocessing contention | `--disable_multiprocessing` |
 | Markdown is near-empty | Scanned pages, OCR failed | Ensure `--disable_ocr` is **not** set; raise `--highres_image_dpi` |
-| `marker_single: command not found` | Ran outside the env | Prefix with `conda run -n scientific` |
+| `marker_single: command not found` | Ran outside the env | Prefix with `uv run` |
 | Fails to open the file | Encrypted PDF | `qpdf --decrypt in.pdf out.pdf` first |
 | Cut section starts at the wrong content | Logical vs. physical page offset | Recalibrate per Step 3 |
 | Equations dropped or mangled | Dense math with an unusual font | Re-run that chunk alone; a smaller chunk often recovers them |

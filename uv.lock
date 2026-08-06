@@ -27,8 +27,7 @@ name = "accelerate"
 version = "1.14.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "huggingface-hub", version = "0.36.2", source = { registry = "https://pypi.org/simple" }, marker = "sys_platform == 'darwin' or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
-    { name = "huggingface-hub", version = "1.24.0", source = { registry = "https://pypi.org/simple" }, marker = "sys_platform != 'darwin' or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
+    { name = "huggingface-hub" },
     { name = "numpy" },
     { name = "packaging" },
     { name = "psutil" },
@@ -65,46 +64,18 @@ wheels = [
 name = "anthropic"
 version = "0.46.0"
 source = { registry = "https://pypi.org/simple" }
-resolution-markers = [
-    "sys_platform == 'darwin'",
-]
 dependencies = [
-    { name = "anyio", marker = "sys_platform == 'darwin' or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
-    { name = "distro", marker = "sys_platform == 'darwin' or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
-    { name = "httpx", marker = "sys_platform == 'darwin' or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
-    { name = "jiter", marker = "sys_platform == 'darwin' or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
-    { name = "pydantic", marker = "sys_platform == 'darwin' or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
-    { name = "sniffio", marker = "sys_platform == 'darwin' or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
-    { name = "typing-extensions", marker = "sys_platform == 'darwin' or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
+    { name = "anyio" },
+    { name = "distro" },
+    { name = "httpx" },
+    { name = "jiter" },
+    { name = "pydantic" },
+    { name = "sniffio" },
+    { name = "typing-extensions" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/d4/68/3b4c045edf6dc6933895e8f279cc77c7684874c8aba46a4e6241c8b147cf/anthropic-0.46.0.tar.gz", hash = "sha256:eac3d43271d02321a57c3ca68aca84c3d58873e8e72d1433288adee2d46b745b", size = 202191, upload-time = "2025-02-18T20:35:33.314Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/50/6f/346beae0375df5f6907230bc63d557ef5d7659be49250ac5931a758322ae/anthropic-0.46.0-py3-none-any.whl", hash = "sha256:1445ec9be78d2de7ea51b4d5acd3574e414aea97ef903d0ecbb57bec806aaa49", size = 223228, upload-time = "2025-02-18T20:35:28.659Z" },
-]
-
-[[package]]
-name = "anthropic"
-version = "0.120.0"
-source = { registry = "https://pypi.org/simple" }
-resolution-markers = [
-    "sys_platform == 'win32'",
-    "sys_platform == 'emscripten'",
-    "platform_machine == 'aarch64' and sys_platform == 'linux'",
-    "(platform_machine != 'aarch64' and sys_platform == 'linux') or (sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'linux' and sys_platform != 'win32')",
-]
-dependencies = [
-    { name = "anyio", marker = "sys_platform != 'darwin' or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
-    { name = "distro", marker = "sys_platform != 'darwin' or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
-    { name = "docstring-parser", marker = "sys_platform != 'darwin' or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
-    { name = "httpx", marker = "sys_platform != 'darwin' or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
-    { name = "jiter", marker = "sys_platform != 'darwin' or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
-    { name = "pydantic", marker = "sys_platform != 'darwin' or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
-    { name = "sniffio", marker = "sys_platform != 'darwin' or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
-    { name = "typing-extensions", marker = "sys_platform != 'darwin' or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
-]
-sdist = { url = "https://files.pythonhosted.org/packages/92/5c/3331da4fc009d448008a50c78d86cc929e8c937cd1442245ce3f80561c4e/anthropic-0.120.0.tar.gz", hash = "sha256:6ba6007dc9b00365b20f6101a6618f5196ac1ceef81512e4b5cc0e7436d4975d", size = 1008042, upload-time = "2026-07-24T16:32:52.384Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/1b/8a/8522bdf809e1f95f0d9c936540987a3f6afba01d2921a2bf488dedf836a8/anthropic-0.120.0-py3-none-any.whl", hash = "sha256:591bd531563ec7b63a1e138f5c11f14cb94edda99623b349c2ce2ece8e08b8a5", size = 1022602, upload-time = "2026-07-24T16:32:50.506Z" },
 ]
 
 [[package]]
@@ -770,8 +741,7 @@ wheels = [
 [package.optional-dependencies]
 chunking = [
     { name = "semchunk" },
-    { name = "transformers", version = "4.57.6", source = { registry = "https://pypi.org/simple" }, marker = "sys_platform == 'darwin' or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
-    { name = "transformers", version = "5.14.1", source = { registry = "https://pypi.org/simple" }, marker = "sys_platform != 'darwin' or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
+    { name = "transformers" },
     { name = "tree-sitter" },
     { name = "tree-sitter-c" },
     { name = "tree-sitter-javascript" },
@@ -786,8 +756,7 @@ source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "accelerate" },
     { name = "docling-core" },
-    { name = "huggingface-hub", version = "0.36.2", source = { registry = "https://pypi.org/simple" }, marker = "sys_platform == 'darwin' or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
-    { name = "huggingface-hub", version = "1.24.0", source = { registry = "https://pypi.org/simple" }, marker = "sys_platform != 'darwin' or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
+    { name = "huggingface-hub" },
     { name = "jsonlines" },
     { name = "numpy" },
     { name = "pillow" },
@@ -801,8 +770,7 @@ dependencies = [
     { name = "torchvision", version = "0.28.0", source = { registry = "https://pypi.org/simple" }, marker = "extra == 'extra-12-notebook-env-cuda' or extra != 'extra-12-notebook-env-cpu'" },
     { name = "torchvision", version = "0.28.0+cpu", source = { registry = "https://download.pytorch.org/whl/cpu" }, marker = "(sys_platform != 'darwin' and extra == 'extra-12-notebook-env-cpu') or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
     { name = "tqdm" },
-    { name = "transformers", version = "4.57.6", source = { registry = "https://pypi.org/simple" }, marker = "sys_platform == 'darwin' or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
-    { name = "transformers", version = "5.14.1", source = { registry = "https://pypi.org/simple" }, marker = "sys_platform != 'darwin' or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
+    { name = "transformers" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/37/2b/c0ad433da1210672d6e8e774f1ba601824e0d23153e8cd963521dcf1c28c/docling_ibm_models-3.13.3.tar.gz", hash = "sha256:8c8b55e80b3d20fc74d85ca49a4d064578ef75b9f7251eec42fc9df6af426218", size = 98768, upload-time = "2026-06-04T08:23:08.088Z" }
 wheels = [
@@ -861,8 +829,7 @@ standard = [
     { name = "docling-ibm-models" },
     { name = "docling-parse" },
     { name = "httpx" },
-    { name = "huggingface-hub", version = "0.36.2", source = { registry = "https://pypi.org/simple" }, marker = "sys_platform == 'darwin' or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
-    { name = "huggingface-hub", version = "1.24.0", source = { registry = "https://pypi.org/simple" }, marker = "sys_platform != 'darwin' or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
+    { name = "huggingface-hub" },
     { name = "mail-parser" },
     { name = "marko" },
     { name = "numpy" },
@@ -870,8 +837,7 @@ standard = [
     { name = "pillow" },
     { name = "polyfactory" },
     { name = "pylatexenc" },
-    { name = "pypdfium2", version = "4.30.0", source = { registry = "https://pypi.org/simple" }, marker = "sys_platform == 'darwin' or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
-    { name = "pypdfium2", version = "5.10.1", source = { registry = "https://pypi.org/simple" }, marker = "sys_platform != 'darwin' or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
+    { name = "pypdfium2" },
     { name = "python-docx" },
     { name = "python-dotenv" },
     { name = "python-pptx" },
@@ -1112,51 +1078,21 @@ requests = [
 name = "google-genai"
 version = "1.75.0"
 source = { registry = "https://pypi.org/simple" }
-resolution-markers = [
-    "sys_platform == 'darwin'",
-]
 dependencies = [
-    { name = "anyio", marker = "sys_platform == 'darwin' or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
-    { name = "distro", marker = "sys_platform == 'darwin' or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
-    { name = "google-auth", extra = ["requests"], marker = "sys_platform == 'darwin' or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
-    { name = "httpx", marker = "sys_platform == 'darwin' or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
-    { name = "pydantic", marker = "sys_platform == 'darwin' or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
-    { name = "requests", marker = "sys_platform == 'darwin' or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
-    { name = "sniffio", marker = "sys_platform == 'darwin' or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
-    { name = "tenacity", marker = "sys_platform == 'darwin' or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
-    { name = "typing-extensions", marker = "sys_platform == 'darwin' or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
-    { name = "websockets", marker = "sys_platform == 'darwin' or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
+    { name = "anyio" },
+    { name = "distro" },
+    { name = "google-auth", extra = ["requests"] },
+    { name = "httpx" },
+    { name = "pydantic" },
+    { name = "requests" },
+    { name = "sniffio" },
+    { name = "tenacity" },
+    { name = "typing-extensions" },
+    { name = "websockets" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/9d/59/3ed61240ef20b3ae6ed54e82c6f8b6d1f194947bc6679679dd6cdb037594/google_genai-1.75.0.tar.gz", hash = "sha256:56bac3991b311c93f980c0a2abcd287b672146905df1fbd71c92ed633d5a07cf", size = 539039, upload-time = "2026-05-04T22:48:54.857Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/2d/b6/552d40e96da22921eb1fead7c14b00b5b5473a20e45959488660fab35ee2/google_genai-1.75.0-py3-none-any.whl", hash = "sha256:8dc4c096e7d6288c3087f6893f582fe52468932464781edb8193bd92b9fefb2c", size = 793726, upload-time = "2026-05-04T22:48:53.033Z" },
-]
-
-[[package]]
-name = "google-genai"
-version = "2.14.0"
-source = { registry = "https://pypi.org/simple" }
-resolution-markers = [
-    "sys_platform == 'win32'",
-    "sys_platform == 'emscripten'",
-    "platform_machine == 'aarch64' and sys_platform == 'linux'",
-    "(platform_machine != 'aarch64' and sys_platform == 'linux') or (sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'linux' and sys_platform != 'win32')",
-]
-dependencies = [
-    { name = "anyio", marker = "sys_platform != 'darwin' or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
-    { name = "distro", marker = "sys_platform != 'darwin' or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
-    { name = "google-auth", extra = ["requests"], marker = "sys_platform != 'darwin' or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
-    { name = "httpx", marker = "sys_platform != 'darwin' or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
-    { name = "pydantic", marker = "sys_platform != 'darwin' or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
-    { name = "requests", marker = "sys_platform != 'darwin' or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
-    { name = "sniffio", marker = "sys_platform != 'darwin' or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
-    { name = "tenacity", marker = "sys_platform != 'darwin' or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
-    { name = "typing-extensions", marker = "sys_platform != 'darwin' or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
-    { name = "websockets", marker = "sys_platform != 'darwin' or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
-]
-sdist = { url = "https://files.pythonhosted.org/packages/dc/df/4f820054c99f29f2fe3de4a8a7c9534dd795302e4a07483a0cb07c3a29b6/google_genai-2.14.0.tar.gz", hash = "sha256:a9d1f4f362d76280f1be1340fcb3c86e63dbca128f6a4ae09d86ab47ff7148e8", size = 641055, upload-time = "2026-07-22T21:35:44.717Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/ba/86/5ac5fb53e44cca4a6607fb917eb331fa237c65a103b9ec2e8e8acc8a42db/google_genai-2.14.0-py3-none-any.whl", hash = "sha256:ae7172cdd35695189b516b33a878e4132e5daa2dbc03a5b44cddfa8a82fad664", size = 1030738, upload-time = "2026-07-22T21:35:42.785Z" },
 ]
 
 [[package]]
@@ -1216,48 +1152,19 @@ wheels = [
 name = "huggingface-hub"
 version = "0.36.2"
 source = { registry = "https://pypi.org/simple" }
-resolution-markers = [
-    "sys_platform == 'darwin'",
-]
 dependencies = [
-    { name = "filelock", marker = "sys_platform == 'darwin' or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
-    { name = "fsspec", marker = "sys_platform == 'darwin' or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
-    { name = "hf-xet", marker = "(platform_machine != 'aarch64' and platform_machine != 'amd64' and platform_machine != 'arm64' and platform_machine != 'x86_64' and extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda') or (platform_machine == 'aarch64' and sys_platform == 'darwin') or (platform_machine == 'amd64' and sys_platform == 'darwin') or (platform_machine == 'arm64' and sys_platform == 'darwin') or (platform_machine == 'x86_64' and sys_platform == 'darwin') or (sys_platform != 'darwin' and extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
-    { name = "packaging", marker = "sys_platform == 'darwin' or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
-    { name = "pyyaml", marker = "sys_platform == 'darwin' or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
-    { name = "requests", marker = "sys_platform == 'darwin' or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
-    { name = "tqdm", marker = "sys_platform == 'darwin' or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
-    { name = "typing-extensions", marker = "sys_platform == 'darwin' or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
+    { name = "filelock" },
+    { name = "fsspec" },
+    { name = "hf-xet", marker = "platform_machine == 'aarch64' or platform_machine == 'amd64' or platform_machine == 'arm64' or platform_machine == 'x86_64' or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
+    { name = "packaging" },
+    { name = "pyyaml" },
+    { name = "requests" },
+    { name = "tqdm" },
+    { name = "typing-extensions" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/7c/b7/8cb61d2eece5fb05a83271da168186721c450eb74e3c31f7ef3169fa475b/huggingface_hub-0.36.2.tar.gz", hash = "sha256:1934304d2fb224f8afa3b87007d58501acfda9215b334eed53072dd5e815ff7a", size = 649782, upload-time = "2026-02-06T09:24:13.098Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/a8/af/48ac8483240de756d2438c380746e7130d1c6f75802ef22f3c6d49982787/huggingface_hub-0.36.2-py3-none-any.whl", hash = "sha256:48f0c8eac16145dfce371e9d2d7772854a4f591bcb56c9cf548accf531d54270", size = 566395, upload-time = "2026-02-06T09:24:11.133Z" },
-]
-
-[[package]]
-name = "huggingface-hub"
-version = "1.24.0"
-source = { registry = "https://pypi.org/simple" }
-resolution-markers = [
-    "sys_platform == 'win32'",
-    "sys_platform == 'emscripten'",
-    "platform_machine == 'aarch64' and sys_platform == 'linux'",
-    "(platform_machine != 'aarch64' and sys_platform == 'linux') or (sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'linux' and sys_platform != 'win32')",
-]
-dependencies = [
-    { name = "click", marker = "sys_platform != 'darwin' or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
-    { name = "filelock", marker = "sys_platform != 'darwin' or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
-    { name = "fsspec", marker = "sys_platform != 'darwin' or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
-    { name = "hf-xet", marker = "(platform_machine != 'AMD64' and platform_machine != 'aarch64' and platform_machine != 'amd64' and platform_machine != 'arm64' and platform_machine != 'x86_64' and extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda') or (platform_machine == 'AMD64' and sys_platform != 'darwin') or (platform_machine == 'aarch64' and sys_platform != 'darwin') or (platform_machine == 'amd64' and sys_platform != 'darwin') or (platform_machine == 'arm64' and sys_platform != 'darwin') or (platform_machine == 'x86_64' and sys_platform != 'darwin') or (sys_platform == 'darwin' and extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
-    { name = "httpx", marker = "sys_platform != 'darwin' or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
-    { name = "packaging", marker = "sys_platform != 'darwin' or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
-    { name = "pyyaml", marker = "sys_platform != 'darwin' or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
-    { name = "tqdm", marker = "sys_platform != 'darwin' or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
-    { name = "typing-extensions", marker = "sys_platform != 'darwin' or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
-]
-sdist = { url = "https://files.pythonhosted.org/packages/df/9b/d3bb4e7d792835daf34dd7091bbc7d7b4e0437d9388f1ea7239cce49f478/huggingface_hub-1.24.0.tar.gz", hash = "sha256:18431ff4daae0749aa9ba102fc952e314c98e1d30ebdec5319d85ca0a83e1ae5", size = 921848, upload-time = "2026-07-17T09:54:01.022Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/5f/c3/aeaaf3911d2529614be18d1c8b5496afc185560e76568063d517283318af/huggingface_hub-1.24.0-py3-none-any.whl", hash = "sha256:6ed4120a84a6beec900640aa7e346bd766a6b7341e41526fef5dc8bd81fb7d59", size = 771904, upload-time = "2026-07-17T09:53:59.106Z" },
 ]
 
 [[package]]
@@ -1914,75 +1821,34 @@ wheels = [
 name = "marker-pdf"
 version = "1.10.2"
 source = { registry = "https://pypi.org/simple" }
-resolution-markers = [
-    "sys_platform == 'darwin'",
-]
 dependencies = [
-    { name = "anthropic", version = "0.46.0", source = { registry = "https://pypi.org/simple" }, marker = "sys_platform == 'darwin' or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
-    { name = "click", marker = "sys_platform == 'darwin' or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
-    { name = "filetype", marker = "sys_platform == 'darwin' or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
-    { name = "ftfy", marker = "sys_platform == 'darwin' or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
-    { name = "google-genai", version = "1.75.0", source = { registry = "https://pypi.org/simple" }, marker = "sys_platform == 'darwin' or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
-    { name = "markdown2", marker = "sys_platform == 'darwin' or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
-    { name = "markdownify", marker = "sys_platform == 'darwin' or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
-    { name = "openai", version = "1.109.1", source = { registry = "https://pypi.org/simple" }, marker = "sys_platform == 'darwin' or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
-    { name = "pdftext", version = "0.6.3", source = { registry = "https://pypi.org/simple" }, marker = "sys_platform == 'darwin' or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
-    { name = "pillow", marker = "sys_platform == 'darwin' or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
-    { name = "pre-commit", marker = "sys_platform == 'darwin' or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
-    { name = "pydantic", marker = "sys_platform == 'darwin' or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
-    { name = "pydantic-settings", marker = "sys_platform == 'darwin' or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
-    { name = "python-dotenv", marker = "sys_platform == 'darwin' or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
-    { name = "rapidfuzz", marker = "sys_platform == 'darwin' or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
-    { name = "regex", version = "2024.11.6", source = { registry = "https://pypi.org/simple" }, marker = "sys_platform == 'darwin' or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
-    { name = "scikit-learn", marker = "sys_platform == 'darwin' or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
-    { name = "surya-ocr", version = "0.17.1", source = { registry = "https://pypi.org/simple" }, marker = "sys_platform == 'darwin' or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
+    { name = "anthropic" },
+    { name = "click" },
+    { name = "filetype" },
+    { name = "ftfy" },
+    { name = "google-genai" },
+    { name = "markdown2" },
+    { name = "markdownify" },
+    { name = "openai" },
+    { name = "pdftext" },
+    { name = "pillow" },
+    { name = "pre-commit" },
+    { name = "pydantic" },
+    { name = "pydantic-settings" },
+    { name = "python-dotenv" },
+    { name = "rapidfuzz" },
+    { name = "regex" },
+    { name = "scikit-learn" },
+    { name = "surya-ocr" },
     { name = "torch", version = "2.13.0", source = { registry = "https://download.pytorch.org/whl/cpu" }, marker = "(sys_platform == 'darwin' and extra == 'extra-12-notebook-env-cpu') or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
-    { name = "torch", version = "2.13.0", source = { registry = "https://pypi.org/simple" }, marker = "(sys_platform == 'darwin' and extra != 'extra-12-notebook-env-cpu') or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
-    { name = "tqdm", marker = "sys_platform == 'darwin' or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
-    { name = "transformers", version = "4.57.6", source = { registry = "https://pypi.org/simple" }, marker = "sys_platform == 'darwin' or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
+    { name = "torch", version = "2.13.0", source = { registry = "https://pypi.org/simple" }, marker = "extra == 'extra-12-notebook-env-cuda' or extra != 'extra-12-notebook-env-cpu'" },
+    { name = "torch", version = "2.13.0+cpu", source = { registry = "https://download.pytorch.org/whl/cpu" }, marker = "(sys_platform != 'darwin' and extra == 'extra-12-notebook-env-cpu') or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
+    { name = "tqdm" },
+    { name = "transformers" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/04/bc/a9e72fd015f562b1f86c9dbc201c80365e7baf43d5aa616ba1c89453537f/marker_pdf-1.10.2.tar.gz", hash = "sha256:ce0fc839e11ad7519a576d254ca9d51a0f9454b9d7da02211f722b141317f9f1", size = 140056, upload-time = "2026-01-31T00:04:55.179Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/d3/44/51f6a5673d4815fa6d8d355f4a7119cbd6d8ae2e3cb697c066a8012beb18/marker_pdf-1.10.2-py3-none-any.whl", hash = "sha256:f631737dd46d3927142b4b14c7b488962c5af278dc2c3ae7dc5b03a47f5909fb", size = 195706, upload-time = "2026-01-31T00:04:56.384Z" },
-]
-
-[[package]]
-name = "marker-pdf"
-version = "2.0.0"
-source = { registry = "https://pypi.org/simple" }
-resolution-markers = [
-    "sys_platform == 'win32'",
-    "sys_platform == 'emscripten'",
-    "platform_machine == 'aarch64' and sys_platform == 'linux'",
-    "(platform_machine != 'aarch64' and sys_platform == 'linux') or (sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'linux' and sys_platform != 'win32')",
-]
-dependencies = [
-    { name = "anthropic", version = "0.120.0", source = { registry = "https://pypi.org/simple" }, marker = "sys_platform != 'darwin' or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
-    { name = "click", marker = "sys_platform != 'darwin' or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
-    { name = "filetype", marker = "sys_platform != 'darwin' or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
-    { name = "ftfy", marker = "sys_platform != 'darwin' or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
-    { name = "google-genai", version = "2.14.0", source = { registry = "https://pypi.org/simple" }, marker = "sys_platform != 'darwin' or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
-    { name = "markdown2", marker = "sys_platform != 'darwin' or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
-    { name = "markdownify", marker = "sys_platform != 'darwin' or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
-    { name = "openai", version = "2.48.0", source = { registry = "https://pypi.org/simple" }, marker = "sys_platform != 'darwin' or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
-    { name = "pdftext", version = "0.7.1", source = { registry = "https://pypi.org/simple" }, marker = "sys_platform != 'darwin' or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
-    { name = "pillow", marker = "sys_platform != 'darwin' or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
-    { name = "psutil", marker = "sys_platform != 'darwin' or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
-    { name = "pydantic", marker = "sys_platform != 'darwin' or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
-    { name = "pydantic-settings", marker = "sys_platform != 'darwin' or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
-    { name = "python-dotenv", marker = "sys_platform != 'darwin' or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
-    { name = "rapidfuzz", marker = "sys_platform != 'darwin' or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
-    { name = "regex", version = "2026.7.19", source = { registry = "https://pypi.org/simple" }, marker = "sys_platform != 'darwin' or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
-    { name = "scikit-learn", marker = "sys_platform != 'darwin' or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
-    { name = "surya-ocr", version = "0.22.1", source = { registry = "https://pypi.org/simple" }, marker = "sys_platform != 'darwin' or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
-    { name = "torch", version = "2.13.0", source = { registry = "https://pypi.org/simple" }, marker = "(sys_platform != 'darwin' and extra != 'extra-12-notebook-env-cpu') or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
-    { name = "torch", version = "2.13.0+cpu", source = { registry = "https://download.pytorch.org/whl/cpu" }, marker = "(sys_platform != 'darwin' and extra == 'extra-12-notebook-env-cpu') or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
-    { name = "tqdm", marker = "sys_platform != 'darwin' or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
-    { name = "transformers", version = "5.14.1", source = { registry = "https://pypi.org/simple" }, marker = "sys_platform != 'darwin' or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
-]
-sdist = { url = "https://files.pythonhosted.org/packages/7c/8a/d4556e2bb84f470b4c21a37e8082279d6ed8515bb49813f591571f9ef258/marker_pdf-2.0.0.tar.gz", hash = "sha256:7f6f0ebd29908f7c7c66f61cc06a9c07a9e3cd612c00732016f6e6b6fc150f7c", size = 4801201, upload-time = "2026-07-20T19:41:54.544Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/0e/fc/34d15f1d721866700f99a52298836752858ca79fc2e897963023abeb8b20/marker_pdf-2.0.0-py3-none-any.whl", hash = "sha256:aa31f6a31990a6b7ac277aaea0df486b9314a9c1cd6fe0c1262dc162ed3f8e72", size = 195742, upload-time = "2026-07-20T19:41:52.49Z" },
 ]
 
 [[package]]
@@ -2358,12 +2224,10 @@ docs = [
     { name = "docling" },
     { name = "latex2mathml" },
     { name = "markdownify" },
-    { name = "marker-pdf", version = "1.10.2", source = { registry = "https://pypi.org/simple" }, marker = "sys_platform == 'darwin' or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
-    { name = "marker-pdf", version = "2.0.0", source = { registry = "https://pypi.org/simple" }, marker = "sys_platform != 'darwin' or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
+    { name = "marker-pdf" },
     { name = "openpyxl" },
     { name = "pylatexenc" },
-    { name = "pypdfium2", version = "4.30.0", source = { registry = "https://pypi.org/simple" }, marker = "sys_platform == 'darwin' or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
-    { name = "pypdfium2", version = "5.10.1", source = { registry = "https://pypi.org/simple" }, marker = "sys_platform != 'darwin' or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
+    { name = "pypdfium2" },
     { name = "python-docx" },
     { name = "python-pptx" },
     { name = "xlsxwriter" },
@@ -2372,23 +2236,18 @@ hdl = [
     { name = "cocotb" },
 ]
 llm = [
-    { name = "anthropic", version = "0.46.0", source = { registry = "https://pypi.org/simple" }, marker = "sys_platform == 'darwin' or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
-    { name = "anthropic", version = "0.120.0", source = { registry = "https://pypi.org/simple" }, marker = "sys_platform != 'darwin' or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
-    { name = "google-genai", version = "1.75.0", source = { registry = "https://pypi.org/simple" }, marker = "sys_platform == 'darwin' or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
-    { name = "google-genai", version = "2.14.0", source = { registry = "https://pypi.org/simple" }, marker = "sys_platform != 'darwin' or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
-    { name = "openai", version = "1.109.1", source = { registry = "https://pypi.org/simple" }, marker = "sys_platform == 'darwin' or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
-    { name = "openai", version = "2.48.0", source = { registry = "https://pypi.org/simple" }, marker = "sys_platform != 'darwin' or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
+    { name = "anthropic" },
+    { name = "google-genai" },
+    { name = "openai" },
 ]
 ml = [
     { name = "accelerate" },
     { name = "einops" },
     { name = "flow-matching" },
-    { name = "huggingface-hub", version = "0.36.2", source = { registry = "https://pypi.org/simple" }, marker = "sys_platform == 'darwin' or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
-    { name = "huggingface-hub", version = "1.24.0", source = { registry = "https://pypi.org/simple" }, marker = "sys_platform != 'darwin' or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
+    { name = "huggingface-hub" },
     { name = "safetensors" },
     { name = "torchdiffeq" },
-    { name = "transformers", version = "4.57.6", source = { registry = "https://pypi.org/simple" }, marker = "sys_platform == 'darwin' or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
-    { name = "transformers", version = "5.14.1", source = { registry = "https://pypi.org/simple" }, marker = "sys_platform != 'darwin' or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
+    { name = "transformers" },
 ]
 optim = [
     { name = "casadi" },
@@ -2441,7 +2300,7 @@ docs = [
     { name = "docling", specifier = ">=2.40" },
     { name = "latex2mathml", specifier = ">=3.77" },
     { name = "markdownify", specifier = ">=1.1" },
-    { name = "marker-pdf", specifier = ">=1.8" },
+    { name = "marker-pdf", specifier = ">=1.8,<2" },
     { name = "openpyxl", specifier = ">=3.1" },
     { name = "pylatexenc", specifier = ">=2.10" },
     { name = "pypdfium2", specifier = ">=4.30" },
@@ -2754,47 +2613,19 @@ sdist = { url = "https://files.pythonhosted.org/packages/39/5a/8ba33c034a5031a2c
 name = "openai"
 version = "1.109.1"
 source = { registry = "https://pypi.org/simple" }
-resolution-markers = [
-    "sys_platform == 'darwin'",
-]
 dependencies = [
-    { name = "anyio", marker = "sys_platform == 'darwin' or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
-    { name = "distro", marker = "sys_platform == 'darwin' or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
-    { name = "httpx", marker = "sys_platform == 'darwin' or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
-    { name = "jiter", marker = "sys_platform == 'darwin' or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
-    { name = "pydantic", marker = "sys_platform == 'darwin' or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
-    { name = "sniffio", marker = "sys_platform == 'darwin' or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
-    { name = "tqdm", marker = "sys_platform == 'darwin' or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
-    { name = "typing-extensions", marker = "sys_platform == 'darwin' or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
+    { name = "anyio" },
+    { name = "distro" },
+    { name = "httpx" },
+    { name = "jiter" },
+    { name = "pydantic" },
+    { name = "sniffio" },
+    { name = "tqdm" },
+    { name = "typing-extensions" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/c6/a1/a303104dc55fc546a3f6914c842d3da471c64eec92043aef8f652eb6c524/openai-1.109.1.tar.gz", hash = "sha256:d173ed8dbca665892a6db099b4a2dfac624f94d20a93f46eb0b56aae940ed869", size = 564133, upload-time = "2025-09-24T13:00:53.075Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/1d/2a/7dd3d207ec669cacc1f186fd856a0f61dbc255d24f6fdc1a6715d6051b0f/openai-1.109.1-py3-none-any.whl", hash = "sha256:6bcaf57086cf59159b8e27447e4e7dd019db5d29a438072fbd49c290c7e65315", size = 948627, upload-time = "2025-09-24T13:00:50.754Z" },
-]
-
-[[package]]
-name = "openai"
-version = "2.48.0"
-source = { registry = "https://pypi.org/simple" }
-resolution-markers = [
-    "sys_platform == 'win32'",
-    "sys_platform == 'emscripten'",
-    "platform_machine == 'aarch64' and sys_platform == 'linux'",
-    "(platform_machine != 'aarch64' and sys_platform == 'linux') or (sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'linux' and sys_platform != 'win32')",
-]
-dependencies = [
-    { name = "anyio", marker = "sys_platform != 'darwin' or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
-    { name = "distro", marker = "sys_platform != 'darwin' or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
-    { name = "httpx", marker = "sys_platform != 'darwin' or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
-    { name = "jiter", marker = "sys_platform != 'darwin' or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
-    { name = "pydantic", marker = "sys_platform != 'darwin' or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
-    { name = "sniffio", marker = "sys_platform != 'darwin' or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
-    { name = "tqdm", marker = "sys_platform != 'darwin' or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
-    { name = "typing-extensions", marker = "sys_platform != 'darwin' or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
-]
-sdist = { url = "https://files.pythonhosted.org/packages/2a/ae/d4d1835488c0350424009dac5095b9a3e173bee12fd2e421ee27e2142c42/openai-2.48.0.tar.gz", hash = "sha256:231b1e7661dda14574986c2f71451e9d584b7fe69e0ee6480e12ed090b48fc16", size = 1093427, upload-time = "2026-07-23T20:15:50.402Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/b5/2a/dcb891114e303c4379d4a498f10222e33eee540bcef4e1e493bd0af2b242/openai-2.48.0-py3-none-any.whl", hash = "sha256:c98df30aaaf93c51979f64d3e7c5b76464f8be0173368266229eb8fe6bd30f2c", size = 1648520, upload-time = "2026-07-23T20:15:48.052Z" },
 ]
 
 [[package]]
@@ -2931,40 +2762,15 @@ wheels = [
 name = "pdftext"
 version = "0.6.3"
 source = { registry = "https://pypi.org/simple" }
-resolution-markers = [
-    "sys_platform == 'darwin'",
-]
 dependencies = [
-    { name = "click", marker = "sys_platform == 'darwin' or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
-    { name = "pydantic", marker = "sys_platform == 'darwin' or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
-    { name = "pydantic-settings", marker = "sys_platform == 'darwin' or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
-    { name = "pypdfium2", version = "4.30.0", source = { registry = "https://pypi.org/simple" }, marker = "sys_platform == 'darwin' or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
+    { name = "click" },
+    { name = "pydantic" },
+    { name = "pydantic-settings" },
+    { name = "pypdfium2" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/a9/7b/fe3205d44d6058932bbc785f0b9da2ed35b62e17479a8a7d2baca9df1cc6/pdftext-0.6.3.tar.gz", hash = "sha256:ab5c5dfe0f1fb78de1db837ccadac1ea41b07ce1890fead973c9a84cdaf54dec", size = 21968, upload-time = "2025-06-11T14:42:09.492Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/bc/b9/4437bb89f04e57f48c96492a50d6168da5e201940de6620730d390449991/pdftext-0.6.3-py3-none-any.whl", hash = "sha256:528431ed8bdce39d74372cd3d27e8544af812f1f1adc81db229cf9fb48dacacb", size = 23693, upload-time = "2025-06-11T14:42:08.157Z" },
-]
-
-[[package]]
-name = "pdftext"
-version = "0.7.1"
-source = { registry = "https://pypi.org/simple" }
-resolution-markers = [
-    "sys_platform == 'win32'",
-    "sys_platform == 'emscripten'",
-    "platform_machine == 'aarch64' and sys_platform == 'linux'",
-    "(platform_machine != 'aarch64' and sys_platform == 'linux') or (sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'linux' and sys_platform != 'win32')",
-]
-dependencies = [
-    { name = "click", marker = "sys_platform != 'darwin' or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
-    { name = "numpy", marker = "sys_platform != 'darwin' or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
-    { name = "pydantic", marker = "sys_platform != 'darwin' or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
-    { name = "pydantic-settings", marker = "sys_platform != 'darwin' or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
-    { name = "pypdfium2", version = "5.10.1", source = { registry = "https://pypi.org/simple" }, marker = "sys_platform != 'darwin' or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
-]
-sdist = { url = "https://files.pythonhosted.org/packages/b5/48/6c12661234ef71a9349bb1fbdd0259a6d8189376f664492e2c206ab3c397/pdftext-0.7.1.tar.gz", hash = "sha256:7484add28d48d8c04aab0076769f2d626454233de95de00c7b348cb6398045bd", size = 28483, upload-time = "2026-07-08T21:57:14.436Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/d7/5d/997add0ca9f74d77afd9ab355b301a495420ce0b3258bf6954b00aa47465/pdftext-0.7.1-py3-none-any.whl", hash = "sha256:ffb47a36e7f0c9a295e16c0e0a9f6a323026f88416f8045330746604f7212986", size = 29712, upload-time = "2026-07-08T21:57:15.209Z" },
 ]
 
 [[package]]
@@ -3291,9 +3097,6 @@ wheels = [
 name = "pypdfium2"
 version = "4.30.0"
 source = { registry = "https://pypi.org/simple" }
-resolution-markers = [
-    "sys_platform == 'darwin'",
-]
 sdist = { url = "https://files.pythonhosted.org/packages/a1/14/838b3ba247a0ba92e4df5d23f2bea9478edcfd72b78a39d6ca36ccd84ad2/pypdfium2-4.30.0.tar.gz", hash = "sha256:48b5b7e5566665bc1015b9d69c1ebabe21f6aee468b509531c3c8318eeee2e16", size = 140239, upload-time = "2024-05-09T18:33:17.552Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/c7/9a/c8ff5cc352c1b60b0b97642ae734f51edbab6e28b45b4fcdfe5306ee3c83/pypdfium2-4.30.0-py3-none-macosx_10_13_x86_64.whl", hash = "sha256:b33ceded0b6ff5b2b93bc1fe0ad4b71aa6b7e7bd5875f1ca0cdfb6ba6ac01aab", size = 2837254, upload-time = "2024-05-09T18:32:48.653Z" },
@@ -3308,41 +3111,6 @@ wheels = [
     { url = "https://files.pythonhosted.org/packages/90/47/eda4904f715fb98561e34012826e883816945934a851745570521ec89520/pypdfium2-4.30.0-py3-none-win32.whl", hash = "sha256:ee2410f15d576d976c2ab2558c93d392a25fb9f6635e8dd0a8a3a5241b275e0e", size = 2775951, upload-time = "2024-05-09T18:33:10.567Z" },
     { url = "https://files.pythonhosted.org/packages/25/bd/56d9ec6b9f0fc4e0d95288759f3179f0fcd34b1a1526b75673d2f6d5196f/pypdfium2-4.30.0-py3-none-win_amd64.whl", hash = "sha256:90dbb2ac07be53219f56be09961eb95cf2473f834d01a42d901d13ccfad64b4c", size = 2892098, upload-time = "2024-05-09T18:33:13.107Z" },
     { url = "https://files.pythonhosted.org/packages/be/7a/097801205b991bc3115e8af1edb850d30aeaf0118520b016354cf5ccd3f6/pypdfium2-4.30.0-py3-none-win_arm64.whl", hash = "sha256:119b2969a6d6b1e8d55e99caaf05290294f2d0fe49c12a3f17102d01c441bd29", size = 2752118, upload-time = "2024-05-09T18:33:15.489Z" },
-]
-
-[[package]]
-name = "pypdfium2"
-version = "5.10.1"
-source = { registry = "https://pypi.org/simple" }
-resolution-markers = [
-    "sys_platform == 'win32'",
-    "sys_platform == 'emscripten'",
-    "platform_machine == 'aarch64' and sys_platform == 'linux'",
-    "(platform_machine != 'aarch64' and sys_platform == 'linux') or (sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'linux' and sys_platform != 'win32')",
-]
-sdist = { url = "https://files.pythonhosted.org/packages/1d/78/d9b45abb97a3686643f7c6472a5f7688f2013a373226121dc76b9debbacf/pypdfium2-5.10.1.tar.gz", hash = "sha256:f257d2011eb43c846b7e9f5a802e28646b29732763e4a35dd6ca76f9be580538", size = 272963, upload-time = "2026-06-15T10:09:16.179Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/98/49/0b85fcc0d236582143a25cf275b0b4f5d786f51eb07a89ec9c79d43efe18/pypdfium2-5.10.1-py3-none-android_23_arm64_v8a.whl", hash = "sha256:13abf7a9f5e0ddebc8bbcccea5f13ae5abe8a298ea219e125b0fc24c1d2171b4", size = 3409176, upload-time = "2026-06-15T10:08:36.017Z" },
-    { url = "https://files.pythonhosted.org/packages/20/d2/2f522c5b2ad5166edf256bb4dbab97de5d07b2573f8a5630ddfcd1f8d4ee/pypdfium2-5.10.1-py3-none-android_23_armeabi_v7a.whl", hash = "sha256:a0dc52b56631e2f7edcdb22bae3b155aa840bec32c5bd05781e90baaecee88e7", size = 2866175, upload-time = "2026-06-15T10:08:37.955Z" },
-    { url = "https://files.pythonhosted.org/packages/a7/be/477548c026c2badfdbf4afc3358b7135121fb5bec2e2effcb67e3a674d0b/pypdfium2-5.10.1-py3-none-macosx_12_0_arm64.whl", hash = "sha256:ebb9e63f92d15fc41b359fe7a187233dfae37548800e1fa09cb2fc466ac89951", size = 3621427, upload-time = "2026-06-15T10:08:39.969Z" },
-    { url = "https://files.pythonhosted.org/packages/8c/9b/0131c7f711b62c6edd6b200e9eb6340be6de4f6dc5baae625e3394d8d5fb/pypdfium2-5.10.1-py3-none-macosx_12_0_x86_64.whl", hash = "sha256:d04f2050b6b32bb18624688b600543342a4ab3aacf64bf66521a5af72bbc7de1", size = 3682825, upload-time = "2026-06-15T10:08:42.181Z" },
-    { url = "https://files.pythonhosted.org/packages/9d/3d/bddfceb6e67e54d6dd1ab6c0f1feff796a89596e40f6345a3b4cc6a3d408/pypdfium2-5.10.1-py3-none-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:0de53d2710ca9509fc2812340acc57c3f043697609068592d87de654f8cabf44", size = 3682206, upload-time = "2026-06-15T10:08:44.087Z" },
-    { url = "https://files.pythonhosted.org/packages/58/08/dedeb25c6645fc8a5eda24f54e0b1d083b7334ababf5f518bb939d729cc0/pypdfium2-5.10.1-py3-none-manylinux_2_17_armv7l.manylinux2014_armv7l.whl", hash = "sha256:10a26ce04795f8ec079e81c707fcb5737061e8a78025babc3d6e36642e9c903a", size = 3413720, upload-time = "2026-06-15T10:08:45.739Z" },
-    { url = "https://files.pythonhosted.org/packages/cc/48/69e1fc8b1216005243c6415183bbf6de1cda3f5a06758b3fa4a26a7385c6/pypdfium2-5.10.1-py3-none-manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:be6d2a8d1bcfd777188e7aa55a25c83f34d54e8350ad8810fb32017787d9b0d9", size = 3812913, upload-time = "2026-06-15T10:08:47.45Z" },
-    { url = "https://files.pythonhosted.org/packages/72/7f/132455a58ad736d76815c6cd1307532c3f433299d945b9d2f8cc2387c309/pypdfium2-5.10.1-py3-none-manylinux_2_17_ppc64le.manylinux2014_ppc64le.whl", hash = "sha256:cf4d2527f79f31c550490cc74c9f32e19385a944630a3ef4cd4d9b6f961fbf77", size = 4223220, upload-time = "2026-06-15T10:08:49.099Z" },
-    { url = "https://files.pythonhosted.org/packages/bf/8c/4d5804eca598bbe894e0a9a510807e221c1623e7276ce6b68fa2660dc933/pypdfium2-5.10.1-py3-none-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:3ba127750bc3f4161461538d532d74491cd976f584f1753a6cee9cb821338ec1", size = 3738950, upload-time = "2026-06-15T10:08:50.821Z" },
-    { url = "https://files.pythonhosted.org/packages/d1/7f/baac59bf14ff914d97789ee0368c22ae233aa857aa9c0726bcb515dbc4d7/pypdfium2-5.10.1-py3-none-manylinux_2_27_s390x.manylinux_2_28_s390x.whl", hash = "sha256:80f30517ee089dfbbc6e9de6da365b6e8c0ce8f80c40b7d4025a3b1d3bbd8a70", size = 4029869, upload-time = "2026-06-15T10:08:52.494Z" },
-    { url = "https://files.pythonhosted.org/packages/d0/d7/a5d58a0bcba31a0e37ed636a76ef3d2d215733f28af61637287d061b0c54/pypdfium2-5.10.1-py3-none-manylinux_2_34_riscv64.manylinux_2_39_riscv64.whl", hash = "sha256:ad5f5de15febb788c6eb3853e58aceda9cd8c5187c92472abaeecf9558deb0cf", size = 3990927, upload-time = "2026-06-15T10:08:54.555Z" },
-    { url = "https://files.pythonhosted.org/packages/da/1a/98eebd14b36812176297cf765d504ebeebc982f895c8a3a9fbd2717797de/pypdfium2-5.10.1-py3-none-musllinux_1_2_aarch64.whl", hash = "sha256:8947fa3cd808da33960bdf8ff9e5247aa94ccd94f0b09bb3402e99498d83bcc9", size = 4989624, upload-time = "2026-06-15T10:08:56.284Z" },
-    { url = "https://files.pythonhosted.org/packages/1c/20/f2e124d607b8bb90a9f1ce976afff38c70e215cd7ea86af784cb2e8a19dd/pypdfium2-5.10.1-py3-none-musllinux_1_2_armv7l.whl", hash = "sha256:139a6387a3a2652f288e53164268bb03af4fa221d78484ee18407053a60082a3", size = 4535124, upload-time = "2026-06-15T10:08:58.214Z" },
-    { url = "https://files.pythonhosted.org/packages/59/ef/469ea87f668a32ff3280ea15e522e3a7858d2c80f1ecc320ece1244624c9/pypdfium2-5.10.1-py3-none-musllinux_1_2_i686.whl", hash = "sha256:172ff3e10358d66456e27fb0b8b5098e28ec24e51072eb4b5b86077d550e21bb", size = 5229373, upload-time = "2026-06-15T10:09:00.702Z" },
-    { url = "https://files.pythonhosted.org/packages/c3/48/c7ed3001f0c5e28114c98bf918c8121e422a65ba7323e1e12f3f28e2d278/pypdfium2-5.10.1-py3-none-musllinux_1_2_ppc64le.whl", hash = "sha256:09fda0609dc4749c9865a0315c447d6f2583a580693bcabd69980d3fbb22ad51", size = 5140010, upload-time = "2026-06-15T10:09:02.734Z" },
-    { url = "https://files.pythonhosted.org/packages/b2/bc/00b731bfc1fdc0f3c7d91108fceb54978ff4f5a92336820e5ed6c12535ff/pypdfium2-5.10.1-py3-none-musllinux_1_2_riscv64.whl", hash = "sha256:6b01adcfe9aaf7a635a59bed5687fd4fd7b0da292664f050d4ebd2bfa5c70584", size = 4643310, upload-time = "2026-06-15T10:09:04.794Z" },
-    { url = "https://files.pythonhosted.org/packages/9a/e8/3ad242233f657c19092a8c83684c8154b8d02a826535a6a2591d91aa5dde/pypdfium2-5.10.1-py3-none-musllinux_1_2_s390x.whl", hash = "sha256:610e14c37d2090b826dccc0604fc7e7612c0ce591190780ae228abdb9abb971e", size = 5087879, upload-time = "2026-06-15T10:09:06.861Z" },
-    { url = "https://files.pythonhosted.org/packages/80/3f/9d0747a02ac3021ed3db7ac27c5187d97e78b0253a4bdfbf386666968474/pypdfium2-5.10.1-py3-none-musllinux_1_2_x86_64.whl", hash = "sha256:f2803020952afa57e1e148adc19369b835154e1fa251a1ca85008ab6466a710f", size = 5047369, upload-time = "2026-06-15T10:09:08.883Z" },
-    { url = "https://files.pythonhosted.org/packages/9e/41/7d5187e9527eae81890a3b13193442112ef788d61ddaa68a6d59ac447bec/pypdfium2-5.10.1-py3-none-win32.whl", hash = "sha256:8702bb4f01ddfc8e7757b41b4c2c8392ac17c9f0234476e1e69672ea7c6d6aa0", size = 3680056, upload-time = "2026-06-15T10:09:10.95Z" },
-    { url = "https://files.pythonhosted.org/packages/16/1d/c62bd59dd8345cc4b640f942f465633f6b07b859d01ddb648610a7bf5c7c/pypdfium2-5.10.1-py3-none-win_amd64.whl", hash = "sha256:58da5b51fb7884c7d21a05062ab13edb011d1a08dfd9694f3d5d685df62796b9", size = 3812105, upload-time = "2026-06-15T10:09:12.684Z" },
-    { url = "https://files.pythonhosted.org/packages/10/d5/21bac39125df8a93e99c04583486b58a62b5997d6b3541e3ad0f69053392/pypdfium2-5.10.1-py3-none-win_arm64.whl", hash = "sha256:e3301c2f7a66fb8cb57dba857d0c9e90215e178f6602a87c5a306cd98513dab8", size = 3600043, upload-time = "2026-06-15T10:09:14.606Z" },
 ]
 
 [[package]]
@@ -3596,9 +3364,6 @@ wheels = [
 name = "regex"
 version = "2024.11.6"
 source = { registry = "https://pypi.org/simple" }
-resolution-markers = [
-    "sys_platform == 'darwin'",
-]
 sdist = { url = "https://files.pythonhosted.org/packages/8e/5f/bd69653fbfb76cf8604468d3b4ec4c403197144c7bfe0e6a5fc9e02a07cb/regex-2024.11.6.tar.gz", hash = "sha256:7ab159b063c52a0333c884e4679f8d7a85112ee3078fe3d9004b2dd875585519", size = 399494, upload-time = "2024-11-06T20:12:31.635Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/ba/30/9a87ce8336b172cc232a0db89a3af97929d06c11ceaa19d97d84fa90a8f8/regex-2024.11.6-cp312-cp312-macosx_10_13_universal2.whl", hash = "sha256:52fb28f528778f184f870b7cf8f225f5eef0a8f6e3778529bdd40c7b3920796a", size = 483781, upload-time = "2024-11-06T20:10:07.07Z" },
@@ -3631,68 +3396,6 @@ wheels = [
     { url = "https://files.pythonhosted.org/packages/ed/e3/c446a64984ea9f69982ba1a69d4658d5014bc7a0ea468a07e1a1265db6e2/regex-2024.11.6-cp313-cp313-musllinux_1_2_x86_64.whl", hash = "sha256:4f51f88c126370dcec4908576c5a627220da6c09d0bff31cfa89f2523843316d", size = 787733, upload-time = "2024-11-06T20:11:11.256Z" },
     { url = "https://files.pythonhosted.org/packages/2b/f1/e40c8373e3480e4f29f2692bd21b3e05f296d3afebc7e5dcf21b9756ca1c/regex-2024.11.6-cp313-cp313-win32.whl", hash = "sha256:63b13cfd72e9601125027202cad74995ab26921d8cd935c25f09c630436348ff", size = 262122, upload-time = "2024-11-06T20:11:13.161Z" },
     { url = "https://files.pythonhosted.org/packages/45/94/bc295babb3062a731f52621cdc992d123111282e291abaf23faa413443ea/regex-2024.11.6-cp313-cp313-win_amd64.whl", hash = "sha256:2b3361af3198667e99927da8b84c1b010752fa4b1115ee30beaa332cabc3ef1a", size = 273545, upload-time = "2024-11-06T20:11:15Z" },
-]
-
-[[package]]
-name = "regex"
-version = "2026.7.19"
-source = { registry = "https://pypi.org/simple" }
-resolution-markers = [
-    "sys_platform == 'win32'",
-    "sys_platform == 'emscripten'",
-    "platform_machine == 'aarch64' and sys_platform == 'linux'",
-    "(platform_machine != 'aarch64' and sys_platform == 'linux') or (sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'linux' and sys_platform != 'win32')",
-]
-sdist = { url = "https://files.pythonhosted.org/packages/20/98/04b13f1ddfb63158025291c02e03eb42fbb7acb51d091d541050eb4e35e8/regex-2026.7.19.tar.gz", hash = "sha256:7e77b324909c1617cbb4c668677e2c6ae13f44d7c1de0d4f15f2e3c10f3315b5", size = 416440, upload-time = "2026-07-19T00:19:48.923Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/3b/b9/d11d7e501ac8fd7d617684423ebb9561e0b998481c1e4cbc0cb212c5d74a/regex-2026.7.19-cp312-cp312-macosx_10_13_universal2.whl", hash = "sha256:2cc3460cedf7579948486eab03bc9ad7089df4d7281c0f47f4afe03e8d13f02d", size = 496778, upload-time = "2026-07-19T00:17:05.677Z" },
-    { url = "https://files.pythonhosted.org/packages/3f/a9/a5ab6f312f24318019170dc485d5421fe4f89e43a98640da50d95a8a7041/regex-2026.7.19-cp312-cp312-macosx_10_13_x86_64.whl", hash = "sha256:0e9554c8785eac5cffe6300f69a91f58ba72bc88a5f8d661235ad7c6aa5b8ccd", size = 297122, upload-time = "2026-07-19T00:17:07.59Z" },
-    { url = "https://files.pythonhosted.org/packages/b3/63/4cab4d7f2d384a144d420b763d97674cb70619c878ea6fcd7640d0e62143/regex-2026.7.19-cp312-cp312-macosx_11_0_arm64.whl", hash = "sha256:d7da47a0f248977f08e2cb659ff3c17ddc13a4d39b3a7baa0a81bf5b415430f6", size = 292009, upload-time = "2026-07-19T00:17:09.648Z" },
-    { url = "https://files.pythonhosted.org/packages/22/85/102a81b218298957d4ea7d2f084fae537a71add9d6ff93c8e67284c5f45e/regex-2026.7.19-cp312-cp312-manylinux2014_aarch64.manylinux_2_17_aarch64.manylinux_2_28_aarch64.whl", hash = "sha256:93db40c8de0815baab96a06e08a984bac71f989d13bab789e382158c5d426797", size = 796708, upload-time = "2026-07-19T00:17:11.542Z" },
-    { url = "https://files.pythonhosted.org/packages/78/b5/dc136af5629938a037cd2b304c12240e132ec92f38be8ff9cc89af2a1f2d/regex-2026.7.19-cp312-cp312-manylinux2014_ppc64le.manylinux_2_17_ppc64le.manylinux_2_28_ppc64le.whl", hash = "sha256:66bd62c59a5427746e8c44becae1d9b99d22fb13f30f492083dfb9ad7c45cc18", size = 865651, upload-time = "2026-07-19T00:17:13.312Z" },
-    { url = "https://files.pythonhosted.org/packages/e0/75/67402ae3cd9c8c988a4c805d15ee3eef015e7ca4cb112cf3e640fc1f4153/regex-2026.7.19-cp312-cp312-manylinux2014_s390x.manylinux_2_17_s390x.manylinux_2_28_s390x.whl", hash = "sha256:1649eb39fcc9ea80c4d2f110fde2b8ab2aef3877b98f02ab9b14e961f418c511", size = 911756, upload-time = "2026-07-19T00:17:15.015Z" },
-    { url = "https://files.pythonhosted.org/packages/2a/8e/096d00c7c480ef2ff4265349b14e2261d4ab787ba1f74e2e80d1c58079c3/regex-2026.7.19-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl", hash = "sha256:9dce8ec9695f531a1b8a6f314fd4b393adcccf2ea861db480cdf97a301d01a68", size = 801798, upload-time = "2026-07-19T00:17:17.208Z" },
-    { url = "https://files.pythonhosted.org/packages/f0/41/e7ecac6edb5722417f85cc67eaf386322fbe8acf6918ec2fdc37c20dd9d0/regex-2026.7.19-cp312-cp312-manylinux_2_31_riscv64.manylinux_2_39_riscv64.whl", hash = "sha256:3080a7fd38ef049bd489e01c970c97dd84ff446a885b0f1f6b26d9b1ad13ce11", size = 776933, upload-time = "2026-07-19T00:17:19.347Z" },
-    { url = "https://files.pythonhosted.org/packages/6f/69/03c9b3f058d66403e0ca2c938696e81d51cd4c6d47ec5265f02f96948d9a/regex-2026.7.19-cp312-cp312-musllinux_1_2_aarch64.whl", hash = "sha256:1d793a7988e04fcb1e2e135567443d82173225d657419ec09414a9b5a145b986", size = 784338, upload-time = "2026-07-19T00:17:21.057Z" },
-    { url = "https://files.pythonhosted.org/packages/f6/f7/b38ab3d43f284afbb618fcd15d0e77eb786ae461ce1f6bc7494619ddc0f2/regex-2026.7.19-cp312-cp312-musllinux_1_2_ppc64le.whl", hash = "sha256:e8b0abe7d870f53ca5143895fef7d1041a0c831a140d3dc2c760dd7ba25d4a8b", size = 860452, upload-time = "2026-07-19T00:17:23.119Z" },
-    { url = "https://files.pythonhosted.org/packages/15/5c/ff60ef0571121714f3cf9920bc183071e384a10b556d042e0fdb06cc07a5/regex-2026.7.19-cp312-cp312-musllinux_1_2_riscv64.whl", hash = "sha256:4e5413bd5f13d3a4e3539ca98f70f75e7fca92518dd7f117f030ebedd10b60cb", size = 765958, upload-time = "2026-07-19T00:17:24.81Z" },
-    { url = "https://files.pythonhosted.org/packages/aa/0f/bd34021162c0ab47f9a315bd56cd5642e920c8e5668a75ef6c6a6fca590d/regex-2026.7.19-cp312-cp312-musllinux_1_2_s390x.whl", hash = "sha256:73b133a9e6fb512858e7f065e96f1180aa46646bc74a83aea62f1d314f3dd035", size = 851765, upload-time = "2026-07-19T00:17:26.993Z" },
-    { url = "https://files.pythonhosted.org/packages/2a/20/a2ca43edade0595cccfdc98636739f536d9e26898e7dbddc2b9e98898953/regex-2026.7.19-cp312-cp312-musllinux_1_2_x86_64.whl", hash = "sha256:dbe6493fbd27321b1d1f2dd4f5c7e5bd4d8b1d7cab7f32fd67db3d0b2ed8248a", size = 789714, upload-time = "2026-07-19T00:17:28.699Z" },
-    { url = "https://files.pythonhosted.org/packages/5d/47/e02db4015d424fc83c00ea0ac8c5e5ec14397943de9abf909d5ce3a25931/regex-2026.7.19-cp312-cp312-win32.whl", hash = "sha256:ddd67571c10869f65a5d7dde536d1e066e306cc90de57d7de4d5f34802428bb5", size = 267157, upload-time = "2026-07-19T00:17:31.051Z" },
-    { url = "https://files.pythonhosted.org/packages/08/8e/c780c131f79b42ed22d1bd7da4096c2c35f813e835acd02ef0f018bd892c/regex-2026.7.19-cp312-cp312-win_amd64.whl", hash = "sha256:e30d40268a28d54ce0437031750497004c22602b8e3ab891f759b795a003b312", size = 277777, upload-time = "2026-07-19T00:17:32.848Z" },
-    { url = "https://files.pythonhosted.org/packages/3e/4c/e4d7e086449bdf379d89774bf1f89dc4a41943f3c5a6125a03905b34b5fb/regex-2026.7.19-cp312-cp312-win_arm64.whl", hash = "sha256:de9208bb427130c82a5dbfd104f92c8876fc9559278c880b3002755bbbe9c83d", size = 277136, upload-time = "2026-07-19T00:17:34.803Z" },
-    { url = "https://files.pythonhosted.org/packages/5d/3d/84165e4299ff76f3a40fe1f2abf939e976f693383a08d2beea6af62bd2c1/regex-2026.7.19-cp313-cp313-macosx_10_13_universal2.whl", hash = "sha256:f035d9dc1d25eff9d361456572231c7d27b5ccd473ca7dc0adfce732bd006d40", size = 496552, upload-time = "2026-07-19T00:17:36.808Z" },
-    { url = "https://files.pythonhosted.org/packages/02/a2/a65293e6e4cf28eb7ee1be5335a5386c40d6742e9f47fafc8fec785e16c7/regex-2026.7.19-cp313-cp313-macosx_10_13_x86_64.whl", hash = "sha256:c42572142ed0b9d5d261ba727157c426510da78e20828b66bbb855098b8a4e38", size = 296983, upload-time = "2026-07-19T00:17:38.816Z" },
-    { url = "https://files.pythonhosted.org/packages/95/47/2d0564e93d87bc48618360ddca232a2ca612bbdf53ce8465d45ca5ce14ee/regex-2026.7.19-cp313-cp313-macosx_11_0_arm64.whl", hash = "sha256:40b34dd88658e4fedd2fddbf0275ac970d00614b731357f425722a3ed1983d11", size = 291832, upload-time = "2026-07-19T00:17:40.726Z" },
-    { url = "https://files.pythonhosted.org/packages/07/cd/42dfbabff3dfc9603c501c0e2e2c5adbb09d127b267bf5348de0af338c15/regex-2026.7.19-cp313-cp313-manylinux2014_aarch64.manylinux_2_17_aarch64.manylinux_2_28_aarch64.whl", hash = "sha256:0c41c63992bf1874cebb6e7f56fd7d3c007924659a604ae3d90e427d40d4fd13", size = 796775, upload-time = "2026-07-19T00:17:42.382Z" },
-    { url = "https://files.pythonhosted.org/packages/df/5d/f6a4839f2b934e3eed5973fd07f5929ee97d4c98939fb275ea23c274ee16/regex-2026.7.19-cp313-cp313-manylinux2014_ppc64le.manylinux_2_17_ppc64le.manylinux_2_28_ppc64le.whl", hash = "sha256:1d3372064506b94dd2c67c845f2db8062e9e9ba84d04e33cb96d7d33c11fe1ae", size = 865687, upload-time = "2026-07-19T00:17:44.185Z" },
-    { url = "https://files.pythonhosted.org/packages/14/b0/b47d6c36049bc59806a50bd4c86ced70bbe058d787f80281b1d7a9b0e024/regex-2026.7.19-cp313-cp313-manylinux2014_s390x.manylinux_2_17_s390x.manylinux_2_28_s390x.whl", hash = "sha256:fce7760bf283405b2c7999cab3da4e72f7deca6396013115e3f7a955db9760da", size = 911962, upload-time = "2026-07-19T00:17:46.442Z" },
-    { url = "https://files.pythonhosted.org/packages/2a/be/ff61f28f9273658cfe23acbbac5217221f6519960ed401e61dfdab12bc35/regex-2026.7.19-cp313-cp313-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl", hash = "sha256:c0d702548d89d572b2929879bc883bb7a4c4709efafe4512cadee56c55c9bd15", size = 801817, upload-time = "2026-07-19T00:17:48.25Z" },
-    { url = "https://files.pythonhosted.org/packages/c3/bb/8b4f7f26b333f9f79e1b453613c39bb4776f51d38ae66dd0ba31d6b354ca/regex-2026.7.19-cp313-cp313-manylinux_2_31_riscv64.manylinux_2_39_riscv64.whl", hash = "sha256:d446c6ac40bb6e05025ccee55b84d80fe9bf8e93010ffc4bb9484f13d498835f", size = 776908, upload-time = "2026-07-19T00:17:50.183Z" },
-    { url = "https://files.pythonhosted.org/packages/09/13/610110fc5921d380516d03c26b652555f08aa0d23ea78a771231873c3638/regex-2026.7.19-cp313-cp313-musllinux_1_2_aarch64.whl", hash = "sha256:4c3501bfa814ab07b5580741f9bf78dfdfe146a04057f82df9e2402d2a975939", size = 784426, upload-time = "2026-07-19T00:17:52.454Z" },
-    { url = "https://files.pythonhosted.org/packages/ca/f5/1ef9e2a83a5947c57ebff0b377cb5727c3d5ec1992317a320d035cd0dbb6/regex-2026.7.19-cp313-cp313-musllinux_1_2_ppc64le.whl", hash = "sha256:c4585c3e64b4f9e583b4d2683f18f5d5d872b3d71dcf24594b74ecc23602fa96", size = 860600, upload-time = "2026-07-19T00:17:54.229Z" },
-    { url = "https://files.pythonhosted.org/packages/a0/02/073af33a3ec149241d11c80acea91e722aa0adbf05addd50f251c4fe89c3/regex-2026.7.19-cp313-cp313-musllinux_1_2_riscv64.whl", hash = "sha256:571fde9741eb0ccde23dd4e0c1d50fbae910e901fa7e629faf39b2dda740d220", size = 765950, upload-time = "2026-07-19T00:17:56.041Z" },
-    { url = "https://files.pythonhosted.org/packages/81/a9/d1e9f819dc394a568ef370cd56cf25394e957a2235f8370f23b576e5a475/regex-2026.7.19-cp313-cp313-musllinux_1_2_s390x.whl", hash = "sha256:15b364b9b98d6d2fe1a85034c23a3180ff913f46caddc3895f6fd65186255ccc", size = 851794, upload-time = "2026-07-19T00:17:57.897Z" },
-    { url = "https://files.pythonhosted.org/packages/03/3a/8ae83eda7579feacdf984e71fb9e70635fb6f832eeddca58427ec4fca926/regex-2026.7.19-cp313-cp313-musllinux_1_2_x86_64.whl", hash = "sha256:ffd8893ccc1c2fce6e0d6ca402d716fe1b29db70c7132609a05955e31b2aa8f2", size = 789845, upload-time = "2026-07-19T00:17:59.97Z" },
-    { url = "https://files.pythonhosted.org/packages/4b/23/c195cbfe5a75fdec64d8f6554fd15237b837919d2c61bdc141d7c807b08b/regex-2026.7.19-cp313-cp313-win32.whl", hash = "sha256:f0fa4fa9c3632d708742baf2282f2055c11d888a790362670a403cbf48a2c404", size = 267135, upload-time = "2026-07-19T00:18:01.958Z" },
-    { url = "https://files.pythonhosted.org/packages/b2/80/a11de8404b7272b70acb45c1c05987cce60b45d5693da2e176f0e390d564/regex-2026.7.19-cp313-cp313-win_amd64.whl", hash = "sha256:d51ffd3427640fa2da6ade574ceba932f210ad095f65fcc450a2b0a0d454868e", size = 277747, upload-time = "2026-07-19T00:18:04.121Z" },
-    { url = "https://files.pythonhosted.org/packages/d1/29/0f5c8eff1b4f1f3d83276d365fccecf666afcc7d947420943bf394d07adb/regex-2026.7.19-cp313-cp313-win_arm64.whl", hash = "sha256:c670fe7be5b6020b76bc6e8d2196074657e1327595bca93a389e1a76ab130ad8", size = 277129, upload-time = "2026-07-19T00:18:05.821Z" },
-    { url = "https://files.pythonhosted.org/packages/dc/4c/44b74742052cedda40f9ae469532a037112f7311a36669a891fba8984bb0/regex-2026.7.19-cp313-cp313t-macosx_10_13_universal2.whl", hash = "sha256:db47b561c9afd884baa1f96f797c9ca369872c4b65912bc691cfa99e68340af2", size = 501134, upload-time = "2026-07-19T00:18:07.567Z" },
-    { url = "https://files.pythonhosted.org/packages/f0/45/bbd038b5e39ee5613a5a689290145b40058cc152c41de9cc23639d2b9734/regex-2026.7.19-cp313-cp313t-macosx_10_13_x86_64.whl", hash = "sha256:65dcd28d3eba2ab7c2fd906485cc301392b47cc2234790d27d4e4814e02cdfda", size = 299418, upload-time = "2026-07-19T00:18:09.38Z" },
-    { url = "https://files.pythonhosted.org/packages/65/38/c5bde94b4cedfd5850d64c3f08222d8e1600e84f6ee71d9b44b4b8163f74/regex-2026.7.19-cp313-cp313t-macosx_11_0_arm64.whl", hash = "sha256:f2e7f8e2ab6c2922be02c7ec45185aa5bd771e2e57b95455ee343a44d8130dff", size = 294486, upload-time = "2026-07-19T00:18:11.188Z" },
-    { url = "https://files.pythonhosted.org/packages/d7/6a/2f5e107cb26c960b781967178899daf2787a7ab151844ed3c01d6fc95474/regex-2026.7.19-cp313-cp313t-manylinux2014_aarch64.manylinux_2_17_aarch64.manylinux_2_28_aarch64.whl", hash = "sha256:fe31f28c94402043161876a258a9c6f757cb485905c7614ce8d6cd40e6b7bdc1", size = 811643, upload-time = "2026-07-19T00:18:12.975Z" },
-    { url = "https://files.pythonhosted.org/packages/37/d4/a2f963406d7d73a62eed84ba05a258afb6cad1b21aa4517443ce40506b78/regex-2026.7.19-cp313-cp313t-manylinux2014_ppc64le.manylinux_2_17_ppc64le.manylinux_2_28_ppc64le.whl", hash = "sha256:f8f6fa298bb4f7f58a33334406218ba74716e68feddf5e4e54cd5d8082705abf", size = 871081, upload-time = "2026-07-19T00:18:14.733Z" },
-    { url = "https://files.pythonhosted.org/packages/45/a3/44be546340bedb15f13063f5e7fe16793ea4d9ea2e805d09bd174ac27724/regex-2026.7.19-cp313-cp313t-manylinux2014_s390x.manylinux_2_17_s390x.manylinux_2_28_s390x.whl", hash = "sha256:cc1b2440423a851fad781309dd87843868f4f66a6bcd1ddb9225cf4ec2c84732", size = 917372, upload-time = "2026-07-19T00:18:16.724Z" },
-    { url = "https://files.pythonhosted.org/packages/f8/f6/e0870b0fd2a40dba0074e4b76e514b21313d37946c9248453e34ec43923e/regex-2026.7.19-cp313-cp313t-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl", hash = "sha256:8ac59a0900474a52b7c04af8196affc22bd9842acb0950df12f7b813e983609a", size = 816089, upload-time = "2026-07-19T00:18:18.617Z" },
-    { url = "https://files.pythonhosted.org/packages/ae/27/957e8e22690ad6634572b39b71f130a6105f4d0718bb16849eac00fff147/regex-2026.7.19-cp313-cp313t-manylinux_2_31_riscv64.manylinux_2_39_riscv64.whl", hash = "sha256:4896db1f4ce0576765b8272aa922df324e0f5b9bb2c3d03044ff32a7234a9aba", size = 785206, upload-time = "2026-07-19T00:18:20.464Z" },
-    { url = "https://files.pythonhosted.org/packages/76/a4/186e410941e731037c01166069ab86da9f65e8f8110c18009ccf4bd623ee/regex-2026.7.19-cp313-cp313t-musllinux_1_2_aarch64.whl", hash = "sha256:4e6883a021db30511d9fb8cfb0f222ce1f2c369f7d4d8b0448f449a93ba0bdfc", size = 800431, upload-time = "2026-07-19T00:18:22.716Z" },
-    { url = "https://files.pythonhosted.org/packages/73/9f/e4e10e023d291d64a33e246610b724493bf1ce98e0e59c9b7c837e5acfb7/regex-2026.7.19-cp313-cp313t-musllinux_1_2_ppc64le.whl", hash = "sha256:09523a592938aa9f587fb74467c63ff0cf88fc3df14c82ab0f0517dcf76aaa62", size = 864906, upload-time = "2026-07-19T00:18:24.772Z" },
-    { url = "https://files.pythonhosted.org/packages/24/57/ccb20b6be5f1f52a053d1ba2a8f7a077edb9d918248b8490d7506c6832b3/regex-2026.7.19-cp313-cp313t-musllinux_1_2_riscv64.whl", hash = "sha256:1ebac3474b8589fce2f9b225b650afd61448f7c73a5d0255a10cc6366471aed1", size = 773559, upload-time = "2026-07-19T00:18:27.008Z" },
-    { url = "https://files.pythonhosted.org/packages/a3/82/f3b263cf8fad927dc102891da8502e718b7ff9d19af7a2a07c03865d7188/regex-2026.7.19-cp313-cp313t-musllinux_1_2_s390x.whl", hash = "sha256:4a0530bb1b8c1c985e7e2122e2b4d3aedd8a3c21c6bfddae6767c4405668b56e", size = 857739, upload-time = "2026-07-19T00:18:29.107Z" },
-    { url = "https://files.pythonhosted.org/packages/47/2e/1687bd1b6c2aed5e672ccf845fc11557821fe7366d921b50889ea5ce57bf/regex-2026.7.19-cp313-cp313t-musllinux_1_2_x86_64.whl", hash = "sha256:2ef7eeb108c47ce7bcc9513e51bcb1bf57e8f483d52fce68a8642e3527141ae0", size = 804522, upload-time = "2026-07-19T00:18:31.362Z" },
-    { url = "https://files.pythonhosted.org/packages/76/7c/cc4e7655181b2d9235b704f2c5e19d8eff002bbc437bae59baee0e381aca/regex-2026.7.19-cp313-cp313t-win32.whl", hash = "sha256:64b6ca7391a1395c2638dd5c7456d67bea44fc6c5e8e92c5dc8aa6a8f23292b4", size = 269141, upload-time = "2026-07-19T00:18:33.479Z" },
-    { url = "https://files.pythonhosted.org/packages/bb/14/961b4c7b05a2391c32dbc85e27773076671ef8f97f36cec70fe414734c02/regex-2026.7.19-cp313-cp313t-win_amd64.whl", hash = "sha256:f04b9f56b0e0614c0126be12c2c2d9f8850c1e57af302bd0a63bed379d4af974", size = 280036, upload-time = "2026-07-19T00:18:35.419Z" },
-    { url = "https://files.pythonhosted.org/packages/ce/67/795644550d788ddbb6dc458c95895f8009978ea6d6ea76b005eb3f45e8c9/regex-2026.7.19-cp313-cp313t-win_arm64.whl", hash = "sha256:fcee38cd8e5089d6d4f048ba1233b3ad76e5954f545382180889112ff5cb712d", size = 279394, upload-time = "2026-07-19T00:18:37.454Z" },
 ]
 
 [[package]]
@@ -4072,65 +3775,26 @@ wheels = [
 name = "surya-ocr"
 version = "0.17.1"
 source = { registry = "https://pypi.org/simple" }
-resolution-markers = [
-    "sys_platform == 'darwin'",
-]
 dependencies = [
-    { name = "click", marker = "sys_platform == 'darwin' or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
-    { name = "einops", marker = "sys_platform == 'darwin' or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
-    { name = "filetype", marker = "sys_platform == 'darwin' or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
-    { name = "opencv-python-headless", marker = "sys_platform == 'darwin' or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
-    { name = "pillow", marker = "sys_platform == 'darwin' or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
-    { name = "platformdirs", marker = "sys_platform == 'darwin' or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
-    { name = "pre-commit", marker = "sys_platform == 'darwin' or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
-    { name = "pydantic", marker = "sys_platform == 'darwin' or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
-    { name = "pydantic-settings", marker = "sys_platform == 'darwin' or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
-    { name = "pypdfium2", version = "4.30.0", source = { registry = "https://pypi.org/simple" }, marker = "sys_platform == 'darwin' or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
-    { name = "python-dotenv", marker = "sys_platform == 'darwin' or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
+    { name = "click" },
+    { name = "einops" },
+    { name = "filetype" },
+    { name = "opencv-python-headless" },
+    { name = "pillow" },
+    { name = "platformdirs" },
+    { name = "pre-commit" },
+    { name = "pydantic" },
+    { name = "pydantic-settings" },
+    { name = "pypdfium2" },
+    { name = "python-dotenv" },
     { name = "torch", version = "2.13.0", source = { registry = "https://download.pytorch.org/whl/cpu" }, marker = "(sys_platform == 'darwin' and extra == 'extra-12-notebook-env-cpu') or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
-    { name = "torch", version = "2.13.0", source = { registry = "https://pypi.org/simple" }, marker = "(sys_platform == 'darwin' and extra != 'extra-12-notebook-env-cpu') or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
-    { name = "transformers", version = "4.57.6", source = { registry = "https://pypi.org/simple" }, marker = "sys_platform == 'darwin' or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
+    { name = "torch", version = "2.13.0", source = { registry = "https://pypi.org/simple" }, marker = "extra == 'extra-12-notebook-env-cuda' or extra != 'extra-12-notebook-env-cpu'" },
+    { name = "torch", version = "2.13.0+cpu", source = { registry = "https://download.pytorch.org/whl/cpu" }, marker = "(sys_platform != 'darwin' and extra == 'extra-12-notebook-env-cpu') or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
+    { name = "transformers" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/b3/b4/b0f3afd024b4e6fcb4db6fdd17ee963d081e960c907aebd0556ff948abb6/surya_ocr-0.17.1.tar.gz", hash = "sha256:349d78d854c1ed5f816e583545ed6451aa0bc6992e283a805034799aacee8c24", size = 161854, upload-time = "2026-01-30T21:52:59.361Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/8d/39/458fb9bc111e123faa2b5a0aade151c663f79dac4ad7e74f9c468b4b7786/surya_ocr-0.17.1-py3-none-any.whl", hash = "sha256:74c331ccb9be2d0c6a774122e572b85abdddf2982ecf6d11c1d83b3a0c9ae19d", size = 189881, upload-time = "2026-01-30T21:53:00.524Z" },
-]
-
-[[package]]
-name = "surya-ocr"
-version = "0.22.1"
-source = { registry = "https://pypi.org/simple" }
-resolution-markers = [
-    "sys_platform == 'win32'",
-    "sys_platform == 'emscripten'",
-    "platform_machine == 'aarch64' and sys_platform == 'linux'",
-    "(platform_machine != 'aarch64' and sys_platform == 'linux') or (sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'linux' and sys_platform != 'win32')",
-]
-dependencies = [
-    { name = "beautifulsoup4", marker = "sys_platform != 'darwin' or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
-    { name = "click", marker = "sys_platform != 'darwin' or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
-    { name = "filelock", marker = "sys_platform != 'darwin' or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
-    { name = "filetype", marker = "sys_platform != 'darwin' or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
-    { name = "httpx", marker = "sys_platform != 'darwin' or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
-    { name = "huggingface-hub", version = "1.24.0", source = { registry = "https://pypi.org/simple" }, marker = "sys_platform != 'darwin' or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
-    { name = "openai", version = "2.48.0", source = { registry = "https://pypi.org/simple" }, marker = "sys_platform != 'darwin' or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
-    { name = "opencv-python-headless", marker = "sys_platform != 'darwin' or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
-    { name = "pillow", marker = "sys_platform != 'darwin' or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
-    { name = "platformdirs", marker = "sys_platform != 'darwin' or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
-    { name = "pydantic", marker = "sys_platform != 'darwin' or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
-    { name = "pydantic-settings", marker = "sys_platform != 'darwin' or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
-    { name = "pypdfium2", version = "5.10.1", source = { registry = "https://pypi.org/simple" }, marker = "sys_platform != 'darwin' or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
-    { name = "python-dotenv", marker = "sys_platform != 'darwin' or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
-    { name = "requests", marker = "sys_platform != 'darwin' or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
-    { name = "torch", version = "2.13.0", source = { registry = "https://pypi.org/simple" }, marker = "(sys_platform != 'darwin' and extra != 'extra-12-notebook-env-cpu') or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
-    { name = "torch", version = "2.13.0+cpu", source = { registry = "https://download.pytorch.org/whl/cpu" }, marker = "(sys_platform != 'darwin' and extra == 'extra-12-notebook-env-cpu') or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
-    { name = "torchvision", version = "0.28.0", source = { registry = "https://pypi.org/simple" }, marker = "(sys_platform != 'darwin' and extra != 'extra-12-notebook-env-cpu') or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
-    { name = "torchvision", version = "0.28.0+cpu", source = { registry = "https://download.pytorch.org/whl/cpu" }, marker = "(sys_platform != 'darwin' and extra == 'extra-12-notebook-env-cpu') or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
-    { name = "transformers", version = "5.14.1", source = { registry = "https://pypi.org/simple" }, marker = "sys_platform != 'darwin' or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
-]
-sdist = { url = "https://files.pythonhosted.org/packages/7d/34/05ffbb1c173d30a7a41b758d1c425c3ff0e7c97008a403db8b71615c15fd/surya_ocr-0.22.1.tar.gz", hash = "sha256:792fc63d18cf648ed3608a3d0e3ed06ae627a31b08a8501d601bda4763ba6f9c", size = 25998043, upload-time = "2026-07-20T19:31:29.567Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/1c/6a/5fb9e3526a18d70d4b4047f0efe553dc7e199664cf40722d07ec3ff35351/surya_ocr-0.22.1-py3-none-any.whl", hash = "sha256:f84cdba18b99cd8d010d19db8b89d79cdcd3d0cd4e3bdba52a473023ccd69a2d", size = 191800, upload-time = "2026-07-20T19:31:26.244Z" },
 ]
 
 [[package]]
@@ -4212,8 +3876,7 @@ name = "tokenizers"
 version = "0.22.2"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "huggingface-hub", version = "0.36.2", source = { registry = "https://pypi.org/simple" }, marker = "sys_platform == 'darwin' or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
-    { name = "huggingface-hub", version = "1.24.0", source = { registry = "https://pypi.org/simple" }, marker = "sys_platform != 'darwin' or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
+    { name = "huggingface-hub" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/73/6f/f80cfef4a312e1fb34baf7d85c72d4411afde10978d4657f8cdd811d3ccc/tokenizers-0.22.2.tar.gz", hash = "sha256:473b83b915e547aa366d1eee11806deaf419e17be16310ac0a14077f1e28f917", size = 372115, upload-time = "2026-01-05T10:45:15.988Z" }
 wheels = [
@@ -4450,50 +4113,21 @@ wheels = [
 name = "transformers"
 version = "4.57.6"
 source = { registry = "https://pypi.org/simple" }
-resolution-markers = [
-    "sys_platform == 'darwin'",
-]
 dependencies = [
-    { name = "filelock", marker = "sys_platform == 'darwin' or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
-    { name = "huggingface-hub", version = "0.36.2", source = { registry = "https://pypi.org/simple" }, marker = "sys_platform == 'darwin' or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
-    { name = "numpy", marker = "sys_platform == 'darwin' or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
-    { name = "packaging", marker = "sys_platform == 'darwin' or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
-    { name = "pyyaml", marker = "sys_platform == 'darwin' or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
-    { name = "regex", version = "2024.11.6", source = { registry = "https://pypi.org/simple" }, marker = "sys_platform == 'darwin' or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
-    { name = "requests", marker = "sys_platform == 'darwin' or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
-    { name = "safetensors", marker = "sys_platform == 'darwin' or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
-    { name = "tokenizers", marker = "sys_platform == 'darwin' or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
-    { name = "tqdm", marker = "sys_platform == 'darwin' or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
+    { name = "filelock" },
+    { name = "huggingface-hub" },
+    { name = "numpy" },
+    { name = "packaging" },
+    { name = "pyyaml" },
+    { name = "regex" },
+    { name = "requests" },
+    { name = "safetensors" },
+    { name = "tokenizers" },
+    { name = "tqdm" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/c4/35/67252acc1b929dc88b6602e8c4a982e64f31e733b804c14bc24b47da35e6/transformers-4.57.6.tar.gz", hash = "sha256:55e44126ece9dc0a291521b7e5492b572e6ef2766338a610b9ab5afbb70689d3", size = 10134912, upload-time = "2026-01-16T10:38:39.284Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/03/b8/e484ef633af3887baeeb4b6ad12743363af7cce68ae51e938e00aaa0529d/transformers-4.57.6-py3-none-any.whl", hash = "sha256:4c9e9de11333ddfe5114bc872c9f370509198acf0b87a832a0ab9458e2bd0550", size = 11993498, upload-time = "2026-01-16T10:38:31.289Z" },
-]
-
-[[package]]
-name = "transformers"
-version = "5.14.1"
-source = { registry = "https://pypi.org/simple" }
-resolution-markers = [
-    "sys_platform == 'win32'",
-    "sys_platform == 'emscripten'",
-    "platform_machine == 'aarch64' and sys_platform == 'linux'",
-    "(platform_machine != 'aarch64' and sys_platform == 'linux') or (sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'linux' and sys_platform != 'win32')",
-]
-dependencies = [
-    { name = "huggingface-hub", version = "1.24.0", source = { registry = "https://pypi.org/simple" }, marker = "sys_platform != 'darwin' or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
-    { name = "numpy", marker = "sys_platform != 'darwin' or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
-    { name = "packaging", marker = "sys_platform != 'darwin' or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
-    { name = "pyyaml", marker = "sys_platform != 'darwin' or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
-    { name = "regex", version = "2026.7.19", source = { registry = "https://pypi.org/simple" }, marker = "sys_platform != 'darwin' or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
-    { name = "safetensors", marker = "sys_platform != 'darwin' or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
-    { name = "tokenizers", marker = "sys_platform != 'darwin' or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
-    { name = "tqdm", marker = "sys_platform != 'darwin' or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
-    { name = "typer", marker = "sys_platform != 'darwin' or (extra == 'extra-12-notebook-env-cpu' and extra == 'extra-12-notebook-env-cuda')" },
-]
-sdist = { url = "https://files.pythonhosted.org/packages/5a/fb/2a2ba88f325e68a921d8b69ff63b477830b2e73ade9a3c8c8cab2f06d741/transformers-5.14.1.tar.gz", hash = "sha256:60d196c27781eacf8637e2b533f517582907ad6f9ae142046d6b69431a5b2173", size = 9295927, upload-time = "2026-07-16T09:41:57.773Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/6f/67/8d85ca2323233ae3c0365a659c4e52ee1f587b440e4bc577e7d8e4416d0f/transformers-5.14.1-py3-none-any.whl", hash = "sha256:9db974c4079ede2d1a3ea7ca5a240df33f2cc26fc2b36ba64c5f2a4f43b6e725", size = 11625234, upload-time = "2026-07-16T09:41:54.143Z" },
 ]
 
 [[package]]
