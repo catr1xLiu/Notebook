@@ -29,6 +29,11 @@ Read [.gitignore](file:///home/catr1x/Coding/Notebook/.gitignore) before advisin
 
 [.gitattributes](file:///home/catr1x/Coding/Notebook/.gitattributes) applies a `filter=rnote` clean/smudge pair (`gzip -d -f -c` / `gzip -c`) so `.rnote` files diff as plain XML, and tracks `*.mph` plus individually-listed large `.rnote` files with LFS.
 
+## The UW N: Drive
+
+The university N: drive is mounted on demand at **`/mnt/ndrive`** — read and write it with the ordinary file tools, and note that an empty listing usually means the automount is idle rather than the drive being empty.
+Configuration is the `cifs` line in `/etc/fstab` and the credentials file it points at; see the *Network Storage* section of [.agents/rules/general.md](file:///home/catr1x/Coding/Notebook/.agents/rules/general.md).
+
 ## Reading PDFs
 
 **NEVER read a `.pdf` file with the Read tool.** It is token-expensive and loses equations, tables, and document structure. The `pdf` skill ([.agents/skills/pdf/SKILL.md](file:///home/catr1x/Coding/Notebook/.agents/skills/pdf/SKILL.md)) is *always* the preferred way to handle a PDF: inspect the page count, cut with `qpdf`, convert to markdown with `marker_single`, then read the markdown. This applies to every PDF — papers, textbooks, lab manuals, datasheets, slides, and scans.

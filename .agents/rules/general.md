@@ -47,6 +47,14 @@ Only genuinely throwaway intermediates — qpdf page cuts, TOC probes, offset ch
 
 `.gitattributes` applies a `filter=rnote` clean/smudge pair (`gzip -d -f -c` / `gzip -c`) so `.rnote` files diff as plain XML rather than binary blobs. `*.mph` (COMSOL) is LFS-tracked, as are large `.rnote` files listed individually — a new oversized `.rnote` needs its own explicit line.
 
+## Network Storage: the UW N: Drive
+
+The UW Engineering file server (`ecfile1.uwaterloo.ca`) is mounted on demand at **`/mnt/ndrive`** — read and write it with the ordinary file tools, no `sudo` required.
+An empty `/mnt/ndrive` usually means the automount is idle rather than the drive being empty: `findmnt -t cifs` confirms, and `sudo systemctl start mnt-ndrive.mount` revives it (that prompts for a password, so ask the author to run it with `!`).
+
+Configuration is the `cifs` line in `/etc/fstab` plus the root-only credentials file it points at, `/etc/cifs-ndrive`; auth uses the `userid@uwaterloo.ca` form and needs eduroam or the UW VPN.
+Nothing on the drive is version-controlled — author in the repo, then copy across.
+
 ## Document Types
 
 1. **Obsidian Notes**: Notes written for myself, designed for easy review, where the language is direct and intuitive. Detailed formatting guidelines (including Excalidraw embeddings and JupyMD notebooks) are located in the `obsidian-note` skill (`.agents/skills/obsidian_note/SKILL.md`).
