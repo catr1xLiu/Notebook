@@ -10,22 +10,22 @@ $$ \sum_{n=1}^{\infty} c_k x^k = c_0 + c_1x + c_2x^2 + ... $$
 
 We can write the *Maclaurin series* of basic function to help us find that of other functions.
 
-#### Using sum of geometric series:
+**Sum of geometric series:**
 $$
-\frac{1}{1-x} \quad = \quad \sum_{k=0}^{\infty}x^k \quad\quad (|x| < 1)
+\frac{1}{1-x} = \sum_{k=0}^{\infty}x^k \quad\quad (|x| < 1)
 $$
 
 **Exponential function:**
-$$ e^x \quad = \quad \sum_{k=0}^\infty \frac{x^k}{k!}$$
+$$ e^x = \sum_{k=0}^\infty \frac{x^k}{k!}$$
 
 **Trigonometry functions:**
 $$\begin{aligned} 
-\sin(x) \quad &= \quad \sum_{k=0}^\infty (-1)^k \frac{x^{2k+1}}{(2k+1)!} \\
-\cos(x) \quad &= \quad \sum_{k=0}^\infty (-1)^k \frac{x^2k}{(2k)!}
+\sin(x) &= \sum_{k=0}^\infty (-1)^k \frac{x^{2k+1}}{(2k+1)!} \\
+\cos(x) &=\sum_{k=0}^\infty (-1)^k \frac{x^2k}{(2k)!}
 \end{aligned}$$
 
-**The Binomial Series** for 
-
+**The Binomial Series:**
+$$ (1+x)^\alpha = \sum_{n=0}^\infty x^n$$
 
 
 ## Theorem: Interval of Convergence
