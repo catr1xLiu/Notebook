@@ -1,0 +1,137 @@
+{
+  "table_of_contents": [
+    {
+      "title": "Practice Problem Set 6",
+      "heading_level": null,
+      "page_id": 0,
+      "polygon": [
+        [
+          222.0,
+          109.0546875
+        ],
+        [
+          388.5,
+          109.0546875
+        ],
+        [
+          388.5,
+          121.5
+        ],
+        [
+          222.0,
+          121.5
+        ]
+      ]
+    },
+    {
+      "title": "Other Suggested Problems",
+      "heading_level": null,
+      "page_id": 1,
+      "polygon": [
+        [
+          88.453125,
+          264.515625
+        ],
+        [
+          246.75,
+          264.515625
+        ],
+        [
+          246.75,
+          277.5
+        ],
+        [
+          88.453125,
+          277.5
+        ]
+      ]
+    }
+  ],
+  "page_stats": [
+    {
+      "page_id": 0,
+      "text_extraction_method": "surya",
+      "block_counts": [
+        [
+          "Span",
+          76
+        ],
+        [
+          "Line",
+          38
+        ],
+        [
+          "ListItem",
+          10
+        ],
+        [
+          "Equation",
+          4
+        ],
+        [
+          "Text",
+          3
+        ],
+        [
+          "ListGroup",
+          3
+        ],
+        [
+          "SectionHeader",
+          1
+        ]
+      ],
+      "block_metadata": {
+        "llm_request_count": 0,
+        "llm_error_count": 0,
+        "llm_tokens_used": 0,
+        "previous_text": "",
+        "previous_type": "",
+        "previous_order": 0
+      }
+    },
+    {
+      "page_id": 1,
+      "text_extraction_method": "surya",
+      "block_counts": [
+        [
+          "Span",
+          29
+        ],
+        [
+          "Line",
+          12
+        ],
+        [
+          "ListItem",
+          2
+        ],
+        [
+          "SectionHeader",
+          1
+        ],
+        [
+          "Text",
+          1
+        ],
+        [
+          "PageFooter",
+          1
+        ],
+        [
+          "ListGroup",
+          1
+        ]
+      ],
+      "block_metadata": {
+        "llm_request_count": 0,
+        "llm_error_count": 0,
+        "llm_tokens_used": 0,
+        "previous_text": "",
+        "previous_type": "",
+        "previous_order": 0
+      }
+    }
+  ],
+  "debug_data_path": "debug_data/ProblemSet6"
+}

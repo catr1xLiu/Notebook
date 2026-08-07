@@ -1,0 +1,68 @@
+{
+  "table_of_contents": [
+    {
+      "title": "S26 Final Exam Information",
+      "heading_level": null,
+      "page_id": 0,
+      "polygon": [
+        [
+          221.171875,
+          111.4169921875
+        ],
+        [
+          388.796875,
+          111.4169921875
+        ],
+        [
+          388.796875,
+          123.538818359375
+        ],
+        [
+          221.171875,
+          123.538818359375
+        ]
+      ]
+    }
+  ],
+  "page_stats": [
+    {
+      "page_id": 0,
+      "text_extraction_method": "pdftext",
+      "block_counts": [
+        [
+          "Span",
+          100
+        ],
+        [
+          "Line",
+          34
+        ],
+        [
+          "ListItem",
+          13
+        ],
+        [
+          "SectionHeader",
+          1
+        ],
+        [
+          "PageFooter",
+          1
+        ],
+        [
+          "ListGroup",
+          1
+        ]
+      ],
+      "block_metadata": {
+        "llm_request_count": 0,
+        "llm_error_count": 0,
+        "llm_tokens_used": 0,
+        "previous_text": "",
+        "previous_type": "",
+        "previous_order": 0
+      }
+    }
+  ],
+  "debug_data_path": "debug_data/Math 119 Final Exam Info"
+}
