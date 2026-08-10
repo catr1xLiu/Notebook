@@ -375,6 +375,35 @@ Suppose $\mathbb{N}_n = \{1, 2, \ldots, n\}$ for some $n \in \mathbb{N}$. Prove 
 
 > [!success]- Solution
 
+Let $f: \mathbb{N}_n \to \mathbb{N}$ be $f(x)=x$. This is an injection since $n \neq h \implies f(x) \neq f(x)$
+
+
+Let $\exists m \in \mathbb{N}, g: \mathbb{N}_n \to \mathbb{N}_m$ be a surjection. $\text{range}(g) = \mathbb{N}_m \iff |\text{range}(g)| = m$
+For $g$ to be a function, each value $x \in \mathbb{N}_n$ in its domain can only be mapped to exactly one $g(x) \in \mathbb{N}_m$ value in the codomain.
+Therefore, for all $n$ values in its domain, there can at maximum be $n$ distinct $g(x)$:
+$$
+|\text{domain}(g)| \ge |\text{range}(g)| \iff m \le n
+$$
+At the limit $\lim_{m \to \infty} \mathbb{N}_m = \mathbb{N}$, $m \gg n$. Therefore, such surjection $g: \mathbb{N}_n \to \mathbb{N}$ cannot exist.
+
+> [!success]- **Better formal write-up**
+> 
+
+With any such function $\forall g : \mathbb{N}_n \to \mathbb{N}$. We have :
+$$
+\text{range}(g) = \{ g(1), g(2), \dots, g(n) \}
+$$
+This set is finite and non-empty, therefore has a maximum, denoted $M$
+Let $M' = M + 1$, $M' \in \mathbb{N}$. But:
+$$
+\forall i \in \mathbb{N}_n : g(i) \le M \implies g(i) \neq M'
+$$
+There exist no such $i$ that $g(i) = M'$, which means
+$$
+M' \notin \text{range}(g) \land M' \in \mathbb{Z} \implies \text{range}(g) \neq \mathbb{Z} \implies \text{range}(g) \neq \text{codomain}(g)
+$$
+Therefore, $g$ is never surjective.
+
 ---
 
 > [!abstract] Set 4
@@ -427,6 +456,7 @@ P_3^{-1} X P_3 &= P_2^{-1} P_1^{-1} X P_1 P_2 \\
 &= Z
 \end{aligned}
 $$
+Therefore, $R$ is an *equivalence*. 
 
 ---
 
@@ -462,7 +492,8 @@ This obviously isn't true, a counter example $\langle X_1,Y_1 \rangle = \langle 
 $$
 3 \equiv 6_{\text{(mod3)}} \land 4 \equiv 8_{\text{(mod4)}} \text{ , but } \langle 3,4 \rangle \neq \langle 6,8 \rangle
 $$
-$R$ is not a partial order relation.
+
+So $R$ is **not** a *partial order*.
 
 ---
 
@@ -499,6 +530,8 @@ That is;
 $$
 z = k_2 y = k_2 k_1 x \implies z = Kx \quad (K = k_1 k_2) \implies (x, z) \in R
 $$
+
+Therefore, $R$ is a partial order relation.
 
 ---
 
@@ -568,6 +601,15 @@ I take the test, and it says that I have the disease. What is the probability th
 
 > [!success]- Solution
 
+Let $D$ denote the event that a person actually **has** disease, let $T$ denote the event that a random person takes a test and shows **positive** result.
+
+$$ \begin{aligned} 
+\Pr(D \mid T) &= \frac{\Pr(D \cap T)}{\Pr(T)} \\
+&= \frac{\Pr(D) \, \Pr(T \mid D)}{\Pr(D) \, \Pr(T \mid D) + \Pr(\overline{D})\, \Pr(T \mid \overline{D})} \\
+&= \frac{0.2\% \times 99\%}{0.2\% \times 99\% + (1-0.2\%) \times 3\%} \\
+&= \boxed{6.203 \%}
+\end{aligned}$$
+
 ---
 
 > [!example] **Problem 9**
@@ -576,6 +618,27 @@ I take the test, and it says that I have the disease. What is the probability th
 I have three little bags. One of the bags has two loonies. Another bag has two toonies. The third has one loonie and one toonie. I choose a bag uniformly at random and draw a coin from it; it turns out to be a toonie. What is the probability that the other coin in the bag is also a toonie?
 
 > [!success]- Solution
+
+Let $\set{B_T, B_L, B_B} \times \set{T, L}^2$ denote the sample space, with:
+- $T, L$ be getting a toonie and loonie, respectively.
+- $B_T$ be the event that the bag with toonies is chosen 
+- $B_L$ be the event that the bag with loonies is chosen
+- $B_B$ be the event that the bag with both is chosen
+
+First, compute the probability of each bag being chosen:
+$$ \begin{aligned}
+\Pr(T) &= \Pr(B_T) \, \Pr(T \mid B_T) + \Pr(B_L) \, \Pr(T \mid B_L) + \Pr(B_B) \, \Pr(T \mid B_B) \\
+&= \frac{1}{3} \times 1 + \frac{1}{3} \times 0 + \frac{1}{3} \times \frac{1}{2} = \frac{1}{2} \\
+\end{aligned} $$
+Then we can compute:
+$$ \begin{aligned}
+\Pr(\langle T, T \rangle) &= \Pr(\langle B_T, T, T \rangle) + \Pr(\langle B_L, T, T \rangle) + \Pr(\langle B_B, T, T \rangle) \\
+&= \frac{1}{3} \times 1 \times 1 + \frac{1}{3} \times 0 + \frac{1}{3} \times \frac{1}{2} \times 0 \\
+&= \frac{1}{3}
+\end{aligned} $$
+Conditional probability:
+$$ \Pr(\langle T, T \rangle \mid T) = \frac{\Pr(\langle T, T \rangle \cap T)}{\Pr(T)} = \frac{\Pr(\langle T, T \rangle)}{\Pr(T)} = \frac{1/3}{1/2} = \boxed{\frac{2}{3}} $$
+
 
 ---
 
@@ -591,3 +654,24 @@ What are:
 - **c.** $\Pr\{B \mid A\}$
 
 > [!success]- Solution
+
+Let $D_1, D_2$ be the random variables denoting the number we get on the red and blue die, respectively. Let $S$ be the random variable denoting the sum $S = D_1 + D_2$.
+$$
+\begin{aligned}
+\Pr(A) &= \Pr(D_1 = 2 \lor D_1 = 4 \lor D_1 = 6) = \frac{3}{6} = \frac{1}{2} \\
+\Pr(B) &= \Pr(D_1 = 1 \land S \ge 8) + \Pr(D_1 = 2 \land S \ge 8) \\
+&\quad + \Pr(D_1 = 3 \land S \ge 8) + \Pr(D_1 = 4 \land S \ge 8) \\
+&\quad + \Pr(D_1 = 5 \land S \ge 8) + \Pr(D_1 = 6 \land S \ge 8) \\
+&= \frac{0 + 1 + 2 + 3 + 4 + 5}{6 \times 6} = \frac{5}{12}
+\end{aligned}
+$$
+Next, compute:
+$$
+\begin{aligned}
+\Pr(A \cap B) &= \Pr(D_1 = 2 \land S \ge 8) \\
+& + \Pr(D_1 = 4 \land S \ge 8) + \Pr(D_1 = 6 \land S \ge 8) \\
+&= \frac{1 + 3 + 5}{6 \times 6} = \boxed{\frac{1}{4}} \\
+\Pr(A \mid B) &= \frac{\Pr(A \cap B)}{\Pr(B)} = \frac{1/4}{5/6} = \boxed{\frac{3}{10}} \\ 
+\Pr(B \mid A) &= \frac{\Pr(A \cap B)}{\Pr(A)} = \frac{1/4}{1/2} = \boxed{\frac{1}{2}} \\
+\end{aligned}
+$$
