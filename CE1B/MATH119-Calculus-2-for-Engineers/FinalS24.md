@@ -112,6 +112,26 @@ provides a decent approximation of $\ln(1+x)$ so long as $x \approx 0$. Euler (1
 >
 > $$ \ln 7 \approx 2\left(\frac{3}{4}\right) + \frac{2}{3}\left(\frac{3}{4}\right)^3 = \frac{57}{32} $$
 
+**(a)**
+$$
+f(x) = \ln\left[\frac{1+x}{1-x}\right] = \ln(1+x) - \ln(1-x)
+$$
+$$
+= \left(x - \frac{x^2}{2} + \frac{x^3}{3} + \dots\right) - \left(-x - \frac{x^2}{2} - \frac{x^3}{3} - \dots\right)
+$$
+$$
+= \frac{2}{3} x^3 + \dots
+$$
+
+**(b)**
+$$
+\frac{1+x}{1-x} = 7, \quad 1+x = 7 - 7x, \quad x = \frac{6}{8} = \frac{3}{4} \quad (\text{close to zero})
+$$
+Using fourth-degree polynomial:
+$$
+f\left(\frac{3}{4}\right) = \frac{2}{3} x^3 + \dots \approx \frac{2}{3} \cdot \frac{27}{64} \approx \boxed{\frac{9}{32}}
+$$
+
 ---
 
 > [!example] Question 4 — 10 marks
@@ -136,6 +156,41 @@ You do not need to show your work; only the final answer is graded. Scoring: cor
 > **(c)** Converges absolutely.
 > **(d)** Converges absolutely.
 > **(e)** Diverges.
+
+**Question 4**
+
+**(a)**
+$$
+\lim_{n\to\infty} \left| \frac{a_{n+1}}{a_n} \right| = \lim_{n\to\infty} \frac{(n+1)!}{e^{n+1}} \cdot \frac{e^n}{n!} = \lim_{n\to\infty} \frac{n+1}{e} = +\infty \neq 0
+$$
+So the series is **Divergent** by divergence test.
+
+**(b)**
+$$
+\lim_{n\to\infty} \frac{n}{\sqrt{n^3+2}} = \frac{n}{n^{3/2}} = \frac{1}{n^{1/2}}
+$$
+The series is **Conditionally Convergent** by p-series test and AST.
+
+**(c)**
+$$ \begin{aligned}
+L &= \lim_{n\to\infty} \left| \frac{a_{n+1}}{a_n} \right| \\
+&= \lim_{n\to\infty} \frac{(n+1)^2 2^{n+1}}{(n+1)!} \cdot \frac{n!}{n^2 2^n} \\
+&= \lim_{n\to\infty} \, \left(\frac{n+1}{n}\right)^2 \cdot \frac{n! \, 2^{n+1}}{(n+1)! \, 2^n} \\
+&= \lim_{n\to\infty} \, \frac{2}{n+1} \\
+& = 0  \\
+& \implies L < 1
+\end{aligned}$$
+
+The series **Converges Absolutely** by the ratio test.
+
+**(d)**
+The series **Converges Absolutely** by p-series test.
+
+**(e)**
+$$
+\lim_{n \to \infty} \frac{\sqrt{n}}{\ln(n)} = \lim_{n\to\infty} \frac{1/(2\sqrt{n})}{1/n} = \frac{n}{2\sqrt{n}} = +\infty \neq 0
+$$
+The series **diverges** by the divergence test.
 
 ---
 
@@ -178,6 +233,63 @@ Evaluate the following limits using Taylor series and Big-O notation.
 >
 > $$ \lim_{x\to 0} \frac{1 - e^{x^3}}{x\ln(1-x^2)} = \lim_{x\to 0} \frac{-x^3 - \frac{x^6}{2} + \mathcal{O}(x^9)}{-x^3 - \frac{x^5}{2} + \mathcal{O}(x^7)} = 1 $$
 
+**Question 5**
+
+**(a)**
+$$
+\sin(x) = \sum_{n=0}^{\infty} \frac{x^{2n+1}}{(2n+1)!} (-1)^n = x - \frac{x^3}{3!} + \frac{x^5}{5!} + \dots
+$$
+$$
+e^x = \sum_{n=0}^{\infty} \frac{x^n}{n!} = 1 + x + \frac{x^2}{2!} + \frac{x^3}{3!} + \dots
+$$
+$$
+\sin(2x) = 2x - \frac{2^3}{3!} x^3 + \frac{2^5}{5!} x^5
+$$
+$$
+\begin{aligned}
+\lim_{x \to 0} \frac{2\sin(x) - \sin(2x)}{2e^x - 2 - 2x - x^2} &= \lim_{x \to 0} \frac{2x - \frac{2}{3!}x^3 + \frac{2}{5!}x^5 + O(x^7) - \left(2x - \frac{2^3}{3!}x^3 + O(x^5)\right)}{2\left(1 + x + \frac{x^2}{2!} + \frac{x^3}{3!} + O(x^4)\right) - 2 - 2x - x^2} \\
+&= \lim_{x \to 0} \frac{\frac{2^3}{3!}x^3 - \frac{2}{3!}x^3 + O(x^5)}{\frac{2}{3!}x^3 + O(x^4)} \\
+&= \lim_{x \to 0} \frac{\frac{8}{6}x^3 - \frac{2}{6}x^3 + O(x^5)}{\frac{1}{3}x^3 + O(x^4)} \\
+&= \lim_{x \to 0} \frac{x^3 + O(x^5)}{\frac{1}{3}x^3 + O(x^4)} \\
+&= \boxed{3}
+\end{aligned}
+$$
+
+**(b)**
+$$
+= \lim_{t \to 0} \frac{\ln(1+t)}{(t+1)^2 - 1} = \lim_{t \to 0} \frac{\ln(1+t)}{t^2 + 2t} \quad (x = 1+t)
+$$
+$$
+\ln(1+x) = \sum_{n=1}^{\infty} \frac{x^n}{n} (-1)^{n+1} = x - \frac{x^2}{2} + \frac{x^3}{3} - \frac{x^4}{4} + \dots
+$$
+$$
+\begin{aligned}
+&= \lim_{t \to 0} \frac{t - \frac{t^2}{2} + O(t^3)}{t^2 + 2t} = \frac{t}{2t + t^2} - \frac{\frac{t^2}{2}}{2t + t^2} + \frac{O(t^3)}{2t + t^2} \\
+&= \frac{1}{2} + 0 + O(t) = \boxed{\frac{1}{2}}
+\end{aligned}
+$$
+
+**(c)**
+$$
+e^x = \sum_{n=0}^{\infty} \frac{x^n}{n!} = 1 + x + \frac{x^2}{2!} + \frac{x^3}{3!}
+$$
+$$
+e^{x^3} = 1 + x^3 + \frac{x^6}{2!} + \frac{x^9}{3!} + \dots
+$$
+$$
+\ln(1+x) = \sum_{n=1}^{\infty} \frac{x^n}{n} (-1)^{n+1} = x - \frac{x^2}{2} + \frac{x^3}{3} - \frac{x^4}{4} + \dots
+$$
+$$
+\ln(1-x^2) = -x^2 - \frac{x^4}{2} - \frac{x^6}{3} - \frac{x^8}{4} + \dots
+$$
+$$
+\begin{aligned}
+\lim_{x \to 0} \frac{1 - e^{x^3}}{x \ln(1 - x^2)} &= \frac{1 - \left(1 + x^3 + \frac{x^6}{2!} + \frac{x^9}{3!}\right)}{-x^3 - \frac{x^5}{2} - \frac{x^7}{3} - \frac{x^9}{4} + \dots} \\
+&= \lim_{x \to 0} \frac{-x^3 + O(x^6)}{-x^3 + O(x^5)} \\
+&= \boxed{1}
+\end{aligned}
+$$
+
 ---
 
 > [!example] Question 6 — 15 marks
@@ -211,6 +323,45 @@ Find the shortest distance from the origin $(x,y) = (0,0)$ to the curve $x^2y = 
 > $$ d(2\sqrt{2}, 2) = \sqrt{8+4} = 2\sqrt{3}, \qquad d(-2\sqrt{2}, 2) = \sqrt{8+4} = 2\sqrt{3} $$
 >
 > Therefore the shortest distance from the curve $x^2y = 16$ to the origin is $2\sqrt{3}$.
+
+**Question 6**
+
+That is to minimize $\sqrt{x^2 + y^2}$, or to minimize $f(x, y) = x^2 + y^2$
+
+Subject to: $x^2 y = 16 = g(x, y)$
+
+$$
+\nabla f(x, y) = \langle 2x, 2y \rangle, \quad \nabla g(x, y) = \langle 2xy, x^2 \rangle
+$$
+
+Setting up equality using Lagrange multiplier:
+
+$$
+\nabla f(x, y) = \lambda \nabla g(x, y) \implies 
+\begin{cases}
+2x = \lambda \cdot 2xy \\
+2y = \lambda x^2 \\
+x^2 y = 16
+\end{cases}
+$$
+
+Let $\lambda y = 1$ 
+
+$$\begin{aligned}
+& \lambda = \frac{1}{y} \implies 2 \frac{1}{y} = \lambda x^2 \\
+& \implies x^2 = \frac{2}{\lambda} = 2y^2 \implies 2y^3 = 16 \\
+& \implies y = 2 \implies \lambda = \frac{1}{2} \\
+& \implies x = \pm 2\sqrt{2}
+\end{aligned}
+$$
+
+Yields points $\langle 2\sqrt{2}, 2 \rangle$ and $\langle -2\sqrt{2}, 2 \rangle$. Calculate: $f(2\sqrt{2}, 2) = 12$, $f(-2\sqrt{2}, 2) = 12$
+
+We know these two critical points yield minimum because the distance between $x^2 y = 16$ curve and origin has no upper bound and no maximum.
+So the minimum distance is:
+$$
+D = \sqrt{f(x, y)} = \boxed{2\sqrt{3}}
+$$
 
 ---
 
@@ -258,6 +409,33 @@ $$ \left| \sin(t) - P_{2M+1,0}(t) \right| \le \frac{|t|^{2M+2}}{(2M+2)!} $$
 > Using the inequality given in the hint and then the result from (b), and because we assume $x \ge 0$ we have $t \in [0,x]$ allowing the replacement $|t| = t$,
 >
 > $$ |\text{error}| \le \int_0^x \frac{|\sin(t) - P_{2N+1,0}(t)|}{|t|}\,dt \le \int_0^x \frac{t^{2M+1}}{(2M+2)!}\,dt = \frac{x^{2M+2}}{(2M+2)!\,(2M+2)} $$
+
+**(a)**
+$$
+\sin(t) = \sum_{n=0}^{\infty} (-1)^n \frac{t^{2n+1}}{(2n+1)!} \quad \left(\text{since } \frac{\sin(t)}{t} = \sum_{n=0}^{\infty} (-1)^n \frac{t^{2n}}{(2n+1)!}\right)
+$$
+$$
+f(x) = \int_0^x \frac{\sin(t)}{t} \, dt = \int_0^x \sum_{n=0}^{\infty} (-1)^n \frac{t^{2n}}{(2n+1)!} \, dt = \sum_{n=0}^{\infty} (-1)^n \frac{x^{2n+1}}{(2n+1)!(2n+1)}
+$$
+$$
+T_{2N+1, 0}(x) = \sum_{n=0}^{N} (-1)^n \frac{x^{2n+1}}{(2n+1)!(2n+1)}
+$$
+
+**(b)**
+$$
+\sin(t) = \sum_{n=0}^{M} (-1)^n \frac{t^{2n+1}}{(2n+1)!} + R_{2M+1, 0}(t)
+$$
+
+Using Taylor's inequality:
+$$
+|R_{2M+1, 0}(t)| \le \frac{|t|^{2M+2}}{(2M+2)!} K
+$$
+where 
+$$ K = \max_{\set{\theta \in [0, t]}} \left|\frac{\mathrm{d}^{2M+2}}{\mathrm{d}\theta^{2M+2}} \,  \sin(\theta)\right| = \max_{\set{\theta \in [0, t]}} |\sin(\theta)| = 1$$
+Therefore:
+$$
+|R_{2M+1, 0}(t)| \le \frac{|t|^{2M+2}}{(2M+2)!}
+$$
 
 ---
 

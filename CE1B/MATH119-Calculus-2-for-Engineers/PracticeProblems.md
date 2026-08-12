@@ -15,12 +15,39 @@ $$ \lim_{x\to 0} \frac{e^x + e^{-x} - 2}{2\cos(2x) - 2} $$
 > [!success]- Solution
 > $-\dfrac{1}{4}$
 
+$$
+e^x = \sum_{n=0}^{\infty} \frac{x^n}{n!} = 1 + x + \frac{x^2}{2!} + \frac{x^3}{3!} + \dots
+$$
+$$
+e^{-x} = 1 - x + \frac{x^2}{2!} - \frac{x^3}{3!} + \dots
+$$
+$$
+\cos(2x) = \sum_{n=0}^{\infty} (-1)^n \frac{(2x)^{2n}}{(2n)!} = 1 - \frac{(2x)^2}{2} + \frac{(2x)^4}{4!} - \frac{(2x)^6}{6!} + \dots
+$$
+$$
+\begin{aligned}
+\lim_{x \to 0} \frac{e^x + e^{-x} - 2}{2 \cos(2x) - 2} &= \lim_{x \to 0} \frac{1 + x + \frac{x^2}{2} + O(x^3) + 1 - x + \frac{x^2}{2} + O(x^3) - 2}{2 - (2x)^2 + O(x^4) - 2} \\
+&= \lim_{x \to 0} \frac{x^2 + O(x^3)}{-4x^2 + O(x^4)} = -\frac{1}{4}
+\end{aligned}
+$$
+
+
 > [!example] **Problem 2** — Set11P11d
 
 $$ \lim_{x\to 0} \frac{\sin(x) - x + \frac{1}{6}x^3}{x^5} $$
 
 > [!success]- Solution
 > $\dfrac{1}{120}$
+
+$$
+\sin(x) = \sum_{n=0}^{\infty} (-1)^n \frac{x^{2n+1}}{(2n+1)!} = x - \frac{x^3}{3!} + \frac{x^5}{5!} - \frac{x^7}{7!} + \dots
+$$
+$$
+\begin{aligned}
+\lim_{x \to 0} \frac{\sin(x) - x + \frac{1}{6}x^3}{x^5} &= \lim_{x \to 0} \frac{x - \frac{x^3}{3!} + \frac{x^5}{5!} + O(x^7) - x + \frac{1}{6}x^3}{x^5} \\
+&= \lim_{x \to 0} \frac{\frac{x^5}{5!} + O(x^7)}{x^5} = \frac{1}{5!}
+\end{aligned}
+$$
 
 > [!example] **Problem 3** — Set8P4
 
@@ -30,6 +57,7 @@ $$ \lim_{x\to 0} \frac{\tan^{-1}(x^2)}{\tan^2(x)} $$
 
 > [!success]- Solution
 > $1$
+
 
 ---
 

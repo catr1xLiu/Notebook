@@ -309,11 +309,28 @@ $$ \sum_{n=1}^{\infty} \frac{1}{3^n \times \sqrt{n}}(2x-4)^n $$
 >
 > In summary, the interval of convergence is $\left[\frac{1}{2}, \frac{7}{2}\right)$.
 
+$$
+\sum_{n=1}^{\infty} \frac{1}{3^n \times \sqrt{n}} (2x-4)^n = \sum_{n=1}^{\infty} \frac{1}{3^n \sqrt{n}} u^n \quad (u = 2x-4)
+$$
+Has **radius of convergence** for $u$:
+$$
+R_u = \lim_{n \to \infty} \left| \frac{a_n}{a_{n+1}} \right| = \lim_{n \to \infty} \frac{3^{n+1} \sqrt{n+1}}{3^n \sqrt{n}} = \lim_{n \to \infty} 3 \sqrt{\frac{n+1}{n}} = 3
+$$
+**Checking edges:**
+$$\begin{aligned}
+u=-3 &\implies \sum_{n=1}^\infty \frac{1}{3^n \, \sqrt{n}} u^n = \sum_{n=1}^\infty (-1)^n \frac{3^n}{3^n \, \sqrt{n}} \implies \text{ Convergent by AST} \\
+u=3 &\implies \sum_{n=1}^\infty \frac{1}{3^n \, \sqrt{n}} u^n = \sum_{n=1}^\infty \frac{3^n}{3^n \, \sqrt{n}} \implies \text{ Convergent by p-series } (p=\frac{1}{2})
+\end{aligned}
+$$
+**Interval of convergence** for $u$ is $u \in [-3, 3)$. 
+The **radius and interval convergence** of $x$, using $x = \frac{u+4}{2} = \frac{u}{2} + 2$, is:
+$$R = \frac{1}{2} R_u = \frac{3}{2} \quad\quad x \in \left[\frac{1}{2}, \frac{7}{2}\right)$$
+
 
 ---
 
 > [!example] Question 6
-> ## Taylor Polynomial of $xe^{-2x}$ and Taylor's Inequality
+> ## Taylor Polynomial and Taylor's Inequality
 
 Let $f(x) = xe^{-2x}$.
 
@@ -367,6 +384,30 @@ Let $f(x) = xe^{-2x}$.
 >
 > By the alternating series error bound, the error in approximating the number with $s_3$ is at most $\frac{2^4}{10^5\,4!}$. This does not receive full marks, since the question said to use Taylor's inequality.
 
+**(a)**
+$$
+e^x = \sum_{n=0}^{\infty} \frac{x^n}{n!} = 1 + \frac{x^2}{2!} + \frac{x^3}{3!} + \dots \qquad e^{-2x} = 1 - 2x + \frac{4x^2}{2!} - \frac{8x^3}{3!} + \dots
+$$
+$$
+T_{3,0}(x) = x - 2x^2 + \frac{4x^3}{2!}
+$$
+
+**(b)**
+$$
+f(x) = x \sum_{n=0}^{\infty} \frac{(-2x)^n}{n!} = x - 2x^2 + \frac{4x^3}{2!} + R_{3,0}(x)
+$$
+where $R_{3,0}(x) = x \sum_{n=3}^{\infty} \frac{(-2x)^n}{n!}$, and $\sum_{n=3}^{\infty} \frac{(-2x)^n}{n!}$ is $R_2$ for $e^{-2x}$
+$$
+|R_2| \le K \frac{x^3}{3!} \quad \text{where } \forall t \in \left[0, \frac{1}{10}\right], |(e^{-2t})'''| \le K.
+$$
+$|-8e^{-2t}| \le K$. and since $e^{-2t}$ is strictly decreasing, maximum occurs at $t=0$.
+
+so $K = |-8e^0| = 8$
+$$
+|R_2| \le \frac{8}{3!} \left(\frac{1}{10}\right)^3 \implies R_{3,0}(x) = x R_2 \le \frac{8}{3!} 10^{-4}
+$$
+
+
 ---
 
 > [!example] Question 7
@@ -411,6 +452,8 @@ $$ f(x) = \int_0^x \frac{t}{1 - \frac{t^2}{4}}\,dt $$
 > from which we observe that
 >
 > $$ \sum_{n=0}^{\infty} \frac{1}{3^{n+1}4^n(2n+2)} = f\left(\frac{1}{\sqrt{3}}\right) = f\left(-\frac{1}{\sqrt{3}}\right) $$
+
+
 
 ---
 
@@ -461,6 +504,59 @@ Evaluate the following limits. Properly use $\mathcal{O}$ ("big O") notation to 
 > &= \lim_{x\to 0} \frac{-\frac{1}{2}x^{99} + \mathcal{O}(x^{199})}{-1 + \mathcal{O}(x)} = 0
 > \end{aligned}
 > $$
+
+
+**(a)**
+First the expansion of $\sin(x^2)$:
+$$
+\sin(x) = \sum_{n=0}^{\infty} (-1)^n \frac{x^{2n+1}}{(2n+1)!} = x - \frac{x^3}{3!} + \frac{x^5}{5!} - \frac{x^7}{7!} + \dots
+$$
+$$
+\sin(2x^2) = 2x^2 - \frac{2^3}{3!} x^6 + \frac{2^5}{5!} x^{10} - \frac{2^7}{7!} x^{14} + \dots
+$$
+Compute:
+$$
+\begin{aligned}
+\lim_{x \to 0} \frac{\sin(2x^2) - 2x^2}{x^6} &= \lim_{x \to 0} \frac{2x^2 - \frac{8}{6} x^6 + O(x^{10}) - 2x^2}{x^6} \\
+&= \lim_{x \to 0} \frac{-\frac{4}{3} x^6 + O(x^{10})}{x^6} \\
+&= \lim_{x \to 0} -\frac{4}{3} + O(x^4) = -\frac{4}{3}
+\end{aligned}
+$$
+
+
+**(b)**
+First, expansion for $\ln(1+x)$:
+$$
+\ln(1+x) = \sum_{n=1}^{\infty} \frac{(-1)^{n-1} x^n}{n} = x - \frac{x^2}{2} + \frac{x^3}{3} - \frac{x^4}{4} + \dots
+$$
+Compute:
+$$
+\begin{aligned}
+\lim_{x \to 0} \frac{\ln(1+x) - x}{x^2} &= \lim_{x \to 0} \frac{x - \frac{x^2}{2} + \frac{x^3}{3} - \frac{x^4}{4} + \dots - x}{x^2} \\
+&= \lim_{x \to 0} \frac{x - \frac{x^2}{2} + O(x^3) - x}{x^2} \\
+&= \lim_{x \to 0} \frac{-\frac{x^2}{2} + O(x^3)}{x^2} \\
+&= \lim_{x \to 0} -\frac{1}{2} + O(x) \\
+&= -\frac{1}{2}
+\end{aligned}
+$$
+
+
+**(c)**
+First expansion for $e^x$ and binomial series for $\sqrt{1+x^{100}} = (1+x^{100})^\alpha$: 
+$$
+e^x = \sum_{n=0}^{\infty} \frac{x^n}{n!} = 1 + x + \frac{x^2}{2} + \frac{x^3}{3!} + \dots
+$$
+$$
+(1+x^{100})^{\frac{1}{2}} = 1 + \alpha x^{100} + \frac{\alpha(\alpha-1)}{2!} x^{200} + \frac{\alpha(\alpha-1)(\alpha-2)}{3!} x^{300} + \dots \quad \left(\alpha = \frac{1}{2}\right)
+$$
+$$
+\begin{aligned}
+\lim_{x \to 0} \, \frac{1 - \sqrt{1 + x^{100}}}{1 - e^x} &= \lim_{x \to 0} \frac{1 - (1 + \alpha x^{100} + O(x^{200}))}{1 - (1 + x + O(x^2))} \\
+&= \lim_{x \to 0} \, \frac{\alpha x^{100} + O(x^{200})}{x + O(x^2)}\\
+&= \lim_{x \to 0} \, 0 + O(x^{98}) = 0
+\end{aligned}
+$$
+
 
 ---
 

@@ -25,7 +25,7 @@ $$\begin{aligned}
 \end{aligned}$$
 
 **The Binomial Series:**
-$$ (1+x)^\alpha = \sum_{n=0}^\infty x^n$$
+$$ (1+x)^\alpha = \sum_{n=0}^\infty \binom{\alpha}{k} x^n = 1 + \alpha x + \frac{\alpha (\alpha -1)}{2!} x^2 + \frac{\alpha(\alpha-1)(\alpha-2)}{3!}x^3$$
 
 
 ## Theorem: Interval of Convergence
