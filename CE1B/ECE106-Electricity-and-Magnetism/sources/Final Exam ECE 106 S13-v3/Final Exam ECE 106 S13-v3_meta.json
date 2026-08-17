@@ -1,0 +1,627 @@
+{
+  "table_of_contents": [
+    {
+      "title": "",
+      "heading_level": null,
+      "page_id": 0,
+      "polygon": [
+        [
+          72.31640625,
+          99.421875
+        ],
+        [
+          175.11328125,
+          99.421875
+        ],
+        [
+          175.11328125,
+          160.453125
+        ],
+        [
+          72.31640625,
+          160.453125
+        ]
+      ]
+    },
+    {
+      "title": "University of Waterloo\nFinal Examination",
+      "heading_level": null,
+      "page_id": 0,
+      "polygon": [
+        [
+          306.59765625,
+          97.9453125
+        ],
+        [
+          425.7829895019531,
+          97.9453125
+        ],
+        [
+          425.7829895019531,
+          122.32977294921875
+        ],
+        [
+          306.59765625,
+          122.32977294921875
+        ]
+      ]
+    },
+    {
+      "title": "Spring 2013",
+      "heading_level": null,
+      "page_id": 0,
+      "polygon": [
+        [
+          334.388671875,
+          136.3359375
+        ],
+        [
+          398.6429748535156,
+          136.3359375
+        ],
+        [
+          398.6429748535156,
+          147.6297607421875
+        ],
+        [
+          334.388671875,
+          147.6297607421875
+        ]
+      ]
+    },
+    {
+      "title": "Attempt all 5 questions. Hand marked (worth 20 marks each).",
+      "heading_level": null,
+      "page_id": 0,
+      "polygon": [
+        [
+          151.8046875,
+          526.1484375
+        ],
+        [
+          472.2460021972656,
+          526.1484375
+        ],
+        [
+          472.2460021972656,
+          539.7797546386719
+        ],
+        [
+          151.8046875,
+          539.7797546386719
+        ]
+      ]
+    },
+    {
+      "title": "MARKING SCHEME",
+      "heading_level": null,
+      "page_id": 0,
+      "polygon": [
+        [
+          75.90234375,
+          770.2734375
+        ],
+        [
+          179.21401977539062,
+          770.2734375
+        ],
+        [
+          179.21401977539062,
+          782.4297332763672
+        ],
+        [
+          75.90234375,
+          782.4297332763672
+        ]
+      ]
+    },
+    {
+      "title": "Question 1",
+      "heading_level": null,
+      "page_id": 1,
+      "polygon": [
+        [
+          75.603515625,
+          73.828125
+        ],
+        [
+          140.75599670410156,
+          73.828125
+        ],
+        [
+          140.75599670410156,
+          87.8316650390625
+        ],
+        [
+          75.603515625,
+          87.8316650390625
+        ]
+      ]
+    },
+    {
+      "title": "Question 2",
+      "heading_level": null,
+      "page_id": 2,
+      "polygon": [
+        [
+          75.005859375,
+          251.5078125
+        ],
+        [
+          140.75599670410156,
+          251.5078125
+        ],
+        [
+          140.75599670410156,
+          267.68170166015625
+        ],
+        [
+          75.005859375,
+          267.68170166015625
+        ]
+      ]
+    },
+    {
+      "title": "Question 3",
+      "heading_level": null,
+      "page_id": 3,
+      "polygon": [
+        [
+          75.005859375,
+          327.3316650390625
+        ],
+        [
+          140.75599670410156,
+          327.3316650390625
+        ],
+        [
+          140.75599670410156,
+          341.3316650390625
+        ],
+        [
+          75.005859375,
+          341.3316650390625
+        ]
+      ]
+    },
+    {
+      "title": "Question 4",
+      "heading_level": null,
+      "page_id": 4,
+      "polygon": [
+        [
+          75.603515625,
+          324.84375
+        ],
+        [
+          140.75599670410156,
+          324.84375
+        ],
+        [
+          140.75599670410156,
+          340.8316650390625
+        ],
+        [
+          75.603515625,
+          340.8316650390625
+        ]
+      ]
+    },
+    {
+      "title": "Question 5",
+      "heading_level": null,
+      "page_id": 5,
+      "polygon": [
+        [
+          75.603515625,
+          467.578125
+        ],
+        [
+          140.75599670410156,
+          467.578125
+        ],
+        [
+          140.75599670410156,
+          482.1317138671875
+        ],
+        [
+          75.603515625,
+          482.1317138671875
+        ]
+      ]
+    },
+    {
+      "title": "Formula sheet",
+      "heading_level": null,
+      "page_id": 6,
+      "polygon": [
+        [
+          269.54296875,
+          553.7109375
+        ],
+        [
+          354.75,
+          553.7109375
+        ],
+        [
+          354.75,
+          565.5
+        ],
+        [
+          269.54296875,
+          565.5
+        ]
+      ]
+    },
+    {
+      "title": "Integrals",
+      "heading_level": null,
+      "page_id": 7,
+      "polygon": [
+        [
+          78.75,
+          198.0
+        ],
+        [
+          120.0,
+          198.0
+        ],
+        [
+          120.0,
+          210.65625
+        ],
+        [
+          78.75,
+          210.65625
+        ]
+      ]
+    }
+  ],
+  "page_stats": [
+    {
+      "page_id": 0,
+      "text_extraction_method": "pdftext",
+      "block_counts": [
+        [
+          "Span",
+          103
+        ],
+        [
+          "Line",
+          34
+        ],
+        [
+          "Text",
+          12
+        ],
+        [
+          "TableCell",
+          8
+        ],
+        [
+          "ListItem",
+          7
+        ],
+        [
+          "SectionHeader",
+          5
+        ],
+        [
+          "Table",
+          1
+        ],
+        [
+          "ListGroup",
+          1
+        ]
+      ],
+      "block_metadata": {
+        "llm_request_count": 0,
+        "llm_error_count": 0,
+        "llm_tokens_used": 0,
+        "previous_text": "",
+        "previous_type": "",
+        "previous_order": 0
+      }
+    },
+    {
+      "page_id": 1,
+      "text_extraction_method": "pdftext",
+      "block_counts": [
+        [
+          "Span",
+          52
+        ],
+        [
+          "Line",
+          21
+        ],
+        [
+          "Text",
+          5
+        ],
+        [
+          "Picture",
+          4
+        ],
+        [
+          "PageHeader",
+          2
+        ],
+        [
+          "SectionHeader",
+          1
+        ]
+      ],
+      "block_metadata": {
+        "llm_request_count": 0,
+        "llm_error_count": 0,
+        "llm_tokens_used": 0,
+        "previous_text": "",
+        "previous_type": "",
+        "previous_order": 0
+      }
+    },
+    {
+      "page_id": 2,
+      "text_extraction_method": "pdftext",
+      "block_counts": [
+        [
+          "Span",
+          64
+        ],
+        [
+          "Line",
+          24
+        ],
+        [
+          "Text",
+          3
+        ],
+        [
+          "PageHeader",
+          2
+        ],
+        [
+          "ListItem",
+          2
+        ],
+        [
+          "SectionHeader",
+          1
+        ],
+        [
+          "Picture",
+          1
+        ]
+      ],
+      "block_metadata": {
+        "llm_request_count": 0,
+        "llm_error_count": 0,
+        "llm_tokens_used": 0,
+        "previous_text": "",
+        "previous_type": "",
+        "previous_order": 0
+      }
+    },
+    {
+      "page_id": 3,
+      "text_extraction_method": "pdftext",
+      "block_counts": [
+        [
+          "Span",
+          44
+        ],
+        [
+          "Line",
+          15
+        ],
+        [
+          "Text",
+          5
+        ],
+        [
+          "PageHeader",
+          2
+        ],
+        [
+          "SectionHeader",
+          1
+        ],
+        [
+          "Picture",
+          1
+        ],
+        [
+          "ListItem",
+          1
+        ]
+      ],
+      "block_metadata": {
+        "llm_request_count": 0,
+        "llm_error_count": 0,
+        "llm_tokens_used": 0,
+        "previous_text": "",
+        "previous_type": "",
+        "previous_order": 0
+      }
+    },
+    {
+      "page_id": 4,
+      "text_extraction_method": "pdftext",
+      "block_counts": [
+        [
+          "Span",
+          39
+        ],
+        [
+          "Line",
+          16
+        ],
+        [
+          "Text",
+          3
+        ],
+        [
+          "PageHeader",
+          2
+        ],
+        [
+          "SectionHeader",
+          1
+        ],
+        [
+          "Picture",
+          1
+        ]
+      ],
+      "block_metadata": {
+        "llm_request_count": 0,
+        "llm_error_count": 0,
+        "llm_tokens_used": 0,
+        "previous_text": "",
+        "previous_type": "",
+        "previous_order": 0
+      }
+    },
+    {
+      "page_id": 5,
+      "text_extraction_method": "pdftext",
+      "block_counts": [
+        [
+          "Span",
+          55
+        ],
+        [
+          "Line",
+          18
+        ],
+        [
+          "Text",
+          8
+        ],
+        [
+          "ListItem",
+          4
+        ],
+        [
+          "PageHeader",
+          2
+        ],
+        [
+          "SectionHeader",
+          1
+        ],
+        [
+          "Picture",
+          1
+        ]
+      ],
+      "block_metadata": {
+        "llm_request_count": 0,
+        "llm_error_count": 0,
+        "llm_tokens_used": 0,
+        "previous_text": "",
+        "previous_type": "",
+        "previous_order": 0
+      }
+    },
+    {
+      "page_id": 6,
+      "text_extraction_method": "surya",
+      "block_counts": [
+        [
+          "TableCell",
+          58
+        ],
+        [
+          "Span",
+          34
+        ],
+        [
+          "Line",
+          25
+        ],
+        [
+          "Text",
+          6
+        ],
+        [
+          "PageHeader",
+          2
+        ],
+        [
+          "Picture",
+          1
+        ],
+        [
+          "Form",
+          1
+        ],
+        [
+          "SectionHeader",
+          1
+        ],
+        [
+          "Equation",
+          1
+        ],
+        [
+          "Table",
+          1
+        ]
+      ],
+      "block_metadata": {
+        "llm_request_count": 0,
+        "llm_error_count": 0,
+        "llm_tokens_used": 0,
+        "previous_text": "",
+        "previous_type": "",
+        "previous_order": 0
+      }
+    },
+    {
+      "page_id": 7,
+      "text_extraction_method": "surya",
+      "block_counts": [
+        [
+          "Line",
+          25
+        ],
+        [
+          "TableCell",
+          6
+        ],
+        [
+          "Span",
+          3
+        ],
+        [
+          "PageHeader",
+          2
+        ],
+        [
+          "Table",
+          1
+        ],
+        [
+          "SectionHeader",
+          1
+        ],
+        [
+          "Equation",
+          1
+        ]
+      ],
+      "block_metadata": {
+        "llm_request_count": 0,
+        "llm_error_count": 0,
+        "llm_tokens_used": 0,
+        "previous_text": "",
+        "previous_type": "",
+        "previous_order": 0
+      }
+    }
+  ],
+  "debug_data_path": "debug_data/Final Exam ECE 106 S13-v3"
+}

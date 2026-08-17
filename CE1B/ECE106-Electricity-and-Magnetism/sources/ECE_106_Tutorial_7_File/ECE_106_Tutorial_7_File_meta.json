@@ -1,0 +1,370 @@
+{
+  "table_of_contents": [
+    {
+      "title": "ECE 106 Tutorial 06",
+      "heading_level": null,
+      "page_id": 0,
+      "polygon": [
+        [
+          324.1460266113281,
+          111.8067626953125
+        ],
+        [
+          467.72247314453125,
+          111.8067626953125
+        ],
+        [
+          467.72247314453125,
+          129.02215576171875
+        ],
+        [
+          324.1460266113281,
+          129.02215576171875
+        ]
+      ]
+    },
+    {
+      "title": "1 Problem 1",
+      "heading_level": null,
+      "page_id": 0,
+      "polygon": [
+        [
+          118.3359375,
+          209.27996826171875
+        ],
+        [
+          216.3551788330078,
+          209.27996826171875
+        ],
+        [
+          216.3551788330078,
+          223.62615966796875
+        ],
+        [
+          118.3359375,
+          223.62615966796875
+        ]
+      ]
+    },
+    {
+      "title": "1.1 Solution:",
+      "heading_level": null,
+      "page_id": 1,
+      "polygon": [
+        [
+          116.25,
+          72.75
+        ],
+        [
+          202.5,
+          72.75
+        ],
+        [
+          202.5,
+          84.75
+        ],
+        [
+          116.25,
+          84.75
+        ]
+      ]
+    },
+    {
+      "title": "2 Problem 2",
+      "heading_level": null,
+      "page_id": 2,
+      "polygon": [
+        [
+          117.5625,
+          72.19091796875
+        ],
+        [
+          216.35516357421875,
+          72.19091796875
+        ],
+        [
+          216.35516357421875,
+          86.53717041015625
+        ],
+        [
+          117.5625,
+          86.53717041015625
+        ]
+      ]
+    },
+    {
+      "title": "2.1 Solution:",
+      "heading_level": null,
+      "page_id": 2,
+      "polygon": [
+        [
+          117.5625,
+          264.1640625
+        ],
+        [
+          201.68641662597656,
+          264.1640625
+        ],
+        [
+          201.68641662597656,
+          276.53485107421875
+        ],
+        [
+          117.5625,
+          276.53485107421875
+        ]
+      ]
+    },
+    {
+      "title": "3 Problem 3",
+      "heading_level": null,
+      "page_id": 3,
+      "polygon": [
+        [
+          118.8010025024414,
+          72.19091796875
+        ],
+        [
+          216.35516357421875,
+          72.19091796875
+        ],
+        [
+          216.35516357421875,
+          86.53717041015625
+        ],
+        [
+          118.8010025024414,
+          86.53717041015625
+        ]
+      ]
+    },
+    {
+      "title": "3.1 Solution:",
+      "heading_level": null,
+      "page_id": 3,
+      "polygon": [
+        [
+          116.7890625,
+          355.0078125
+        ],
+        [
+          201.68641662597656,
+          355.0078125
+        ],
+        [
+          201.68641662597656,
+          366.96783447265625
+        ],
+        [
+          116.7890625,
+          366.96783447265625
+        ]
+      ]
+    }
+  ],
+  "page_stats": [
+    {
+      "page_id": 0,
+      "text_extraction_method": "pdftext",
+      "block_counts": [
+        [
+          "Span",
+          25
+        ],
+        [
+          "Line",
+          6
+        ],
+        [
+          "SectionHeader",
+          2
+        ],
+        [
+          "Caption",
+          1
+        ],
+        [
+          "Text",
+          1
+        ],
+        [
+          "Picture",
+          1
+        ],
+        [
+          "PageFooter",
+          1
+        ]
+      ],
+      "block_metadata": {
+        "llm_request_count": 0,
+        "llm_error_count": 0,
+        "llm_tokens_used": 0,
+        "previous_text": "",
+        "previous_type": "",
+        "previous_order": 0
+      }
+    },
+    {
+      "page_id": 1,
+      "text_extraction_method": "surya",
+      "block_counts": [
+        [
+          "Line",
+          18
+        ],
+        [
+          "Span",
+          12
+        ],
+        [
+          "Equation",
+          6
+        ],
+        [
+          "Text",
+          4
+        ],
+        [
+          "SectionHeader",
+          1
+        ],
+        [
+          "PageFooter",
+          1
+        ]
+      ],
+      "block_metadata": {
+        "llm_request_count": 0,
+        "llm_error_count": 0,
+        "llm_tokens_used": 0,
+        "previous_text": "",
+        "previous_type": "",
+        "previous_order": 0
+      }
+    },
+    {
+      "page_id": 2,
+      "text_extraction_method": "pdftext",
+      "block_counts": [
+        [
+          "Span",
+          223
+        ],
+        [
+          "Line",
+          58
+        ],
+        [
+          "Text",
+          4
+        ],
+        [
+          "Equation",
+          4
+        ],
+        [
+          "SectionHeader",
+          2
+        ],
+        [
+          "Figure",
+          1
+        ],
+        [
+          "PageFooter",
+          1
+        ]
+      ],
+      "block_metadata": {
+        "llm_request_count": 0,
+        "llm_error_count": 0,
+        "llm_tokens_used": 0,
+        "previous_text": "",
+        "previous_type": "",
+        "previous_order": 0
+      }
+    },
+    {
+      "page_id": 3,
+      "text_extraction_method": "pdftext",
+      "block_counts": [
+        [
+          "Span",
+          117
+        ],
+        [
+          "Line",
+          23
+        ],
+        [
+          "Text",
+          3
+        ],
+        [
+          "SectionHeader",
+          2
+        ],
+        [
+          "ListItem",
+          2
+        ],
+        [
+          "Figure",
+          1
+        ],
+        [
+          "Equation",
+          1
+        ],
+        [
+          "PageFooter",
+          1
+        ],
+        [
+          "ListGroup",
+          1
+        ]
+      ],
+      "block_metadata": {
+        "llm_request_count": 0,
+        "llm_error_count": 0,
+        "llm_tokens_used": 0,
+        "previous_text": "",
+        "previous_type": "",
+        "previous_order": 0
+      }
+    },
+    {
+      "page_id": 4,
+      "text_extraction_method": "pdftext",
+      "block_counts": [
+        [
+          "Span",
+          258
+        ],
+        [
+          "Line",
+          61
+        ],
+        [
+          "Equation",
+          1
+        ],
+        [
+          "PageFooter",
+          1
+        ]
+      ],
+      "block_metadata": {
+        "llm_request_count": 0,
+        "llm_error_count": 0,
+        "llm_tokens_used": 0,
+        "previous_text": "",
+        "previous_type": "",
+        "previous_order": 0
+      }
+    }
+  ],
+  "debug_data_path": "debug_data/ECE_106_Tutorial_7_File"
+}
