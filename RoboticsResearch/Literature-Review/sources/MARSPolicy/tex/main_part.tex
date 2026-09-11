@@ -1,0 +1,211 @@
+
+%===============================================================================
+\section{Introduction}
+
+Learning robot policies from expert demonstrations has emerged as a dominant approach for acquiring complex robotic skills. Early deterministic regression policies~\citep{bain1995framework, osa2018algorithmic, jia2025FORESEERR} are efficient in both training and inference, but they often struggle in environments where one observation can correspond to multiple valid actions, a phenomenon known as \textit{multimodality}~\citep{wang2017robust, shafiullah2022behavior, florence2021implicit}. Recent stochastic generative policies, like diffusion policy~\citep{dp,ddpm} and flow matching~\citep{flowmatching}, can generate multimodal actions as conditional generation processes. They introduce stochasticity by sampling from a noise distribution, which allows them to capture diverse plausible actions given the same observation. However, this multimodal capacity comes at the cost of increased training complexity and slower inference~\citep{pan2025much}.
+
+Recent research has begun to address the efficiency bottlenecks of stochastic generative policies. For example, Visual-to-Action (VITA)~\citep{gao2025vita} and Action-to-Action (A2A)~\citep{jia2026action} attempt to streamline the generation process by replacing the standard \textit{Gaussian} noise initialization with informative visual or history action-based priors. By initiating the generation process from more informative starting points, these methods alleviate training complexity and reduce inference steps. However, this grounding in specific priors often compromises the inherent stochasticity, leading to poor multimodal capacity. Concurrently, some approaches utilize consistency models~\citep{li2026ofp, zhang2025flowpolicy, Consistency} or mean-flow~\citep{fang2025omp, geng2026mean} to achieve single-step action generation without compromising stochasticity, but these techniques further introduce additional training overhead, induced by intricate matching objectives.
+
+In practice, the demand for multimodality is often non-uniform across a robotic task. For instance, in the 2D navigation task depicted in Fig.~\ref{framework}(a), certain phases necessitate multimodal capabilities, particularly at junctions, whereas the vast majority of segments follow deterministic and straightforward trajectories. Applying a uniformly high level of stochasticity across all phases unnecessarily complicates the learning process~\citep{pan2025much}, leading to suboptimal performance. Such a phenomenon also exists across a wide range of robotic tasks (Fig.~\ref{framework}(h)). This observation motivates a critical question: can we design a generative policy that \textbf{adaptively modulates its multimodality only when it matters, thereby enhancing learning efficiency during deterministic phases?}
+
+\begin{figure}
+	\centering
+	\includegraphics[width=1\linewidth]{./Figs/concept.pdf}
+	\caption{\textbf{Overview of MARS.} \textbf{(a)} Expert trajectories of a 2D navigation task exhibit phase-dependent multimodality, featuring four modes significantly more challenging than Push-T task~\citep{dp,jiang2025streaming}. \textbf{(b)} Stochastic generative policy (e.g., flow matching~\citep{flowmatching}) with standard \textit{Gaussian} noise recovers diverse feasible paths that match the expert multimodal structure. \textbf{(c)} Deterministic policy (e.g., A2A~\citep{jia2026action}) tends to collapse to a single mode and fails to preserve trajectory diversity. Note that deterministic learning can sometimes collide with obstacles due to mode averaging (Fig. \ref{a2a_failed}). \textbf{(d)} The proposed MARS policy maintains multimodality at the proper places while preserving efficient determinism during other phases. The color bar indicates the adaptively identified degree of multimodality, i.e., $\|\mathbf{w}\|_\infty$ defined in Sec.~\ref{Policy_struc}. \textbf{(e)} Compared to the stochastic generative baseline, MARS policy achieves faster convergence by minimizing stochastic injection. More comparisons with baselines, including DDPM~\citep{dp}, BET~\citep{shafiullah2022behavior}, IBC~\citep{florence2021implicit}, Noise-A2A~\citep{jia2026action}, VITA~\citep{gao2025vita}, and ACT~\citep{zhao2023learning}, are provided in Appx.~\ref{appen:2d_benchmark}. \textbf{(f)} MARS policy adaptively schedules inference steps along the task process, resulting in an optimized inference budget \textbf{(g)}. \textbf{(h)} Experimental multimodal tasks: Pick Cup by either its handle or rim, Pick Vegetable targeting either the daikon or carrot, Block Push selecting either the orange or purple object, and Push-T via either the upper or lower path.}
+	\label{framework}
+    \vspace{-15pt} 
+\end{figure}
+
+In this work, we propose the \textbf{M}odality-\textbf{A}daptive \textbf{R}obot \textbf{S}ampling (\textbf{MARS}) policy, a novel scheme that can \textit{inject a proper amount of noise only at the proper time}. MARS policy integrates the expressive power of stochastic generative policy~\citep{flowmatching} with the learning efficiency of deterministic regression policy~\citep{jia2026action}. Specifically, we formulate the flow source as a hybrid initial distribution that blends stochastic \textit{Gaussian} noise with history-based deterministic priors. A lightweight \textit{modal scheduling network} is introduced to predict a per-sample weight, dynamically gating the contribution of each source based on the current task context. To capture the underlying multimodal distribution without manual annotations, the network is optimized via a tailored \textit{diversity loss} that directly matches the flow source diversity to the future-action diversity. In this way, MARS policy preserves the multimodality at ambiguous decision points (Fig. \ref{framework}(d)) while retaining efficient training (Fig. \ref{framework}(e)) and fewer-step inference (Fig. \ref{framework}(f-g)) behavior during deterministic phases.
+
+The efficacy of the MARS policy is validated through extensive experiments on $8$ simulated and $4$ real-world tasks, focusing on training and inference efficiency as well as multimodal adaptability. In addition to standard benchmarks including {ManiSkill}~\citep{mu2021maniskill}, {RLBench}~\citep{james2020rlbench}, and {LIBERO}~\citep{liu2023libero}, we also design several specialized tasks with multimodal requirements to evaluate multimodality across directions, grasping poses, velocities, and so on.  Real-world results demonstrate that our proposed method preserves comparative or even better multimodal capabilities while achieving significantly higher learning efficiency, a $83.20\%$ reduction in inference latency, and a $16.67\%$ improvement in average success rate, compared to the flow matching baseline. Notably, even in tasks that appear strategically unimodal yet exhibit nuanced trajectory variations, MARS policy exhibits superior training efficiency over the deterministic one. 
+
+% Moreover, multimodal policies introduce another subtle challenge: \textit{action disambiguation}. In long-horizon tasks such as keyboard typing, visually identical observations may recur at different stages of execution, yet the correct action differs depending on task progress. A multimodal policy, unaware of where it is in the task, may confuse these temporally distinct but visually identical states, producing actions from the wrong phase. Since MARS policy already estimates a multimodal score conditioned on observation and history, we further augment the variance estimator with an explicit progress interface, providing the policy with awareness of its current position within the task. This progress-aware design enables the policy to distinguish visually aliased states by their temporal context, effectively resolving action disambiguation without sacrificing multimodal capacity.
+
+
+\section{Related work}
+
+\textbf{Multimodal Action Modeling.}
+%This multimodality encompasses both high-level strategic diversities, representing distinct paths to complete a task, and nuanced trajectory variations in near-deterministic scenarios.
+Expert demonstrations in imitation learning are inherently multimodal, where naive mean square error (MSE) regression causes catastrophic \textit{mode averaging}, i.e., yielding geometrically averaged actions that are physically infeasible. To capture high-variance distributions, various frameworks have been developed, such as latent chunk modeling in {ACT}~\citep{wang2017robust,zhao2023learning}, action space discretization in {BET}~\citep{shafiullah2022behavior, lee2024behavior}, and implicit energy estimation in {IBC}~\citep{florence2021implicit}. Beyond these stochastic approaches, deterministic networks with high \textit{Lipschitz} capacity have also been explored for sparse datasets~\citep{pan2025much}. More recently, diffusion policy~\citep{dp, ddpm, song2020score} has become a promising paradigm, as its score-based denoising process offers natural multimodal representation and training stability across complex action distributions.
+
+% Expert demonstrations in imitation learning are often multimodal and high-variance. Naive regression using mean square error (MSE) collapses these modes into their mean, producing infeasible average actions. To avoid this~\textit{mode averaging} issue, various research attempts have been made to capture the multimodal distributions. Early work~\citep{wang2017robust} introduces a VAE-based latent variable policy that conditions on trajectory embeddings to render the per-state conditional distribution near-unimodal, while ACT~\citep{zhao2023learning} extends this idea with a conditional VAE-Transformer that jointly models action chunks. Behavior Transformer (BET)~\citep{shafiullah2022behavior} discretizes the continuous action space into $k$ modes via clustering, then employs a transformer to predict the appropriate mode. \citet{lee2024behavior} later refines this with hierarchical vector quantization to better scale to long-horizon actions. Implicit Behavioral Cloning (IBC)~\citep{florence2021implicit} adopts an energy-based formulation to represent multimodal densities, avoiding the pitfalls of explicit MSE. \citet{pan2025much} show that even deterministic policies can approximate multimodal behaviors in sparse datasets, provided the policy has sufficiently large \textit{Lipschitz} capacity. 
+
+% More recently, diffusion policy~\citep{dp, ddpm, song2020score} has become a promising paradigm, as its score-based denoising process offers natural multimodal representation and training stability across complex action distributions. Such generative multimodality can also be actively harnessed to facilitate strategic planning. For instance, \citet{soleymanzadeh2026manipulator} leverage the multimodality of flow matching to generate diverse candidate plans, enabling a collision-free path.
+
+\textbf{Efficient Action Generation.}
+Despite the impressive expressivity of the pioneering diffusion-based generative policy~\citep{dp}, its sub-optimal inference efficiency due to iterative denoising has motivated various subsequent works~\citep{gao2025vita, jia2026action, bai2026flash}. Flow matching~\citep{flowmatching, zhang2025flowpolicy, fang2025omp, li2026ofp} has recently gained significant attention due to its straight-path formulation and improved sampling efficiency, as exemplified by the $\pi$ model family~\citep{intelligence2025pi,intelligence2025pi05, black2024pi_0}. However, the iterative sampling nature still introduces a prohibitive computational barrier~\citep{dp, pan2025much}. To mitigate this, streaming flow policy~\citep{jiang2025streaming} interprets trajectories as continuous flows to facilitate on-the-fly generation, yet it does not fully circumvent the latency inherent in multi-step sampling. In contrast, VITA~\citep{gao2025vita} and A2A~\citep{jia2026action} simplify the generation process by replacing the \textit{Gaussian} noise source with visual- or history-action-based priors, effectively reducing it to a near-deterministic mapping for higher efficiency, though this grounding in specific priors often compromises the inherent multimodal capacity.
+
+%None of the aforementioned methods adaptively scales their learning or inference complexity to task demands.
+
+
+
+\section{Generative \textit{vs.} Deterministic Policies}
+
+Prior to detailing our method, we outline the core principles of stochastic generative and deterministic regression paradigms\footnote{With a slight abuse of terminology, we define a \textit{generative} policy as a stochastic process that recovers target actions from a noise initial distribution, whereas a \textit{deterministic} policy is defined as an unimodal mapping from observations to a single optimal action, optimized via an MSE loss.}. In this work, the prevailing flow matching~\citep{flowmatching, zhang2025flowpolicy, fang2025omp, li2026ofp} serves as the paradigmatic stochastic policy, while A2A~\citep{jia2026action} is employed to represent deterministic policies, a choice motivated by its superior training efficiency and rapid inference performance~\citep{bai2026flash}.
+
+
+\subsection{Stochastic generative policy}
+
+Flow matching~\citep{flowmatching} defines a continuous-time transport process that maps samples from a source distribution $p_\mathcal{N} = \mathcal{N}(\mathbf{0}, \mathbf{I})$ to the target action distribution $p_\mathcal{T}$ over a time variable $\tau \in [0,1]$. Specifically, given a noise sample $\mathbf{a}_0 \sim p_\mathcal{N}$ and a ground-truth action chunk $\mathbf{a}_1 \sim p_\mathcal{T}$, the interpolated state at time $\tau$ is constructed as $\mathbf{a}_\tau = (1\!-\!\tau)\,\mathbf{a}_0 + \tau\,\mathbf{a}_1$. A neural velocity field $v_\theta(\mathbf{a}_\tau, \tau)$ parameterized by $\theta$ is trained to predict the conditional velocity $\mathbf{a}_1 - \mathbf{a}_0$ at each interpolated point
+\begin{equation}
+    \mathcal{L}_{\mathrm{fm}} = \mathbb{E}_{\tau \sim \mathcal{U}(0,1),\,\mathbf{a}_0 \sim p_\mathcal{N} ,\,\mathbf{a}_1\sim p_\mathcal{T}}\|v_\theta(\mathbf{a}_\tau, \tau) - (\mathbf{a}_1 - \mathbf{a}_0)\|^2.
+    \label{eq:fm_loss}
+\end{equation}
+At inference, an action is generated by drawing $\mathbf{a}_0 \sim p_\mathcal{N}$ and numerically integrating the learned ODE, i.e., ${d\mathbf{a}_\tau}/{dt} = v_\theta(\mathbf{a}_\tau, \tau)$, from $\tau\!=\!0$ to $\tau\!=\!1$ over discretization steps.
+
+\textbf{What enables multimodality in stochastic generative policies?} In the 2D navigation task depicted in Fig. \ref{framework}, flow matching exhibits robust multimodal capabilities, effectively capturing diverse valid paths. The MSE loss in Eq.~\eqref{eq:fm_loss} actually also averages out the multimodality of the underlying velocity field~\citep{guo2025variational, zhang2025hierarchical}. However, flow matching additionally introduces a stochastic initial distribution to represent the conditional action distribution. Different initial samples, integrated along their respective ODE trajectories, lead to different action predictions. Thus, the multimodal capability of flow matching is enabled by this stochastic initialization, which introduces an additional degree of freedom beyond deterministic observations~\citep{pearce2023imitating}. 
+% In contrast, A2A produces highly deterministic trajectories, consistently converging to a single, unimodal execution pattern.
+
+\subsection{Deterministic regression policy}
+
+Unlike standard diffusion or flow matching policies that generate actions from \textit{Gaussian} noise, A2A~\citep{jia2026action} uses proprioceptive historical actions $\mathbf{a}_{0} \sim p_\mathcal{H}$ as the flow starting point for action generation. By replacing the noise-to-action paradigm with an action-to-action formulation, the distributional discrepancy between source and target is significantly reduced, enabling efficient few- or even single-step inference without iterative denoising. 
+
+To facilitate seamless integration with the flow matching later, we reformulate A2A to operate directly in the action space rather than the latent space utilized in the original work~\citep{jia2026action}. In this setting, the learning objective is formalized as 
+\begin{equation}
+\begin{aligned}
+    \mathcal{L}_{\mathrm{A2A}} = \mathbb{E}_{\tau\sim \mathcal{U}(0,1), (\mathbf{a}_0, \mathbf{a}_1) \sim(p_\mathcal{H}, p_\mathcal{T})} \left\| v_\theta(\mathbf{a}_\tau, \tau) - (\mathbf{a}_1 - \mathbf{a}_0) \right\|^2 
+    + \lambda_{\text{rec}} \mathbb{E}_{(\mathbf{a}_0, \mathbf{a}_1) \sim(p_\mathcal{H}, p_\mathcal{T})} \left\| \hat{\mathbf{a}}_1 - \mathbf{a}_1 \right\|_1,
+    \label{eq:a2a_loss}
+\end{aligned}
+\end{equation}
+where the second $\lambda_{\text{rec}}$ weighted-term represents a \textit{reconstruction loss} based on the ODE-solved action $\hat{\mathbf{a}}_1$. This formulation facilitates fewer-step inference with a predefined fixed-step integration.
+
+Prior research~\citep{dp, pan2025much, jia2026action} has found that generative policies are generally more data-intensive and computationally demanding to train than their deterministic counterparts. Our empirical evaluations across several tasks corroborate this finding. As shown in Fig. \ref{multimodal_sim} and Fig. \ref{singlemodal}, with limited training epochs, the flow matching achieves a lower convergence speed compared to A2A in most cases. 
+
+
+\textbf{What, then, drives the convergence advantage of deterministic policies over stochastic ones?} We attribute this discrepancy primarily to the introduction of stochasticity in generative models, which necessitates more extensive training for the network to effectively internalize the complex mappings from noise-augmented sources to expert actions. To verify this point, we analyze convergence behaviors under different variance settings of the initial distribution, as shown in Fig. \ref{loss_swap}. As the noise variance increases, training loss converges more slowly, and task success rate finally drops.
+
+\section{Modal-Adaptive Robot Sampling Policy}
+
+\begin{wrapfigure}{r}{0.45\textwidth}
+    \vspace{-10pt} 
+	\centering
+	\includegraphics[width=1\linewidth]{./Figs/architecture.pdf}
+	\caption{{The architecture of MARS policy.}}
+	\label{architecture}
+    \vspace{-20pt} 
+\end{wrapfigure}
+
+The analysis above reveals that multimodal capability requires stochastic initialization with sufficient variance, yet higher variance degrades learning and inference efficiency. In practice, most robotic tasks contain a mixture of modal phases. Like the 2D navigation task shown in Fig.~\ref{framework}, certain phases require multimodal sampling (\textit{e.g.}, at the junction), while others are inherently unimodal (\textit{e.g.}, at the narrow gate). Applying the same noise level everywhere is suboptimal, as it forces the network to explore unnecessary stochasticity in unimodal phases.
+
+\subsection{Policy structure}
+\label{Policy_struc}
+
+To address this gap, we develop the MARS policy, aiming to adaptively adjust stochasticity only when it matters during tasks. Unlike flow matching that always starts from pure \textit{Gaussian} noise, and unlike A2A that starts from history actions, MARS adaptively interpolates between the two extremes based on a learned multimodality weight $\mathbf{w}\in(\mathbf{0},\mathbf{1})^D$, where $D$ is the action dimensionality, $\mathbf{1}$ represents high stochasticity and $\mathbf{0}$ denotes full determinism. The policy structure is illustrated in Fig.~\ref{architecture}.
+
+Specifically, the key module that distinguishes MARS policy from conventional policies is the modal scheduling network. This module is designed to predict a per-dimension weight vector $\mathbf{w}$ to decide multimodality, conditioned on current visual and \textit{optional} proprioceptive observations. Structurally, the modal scheduling network is composed of a {Multi-Layer Perceptron (MLP)} terminated by a {\textit{Sigmoid} activation function} to ensure that the generated weights are constrained within $(\mathbf{0},\mathbf{1})$.
+
+The multimodality weight $\mathbf{w}$ generated from the modal scheduling network directly regulates the composition of the initial flow source. It effectuates a per-dimension convex interpolation between standard \textit{Gaussian} noise and the deterministic historical action prior, i.e.,
+\begin{equation}
+    \mathbf{a}_0 = (\mathbf{1} - \mathbf{w}) \odot \mathbf{a}^{\leq t} + \mathbf{w} \odot \boldsymbol{\epsilon}, \quad \mathbf{a}^{\leq t}\sim p_\mathcal{H}, \quad \boldsymbol{\epsilon} \sim \mathcal{N}(\mathbf{0}, \mathbf{I}), 
+    \label{eq:adaptive_source}
+\end{equation}
+where $\odot$ denotes the \textit{Hadamard} element-wise product and $\mathbf{a}^{\leq t}$ represents the measured historical action chunk. By operating element-wise, this formulation decouples the multimodal demands across different action dimensions, acknowledging that the requirement for multimodality may vary significantly across different axes within a single task phase. The remaining architecture follows standard flow matching. Visual and proprioceptive inputs are encoded by ResNet-18 for conditioning~\citep{jia2026action}, while the vector field adopts a DiT backbone~\citep{Peebles_2023_ICCV}. 
+
+\subsection{Training objectives}
+
+To coordinate the generative vector field and the modal scheduling network, we optimize a composite objective that balances multimodal expressivity with learning efficiency
+\begin{equation}
+    \mathcal{L} = \mathcal{L}_{\mathrm{fm}}
+               + \lambda_{\mathrm{rec}} \mathcal{L}_{\mathrm{rec}}
+                 + \lambda_{\mathrm{div}}\mathcal{L}_{\mathrm{div}},
+    \label{eq:total_loss}
+\end{equation}
+where $\mathcal{L}_{\mathrm{fm}}$ and $\mathcal{L}_{\mathrm{rec}}$ coincide with Eq. \eqref{eq:a2a_loss}, and $\mathcal{L}_{\mathrm{div}}$ represents the \textit{diversity loss}, which will be introduced later. Notably, $\mathcal{L}_{\mathrm{rec}}$ can compromise the multimodal expressivity of the flow matching objective in phases requiring high stochasticity (i.e., as $\mathbf{w} \to \mathbf{1}$), as illustrated in Fig. \ref{fm_reconstruction}. To mitigate this, we implement a per-dimension gating strategy for the reconstruction loss
+\begin{equation}
+\begin{aligned}
+    \mathcal{L}_{\mathrm{rec}} =  \mathbb{E}_{(\mathbf{a}_0, \mathbf{a}_1) \sim(p_\mathcal{H}, p_\mathcal{T})} [\frac{1}{D}(\mathbf{1} - \mathbf{w})^\top | \hat{\mathbf{a}}_1 - \mathbf{a}_1 |],
+\end{aligned}
+\end{equation}
+ensuring that the modality weight adaptively suppresses the single-step \textit{Euler} penalty on dimensions identified as multimodal, thereby preserving distributional diversity when it is most critical. Note that the weight $(\mathbf{1} - \mathbf{w})$ is used solely for loss weighting, with no gradient backpropagation. 
+
+Without additional intervention, the joint optimization of $\mathcal{L}_{\mathrm{fm}}$ and $\mathcal{L}_{\mathrm{rec}}$ naturally biases the flow source toward the deterministic historical prior (i.e., as $\mathbf{w} \to \mathbf{0}$). Because the historical prior resides in closer proximity to the target action than \textit{Gaussian} noise, it provides an easier path for loss minimization, which can lead to a collapse of multimodality. To counteract this tendency, we introduce a diversity loss $\mathcal{L}_{\mathrm{div}}$ to preserve the policy's generative expressivity.
+
+To quantify the degree of multimodality, we introduce \textit{dispersion} $\mathcal{S}$ as a metric of distributional spread. The diversity loss is designed to align the generated source dispersion $\mathcal{S}_{\mathrm{curr}}$ with the target action dispersion $\mathcal{S}_{\mathrm{next}}$, i.e.,
+%The diversity loss is designed to align the dispersion of the weighted flow source $\mathcal{S}_{\mathrm{curr}}$ with the inherent multimodality of the target actions $\mathcal{S}_{\mathrm{next}}$, as observed in the training data, i.e.
+\begin{equation}
+\mathcal{L}_{\mathrm{div}} = \mathbb{E} \bigl[\frac{1}{D}\mathbf{1}^\top\mathrm{ReLU}(\mathcal{S}_{\mathrm{next}} - \mathcal{S}_{\mathrm{curr}})\bigr].
+\label{eq:diversity_loss}
+\end{equation}
+To empirically approximate $\mathcal{S}_{\mathrm{next}}$, we evaluate the future action variations among samples sharing similar historical paths. Concretely, we identify the $m$ nearest neighbors $\mathcal{M}(i)$ of sample $i$ within the historical action space using a dataset-wide BallTree~\citep{scikit-learn}. The target spread $\mathcal{S}_{\mathrm{next}}$ and the current source spread $\mathcal{S}_{\mathrm{curr}}$ for sample $i$ are defined as
+\begin{equation}
+\mathcal{S}_{\mathrm{next}}^{(i)} = \frac{1}{m}\sum_{j\in\mathcal{M}(i)}|\mathbf{a}_{\mathrm{next}}^{(i)} - \mathbf{a}_{\mathrm{next}}^{(j)}|, \quad
+\mathcal{S}_{\mathrm{curr}}^{(i)} = \frac{1}{m}\sum_{j\in\mathcal{M}(i)}\bigl|\mathbf{a}_{\mathrm{curr}}^{(i)} - \mathbf{a}_{\mathrm{curr}}^{(j)}\bigr|,
+\label{eq:target_spread}
+\end{equation}
+where $\mathbf{a}_{\mathrm{next}}$ denotes the next action chunk, and $\mathbf{a}_{\mathrm{curr}}$ represents the current action chunk instantiated from the weighted flow sources through Eq. \eqref{eq:adaptive_source}. $\mathcal{S}_{\mathrm{next}}$ is precomputed over the dataset as it relies solely on ground-truth demonstrations. As for $\mathcal{S}_{\mathrm{curr}}$, we reuse updated $\mathbf{w}^{(i)}$ to construct each neighbor's source, so that $\mathbf{w}^{(i)}$ cleanly controls both $\mathbf{a}_{\mathrm{curr}}^{(i)}$ and $\mathbf{a}_{\mathrm{curr}}^{(j)}$.
+
+
+\textbf{Remark:} This objective penalizes the model only when the source dispersion $\mathcal{S}_{\mathrm{curr}}$ is insufficient to cover the diversity of expert demonstrations. When the current noise level already provides a spread exceeding the target multimodality, the ReLU function ensures that the loss remains inactive. In this regime, the optimization pressure from $\mathcal{L}_{\mathrm{fm}}$ and $\mathcal{L}_{\mathrm{rec}}$ dominates, naturally pulling the flow source back toward the deterministic historical prior, pursuing superior learning efficiency. This interaction establishes a dynamic equilibrium, ensuring that the multimodality weight $\mathbf{w}$ is minimized for learning efficiency while still maintaining the necessary distributional spread required by expert demonstrations.
+
+\subsection{Inference scheduling}
+
+Regarding inference performance, stochastic generative policies suffer from the sampling bottleneck inherent in iterative ODE integration, typically requiring $K \geq 9$ steps to produce high-fidelity actions~\citep{pan2025much,intelligence2025pi,intelligence2025pi05, black2024pi_0}. In contrast, the deterministic policies can operate as a direct one-step mapping~\citep{jia2026action}, resulting in much lower latency. Although generative techniques like consistency models~\citep{li2026ofp, Consistency} or mean-flow~\citep{fang2025omp, geng2026mean} have been proposed to enable single-step generation, they typically introduce additional training complexity. 
+
+In this work, the learned multimodality weight enables adaptive inference scheduling. For samples in predominantly unimodal phases, where the flow source is tightly grounded by the historical prior and lies close to the target, fewer ODE integration steps can yield satisfactory performance. We dynamically determine the per-sample step count based on the maximum weight component across all dimensions, allocating computational budget proportional to the degree of stochasticity, i.e., $K(\mathbf{w}) = K_{\max} \cdot |\mathbf{w}|_\infty $, where $K_{\max}$ is a fixed upper bound on the number of ODE integration steps and $|\mathbf{w}|_\infty$ selects the most multimodal dimension. This scales the inference from a single step for deterministic samples up to the full step budget for highly multimodal ones, ensuring accurate generation without wasted computation.
+
+\section{Evaluation}
+
+\subsection{Experimental setup}
+In our experiments, we consider $8$ simulated tasks and $4$ real-world tasks. The simulated tasks consist of four strategically unimodal tasks (\textit{Close Box}, \textit{Stack Cube}, \textit{Pick Cube}, and \textit{Close Drawer}) and four strategically multimodal tasks (\textit{2D Navigation}, \textit{Push Cube}, \textit{Grasp Eyeglasses}, and \textit{Collision Avoidance}). The real-world tasks include \textit{Push-T}, \textit{Pick Cup}, \textit{Block Push}, and \textit{Pick Vegetable}, evaluated on a \textit{Franka Emika Research3} and a \textit{Galaxea R1 Lite} platform. The involved baselines are provided in Appx.~\ref{appen:2d_benchmark} and Appx.~\ref{appen:Unimodal}. Key hyperparameters are standardized across all models to ensure a fair comparison. Training and evaluation settings for different tasks are detailed in Appx. \ref{appen:training}.
+
+We first validate the MARS policy on multimodal tasks, where the MARS policy is expected to exhibit multimodal capability while retaining both learning and inference efficiency, potentially trailing A2A in efficiency but outperforming flow matching. Afterwards, we implement MARS on unimodal tasks to seek additional compelling findings.
+
+\begin{figure}
+	\centering
+	\includegraphics[trim={0 18 0 0}, width=1\linewidth]{./Figs/multimodal_sim.pdf}
+	\caption{\textbf{Learning performance on strategically multimodal tasks.} (a) Push Cube with bimodal trajectories: the gripper pushes the cube either left or right with equal validity. (b) Grasp Eyeglasses with bimodal grasp poses: the gripper grasps the eyeglasses from either the left or right side. (c) Collision Avoidance with bimodal speeds: the agent may either slow down or accelerate to safely cross the intersection. Each benchmark is accompanied by its training efficiency (\textit{upper panel}: Success Rate, SR) and \textit{modal balance} metric (\textit{lower panel}: $\gamma$) over training epochs.}
+	\label{multimodal_sim}
+    % \vspace{-10pt}
+\end{figure}
+
+\subsection{Multimodal evaluation}
+
+\textbf{Simulation results.} Fig.~\ref{framework} and Fig.~\ref{multimodal_sim} summarize the learning efficiency and multimodal characteristics of different algorithms on the 4 simulational multimodal tasks. Focusing first on training efficiency, as shown in Fig.~\ref{framework}(e) and Fig.~\ref{multimodal_sim}, the MARS policy continues to converge faster than flow matching. In contrast, A2A suffers from the mode averaging issue and exhibits highly unstable success rates, occasionally converging the fastest, but often failing entirely on the same task.
+To further quantify multimodal capability, we adopt a \textit{modal balance} metric $\gamma \in [0, 1]$, where values closer to 1 denote more balanced mode coverage (Appx. \ref{appen:metrics}).
+
+As shown in the modal curve $\gamma$ of Fig.~\ref{multimodal_sim}, MARS policy retains a modal balance comparable to that of flow matching, demonstrating that the learning efficiency does not come at the cost of multimodal expressivity.
+An interesting observation arises from the color bar in Fig.~\ref{framework}(d), that is, preserving full multimodal capability does not always require \textit{Gaussian} noise with unit variance; often a smaller variance suffices. This highlights its noise-adaptivity: \textit{no more stochasticity than necessary}.
+
+Regarding inference efficiency, we further plot the inference step count and cost time curves on the 2D Navigation task in Figs.~\ref{framework}(f) and (g). Benefited from our adaptive multimodal scheduling, the inference step count varies on the fly. More steps are allocated to regions of high stochasticity, while near-deterministic regions are resolved with fewer steps, leading to an optimized inference budget.
+
+\begin{figure}
+	\centering
+	\includegraphics[trim={0 24 0 0},width=1\linewidth]{./Figs/realtest.pdf}
+	\caption{\textbf{Real-world experimental results.} 
+    (a) Real-world deployment results on the {Push-T}, Block Push (B-P), {Pick Cube} (P-C), and Pick Vegetable (P-V) tasks. See Fig.~\ref{pusht}-\ref{pickcup} for detailed snapshots.
+    (b) Success rate comparison. 
+    (c) Multimodality evaluation quantified by the modal balance metric $\gamma$.
+    (d) Inference cost analysis.}
+    % \vspace{-10pt}
+	\label{realtest}
+\end{figure}
+
+\textbf{Real-world results.} To evaluate physical deployment capability, we validate MARS on four hardware tasks (Fig.~\ref{framework}(h)). As illustrated in Fig.~\ref{realtest}(b), MARS consistently achieves optimal success rates across all benchmarks, outperforming flow matching. More importantly, this multimodal expressivity is delivered with extreme computational efficiency. As shown in Fig.~\ref{realtest}(d), MARS achieves a remarkably low inference latency ($\approx 5$~ms). This performance nearly matches A2A execution ($\approx 3$~ms) and is roughly $6\times$ faster than flow matching ($\approx 28$~ms), demonstrating its readiness for real-time robotic control. Consequently, both MARS and A2A produce noticeably smoother trajectories than flow matching, the vivid demonstrations of which are provided in the supplementary video.
+
+As for multimodality, Fig.~\ref{realtest}(c) reveals that MARS preserves a superior modal balance, whereas the A2A baseline expectedly exhibits strict unimodality. Interestingly, diverging slightly from simulation outcomes, MARS marginally outperforms flow matching in three physical environments. Notably, when constrained by sparse demonstrations or overtrained checkpoints (see Fig.~\ref{appen_fm}), flow matching tends to drift toward unimodality, yet MARS robustly preserves its multimodal expressivity. 
+
+We hypothesize that real-world data introduces more confounding factors, such as subtle variations in initial robot poses or visual backgrounds. Under data scarcity or excessive training iterations, these real-world nuisances exacerbate overfitting, which implicitly collapses mode diversity under the same evaluation initial setting. Thanks to its adaptive scheduling, MARS only maintains the necessary noise level, exhibiting enhanced resilience against overfitting compared to flow matching. Disentangling the precise scaling laws between real-world multimodality, demonstration volume, and training epochs remains a compelling avenue for future work.
+
+\begin{figure}
+	\centering
+	\includegraphics[trim={0 24 0 0}, width=1\linewidth]{./Figs/singlemodal.pdf}
+	\caption{\textbf{Learning performance on strategically unimodal tasks.} (a) Close Box is from {RLBench}~\citep{james2020rlbench}. (b) Stack Cube and (c) Pick Cube are from {ManiSkill}~\citep{mu2021maniskill}. (d) Close Drawer is from {LIBERO}~\citep{liu2023libero}. The colored shaded area represents the standard deviations of $3$ random seeds.}
+	\label{singlemodal}
+    % \vspace{-10pt}
+\end{figure}
+
+\subsection{Unimodal evaluation}
+
+Next, MARS is carried out on 4 unimodal tasks. Fig.~\ref{singlemodal} reports the learning performance. As expected, MARS policy converges faster than flow matching in most cases, since unimodal tasks require less stochasticity and admit a more readily learnable observation-to-action mapping. More surprisingly, on tasks such as {Stack Cube} and {Pick Cube}, MARS policy converges even faster than A2A. We attribute this to two factors. On the one hand, MARS absorbs the subtle trajectory variations in expert demonstrations through stochastic initialization, whereas deterministic policies are forced to fit these variations as supervision noise, increasing gradient variance. On the other hand, the stochastic source acts as an input-side regularizer that smooths the loss landscape, an effect well-known to accelerate convergence in supervised learning.
+
+We further evaluate the performance of the MARS policy against 8 SOTA baselines on the {Stack Cube} task across two distinct simulation platforms, \textit{MuJoCo} and \textit{IsaacSim}. As summarized in Tab.~\ref{tab-mujoco} and Tab.~\ref{tab-isaacsim}, MARS achieves a convergence rate comparable to the deterministic A2A baseline in both environments, while significantly outperforming other generative policy baselines.
+
+
+\section{Conclusion}
+
+We presented MARS policy, a flow-matching-based visuomotor policy that bridges the long-standing gap between deterministic policies (efficient but mode-averaging) and generative policies (expressive but slow). By exploiting the insight that multimodality in flow matching originates from stochastic initialization, MARS adaptively schedules the noise scale and inference steps according to the stochasticity required at each state. Experiments on 8 simulated and 4 real-world tasks across two kinds of platforms demonstrate that MARS achieves the learning efficiency of A2A and the multimodal expressivity of flow matching, which have so far been difficult to obtain simultaneously.
+
+\section{Limitation}
+The dispersion-based diversity loss, while effective in preserving multimodality, is not the most lightweight design. Both the BallTree construction and the per-iteration spread computation add overhead that scales with dataset size and neighbor count. Future work will explore more efficient alternatives, such as implicit dispersion regularizers or learnable diversity surrogates that avoid explicit neighbor queries altogether.

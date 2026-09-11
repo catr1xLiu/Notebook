@@ -1,0 +1,227 @@
+\section{Benchmarking on 2D Navigation Test}
+\label{appen:2d_benchmark}
+We benchmark the proposed MARS policy against a comprehensive set of baselines: \textit{Generative} paradigms, including DiT-based flow matching~\citep{flowmatching} and diffusion policy~\citep{dp}; \textit{Multimodal} baselines, such as IBC~\citep{florence2021implicit} and BET~\citep{shafiullah2022behavior}; \textit{Deterministic} policies, including A2A~\citep{jia2026action} and its stochastic counterpart Noised-A2A, VITA~\citep{gao2025vita}, and ACT~\citep{zhao2023learning}.
+
+As shown in Fig. \ref{2d_benchmark}, while expert trajectories (a) demonstrate strategic multimodality, only stochastic models (b-g) can represent the underlying distribution. Notably, generative (b-d) achieves superior fidelity and cleaner trajectories compared to other methods. In contrast, deterministic baselines (h-j) are confined to a single mode, failing to capture the rich tactical variations present in the expert data. The Noised-A2A (g) further illustrates that slight noise injection is insufficient to recover the complex branching logic mastered by MARS.
+    
+\renewcommand*{\thefigure}{S1}
+\begin{figure}
+	\centering
+	\includegraphics[width=0.5\linewidth]{Figs/a2a_failed.pdf}
+	\caption{\textbf{A2A policy on 2D Navigation.} A2A occasionally reaches the target by collapsing to a single mode (a), but frequently gets stuck near an obstacle (b). Successful runs are largely attributable to training-time stochasticity.}
+	\label{a2a_failed}
+\end{figure}
+
+\renewcommand*{\thefigure}{S2}
+\begin{figure}
+	\centering
+	\includegraphics[width=1\linewidth]{Figs/2d_benchmark.pdf}
+	\caption{{Qualitative comparison of trajectory generation across different policy architectures.}}
+	\label{2d_benchmark}
+\end{figure}
+
+\renewcommand*{\thefigure}{S3}
+\begin{figure}
+	\centering
+	\includegraphics[width=0.6\linewidth]{Figs/loss_swap.pdf}
+	\caption{\textbf{Effect of initial flow variance on optimization and evaluation.} Settings: 30 training epochs, 100 demonstrations, and 50 evaluation rollouts. \textbf{Left:} Training loss curves under different initial variances (0-10) of the flow source distribution. Larger variance leads to slower and noisier convergence. \textbf{Right:} Evaluation success rate under different initial variances, showing that excessively large variance degrades success rate.}
+	\label{loss_swap}
+\end{figure}
+
+\renewcommand*{\thefigure}{S4}
+\begin{figure}
+	\centering
+	\includegraphics[width=0.5\linewidth]{Figs/fm_reconstruction.pdf}
+	\caption{\textbf{Reconstruction loss compromises multimodal expressivity.} We visualize 100 rollouts of the flow matching policy on 2D Navigation. (a) Standard flow matching distributes trajectories across all four valid passages (counts: 20/24/29/24). (b) Adding a reconstruction loss with weight $\lambda_{\text{rec}} = 1$ biases the policy toward the two central passages (10/36/40/4), with the outer passages substantially under-explored. This motivates our per-dimension gating strategy that adaptively suppresses the reconstruction penalty based on recognized multimodal degree.}
+	\label{fm_reconstruction}
+\end{figure}
+
+\section{Training and Evaluation Configurations}
+\label{appen:training}
+
+\subsection{Simulational Training and evaluation details}
+
+\textbf{Training Details.}
+ For unimodal benchmarks, we utilize $100$ expert demonstrations for {Stack Cube}, {Close Box}, and {Pick Cube}, while the {Close Drawer} task is trained with $50$ demonstrations. In multimodal scenarios, we employ $200$ demonstrations for the {2D Navigation} task, whereas all other tasks are trained using $100$ demonstrations. Additionally, the models presented in Fig. \ref{framework}, Fig. \ref{a2a_failed}, Fig. \ref{2d_benchmark}, and Fig.\ref{fm_reconstruction} are trained for a fixed duration of $50$ epochs. For the action space, the employed Franka uses joint commands in simulation.
+ 
+ \textbf{ Evaluation Details.}
+The \textit{2D Navigation} task is evaluated over $100$ trials using distinct random seeds to ensure statistical significance. For all other tasks, performance is reported based on the average of $50$ evaluation rollouts. All inference-time measurements in Fig. \ref{2d_benchmark} are conducted on a single NVIDIA $H200$ GPU ($141$ GB HBM3e) hosted on a node with dual Intel Xeon Gold 6530 processors. For every method, we report the mean and standard deviation of per-step inference time over $50$ evaluation rollouts. Moreover, the first five predictions per run are discarded as a warm-up.
+
+\subsection{R1 Lite training and evaluation details}
+
+\textbf{Hardware and Observation Setup.}
+We evaluate Pick Cup and Pick Vegetable on a \textbf{Galaxea R1 Lite} bimanual robot. Only the right arm and right two-finger gripper are actuated during data collection and rollout. The policy observes two RGB views: a head-mounted third-person camera and a right wrist-mounted egocentric camera. For the action space, the R1 Lite uses joint commands in real-world experiments.
+
+\textbf{Tasks and Demonstration Statistics.}
+We evaluate on two contact-rich manipulation tasks. For each task, we deliberately collect a balanced set of demonstrations that contain \emph{two distinct interaction modes} so that we can probe the policy's ability to model multi-modal action distributions:
+
+\begin{itemize}[leftmargin=1em, labelsep=0.4em, itemsep=0.25em, topsep=0.25em]
+\item \textbf{Pick Cup.} The robot grasps a coffee mug from a tabletop. To induce multi-modality, we collect 100 demonstrations grasping the mug {by its rim} and 100 grasping it {by its handle}, yielding {200 demonstrations}. These geometrically distinct strategies start from the same initial states, making them challenging for unimodal policies. For this task, all three policies, A2A, flow matching, and MARS, are trained for 500 epochs.
+
+\item \textbf{Pick Vegetable.}
+The robot picks up a vegetable from a tabletop scene with a carrot, a mango, and a daikon arranged in sequence, where the carrot and daikon are placed on opposite sides of the mango. To induce multi-modality, we collect 100 demonstrations for picking the {carrot} and 100 for picking the {daikon}. Since either vegetable is a valid target, both modes are treated as successful task completions, yielding {200 demonstrations}. For this task, all three policies, A2A, flow matching, and MARS, are trained for 400 epochs. 
+
+\end{itemize}
+\textbf{Evaluation Details.}
+For both Pick Cup and Pick Vegetable, we evaluate each trained policy with 10 rollout trials. In addition to task success, we record the executed action mode in each rollout, such as rim \textit{vs.} handle grasping for Pick Cup and carrot \textit{vs.} daikon picking for Pick Vegetable, to analyze whether each policy captures the intended multi-modal behavior.
+
+\subsection{Franka training and evaluation details}
+
+\textbf{Hardware and Observation Setup.}
+We evaluate Push-T and Block Push using a \textbf{Franka Emika Research 3} (FR3) robotic arm. The scene is observed by one RGB-D Intel RealSense D455 camera, a fixed top-down camera providing a global view of the workspace. All human demonstrations are collected using a 3Dconnexion SpaceMouse via the HILSERL teleoperation framework~\citep{luo2025precise}. For the action space, the employed Franka uses end-effector states in real-world experiments.
+% Hz
+\textbf{Tasks and Demonstration Statistics.}
+Our evaluation uses two real-world manipulation tasks with action multimodality. We uniformly collect demonstrations across bimodal behavior modes, providing a basis for characterizing the multimodal structure of the action distribution.
+\begin{itemize}[leftmargin=1em, labelsep=0.4em, itemsep=0.25em, topsep=0.25em]
+\item \textbf{Push-T.} The end-effector pushes a T-shaped block into the target region from a fixed initial pose. The dataset contains {100 demonstrations} covering two pushing paths, corresponding to the upper and lower routes around the block, with 50 trials for each path. To reduce the influence of preceding motions during data collection, the robot is first moved to a randomly sampled point and then returned to the same start pose before each demonstration.
+
+\item \textbf{Block Push.} The end-effector pushes one of two blocks to its corresponding target region from a shared initial pose.
+The dataset contains {100 demonstrations} covering two pushing modes, pushing the orange block to its target region or pushing the purple block to its target region, with 50 trials for each mode.
+This setup reflects action multimodality, as the same start states admit two valid object-selection choices.
+\end{itemize}
+
+\textbf{Training Details.}
+For each Franka real-world task, we use $100$ demonstrations for training. All three policies, A2A, flow matching, and MARS, are trained with identical settings within each task.
+Based on the convergence behavior of each task, we train the policies for 100 epochs on Push-T and 40 epochs on Block Push.
+\textbf{Evaluation Details.}
+For both Push-T and Block Push, we evaluate each trained policy with 20 rollout trials. 
+Beyond task success, we also annotate the behavior mode executed in each rollout, including the upper or lower pushing route in Push-T and the selected block in Block Push.
+This allows us to examine whether each policy preserves the demonstrated multimodal behaviors rather than converging to a single action pattern.
+All inference-time measurements are  conducted on an NVIDIA RTX $5080$ GPU($16$ GB) and $128$ GB of system memory.
+
+\subsection{Training and evaluation hyperparameters}
+
+All training and evaluation hyperparameters of MARS policy are kept consistent across all experiments, as listed in Table~\ref{tab:parameters}.
+
+\renewcommand*{\thetable}{S1}
+\begin{table}[ht]
+  \caption{Training hyperparameters.}
+  \label{tab:parameters}
+  \centering
+  % 压缩列间距以适应宽度
+  \begin{tabular}{lc}
+    \toprule
+    \textbf{Hyperparameters} & \textbf{Value} \\
+    \midrule
+    chunk size & 8 \\
+    history horizon & 8 \\
+    $K_{max}$  & 10 \\
+    $m$  & 20 \\
+    $\lambda_{\text{rec}}$   & 1 \\
+    $\lambda_{\text{div}}$   & 1 \\
+    Batch size           & 32 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\section{Benchmarking on Cross-Sim Unimodal Tests}
+\label{appen:Unimodal}
+To validate the efficacy of the MARS policy, we conducted a comprehensive benchmark against eight SOTA baselines on the Stuck Cube task, utilizing both \textit{MuJoCo} and \textit{IsaacSim} as evaluation platforms. 
+The compared baselines includes: DDPM-UNet~\citep{dp, ddpm}, DDPM-DiT~\citep{ddpm, Peebles_2023_ICCV}, DDIM-UNet~\citep{dp, song2020denoising}, FM-UNet~\citep{flowmatching}, FM-DiT~\citep{flowmatching, Peebles_2023_ICCV}, Score-UNet~\citep{song2020score}, ACT~\citep{zhao2023learning},  A2A \citep{jia2026action}. Key hyperparameters, including the chunk size, are standardized across all compared models to maintain experimental consistency. The evaluated results are summarized in  Tab. \ref{tab-mujoco} and Tab. \ref{tab-isaacsim}.
+
+\renewcommand*{\thetable}{S2}
+\begin{table*}[ht]
+  \caption{Convergence rates of 9 algorithms on Stack Cube in \textit{MuJoCo} under different training epochs (100 demonstrations). The best results are highlighted in {bold}, while the second-best results are indicated with {underlines}.}
+  \label{tab-mujoco}
+  \vspace{3mm}
+  \centering
+  \small
+  % 压缩列间距以适应宽度
+  \setlength{\tabcolsep}{3.5pt} 
+  \begin{tabular}{lccccccccccc}
+    \toprule
+    \textbf{Methods} & \textbf{Inference} & \textbf{10} & \textbf{20} & \textbf{30} & \textbf{40} & \textbf{50} & \textbf{60} & \textbf{70} & \textbf{80} & \textbf{90} & \textbf{100} \\
+    & \textbf{Steps}  & (\%) & (\%) & (\%) & (\%) & (\%) & (\%) & (\%) & (\%) & (\%) & (\%) \\
+    \midrule
+    \textbf{MARS} & 1-10 & \textbf{14} & \textbf{50} & \textbf{78} & \textbf{74} & \textbf{68} & \underline{64} & \textbf{78} & \textbf{92} & \textbf{96} & \textbf{98} \\
+    A2A                & 1 & \underline{12} & \underline{20} & \underline{44} & \underline{50} & \underline{60} & \textbf{72} & \underline{72} & \underline{74} & \underline{84} & \underline{86}\\
+    FM-DiT              & 10 & 2 & 4 & 8 & 8 & 10 & 16 & 36 & 36 & 50 & 58\\
+    DDPM-DiT            & 100 & 0 & 0 & 2 & 4 & 2 & 22 & 42 & 52 & 72 & 78\\
+    FM-UNet             & 10 & 0 & 2 & 2 & 4 & 0 & 2 & 6 & 4 & 8 & 12\\
+    DDPM-UNet           & 100 & 0 & 2 & 0 & 0 & 6 & 6 & 16 & 20 & 22 & 40\\
+    DDIM-UNet           & 40 & 0 & 2 & 0 & 2 & 6 & 12 & 26 & 16 & 16 & 26\\
+    Score-UNet          & 100 & 0 & 0 & 4 & 4 & 4 & 4 & 4 & 16 & 14 & 22\\
+    ACT                 & 1 & 6 & 2 & 2  & 4 & 14 & 6 & 12 & 6 & 12 & 4 \\
+    \bottomrule
+  \end{tabular}
+\end{table*}
+
+\renewcommand*{\thetable}{S3}
+\begin{table*}[ht]
+  \caption{Convergence rates of 9 algorithms on Stack Cube in \textit{IsaacSim} under different training epochs (100 demonstrations). The best results are highlighted in {bold}, while the second-best results are indicated with {underlines}.}
+  \label{tab-isaacsim}
+  \vspace{3mm}
+  \centering
+  \small
+  % 压缩列间距以适应宽度
+  \setlength{\tabcolsep}{3.5pt} 
+  \begin{tabular}{lccccccccccc}
+    \toprule
+    \textbf{Methods} & \textbf{Inference} & \textbf{10} & \textbf{20} & \textbf{30} & \textbf{40} & \textbf{50} & \textbf{60} & \textbf{70} & \textbf{80} & \textbf{90} & \textbf{100} \\
+    & \textbf{Steps}  & (\%) & (\%) & (\%) & (\%) & (\%) & (\%) & (\%) & (\%) & (\%) & (\%) \\
+    \midrule
+    \textbf{MARS} & 1-10 & \textbf{10} & \textbf{50} & \underline{52} & \textbf{56} & \textbf{58} & \underline{60} & \textbf{74} & \textbf{80} & \textbf{92} & \textbf{90} \\
+    A2A                & 1 & \underline{8} & \underline{44} & \textbf{54} & \textbf{56} & \underline{56} & \textbf{72} & \textbf{74} & \underline{74} & \underline{78} & \underline{84}\\
+    FM-DiT               & 10 & 4 & 8 & 32 & 24 & 28 & 42 & 46 & 42 & 50 & 62\\
+    FM-UNet             & 10 & 4 & 8 & 10 & 8 & 24 & 18 & 14 & 34 & 50 & 44\\
+    DDPM-DiT             & 100 & 0 & 0 & 4 & 4 & 14 & 16 & 38 & 36 & 48 & 50\\
+    DDPM-UNet            & 100 & 0 & 6 & 6 & 8 & 20 & 26 & 24 & 24 & 36 & 48\\
+    DDIM-UNet            & 40 & 0 & 8 & 14 & 8 & 8 & 18 & 36 & 42 & 38 & 64\\
+    Score-UNet          & 100 & 0 & 0 & 2 & 8 & 6 & 22 & 6 & 26 & 26 & 24\\
+    ACT                  & 1 & 8 & 2 & 16 & 22 & 16 & 28 & 26 & 32 & 48 & 38\\
+    \bottomrule
+  \end{tabular}
+\end{table*}
+
+\section{Evaluation Metric of Multimodality}
+\label{appen:metrics}
+
+To quantify multimodal capability, we adopt a \textit{modal balance} metric $\gamma$ for the three bimodal tasks in Fig.~\ref{multimodal_sim}
+\begin{equation}
+    \gamma = \frac{2\min\{n_1, n_2\}}{n_1 + n_2},
+\end{equation}
+where $n_1$ and $n_2$ denote the number of successful rollouts assigned to mode 1 and mode 2, respectively. A value close to 1 indicates that the two modes are visited evenly, while a value approaching 0 reflects increasingly imbalanced mode coverage.
+
+
+\renewcommand*{\thefigure}{S5}
+\begin{figure}  
+	\centering
+	\includegraphics[width=0.9\linewidth]{Figs/pusht.pdf}
+	\caption{Snapshots of the Push-T task.}
+	\label{pusht}
+\end{figure}
+
+\renewcommand*{\thefigure}{S6}
+\begin{figure}
+	\centering
+	\includegraphics[width=0.5\linewidth]{Figs/pushcube.pdf}
+	\caption{Snapshots of the Block Push task.}
+	\label{pushcube}
+\end{figure}
+
+\renewcommand*{\thefigure}{S7}
+\begin{figure}
+	\centering
+	\includegraphics[width=0.9\linewidth]{Figs/pickvege.pdf}
+	\caption{Snapshots of the Pick Vegetable task.}
+	\label{pickvege}
+\end{figure}
+
+\renewcommand*{\thefigure}{S8}
+\begin{figure}
+	\centering
+	\includegraphics[width=0.9\linewidth]{Figs/pick_cup.pdf}
+	\caption{Snapshots of the Pick Cup task.}
+	\label{pickcup}
+\end{figure}
+
+\renewcommand*{\thefigure}{S9}
+\begin{figure}
+	\centering
+	\includegraphics[width=0.4\linewidth]{Figs/appen_fm.pdf}
+	\caption{\textbf{Robustness analysis of modal balance under real-world data scarcity and overtraining (Pick Cup).} 
+      The default configuration (``Adopted'') consists of 200 demonstrations and 400 training epochs. 
+      MARS maintains a resilient and stable modal balance ($\gamma = 0.8$) across both data-restricted (50 demonstrations) and overtrained regimes (800 epochs). 
+      In contrast, the generative baseline exhibits severe mode degradation. }
+	\label{appen_fm}
+\end{figure}

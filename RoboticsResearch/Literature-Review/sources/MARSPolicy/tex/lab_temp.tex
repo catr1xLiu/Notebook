@@ -1,0 +1,86 @@
+\documentclass[onecolumn]{fairmeta}
+
+
+\usepackage[most]{tcolorbox}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage[utf8]{inputenc} % allow utf-8 input
+\usepackage[T1]{fontenc}    % use 8-bit T1 fonts
+\usepackage{hyperref}       % hyperlinks
+\usepackage{url}            % simple URL typesetting
+\usepackage{booktabs}       % professional-quality tables
+\usepackage{amsfonts}       % blackboard math symbols
+\usepackage{nicefrac}       % compact symbols for 1/2, etc.
+\usepackage{microtype}      % microtypography
+\usepackage{xcolor}         % colors
+\usepackage{graphicx}
+\newcommand{\m}[1]{{A2A}}
+\newcommand{\p}[1]{}
+\newcommand{\TODO} [1] {{\color{magenta}{[TODO: #1]}}}
+\usepackage{wrapfig}
+\usepackage{enumitem}
+\usepackage{fontawesome5}
+
+
+\newcommand{\QG}[1]{\textcolor{red}{QG:~#1}}
+\newcommand{\TN}[1]{\textcolor{orange}{TN:~#1}}
+\newcommand{\NB}[1]{\textcolor{blue}{NB:~#1}}
+\newcommand{\MR}[1]{\textcolor{magenta}{MR:~#1}}
+
+\title{MARS Policy: Multimodality Only When It Matters }
+% \title{MARS Policy: Right Noise at the Right Time}
+
+\author[1,*,\dagger]{\href{https://jiajindou.github.io/}{\textcolor{black}{Jindou Jia}}}
+\author[1,*]{\href{https://morpheus-an.github.io/}{\textcolor{black}{Tuo An}}}
+\author[1,*]{Yuxuan Hu}
+\author[1]{\href{https://reagan1311.github.io/}{\textcolor{black}{Gen Li}}}
+\author[1]{\href{https://lorenzo-0-0.github.io/}{\textcolor{black}{Jingliang Li}}}
+\author[1]{Bohan Hou}
+\author[1]{\href{https://xyc0212.github.io/}{\textcolor{black}{Xiangyu Chen}}}
+\author[1]{Jiaqi Bai}
+\author[1]{Bofan Lyu}
+\author[1,\dagger]{\href{https://marsyang.site/}{\textcolor{black}{Jianfei Yang}}}
+\affiliation[1]{MARS Lab, Nanyang Technological University}
+
+
+\contribution[*]{Equal contribution}
+\contribution[\dagger]{Corresponding authors}
+
+\metadata[\faHome]{\url{https://lorenzo-0-0.github.io/MARS_Policy/}.}
+\correspondence{\email{jianfei.yang@ntu.edu.sg}, \email{jindou.jia@ntu.edu.sg}.}
+
+% You can add additional metadata fields as follows
+%\metadata[Code]{\url{https://github.com/facebookresearch/repo}}
+
+
+%\metadata[Github]{\url{https://github.com/JIAjindou/A2A_Flow_Matching}}
+
+
+\abstract{
+   Imitation learning has become a cornerstone for solving complex robotic manipulation tasks. 
+    % Recent advances in multimodal policy learning have further enabled robots to capture diverse behavioral patterns, establishing generative policies as a dominant paradigm in robot learning.
+    In particular, multimodality, which enables robots to capture diverse yet valid behavioral patterns, has driven the rapid emergence of generative policies as a dominant paradigm in robot learning.
+    However, achieving such multimodality typically relies on stochastic noise initialization and iterative denoising procedures, resulting in substantial training complexity and low inference efficiency. Meanwhile, not all phases of a robotic task inherently require behavioral diversity.
+    Motivated by this insight, we propose the \textbf{M}odality-\textbf{A}daptive \textbf{R}obot \textbf{S}ampling (\textbf{MARS}) policy, which adaptively invokes tailored stochasticity only when it is truly beneficial, while reverting to an efficient deterministic learning during single-modal phases. In other words, \textit{the proper amount of noise is injected only at the proper time}. By selectively activating multimodal generation, MARS policy bridges the gap between the multimodal capability of generative policies and the superior training and inference efficiency of deterministic models. Empirical studies across $8$ simulated and $4$ real-world tasks demonstrate that MARS exhibits robust multimodal expressivity and high efficiency, with a $16.67\%$ success rate improvement and an $83.20\%$ inference latency reduction in real-world tests. Counterintuitively, MARS also outpaces deterministic policies in training efficiency on near-deterministic tasks by more effectively modeling nuanced action diversity.
+%
+}
+
+\begin{document}
+
+\maketitle
+\input{main_part}
+%===============================================================================
+
+\bibliographystyle{assets/plainnat}
+\bibliography{paper}
+
+%===============================================================================
+\clearpage
+\newpage
+\appendix
+
+\input{appendix_part}
+
+
+\end{document}
