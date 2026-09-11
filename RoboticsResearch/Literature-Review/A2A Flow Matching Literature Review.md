@@ -221,7 +221,7 @@ Frames-to-Frames (F2F) ports the idea to video prediction: three past frames pro
 > ## My Read
 
 
-<br><br><br><br>
+
 
 ---
 
@@ -237,8 +237,6 @@ MARS extends [[A2A Flow Matching Literature Review|A2A]] by learning **where and
 
 Across eight simulated and four physical tasks, MARS generally learns faster than Gaussian-source flow matching and preserves multiple behaviors that deterministic A2A loses. Physical inference is approximately $5\,\mathrm{ms}$, versus $28\,\mathrm{ms}$ for flow matching and $3\,\mathrm{ms}$ for A2A. The central caveats are small physical evaluations, added neighbor-computation cost, and a dispersion surrogate that does not itself guarantee correct mode coverage.
 
-<br><br>
-
 ---
 
 > [!fact] Methodology
@@ -249,9 +247,7 @@ Across eight simulated and four physical tasks, MARS generally learns faster tha
 
 <div align="center"><img src="media/mars-concept.png" alt="Figure 1: four-route navigation compares expert trajectories, Gaussian-source flow matching, deterministic A2A, and MARS; learned noise weights and inference steps change along the route; physical examples include cup grasping, vegetable selection, block pushing, and Push-T" width="100%"></div>
 
-<!-- Space for notes: which phases genuinely admit multiple valid actions? -->
 
-<br><br><br>
 
 #### <u>2. Architecture and learned flow source</u>
 
@@ -261,7 +257,7 @@ Across eight simulated and four physical tasks, MARS generally learns faster tha
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
 | Meaning | Measured historical action chunk | Initial flow source | Demonstrated future chunk | Per-dimension noise weight | Standard Gaussian noise | Elementwise product |
 
-**Adaptive source — paper Eq. (3).**
+**Adaptive source**
 
 $$
 \boxed{\mathbf{a}_0=(\mathbf{1}-\mathbf{w})\odot\mathbf{a}^{\leq t}+\mathbf{w}\odot\boldsymbol{\epsilon}},\qquad
@@ -269,9 +265,7 @@ $$
 \boldsymbol{\epsilon}\sim\mathcal N(\mathbf{0},\mathbf{I}).
 $$
 
-<!-- Space for notes: source limits, dimensionwise weights, and observation conditioning. -->
 
-<br><br><br>
 
 #### <u>3. Transport objective and the A2A endpoint constraint</u>
 
@@ -279,21 +273,21 @@ $$
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
 | Meaning | Robot time | Flow time in $[0,1]$ | Conditional velocity field | Gaussian source distribution | Historical-action distribution | Future-action distribution | ODE-predicted endpoint |
 
-**Interpolation and ODE.** Observation conditioning is implicit in the paper's velocity notation. The ODE below uses $\tau$ consistently; the source text writes its derivative with respect to $t$.
+**Interpolation and ODE**
 
 $$
 \mathbf a_\tau=(1-\tau)\mathbf a_0+\tau\mathbf a_1.
 $$
 
-<br><br>
+
 
 $$
 \frac{d\mathbf a_\tau}{d\tau}=v_\theta(\mathbf a_\tau,\tau).
 $$
 
-<br><br>
 
-**Gaussian-source reference — paper Eq. (1).** MARS uses the same velocity-matching form with its adaptive source substituted for the Gaussian draw.
+
+**Gaussian-source flow matching**
 
 $$
 \mathcal L_{\mathrm{fm}}=
@@ -301,9 +295,9 @@ $$
 \left\|v_\theta(\mathbf a_\tau,\tau)-(\mathbf a_1-\mathbf a_0)\right\|^2.
 $$
 
-<br><br>
 
-**Action-space A2A reference — paper Eq. (2).** This is the reformulation used in MARS, rather than the full latent-space objective in the original A2A paper.
+
+**Action-space A2A**
 
 $$
 \begin{aligned}
@@ -316,13 +310,11 @@ $$
 \end{aligned}
 $$
 
-<!-- Space for notes: why an endpoint penalty can favor one demonstrated target. -->
 
-<br><br><br>
 
 #### <u>4. Gated reconstruction and total objective</u>
 
-**Joint objective — paper Eq. (4).**
+**Joint objective**
 
 $$
 \mathcal L=\mathcal L_{\mathrm{fm}}
@@ -330,9 +322,9 @@ $$
 +\lambda_{\mathrm{div}}\mathcal L_{\mathrm{div}}.
 $$
 
-<br><br>
 
-**Reconstruction gate — paper Eq. (5).** The multiplicative weight $(\mathbf1-\mathbf w)$ is detached; gradients may still reach the scheduler through the generated source and endpoint. The expectation subscript below preserves the paper's notation, although MARS actually initializes from the mixed source.
+
+**Reconstruction loss — detached gate**
 
 $$
 \mathcal L_{\mathrm{rec}}=
@@ -343,9 +335,7 @@ $$
 
 <div align="center"><img src="media/mars-fm-reconstruction.png" alt="Figure S4: among 100 navigation rollouts, standard flow matching has passage counts 20, 24, 29, 24; adding reconstruction with weight 1 gives 10, 36, 40, 4, concentrating trajectories in the two central passages" width="80%"></div>
 
-<!-- Space for notes: gradient paths and why the gate is detached. -->
 
-<br><br><br>
 
 #### <u>5. Neighbor-based diversity target</u>
 
@@ -353,7 +343,7 @@ $$
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
 | Meaning | Neighbors of sample $i$ in historical-action space | Neighbor count | Demonstrated future chunk | Constructed mixed source | Target coordinatewise dispersion | Source coordinatewise dispersion |
 
-**Offline target and online source dispersion — paper Eq. (7).** A dataset-wide BallTree supplies the neighbors. Reuse the anchor's current $\mathbf w^{(i)}$ to construct both its own source and each neighbor's source.
+**Target and source dispersion**
 
 $$
 \mathcal S_{\mathrm{next}}^{(i)}=
@@ -361,7 +351,7 @@ $$
 \left|\mathbf a_{\mathrm{next}}^{(i)}-\mathbf a_{\mathrm{next}}^{(j)}\right|.
 $$
 
-<br><br>
+
 
 $$
 \mathcal S_{\mathrm{curr}}^{(i)}=
@@ -369,9 +359,9 @@ $$
 \left|\mathbf a_{\mathrm{curr}}^{(i)}-\mathbf a_{\mathrm{curr}}^{(j)}\right|.
 $$
 
-<br><br>
 
-**One-sided dispersion deficit — paper Eq. (6).**
+
+**Diversity loss**
 
 $$
 \boxed{\mathcal L_{\mathrm{div}}=
@@ -380,9 +370,7 @@ $$
 \mathcal S_{\mathrm{curr}}\right)\right]}.
 $$
 
-<!-- Space for notes: competing gradients, excess dispersion, and mode coverage. -->
 
-<br><br><br>
 
 #### <u>6. Adaptive inference budget</u>
 
@@ -390,13 +378,13 @@ $$
 | :--- | :--- | :--- | :--- |
 | Meaning | Per-sample integration budget | Maximum number of steps | Largest noise weight across dimensions |
 
-**Published scheduling rule — §4.3.**
+**Step budget**
 
 $$
 K(\mathbf w)=K_{\max}\|\mathbf w\|_\infty.
 $$
 
-The text describes $1$–$10$ integer steps but does not specify rounding or minimum-step clamping. The illustrative implementation below explicitly chooses ceiling and a minimum of one; those choices are not verified author code.
+
 
 ```python
 def sample_mars(
@@ -406,9 +394,8 @@ def sample_mars(
     k_max: int,
 ) -> Tensor:
     '''
-    Illustrative single-sample inference, not executable repo code.
-    history: action chunk; weights broadcast across its horizon.
-    Returns a future action chunk using a fixed observation.
+    Illustrative inference; weights broadcast across the chunk.
+    Ceiling and minimum-one clamping are assumed, not specified.
     '''
     condition = policy.encode(observation)
     weight = policy.schedule(condition).sigmoid()
@@ -422,17 +409,13 @@ def sample_mars(
     return action
 ```
 
-<!-- Space for notes: batching, worst-case latency, and sensitivity to one noisy axis. -->
 
-<br><br><br>
 
 #### <u>7. Evidence for the noise–optimization tradeoff</u>
 
 <div align="center"><img src="media/mars-loss-swap.png" alt="Figure S3: increasing initial source variance from 0 to 10 slows and destabilizes training and reduces final success; experiment uses 100 demonstrations, 30 epochs, and 50 evaluation rollouts" width="80%"></div>
 
-<!-- Space for notes: distinguish variance effects from causal evidence for the scheduler. -->
 
-<br><br><br>
 
 ---
 
@@ -450,10 +433,12 @@ def sample_mars(
 | Reconstruction gate | Detach only its multiplicative $(\mathbf1-\mathbf w)$ weight |
 | Neighbor source construction | Use the anchor's weight for all its neighbors |
 | Target dispersion | Precompute from demonstrated future actions |
+| Actions | Franka: simulated joints / physical end-effector states; R1 Lite: joints |
+| Push-T collection | Random waypoint before returning to the shared start pose |
 
-The Franka uses joint commands in simulation and end-effector states in physical experiments; R1 Lite uses joint commands. For physical Push-T demonstrations, the robot visits a random point before returning to the common start pose, reducing a possible history cue to the demonstrated route. These choices matter when interpreting conditional multimodality and transferring the history prior.
 
-<br><br>
+
+
 
 ---
 
@@ -483,7 +468,7 @@ $$
 
 Read $\gamma$ together with success rate: two successful trials split evenly score $1$, regardless of how many other trials fail. It is undefined if neither mode succeeds unless an implementation convention is added. Balanced modes are intentionally built into these datasets; the metric does not test fidelity to unequal expert mode probabilities.
 
-<br><br>
+
 
 #### <u>Multimodal simulation: retain branches without full-time noise</u>
 
@@ -495,7 +480,7 @@ MARS generally converges faster than flow matching while maintaining comparable 
 
 **Design ablation:** adding an ungated reconstruction loss with $\lambda_{\mathrm{rec}}=1$ to flow matching changes four-passage counts from $20/24/29/24$ to $10/36/40/4$ in $100$ rollouts (Fig. S4). The counts sum to $97$ and $90$, respectively; they should not be mistaken for normalized mode probabilities over all trials.
 
-<br><br>
+
 
 #### <u>Physical tasks: latency and small-sample success</u>
 
@@ -517,7 +502,7 @@ Each R1 Lite trial changes the raw success estimate by $10$ percentage points, a
 
 **Source inconsistency:** Fig. S9 describes the default Pick Cup setting as $200$ demonstrations and $400$ epochs; appendix §B.2 states $500$ epochs for Pick Cup. Keep this distinction when reproducing the overtraining comparison.
 
-<br><br>
+
 
 #### <u>Strategically unimodal tasks: stochasticity can still help</u>
 
@@ -536,7 +521,7 @@ On Stack Cube and Pick Cube, MARS can learn faster than A2A. The authors attribu
 
 The advantage is not uniform: A2A leads at epoch $60$ in both simulators. MARS has higher final success in these tables, but epochs measure sample passes, not training wall time; the diversity computation adds work per update. These are separate simulator benchmarks, not evidence of a policy transferred between simulators.
 
-<br><br>
+
 
 #### <u>Limitations and unresolved comparisons</u>
 
@@ -548,13 +533,9 @@ The advantage is not uniform: A2A leads at epoch $60$ in both simulators. MARS h
 - **Review assessment — reproducibility:** the TeX does not specify integer scheduling, action normalization and history-distance scaling, or a complete optimizer/backbone configuration. These details affect the source blend and neighbor target. The project is linked above; code execution and independent replication are outside this review.
 - **Review assessment — deployment scope:** the main evidence concerns compact manipulation skills with deliberately balanced alternatives. Long-horizon intent consistency, recovery after corrupted history, and broad scene-distribution shifts remain untested here.
 
-<br><br><br>
+
 
 ---
 
 > [!fact] Reflection
 > ## My Read
-
-
-
-<br><br><br><br>
