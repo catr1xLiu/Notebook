@@ -1,7 +1,7 @@
 > **VAIRO** · Jeffrey Lee, Alexander Wong, Yue Hu · IEEE RO-MAN 2025 · DOI [10.1109/RO-MAN63969.2025.11217620](https://doi.org/10.1109/RO-MAN63969.2025.11217620)
 > **VAISI** · Jeffrey Lee, Teresa Marotta, Stewart McLachlin, Alexander Wong, Yue Hu · IEEE-RAS Humanoids 2025
 > Both: University of Waterloo (MME / SDE) — the <u><strong style="color:#a0399f">Active & Interactive Robotics Lab</strong></u>
-> Sources: [VAIRO](<sources/VAIRO: A Vision-Based Adaptive Impedance-Control Robotic/VAIRO: A Vision-Based Adaptive Impedance-Control Robotic.md>) · [VAISI](<sources/VAISI: Vision-Based Adaptive Impedance Control for Surgical Incisions/VAISI: Vision-Based Adaptive Impedance Control for Surgical Incisions.md>)
+> Sources: [VAIRO](<sources/VAIRO/VAIRO - A Vision-Based Adaptive Impedance-Control Robotic.md>) · [VAISI](<sources/VAISI/VAISI - Vision-Based Adaptive Impedance Control for Surgical Incisions.md>)
 
 > [!abstract] TL;DR
 > ## Vision as a Substitute for a Force Sensor
@@ -299,5 +299,4 @@ VAIRO's conclusion explicitly names "surgical operations on soft tissue" as a tr
 
 > [!fact] Reflection
 > ## My Read
-
 
