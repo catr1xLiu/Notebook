@@ -1,7 +1,9 @@
-# A2A: Action-to-Action Flow Matching
+﻿# A2A: Action-to-Action Flow Matching
 
 > arXiv: [2602.07322](https://arxiv.org/abs/2602.07322) · Jindou Jia et al. · RSS 2026 · 2026-02-07
 > Project: [A2A Flow Matching](https://lorenzo-0-0.github.io/A2A_Flow_Matching) · Source: [Paper.md](sources/A2AFlowMatching/Paper.md)
+
+Follow-up: [[MARS Policy Literature Review|MARS Policy — Multimodality Only When It Matters]].
 
 > [!abstract] Summary
 > ## TL;DR — replace the source distribution, not the denoiser
@@ -222,320 +224,319 @@ Frames-to-Frames (F2F) ports the idea to video prediction: three past frames pro
 
 
 
-
 ---
 
-## MARS Policy — Multimodality Only When It Matters
-
-> arXiv: [2605.29766v1](https://arxiv.org/abs/2605.29766v1) · Jindou Jia et al. · arXiv preprint · 2026-05-28
-> [Project](https://lorenzo-0-0.github.io/MARS_Policy/) · [TeX-derived reading copy](sources/MARSPolicy/Paper.md) · [Main TeX](sources/MARSPolicy/tex/main_part.tex) · [Appendix TeX](sources/MARSPolicy/tex/appendix_part.tex)
-
-> [!abstract] TL;DR
-> ## From A2A to adaptive stochasticity
-
-MARS extends [[A2A Flow Matching Literature Review|A2A]] by learning **where and how much stochasticity to introduce**. An observation-conditioned scheduler predicts a weight for each action dimension, blending historical actions with Gaussian noise. The same weights gate an endpoint reconstruction penalty and determine the number of flow-integration steps. A neighbor-based diversity loss prevents the easy history-to-action solution from eliminating stochasticity: it penalizes source dispersion that falls below the future-action dispersion of demonstrations with similar histories. The resulting policy allocates noise and computation to branching decisions while retaining a strong history prior elsewhere.
-
-Across eight simulated and four physical tasks, MARS generally learns faster than Gaussian-source flow matching and preserves multiple behaviors that deterministic A2A loses. Physical inference is approximately $5\,\mathrm{ms}$, versus $28\,\mathrm{ms}$ for flow matching and $3\,\mathrm{ms}$ for A2A. The central caveats are small physical evaluations, added neighbor-computation cost, and a dispersion surrogate that does not itself guarantee correct mode coverage.
-
----
-
-> [!fact] Methodology
-> ## Source distribution → training constraints → inference budget
-
-
-#### <u>1. Problem scope and phase-dependent modes</u>
-
-<div align="center"><img src="media/mars-concept.png" alt="Figure 1: four-route navigation compares expert trajectories, Gaussian-source flow matching, deterministic A2A, and MARS; learned noise weights and inference steps change along the route; physical examples include cup grasping, vegetable selection, block pushing, and Push-T" width="100%"></div>
-
-
-
-#### <u>2. Architecture and learned flow source</u>
-
-<div align="center"><img src="media/mars-architecture.png" alt="Figure 2: encoded observations condition a modal scheduling MLP and DiT flow network; scheduler weights mix historical actions with Gaussian noise and select the inference budget" width="100%"></div>
-
-| Symbol | $\mathbf{a}^{\leq t}$ | $\mathbf{a}_0$ | $\mathbf{a}_1$ | $\mathbf{w}\in(\mathbf{0},\mathbf{1})^D$ | $\boldsymbol{\epsilon}$ | $\odot$ |
-| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| Meaning | Measured historical action chunk | Initial flow source | Demonstrated future chunk | Per-dimension noise weight | Standard Gaussian noise | Elementwise product |
-
-**Adaptive source**
-
-$$
-\boxed{\mathbf{a}_0=(\mathbf{1}-\mathbf{w})\odot\mathbf{a}^{\leq t}+\mathbf{w}\odot\boldsymbol{\epsilon}},\qquad
-\mathbf{a}^{\leq t}\sim p_{\mathcal H},\quad
-\boldsymbol{\epsilon}\sim\mathcal N(\mathbf{0},\mathbf{I}).
-$$
-
-
-
-#### <u>3. Transport objective and the A2A endpoint constraint</u>
-
-| Symbol | $t$ | $\tau$ | $v_\theta$ | $p_{\mathcal N}$ | $p_{\mathcal H}$ | $p_{\mathcal T}$ | $\hat{\mathbf a}_1$ |
-| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| Meaning | Robot time | Flow time in $[0,1]$ | Conditional velocity field | Gaussian source distribution | Historical-action distribution | Future-action distribution | ODE-predicted endpoint |
-
-**Interpolation and ODE**
-
-$$
-\mathbf a_\tau=(1-\tau)\mathbf a_0+\tau\mathbf a_1.
-$$
-
-
-
-$$
-\frac{d\mathbf a_\tau}{d\tau}=v_\theta(\mathbf a_\tau,\tau).
-$$
-
-
-
-**Gaussian-source flow matching**
-
-$$
-\mathcal L_{\mathrm{fm}}=
-\mathbb E_{\tau\sim\mathcal U(0,1),\,\mathbf a_0\sim p_{\mathcal N},\,\mathbf a_1\sim p_{\mathcal T}}
-\left\|v_\theta(\mathbf a_\tau,\tau)-(\mathbf a_1-\mathbf a_0)\right\|^2.
-$$
-
-
-
-**Action-space A2A**
-
-$$
-\begin{aligned}
-\mathcal L_{\mathrm{A2A}}
-&=\mathbb E_{\tau\sim\mathcal U(0,1),\,(\mathbf a_0,\mathbf a_1)\sim(p_{\mathcal H},p_{\mathcal T})}
-\left\|v_\theta(\mathbf a_\tau,\tau)-(\mathbf a_1-\mathbf a_0)\right\|^2\\
-&\quad+\lambda_{\mathrm{rec}}
-\mathbb E_{(\mathbf a_0,\mathbf a_1)\sim(p_{\mathcal H},p_{\mathcal T})}
-\left\|\hat{\mathbf a}_1-\mathbf a_1\right\|_1.
-\end{aligned}
-$$
-
-
-
-#### <u>4. Gated reconstruction and total objective</u>
-
-**Joint objective**
-
-$$
-\mathcal L=\mathcal L_{\mathrm{fm}}
-+\lambda_{\mathrm{rec}}\mathcal L_{\mathrm{rec}}
-+\lambda_{\mathrm{div}}\mathcal L_{\mathrm{div}}.
-$$
-
-
-
-**Reconstruction loss — detached gate**
-
-$$
-\mathcal L_{\mathrm{rec}}=
-\mathbb E_{(\mathbf a_0,\mathbf a_1)\sim(p_{\mathcal H},p_{\mathcal T})}
-\left[\frac{1}{D}(\mathbf1-\mathbf w)^\top
-\left|\hat{\mathbf a}_1-\mathbf a_1\right|\right].
-$$
-
-<div align="center"><img src="media/mars-fm-reconstruction.png" alt="Figure S4: among 100 navigation rollouts, standard flow matching has passage counts 20, 24, 29, 24; adding reconstruction with weight 1 gives 10, 36, 40, 4, concentrating trajectories in the two central passages" width="80%"></div>
-
-
-
-#### <u>5. Neighbor-based diversity target</u>
-
-| Symbol | $\mathcal M(i)$ | $m$ | $\mathbf a_{\mathrm{next}}$ | $\mathbf a_{\mathrm{curr}}$ | $\mathcal S_{\mathrm{next}}$ | $\mathcal S_{\mathrm{curr}}$ |
-| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| Meaning | Neighbors of sample $i$ in historical-action space | Neighbor count | Demonstrated future chunk | Constructed mixed source | Target coordinatewise dispersion | Source coordinatewise dispersion |
-
-**Target and source dispersion**
-
-$$
-\mathcal S_{\mathrm{next}}^{(i)}=
-\frac1m\sum_{j\in\mathcal M(i)}
-\left|\mathbf a_{\mathrm{next}}^{(i)}-\mathbf a_{\mathrm{next}}^{(j)}\right|.
-$$
-
-
-
-$$
-\mathcal S_{\mathrm{curr}}^{(i)}=
-\frac1m\sum_{j\in\mathcal M(i)}
-\left|\mathbf a_{\mathrm{curr}}^{(i)}-\mathbf a_{\mathrm{curr}}^{(j)}\right|.
-$$
-
-
-
-**Diversity loss**
-
-$$
-\boxed{\mathcal L_{\mathrm{div}}=
-\mathbb E\left[\frac1D\mathbf1^\top
-\operatorname{ReLU}\left(\mathcal S_{\mathrm{next}}-
-\mathcal S_{\mathrm{curr}}\right)\right]}.
-$$
-
-
-
-#### <u>6. Adaptive inference budget</u>
-
-| Symbol | $K(\mathbf w)$ | $K_{\max}$ | $\|\mathbf w\|_\infty$ |
-| :--- | :--- | :--- | :--- |
-| Meaning | Per-sample integration budget | Maximum number of steps | Largest noise weight across dimensions |
-
-**Step budget**
-
-$$
-K(\mathbf w)=K_{\max}\|\mathbf w\|_\infty.
-$$
-
-
-
-```python
-def sample_mars(
-    observation: Tensor,
-    history: Tensor,
-    policy: MARSPolicy,
-    k_max: int,
-) -> Tensor:
-    '''
-    Illustrative inference; weights broadcast across the chunk.
-    Ceiling and minimum-one clamping are assumed, not specified.
-    '''
-    condition = policy.encode(observation)
-    weight = policy.schedule(condition).sigmoid()
-    noise = randn_like(history)
-    action = (1.0 - weight) * history + weight * noise
-    steps = max(1, min(k_max, ceil(k_max * weight.max().item())))
-    for step in range(steps):
-        tau = step / steps
-        velocity = policy.velocity(action, tau, condition)
-        action = action + velocity / steps
-    return action
+> [!hint] Codebase Analysis
+> ## Codebase Status and Structure
+
+**Verdict: A2A's core latent policy is released and inspectable, but reproducing the paper requires manual setup and resolving configuration and paper/code discrepancies.**
+
+| Aspect | Assessment |
+| :--- | :--- |
+| **Completeness** | Base/noisy A2A, data conversion, training, and simulator evaluation are present, but two ablation modules and experiment checkpoints are absent from the inspected clone. |
+| **Adaptation** | Author-provided simulation instructions exist, but demonstrations must be supplied or collected and independent community replication was not established by this static review. |
+| **Dependency** | The end-to-end pipeline depends on RoboVerse/MetaSim task, observation, and simulator interfaces, while the latent policy components are more separable. |
+| **Currency** | The inspected commit is dated 2026-06-01 and documents Isaac Sim 5.0.0, but conflicting Zarr/Hydra installation instructions prevent treating it as a locked environment. |
+
+**Replication difficulty: Hard.** Collecting matching demonstrations, configuring the simulator/assets, reconciling default paths and dependencies, and recovering missing ablations make this more than a short command sequence. **Technique adaptation: Moderate.** The encoder–flow–decoder modules expose reusable boundaries, but a port must preserve state/action normalization, current-time target alignment, conditioning, and differentiable endpoint supervision.
+
+**Snapshot and scope.** Inspected 2026-09-16 at [local clone](C:/Users/Liuyir/Documents/A2A_Flow_Matching), upstream [JIAjindou/A2A_Flow_Matching](https://github.com/JIAjindou/A2A_Flow_Matching), commit [a5792ec](https://github.com/JIAjindou/A2A_Flow_Matching/commit/a5792ecf4e7f8fa4d85fe66ea9a50618138f925c) (“Update README.md”). The clone had no reported working-tree changes and was not pulled; this is a dated snapshot assessment, not a claim about current upstream activity.
+
+**Artifacts and documentation.** The [README](https://github.com/JIAjindou/A2A_Flow_Matching/blob/a5792ecf4e7f8fa4d85fe66ea9a50618138f925c/README.md) supplies simulation commands and real-robot integration advice; no A2A demonstrations, pretrained checkpoints, or dedicated A2A policy tests were found locally. General simulator tests are present, and the root license is Apache-2.0. These findings do not establish missing downloads elsewhere or a reproduced physical deployment.
+
+#### <u>Data flow across the policy boundary</u>
+
+The diagram maps the paper's encoder–flow–decoder arrows to actual classes; reciprocal edges show request and returned payloads, not startup order. The policy receives observation history and returns an unnormalized action chunk; during training it additionally receives the demonstrated action window and returns a scalar loss. The two CNN instances have independent weights. The observation projector belongs to the policy.
+
+<!-- TODO: Convert the Mermaid below to Excalidraw and embed as ![[A2A Data Flow|100%]] -->
+
+```mermaid
+classDiagram
+    direction TB
+    class A2AImagePolicy {
+        <<policy interface>>
+        +LinearNormalizer normalizer
+        +int n_obs_steps
+        +int n_action_steps
+        +predict_action(obs_dict) ActionResult
+        +compute_loss(batch) Tensor
+    }
+    class MultiImageObsEncoder {
+        <<ResNet18 and proprioception>>
+        +ModuleDict key_model_map
+        +forward(obs_dict) Tensor
+    }
+    class CNNActionEncoder {
+        <<independent history and target instances>>
+        +Sequential encoder
+        +Linear latent_proj
+        +forward(actions, deterministic) Tensor
+    }
+    class TorchFlowMatcher {
+        <<torchcfm and Euler>>
+        +ConditionalFlowMatcher fm
+        +int num_sampling_steps
+        +compute_loss(model, target, start, kwargs) LossMetrics
+        +sample(model, shape, device, start, kwargs) Tensor
+    }
+    class SimpleFlowNet {
+        <<four AdaLN MLP blocks>>
+        +Sequential time_embed
+        +Linear cond_embed
+        +ModuleList layers
+        +forward(x, t, global_cond) Tensor
+    }
+    class SimpleActionDecoder {
+        <<four sequential MLP blocks>>
+        +ModuleList layers
+        +Linear output_proj
+        +forward(z) Tensor
+    }
+    A2AImagePolicy --> MultiImageObsEncoder : images B*8x3x256x256 and states B*8x9
+    MultiImageObsEncoder --> A2AImagePolicy : features B*8x521 then project to Bx512
+    A2AImagePolicy --> CNNActionEncoder : history Bx8x9 or training targets Bx8x9
+    CNNActionEncoder --> A2AImagePolicy : z0 or z1 Bx512 from separate weights
+    A2AImagePolicy --> TorchFlowMatcher : z0 Bx512 and c Bx512 plus training z1
+    TorchFlowMatcher --> A2AImagePolicy : endpoint Bx512 or scalar flow loss
+    TorchFlowMatcher --> SimpleFlowNet : z_tau Bx512 and time B and c Bx512
+    SimpleFlowNet --> TorchFlowMatcher : velocity Bx512
+    A2AImagePolicy --> SimpleActionDecoder : endpoint Bx512 or training target Bx512
+    SimpleActionDecoder --> A2AImagePolicy : normalized actions Bx8x9
+    style A2AImagePolicy fill:#e1f5fe,stroke:#01579b,color:#01579b
+    style MultiImageObsEncoder fill:#fff3e0,stroke:#e65100,color:#e65100
+    style CNNActionEncoder fill:#f3e5f5,stroke:#4a148c,color:#4a148c
+    style TorchFlowMatcher fill:#e8f5e9,stroke:#1b5e20,color:#1b5e20
+    style SimpleFlowNet fill:#fce4ec,stroke:#880e4f,color:#880e4f
+    style SimpleActionDecoder fill:#fffde7,stroke:#827717,color:#504600
 ```
 
+The class diagram was rendered successfully with Mermaid 10.9.3 in headless Edge before embedding; renderer files remain outside the vault and research clone.
 
+#### <u>Layer-boundary APIs</u>
 
-#### <u>7. Evidence for the noise–optimization tradeoff</u>
+These are typed, illustrative signatures of the bound methods, with original names and parameter order; `self` and defaults are omitted. `Tensor` means `torch.Tensor`, and `Literal` is from `typing`. Shapes use batch size $B$ and specialize the default observation horizon $8$, action horizon $8$, action dimension $9$, and latent dimension $512$. Only the trace-free sampler path used for policy prediction and training is shown.
 
-<div align="center"><img src="media/mars-loss-swap.png" alt="Figure S3: increasing initial source variance from 0 to 10 slows and destabilizes training and reduces final success; experiment uses 100 demonstrations, 30 epochs, and 50 evaluation rollouts" width="80%"></div>
+**Policy inference boundary — `A2AImagePolicy.predict_action`.** [GitHub](https://github.com/JIAjindou/A2A_Flow_Matching/blob/a5792ecf4e7f8fa4d85fe66ea9a50618138f925c/roboverse_learn/il/policies/a2a/a2a_policy.py#L225); local [roboverse_learn/il/policies/a2a/a2a_policy.py:225](C:/Users/Liuyir/Documents/A2A_Flow_Matching/roboverse_learn/il/policies/a2a/a2a_policy.py:225).
 
+```python
+def predict_action(
+    obs_dict: dict[str, Tensor],
+) -> dict[str, Tensor]:
+    '''
+    head_cam: (B, 8, 3, 256, 256) images in [0, 1].
+    agent_pos: (B, 8, 9) measured, unnormalized state history.
+    Returns action and action_pred, each shaped (B, 8, 9).
+    Outputs are unnormalized commands starting at current time.
+    Normalization, encoding, integration, and decoding occur here.
+    '''
+    ...
+```
 
+**Training boundary — `A2AImagePolicy.compute_loss`.** [GitHub](https://github.com/JIAjindou/A2A_Flow_Matching/blob/a5792ecf4e7f8fa4d85fe66ea9a50618138f925c/roboverse_learn/il/policies/a2a/a2a_policy.py#L141); local [roboverse_learn/il/policies/a2a/a2a_policy.py:141](C:/Users/Liuyir/Documents/A2A_Flow_Matching/roboverse_learn/il/policies/a2a/a2a_policy.py:141).
 
----
+```python
+def compute_loss(
+    batch: dict[str, Tensor | dict[str, Tensor]],
+) -> Tensor:
+    '''
+    batch["obs"]: head_cam and agent_pos for a sampled window.
+    batch["action"]: (B, 16, 9) unnormalized commands.
+    Uses the first 8 observation frames and action[:, 7:15].
+    Returns the scalar flow, consistency, and reconstruction loss.
+    Both action encoders, the flow, and decoder receive gradients.
+    '''
+    ...
+```
 
-> [!info] Implementation Details
-> ## Reproduction-critical choices
+The data adapter is `RobotImageDataset.postprocess` at [GitHub](https://github.com/JIAjindou/A2A_Flow_Matching/blob/a5792ecf4e7f8fa4d85fe66ea9a50618138f925c/roboverse_learn/il/datasets/robot_image_dataset.py#L130); local [roboverse_learn/il/datasets/robot_image_dataset.py:130](C:/Users/Liuyir/Documents/A2A_Flow_Matching/roboverse_learn/il/datasets/robot_image_dataset.py:130). It maps Zarr `head_camera/state/action` to `obs.head_cam/obs.agent_pos/action` and scales images by $1/255$; the policy applies its fitted normalizer. For rollout, `DefaultEvalRunner.predict_action` at [GitHub](https://github.com/JIAjindou/A2A_Flow_Matching/blob/a5792ecf4e7f8fa4d85fe66ea9a50618138f925c/roboverse_learn/il/runners/default_eval_runner.py#L104); local [roboverse_learn/il/runners/default_eval_runner.py:104](C:/Users/Liuyir/Documents/A2A_Flow_Matching/roboverse_learn/il/runners/default_eval_runner.py:104). stacks observation history, calls the policy, and transposes its returned action chunk to $8\times B\times9$.
 
-| Setting | Reported value / choice |
+**Observation features — `MultiImageObsEncoder.forward`.** [GitHub](https://github.com/JIAjindou/A2A_Flow_Matching/blob/a5792ecf4e7f8fa4d85fe66ea9a50618138f925c/roboverse_learn/il/utils/vision/multi_image_obs_encoder.py#L127); local [roboverse_learn/il/utils/vision/multi_image_obs_encoder.py:127](C:/Users/Liuyir/Documents/A2A_Flow_Matching/roboverse_learn/il/utils/vision/multi_image_obs_encoder.py:127).
+
+```python
+def forward(
+    obs_dict: dict[str, Tensor],
+) -> Tensor:
+    '''
+    head_cam: (B*8, 3, 256, 256), with policy normalization applied.
+    agent_pos: (B*8, 9) normalized measured states.
+    Returns (B*8, 521): 512 image features plus 9 state values.
+    The policy reshapes to (B, 4168) and projects to (B, 512).
+    '''
+    ...
+```
+
+**Action encoding — `CNNActionEncoder.forward`.** [GitHub](https://github.com/JIAjindou/A2A_Flow_Matching/blob/a5792ecf4e7f8fa4d85fe66ea9a50618138f925c/roboverse_learn/il/policies/a2a/action_ae.py#L52); local [roboverse_learn/il/policies/a2a/action_ae.py:52](C:/Users/Liuyir/Documents/A2A_Flow_Matching/roboverse_learn/il/policies/a2a/action_ae.py:52).
+
+```python
+def forward(
+    actions: Tensor,
+    deterministic: bool,
+) -> Tensor:
+    '''
+    actions: (B, 8, 9) normalized states or target actions.
+    Returns (B, 512) after three temporal Conv1D stages.
+    The policy owns separate history and target encoder instances.
+    deterministic is accepted but unused; encoding is deterministic.
+    '''
+    ...
+```
+
+**Flow-training boundary — `TorchFlowMatcher.compute_loss`.** [GitHub](https://github.com/JIAjindou/A2A_Flow_Matching/blob/a5792ecf4e7f8fa4d85fe66ea9a50618138f925c/roboverse_learn/il/utils/flow/flow_matchers.py#L19); local [roboverse_learn/il/utils/flow/flow_matchers.py:19](C:/Users/Liuyir/Documents/A2A_Flow_Matching/roboverse_learn/il/utils/flow/flow_matchers.py:19).
+
+```python
+def compute_loss(
+    model: SimpleFlowNet,
+    target: Tensor,
+    start: Tensor | None,
+    **kwargs: Tensor,
+) -> tuple[Tensor, dict[str, float]]:
+    '''
+    Compute the training loss using the flow matcher.
+
+    Args:
+        model: The flow network
+            (e.g., ConditionalUnet1D or FlowTransformer).
+        target: Target actions for training.
+
+    Returns:
+        Tuple of (loss tensor, dictionary of metrics).
+
+    A2A passes target and start latents shaped (B, 512).
+    kwargs contains global_cond, also shaped (B, 512).
+    '''
+    ...
+```
+
+**Integration boundary — `TorchFlowMatcher.sample`.** [GitHub](https://github.com/JIAjindou/A2A_Flow_Matching/blob/a5792ecf4e7f8fa4d85fe66ea9a50618138f925c/roboverse_learn/il/utils/flow/flow_matchers.py#L41); local [roboverse_learn/il/utils/flow/flow_matchers.py:41](C:/Users/Liuyir/Documents/A2A_Flow_Matching/roboverse_learn/il/utils/flow/flow_matchers.py:41).
+
+```python
+def sample(
+    model: SimpleFlowNet,
+    shape: tuple[int, int],
+    device: torch.device,
+    num_steps: int | None,
+    return_traces: Literal[False],
+    start: Tensor | None,
+    **kwargs: Tensor,
+) -> Tensor:
+    '''
+    Generate samples using the flow network.
+
+    Args:
+        model: The flow network.
+        shape: Shape of the output tensor
+            (batch_size, pred_horizon, action_dim).
+        return_traces: If True, return trajectory
+            and velocity histories.
+        num_steps: Number of sampling steps.
+            If None, use self.num_sampling_steps.
+        start [IMPORTANT]: Optional flow source.
+            If None, start from standard normal noise.
+
+    Returns:
+        Sampled actions, or (actions, (traj_history, vel_history))
+        if return_traces is True.
+
+    The generic docstring's action-shaped output is specialized here.
+    A2A uses shape=(B, 512), start=(B, 512), and no traces.
+    kwargs contains global_cond=(B, 512).
+    Returns the integrated endpoint (B, 512).
+    Six Euler steps by default; training retains the gradient graph.
+    '''
+    ...
+```
+
+**Velocity prediction — `SimpleFlowNet.forward`.** [GitHub](https://github.com/JIAjindou/A2A_Flow_Matching/blob/a5792ecf4e7f8fa4d85fe66ea9a50618138f925c/roboverse_learn/il/utils/models/flow_net.py#L278); local [roboverse_learn/il/utils/models/flow_net.py:278](C:/Users/Liuyir/Documents/A2A_Flow_Matching/roboverse_learn/il/utils/models/flow_net.py:278).
+
+```python
+def forward(
+    x: Tensor,
+    t: Tensor,
+    global_cond: Tensor | None,
+) -> Tensor:
+    '''
+    x: (B, 512) latent at the current flow time.
+    t: (B,) flow times in [0, 1].
+    global_cond: (B, 512) projected observation features.
+    Returns latent velocity (B, 512), not physical joint velocity.
+    '''
+    ...
+```
+
+**Action decoding — `SimpleActionDecoder.forward`.** [GitHub](https://github.com/JIAjindou/A2A_Flow_Matching/blob/a5792ecf4e7f8fa4d85fe66ea9a50618138f925c/roboverse_learn/il/policies/a2a/action_ae.py#L158); local [roboverse_learn/il/policies/a2a/action_ae.py:158](C:/Users/Liuyir/Documents/A2A_Flow_Matching/roboverse_learn/il/policies/a2a/action_ae.py:158).
+
+```python
+def forward(
+    z: Tensor,
+) -> Tensor:
+    '''
+    Args:
+        z: (B, latent_dim)
+    Returns:
+        actions: (B, pred_horizon, action_dim)
+
+    Default dimensions: (B, 512) to normalized actions (B, 8, 9).
+    The policy unnormalizes this result before returning commands.
+    '''
+    ...
+```
+
+#### <u>Architecture verified from the default configuration</u>
+
+The implementation uses a single $512$-D vector per action chunk. The selected flow backbone has **no attention**; the separate `FlowTransformer` class in the same utility file is not instantiated by `A2AImagePolicy`.
+
+| Stage | Actual default implementation |
 | :--- | :--- |
-| Predicted chunk / historical horizon | $8$ / $8$ |
-| Maximum integration steps $K_{\max}$ | $10$ |
-| Neighbors $m$ | $20$ |
-| $\lambda_{\mathrm{rec}}$ / $\lambda_{\mathrm{div}}$ | $1$ / $1$ |
-| Batch size | $32$ |
-| Conditioning / velocity backbone | ResNet-18 / DiT |
-| Reconstruction gate | Detach only its multiplicative $(\mathbf1-\mathbf w)$ weight |
-| Neighbor source construction | Use the anchor's weight for all its neighbors |
-| Target dispersion | Precompute from demonstrated future actions |
-| Actions | Franka: simulated joints / physical end-effector states; R1 Lite: joints |
-| Push-T collection | Random waypoint before returning to the shared start pose |
+| History input | Normalized `agent_pos`, shape $B\times8\times9$; measured state history supplies the source |
+| History encoder | Three Conv1D + ReLU stages; channels $9\to512\to512\to512$, kernel $5$, stride $2$, padding $2$; temporal lengths $8\to4\to2\to1$, followed by a $512\to512$ linear projection |
+| Target encoder | A **separate** CNN instance encodes the normalized target action chunk into $512$ dimensions; its weights are not shared with the history encoder |
+| Observation condition | ResNet-18 uses GroupNorm and no pretrained weights, while each frame's $512$ image features are concatenated with its $9$ proprioceptive values; eight frames flatten to $4168$ features and project to $512$ |
+| Flow network | Input projection, four residual AdaLN-MLP blocks of width $512$ and MLP expansion $512\to2048\to512$, then LayerNorm and output projection |
+| Conditioning | Sinusoidal time embedding of width $256$, projected through $1024$ to $512$; a projected observation condition is added to it, and each block predicts a gate, scale, and shift |
+| Decoder | $512\to512$ input projection, four sequential MLP blocks with $512$ hidden units, and a $512\to72$ output projection reshaped to $8\times9$, with **no decoder residual addition** |
+| Sampling | Six explicit Euler steps by default; the same four-block flow network is reused at every step |
 
+Sources: [policy and encoder construction](https://github.com/JIAjindou/A2A_Flow_Matching/blob/a5792ecf4e7f8fa4d85fe66ea9a50618138f925c/roboverse_learn/il/policies/a2a/a2a_policy.py#L75), [CNN and decoder](https://github.com/JIAjindou/A2A_Flow_Matching/blob/a5792ecf4e7f8fa4d85fe66ea9a50618138f925c/roboverse_learn/il/policies/a2a/action_ae.py), [flow blocks](https://github.com/JIAjindou/A2A_Flow_Matching/blob/a5792ecf4e7f8fa4d85fe66ea9a50618138f925c/roboverse_learn/il/utils/models/flow_net.py#L182), [observation concatenation](https://github.com/JIAjindou/A2A_Flow_Matching/blob/a5792ecf4e7f8fa4d85fe66ea9a50618138f925c/roboverse_learn/il/utils/vision/multi_image_obs_encoder.py#L167), and [A2A configuration](https://github.com/JIAjindou/A2A_Flow_Matching/blob/a5792ecf4e7f8fa4d85fe66ea9a50618138f925c/roboverse_learn/il/configs/policy_config/a2a.yaml).
 
+**Paper versus code:** the paper description above uses one action-encoder symbol, visual conditioning, and a residual MLP decoder. The inspected code uses independently parameterized history/target encoders, includes proprioception in the condition as well as the source, and implements a sequential decoder. Thus the earlier "do not concatenate modalities" statement describes the paper's presentation, not the default released observation path.
 
+#### <u>Training objective, alignment, and noise</u>
 
+For the released default config, define $E_H$ and $E_T$ as the separate history and target encoders, $D_a$ as the decoder, and $\hat z_1$ as the integrated latent endpoint. The active objective is
 
----
-
-> [!hint] Experiments & Findings
-> ## Success, mode coverage, and computational cost
-
-#### <u>Evaluation protocol and what counts as multimodality</u>
-
-| Benchmark | Demonstrations | Training / evaluation details |
-| :--- | :--- | :--- |
-| 2D Navigation | $200$ | $100$ evaluation trials; overview and qualitative comparisons use $50$ epochs |
-| Push Cube, Grasp Eyeglasses, Collision Avoidance | $100$ each | $50$ rollouts per task; modes vary by direction, grasp pose, or speed |
-| Close Box, Stack Cube, Pick Cube | $100$ each | $50$ rollouts; unimodal learning curves show standard deviations over $3$ seeds |
-| Close Drawer | $50$ | $50$ rollouts |
-| Physical Push-T / Block Push | $100$ each, balanced $50+50$ | $100$ / $40$ epochs; $20$ trials per policy per task |
-| Physical Pick Cup / Pick Vegetable | $200$ each, balanced $100+100$ | $500$ / $400$ epochs; $10$ trials per policy per task |
-
-**Modal balance — appendix metric.** Counts include successful rollouts assigned to each of two modes.
+| $E_H$ | $E_T$ | $D_a$ | $\hat z_1$ | $a_{\mathrm{target}}$ |
+| :--- | :--- | :--- | :--- | :--- |
+| History CNN | Target-action CNN | Action decoder | Integrated endpoint | Normalized current-time action chunk |
 
 $$
-\gamma=\frac{2\min\{n_1,n_2\}}{n_1+n_2}.
+\mathcal L_{\mathrm{code}}
+=
+\mathcal L_{\mathrm{FM}}
++\operatorname{MSE}(\hat z_1,E_T(a_{\mathrm{target}}))
++0.5\operatorname{MAE}(D_a(\hat z_1),a_{\mathrm{target}})
++0.5\operatorname{MAE}(D_a(E_T(a_{\mathrm{target}})),a_{\mathrm{target}}).
 $$
 
-| Symbol | $n_1$ | $n_2$ | $\gamma$ |
-| :--- | :--- | :--- | :--- |
-| Meaning | Successful trials in mode 1 | Successful trials in mode 2 | Balanced coverage score; $1$ means equal counts |
+Latent consistency is **MSE**, whereas the paper specifies an $L_1$ term. The Euler sampler remains differentiable during training, so endpoint losses backpropagate through the integration steps. Both optional contrastive weights are zero. The YAML contains `use_variational` and `kl_weight` fields, but this policy's encoder is deterministic and its loss contains no KL term. [Loss implementation](https://github.com/JIAjindou/A2A_Flow_Matching/blob/a5792ecf4e7f8fa4d85fe66ea9a50618138f925c/roboverse_learn/il/policies/a2a/a2a_policy.py#L141), [sampler](https://github.com/JIAjindou/A2A_Flow_Matching/blob/a5792ecf4e7f8fa4d85fe66ea9a50618138f925c/roboverse_learn/il/utils/flow/flow_matchers.py#L43).
 
-Read $\gamma$ together with success rate: two successful trials split evenly score $1$, regardless of how many other trials fail. It is undefined if neither mode succeeds unless an implementation convention is added. Balanced modes are intentionally built into these datasets; the metric does not test fidelity to unequal expert mode probabilities.
+**Time alignment:** with a $16$-frame sampled window, history is `state[:, 0:8]` and targets are `action[:, 7:15]`. Prediction therefore starts at the current command index, rather than the next index used in the paper notation. Preserve this dataset convention when porting the policy.
 
+**Noise variant:** noise is added to *normalized* history states before encoding, during both training and inference. Its default standard deviation is $0.1$, although the README recommends $0.02$ for real-robot training. Moreover, `a2a_noise.yaml` selects `ExactOptimalTransportConditionalFlowMatcher`, while `a2a.yaml` selects ordinary `ConditionalFlowMatcher`. Comparing these defaults changes both source noise and the matching strategy, so it is not a controlled noise-only ablation. [Noise policy](https://github.com/JIAjindou/A2A_Flow_Matching/blob/a5792ecf4e7f8fa4d85fe66ea9a50618138f925c/roboverse_learn/il/policies/a2a/a2a_noise_policy.py#L149), [noise configuration](https://github.com/JIAjindou/A2A_Flow_Matching/blob/a5792ecf4e7f8fa4d85fe66ea9a50618138f925c/roboverse_learn/il/configs/policy_config/a2a_noise.yaml).
 
+#### <u>Reproduction issues visible before running</u>
 
-#### <u>Multimodal simulation: retain branches without full-time noise</u>
+**Dataset defaults do not line up.** `collect_demo.sh` requests $50$ successful demonstrations and converts $25$; `il_run.sh` expects a dataset filename ending in `_100.zarr`. Align the collection count, conversion count, and training path first. [Collection script](https://github.com/JIAjindou/A2A_Flow_Matching/blob/a5792ecf4e7f8fa4d85fe66ea9a50618138f925c/roboverse_learn/il/collect_demo.sh#L15), [launcher](https://github.com/JIAjindou/A2A_Flow_Matching/blob/a5792ecf4e7f8fa4d85fe66ea9a50618138f925c/roboverse_learn/il/il_run.sh#L12).
 
-<div align="center"><img src="media/mars-multimodal-sim.png" alt="Figure 3: success and modal-balance learning curves for Push Cube, Grasp Eyeglasses, and Collision Avoidance compare MARS, A2A, and flow matching across spatial, grasp, and speed choices" width="100%"></div>
+**Two advertised ablation configs reference missing modules.** `a2a_mini.yaml` targets `policies.vita.a2a_mini_policy`, and `a2a_reg.yaml` targets `policies.vita.a2a_reg_policy`; neither module exists in this snapshot. The base `a2a` and `a2a_noise` modules are present.
 
-MARS generally converges faster than flow matching while maintaining comparable modal balance. A2A may acquire one successful strategy quickly, but its success is unstable when averaging strategies leads into obstacles. The four-route navigation test provides a stronger branching example than a binary object choice; its scheduler allocates more steps near ambiguous route decisions.
+**Horizon changes need an encoder fix.** The encoder sizes its final projection using integer floor division by $8$, while the padded strided convolutions produce a temporal length of $\lceil n/8\rceil$. The default $n=8$ works dimensionally; nonmultiples of $8$ can cause a projection-shape mismatch. [Encoder sizing](https://github.com/JIAjindou/A2A_Flow_Matching/blob/a5792ecf4e7f8fa4d85fe66ea9a50618138f925c/roboverse_learn/il/policies/a2a/action_ae.py#L45).
 
-<div align="center"><img src="media/mars-2d-benchmark.png" alt="Figure S2: navigation trajectories for experts and nine policies, including MARS, flow matching, DDPM, IBC, BET, Noised-A2A, A2A, VITA, and ACT; fixed slight noise in A2A does not recover all demonstrated branching behavior" width="100%"></div>
+**Do not assume adaLN-Zero initialization.** Each flow block initially zeros its modulation output layer, but the enclosing `SimpleFlowNet` subsequently applies Xavier initialization to every linear layer, overwriting those zero weights. The residual modulation architecture is present; zero-gated initialization is not preserved. [Initialization order](https://github.com/JIAjindou/A2A_Flow_Matching/blob/a5792ecf4e7f8fa4d85fe66ea9a50618138f925c/roboverse_learn/il/utils/models/flow_net.py#L204).
 
-**Design ablation:** adding an ungated reconstruction loss with $\lambda_{\mathrm{rec}}=1$ to flow matching changes four-passage counts from $20/24/29/24$ to $10/36/40/4$ in $100$ rollouts (Fig. S4). The counts sum to $97$ and $90$, respectively; they should not be mistaken for normalized mode probabilities over all trials.
+**Environment and experiment settings require an explicit record.** Requirements pin Zarr $2.12.0$ and Hydra $1.2.0$, while `il_setup.sh` installs Zarr $2.16.1$ and upgrades Hydra. The launcher defaults to $200$ epochs, six sampling steps, and online W&B logging; these are not automatically the paper's $30$-epoch or one-step settings. [Requirements](https://github.com/JIAjindou/A2A_Flow_Matching/blob/a5792ecf4e7f8fa4d85fe66ea9a50618138f925c/roboverse_learn/il/policies/a2a/requirements.txt), [setup script](https://github.com/JIAjindou/A2A_Flow_Matching/blob/a5792ecf4e7f8fa4d85fe66ea9a50618138f925c/roboverse_learn/il/il_setup.sh), [runner config](https://github.com/JIAjindou/A2A_Flow_Matching/blob/a5792ecf4e7f8fa4d85fe66ea9a50618138f925c/roboverse_learn/il/configs/default_runner.yaml).
 
+**Validation scope:** static source/configuration tracing and file-presence checks only; no research dependencies were installed and no training, checkpoint inference, simulator rollout, or latency benchmark was run. Diagram validation exercised the Mermaid renderer only. The environment's failed Python availability probe in the initial review is not an A2A runtime result.
 
+#### <u>Use as a starting point for latent MARS</u>
 
-#### <u>Physical tasks: latency and small-sample success</u>
-
-<div align="center"><img src="media/mars-realtest.png" alt="Figure 4: physical task snapshots, success rates, modal balance, and inference cost for MARS, A2A, and flow matching on Push-T, Block Push, Pick Cup, and Pick Vegetable; the source caption mistakenly calls Pick Cup Pick Cube" width="100%"></div>
-
-| Policy | Approximate inference latency reported in §5.2 | Reported behavior |
-| :--- | :--- | :--- |
-| A2A | $3\,\mathrm{ms}$ | Fast, but collapses to a single mode |
-| MARS | $5\,\mathrm{ms}$ | Preserves both modes; highest or tied success on three tasks in Fig. 4 |
-| Flow matching | $28\,\mathrm{ms}$ | Slower; less balanced than MARS in three of four tasks |
-
-The authors report an average success improvement of $16.67\%$ and latency reduction of $83.20\%$ relative to flow matching. These are the paper's aggregate claims, not percentage-point gains inferred from the rounded latency values. Physical timing is reported on an RTX $5080$; simulation timing uses an H200 and discards the first five predictions per run. The measured sampling latency does not establish complete camera-to-actuation latency or a worst-case control deadline.
-
-**Figure versus prose:** Fig. 4(b) shows approximately $100\%$ success for A2A and $90\%$ for MARS on Pick Cup, contrary to the text's claim that MARS achieves optimal success across every physical benchmark. The visual comparison supports improved multimodal coverage on that task, not a success-rate win over A2A.
-
-Each R1 Lite trial changes the raw success estimate by $10$ percentage points, and each Franka trial by $5$ points. The evidence supports feasibility and visible behavioral differences; precision about the gain is limited by those trial counts. The proposed explanation that adaptive noise resists nuisance-driven overfitting is a hypothesis, not an isolated causal result.
-
-<div align="center"><img src="media/mars-appen-fm.png" alt="Figure S9: Pick Cup modal balance under adopted, reduced-data, and overtrained settings; MARS reports gamma 0.8 with 50 demonstrations and with 800 epochs; the caption lists 400 default epochs although the main Pick Cup protocol says 500" width="50%"></div>
-
-**Source inconsistency:** Fig. S9 describes the default Pick Cup setting as $200$ demonstrations and $400$ epochs; appendix §B.2 states $500$ epochs for Pick Cup. Keep this distinction when reproducing the overtraining comparison.
-
-
-
-#### <u>Strategically unimodal tasks: stochasticity can still help</u>
-
-<div align="center"><img src="media/mars-singlemodal.png" alt="Figure 5: learning curves for Close Box, Stack Cube, Pick Cube, and Close Drawer; shaded regions show standard deviations across three seeds, with MARS sometimes learning faster than deterministic A2A" width="100%"></div>
-
-On Stack Cube and Pick Cube, MARS can learn faster than A2A. The authors attribute this to modeling small trajectory variations and to input-noise regularization; the experiments do not separately identify those two mechanisms. Selected checkpoints below are transcribed from appendix Tables S2–S3, using $100$ demonstrations; entries are success percentages.
-
-| Simulator | Policy | Steps | Epoch $20$ | Epoch $60$ | Epoch $100$ |
-| :--- | :--- | :--- | ---: | ---: | ---: |
-| MuJoCo | MARS | $1$–$10$ | 50 | 64 | 98 |
-| MuJoCo | A2A | $1$ | 20 | 72 | 86 |
-| MuJoCo | FM-DiT | $10$ | 4 | 16 | 58 |
-| IsaacSim | MARS | $1$–$10$ | 50 | 60 | 90 |
-| IsaacSim | A2A | $1$ | 44 | 72 | 84 |
-| IsaacSim | FM-DiT | $10$ | 8 | 42 | 62 |
-
-The advantage is not uniform: A2A leads at epoch $60$ in both simulators. MARS has higher final success in these tables, but epochs measure sample passes, not training wall time; the diversity computation adds work per update. These are separate simulator benchmarks, not evidence of a policy transferred between simulators.
-
-
-
-#### <u>Limitations and unresolved comparisons</u>
-
-- **Authors' stated limitation:** dataset-wide neighbor construction and online spread computation add cost that scales with data size and neighbor count; no scalable replacement is validated.
-- **Review assessment — surrogate quality:** coordinatewise absolute dispersion measures spread rather than mode count, mode probabilities, or the joint geometry of valid trajectories. Satisfying the diversity loss does not guarantee multimodal action quality.
-- **Review assessment — conditioning mismatch:** neighbors are selected using action histories, while the policy also sees images. Similar histories can accompany different scenes; future-action dispersion may therefore mix visual differences with true ambiguity under the same observation.
-- **Review assessment — causal evidence:** the paper gives useful noise-variance and reconstruction comparisons, but no full MARS ablation table isolating removal of diversity loss, scalar versus per-dimension weights, or adaptive versus fixed steps at matched success. The contribution of each component remains uncertain.
-- **Review assessment — baseline scope:** this study's A2A is reformulated in action space, so its results should not be equated directly with the original latent A2A architecture. One-step stochastic methods are discussed but are absent from the listed benchmark suite; superiority over fast generative policies is not established.
-- **Review assessment — reproducibility:** the TeX does not specify integer scheduling, action normalization and history-distance scaling, or a complete optimizer/backbone configuration. These details affect the source blend and neighbor target. The project is linked above; code execution and independent replication are outside this review.
-- **Review assessment — deployment scope:** the main evidence concerns compact manipulation skills with deliberately balanced alternatives. Long-horizon intent consistency, recovery after corrupted history, and broad scene-distribution shifts remain untested here.
-
-
-
----
-
-> [!fact] Reflection
-> ## My Read
+This release exposes the necessary extension points: encoded history as an explicit flow source, a conditional latent vector field, and an action decoder. A learned noise scheduler could be inserted before or after history encoding. However, `a2a_noise` only adds fixed-scale noise; it does not implement MARS's learned mixture, diversity loss, gated reconstruction, or adaptive step budget. Those additions require explicit choices about noise scale and how latent weights gate action reconstruction. See [[MARS Policy Literature Review|the separate MARS review]] for the published action-space method; a latent variant remains a proposed extension.
