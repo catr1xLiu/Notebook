@@ -1,6 +1,6 @@
 ---
 name: literature-review
-description: End-to-end workflow for turning an arXiv paper into an information-dense Obsidian literature-review note — download, marker-pdf conversion, figure post-processing, and a strict Step-6 writing guideline.
+description: Workflow for turning any paper into an information-dense Obsidian literature-review note.
 ---
 
 # Skill: Literature Review Note
@@ -91,7 +91,7 @@ Upgrade them:
 
 The note is `<...>/Literature-Review/<PaperName>.md`.
 
-The goal is a **high-density reference for the user**, highlighting the math and the design decisions. This is the **exact opposite** of a generic-audience introduction. Do not drop technical details or use inaccurate metaphors to attempt to make it easier to understand. 
+The goal is a **high-density reference for the user**, highlighting the math and the design decisions. This is the **exact opposite** of a generic-audience introduction. Do not drop technical details or use inaccurate metaphors to attempt to make it easier to understand. You must keep the language concise as possible, bloated writing must never appear.
 
 Preserve math, tricks, and design-decision rationale; cut the generic-audience padding.
 
@@ -133,13 +133,13 @@ This is the most important part, reserving ~40-60% of the total length. It exten
 
 - **Scope of Problem** - The problem set that the proposed solution is aiming at; this is often the benchmark used for testing. For example, when reviewing an algorithm paper that has only been benchmarked in LIBERO, you need include the figure showcasing task types, even though they might be in the experiment section in the paper.
 - **System Design** - The model architecture, the algorithm pipeline, etc. These typically included in methodology in the paper.
-- **Justification for design choices** - This might be figures that show how an alternative to (or a variant of) the paper’s algorithm functions differently. They should be included here even though found under experiments/results section, as they are provide contextual information to how the design choices are made.
+- **Justification for design choices** - (Optional). Sometimes the reason for a design choice is not obvious. If the author addresses this later (e.g. in a comparison in the results section), the information can be moved here.
 -  **Strengthen** the paper’s unique innovations and decisions, and the subject-specific reason behind each.
 - **Weaken/compress** methods the paper merely adapts and baselines it compares against — a link is enough (just like Related work in TL;DR).
 
 
 
-Most importantly, this is the only part you **don't complete**; instead, you write a 100-word overview at the very top to lead the discussion, and:
+Most importantly, this is the part you **don't fully finish**; instead, you write a 100-word overview at the very top to lead the discussion, and:
 
 - **Transcribe math** - Most equations from the original paper should be included. Use the Obsidian way of creating `$$ Equations blocks $$`. In most cases, use one line of equation per block by default, unless there are specific reasons to group multiple lines into a block (e.g. system of equations).  After every equation block, leave an empty line. 
 - There is one exception, however: if a huge part of the equation is derivation/justification, show the intent in the head, use the Obsidian way to fold the derivation body, then show the final result at the buttom, result highlighted by $\boxed$.
@@ -167,9 +167,9 @@ This is mostly summarizing the experiments presented in the original paper. The 
 This part is left for the user.
 
 
-### Voice and Depth
+## Voice, Depth and Format
 
-Neutral, with slight critical edge.
+Keep voice neutral, with slight critical edge. Keep language as concise as possible, drop any bloat.
 
 - Quantitative results: preserve exact numbers.
 Use a table when ≥3 comparable numbers, prose otherwise.
