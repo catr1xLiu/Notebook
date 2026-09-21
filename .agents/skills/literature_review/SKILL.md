@@ -5,10 +5,9 @@ description: Workflow for turning any paper into an information-dense Obsidian l
 
 # Skill: Literature Review Note
 
-Turn an academic paper (mostly robotics) into a dense, self-authored Obsidian review note. Follow the six steps in order.
+Turn an academic paper (mostly Machine Learning) into a dense, self-authored review note, in an optimized structure described by this SKILL. Aim for an information-dense, accurate and bloat-free note for efficient review.  
 
-This skill assumes and extends the [`obsidian-note`](../obsidian_note/SKILL.md) format skill.
-All callout, math, figure, and Excalidraw conventions from that skill apply here unless overridden below.
+By default, the skill assumes the [`obsidian-note`](../obsidian_note/SKILL.md) format for writing, if applicable.
 
 ## Directory Layout (target)
 
@@ -27,50 +26,20 @@ All callout, math, figure, and Excalidraw conventions from that skill apply here
 
 ---
 
-## Step 1 — Download from arXiv
+## Step 1 — Obtain the source 
 
-If not done already, download **both** the PDF and the LaTeX source. arXiv rejects blank/default user agents, so always pass a browser-like `-A` string and follow redirects.
+If the paper has not been downloaded, find and download the readable **pdf** from arxiv or other website. If the tex source can be found, download it as well for later use. 
 
-```bash
-ID=2401.01234          # arXiv id
-DL=/tmp/arxiv-$ID; mkdir -p "$DL"
-UA="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36"
-curl -L -A "$UA" -o "$DL/paper.pdf"  "https://arxiv.org/pdf/$ID"
-curl -L -A "$UA" -o "$DL/source.tar" "https://arxiv.org/e-print/$ID"
-mkdir -p "$DL/src" && tar -xf "$DL/source.tar" -C "$DL/src"
-```
+The [`pdf`](../pdf/SKILL.md) skill provides a highly efficient way of reading PDF document by converting them to markdown, use if applicable. After conversion, the tool writes to `paper.md`, `paper_meta.json`, and `_page_N_Figure_M.jpeg` screenshots.
 
-`e-print` returns a gzipped tar (sometimes a bare `.tex`). If `tar` fails, try `tar -xzf`, or treat the file as a single `.tex`. The source tree holds the **high-resolution figures** used in Step 4.
+## Step 2 — Obtain figures
 
-## Step 2 — Convert the PDF to markdown
+Illustrations and figures are most effective in strengthening memories. Other than some results-comparison figures, most should be preserved in the note. 
+Figures extracted from pdf (`_page_N_Figure_M.jpeg`) are **page screenshots** — usually blurry.
 
-Follow the [`pdf`](../pdf/SKILL.md) skill — it owns the inspect → cut → `marker_single` procedure, the GPU page budget, and the troubleshooting table.
-**Never** read the PDF with the Read tool.
-
-Papers are almost always short and text-dominant enough to convert in one pass, so the usual case is a single direct call with the output going into the paper's `sources/<PaperName>/` folder:
-
-```bash
-conda run -n scientific marker_single "$DL/paper.pdf" \
-  --output_format markdown \
-  --output_dir "<...>/Literature-Review/sources/<PaperName>"
-```
-
-Marker writes `paper.md`, `paper_meta.json`, and `_page_N_Figure_M.jpeg` screenshots.
-Rename the markdown to `Paper.md`. If the paper is unusually long (a survey, or a preprint with a 60-page appendix), split it per the `pdf` skill before converting.
-
-## Step 3 — Sanity check
-
-Marker produces a highly readable, well-formatted markdown with extracted figures.
-Skim `Paper.md`: confirm equations rendered as LaTeX, tables converted, and section headers intact. This is the reading source for Step 6 — you do not rewrite it, you mine it.
-
-## Step 4 — Post-process figures
-
-Marker's `_page_N_Figure_M.jpeg` files are **page screenshots** — often blurry.
-Upgrade them:
-
+If the tex source can be found:
 1. **Move real figures** into `sources/<PaperName>/media/`.
-2. **Drop junk**: lab/brand logos, decorative photos, redundant screenshots (see keep/drop rule in Step 6-C).
-3. **Replace blurry screenshots with source figures.** Locate the original in `$DL/src` (look in `Figs/`, `figures/`, `assets/`).
+2. **Use source figures to replace screenshots** Locate the original in `$DL/src` (look in `Figs/`, `figures/`, `assets/`).
    If it's a PDF or vector, **convert to PNG** at high DPI:
 
    ```bash
@@ -80,14 +49,14 @@ Upgrade them:
    ```
 
    **All figures must end up as PNG** — no PDF/JPEG/SVG in the final `media/`.
-4. Update image references in `Paper.md` to the cleaned PNG filenames.
+3. Use [Embed Image](../embed_image/SKILL.md) skill for image processing, if applicable.
 
-## Step 5 — Finalize directory
+## Step 3 — Finalize directory
 
 - Markdown at `sources/<PaperName>/Paper.md`, all figures (PNG) under `sources/<PaperName>/media/`.
 - Copy the figures the note will actually embed into `<...>/Literature-Review/media/`.
 
-## Step 6 — Write the summary note
+## Step 4 — Write the summary note
 
 The note is `<...>/Literature-Review/<PaperName>.md`.
 
@@ -363,3 +332,7 @@ def forward(observation: Tensor,
 ```
 
 - **Cross-links**: link each key API to its source on GitHub — use the repo's **original URL, or the user's fork URL if they specify one** — and give local `path:line` references in prose.
+
+
+## Step5: Report and Revise
+
