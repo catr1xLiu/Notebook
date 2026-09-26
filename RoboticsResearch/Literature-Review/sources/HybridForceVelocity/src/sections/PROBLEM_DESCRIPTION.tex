@@ -1,0 +1,136 @@
+% !TEX root = ../ICRA19Hybrid.tex
+
+\section{MODELING \& PROBLEM FORMULATION}
+\label{sec:problem_formulation}
+First of all, we introduce how we model a hybrid servoing problem. We adopt quasi-static assumption throughout the work, \ie inertia force and Coriolis force are negligible. All objects and the robot are rigid. A motion trajectory is available such that the goal for our algorithm at any time step can be given as instantaneous velocities. All analysis in this section and the next section are conducted for one time step.
+For consistency with previous works, we reuse several concepts from \cite{mason1981compliance} such as \textit{natural constraints} and \textit{artificial constraints}. To better suit a more general problem formulation, we extend the meanings of these terms when necessary, much to the second author's consternation.
+
+\subsection{Symbols} % (fold)
+\label{sub:symbols}
+Consider a system of rigid bodies including the robot and at least one object. Denote $q\in \mathbb{R}^{n_q}$ as the configuration of the whole system. Denote $\tau\in \mathbb{R}^{n_q}$ as the corresponding force variable (internal forces), \ie if $q$ denotes joint angles, $\tau$ denotes joint torques. Although the configuration space is enough to encode the state of the system, its time derivative may not make sense as a velocity, \eg when $q$ contains quaternions. We describe the system velocity in a different space, the selection of the variables is usually called the ``generalized variables''.
+
+Denote $v=[v^T_u\  v^T_a]^T \in \mathbb{R}^{n}$ as the generalized velocity. We pick the variables of $v$ in such an order that the first $n_u$ elements $v_u\in\mathbb{R}^{n_u}$ denote the uncontrolled (free) dimensions in the system, such as the velocity of an object; the last $n_a$ elements $v_a\in\mathbb{R}^{n_a}$ represent the degrees-of-freedom of the robot actuation.
+$v\ne \dot q$ in general, but is related to $\dot q$ by a linear transformation:  $\dot q=\Omega(q)v$, where $\Omega(q)\in \mathbb{R}^{n_q\times n}$.
+%
+Denote $f=[f^T_u\ f^T_a]^T\in\mathbb{R}^{n}$ as the generalized force vector (the internal force). The product of $f$ and $v$ is the work done by the robot. Note that the uncontrolled part of $f$ is always zero: $f_u=0$. In the following we will do most of our analysis in the language of generalized variables.
+
+\subsection{Goal Description} % (fold)
+\label{sub:goal_description}
+The goal for our control at a time step is an affine constraint on the generalized velocity:
+\begin{equation}
+\label{eq:goal}
+	Gv=b_G.
+\end{equation}
+The goal (\ref{eq:goal}) could be a desired generalized velocity, in which case $G=I$.
+The goal may also only involve some entries of $v$. For example, in regrasping problems people only care about the in-hand pose of the object; the pose of the hand can be set free to allow for more solutions.
+If a motion trajectory is available, the desired velocity can be obtained from its time derivatives.
+
+% subsection symbols (end)
+\subsection{Natural Constraints} % (fold)
+\label{sub:natural_constraints}
+The law of physics constrains the system in many ways. These constraints will never be violated, no matter what actions the robot takes. We call them the \textit{natural constraints}.  Our definition of the natural constraints includes holonomic constraints and the Newton's second law. The original definition in \cite{mason1981compliance} did not contain the Newton's second law, because it is of no significance for fully actuated systems.
+%
+\subsubsection{Holonomic Constraints} % (fold)
+\label{subsub:holonomic_constraints}
+Holonomic constraints are bilateral constraints on $q$ that are also independent of $\dot q$. Examples are persistent contact constraints and sticking contact constraints. We describe them by
+\begin{equation}
+\label{eq:holonomic_constraints}
+	\Phi(q)=0,
+\end{equation}
+where $\Phi(q)\in \mathbb{R}^{n_\Phi}$. Its time-derivative gives the constraint on instantaneous velocity:
+\begin{equation}
+\label{eq: holonomic_constraints_on_velocity}
+	J_\Phi(q)\dot q=J_\Phi(q)\Omega(q)v=0.
+\end{equation}
+%
+If an action attempts to violate a holonomic constraint, \eg pressing an object against a table, a reaction force will emerge to maintain the constraint.
+Denote $\lambda\in \mathbb{R}^{n_\Phi}$ as the reaction forces for $\Phi(q)$.
+Its positive direction is determined by how we define $\Phi(q)$: when both $\delta\Phi$ and reaction force $\lambda$ are positive, they make positive work. Be careful when applying the rule to the contact forces between two movable objects, as the force would have a different direction for each body.
+The contribution of $\lambda$ to the joint torque can be computed from the principle of virtual work \cite{villani2008force}:
+$$\tau_\lambda=J^T_\Phi(q)\lambda,$$
+project $\tau_\lambda$ into the space of generalized force:
+\begin{equation}
+	f_\lambda=\Omega^T(q)\tau_\lambda=\Omega^T(q)J^T_\Phi(q)\lambda
+\end{equation}
+%
+
+
+%
+%
+\subsubsection{Newton's second law} % (fold)
+\label{subsub:newton_s_second_law}
+For systems that are not fully-actuated, Newton's second law becomes necessary.
+Denote $F \in \mathbb{R}^{n}$ as the external force (gravity, magnetic force, \etc) in the generalized force coordinates.
+Newton's second law requires the sum of all the forces in the system to be zero:
+\begin{equation}
+\label{eq:newton_second_law}
+	 \Omega^T(q)J^T_\Phi(q)\lambda + f + F = 0
+\end{equation}
+%
+The three terms are contact reaction forces, control actions (internal forces) and external forces, respectively.
+%
+
+\subsection{Velocity controlled actions and holonomic constraints} % (fold)
+\label{sub:velocity_controlled_actions_and_holonomic_constraints}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.4\textwidth]{figs/example_1.png}
+    \caption{Relation between velocity commands and holonomic natural constraints. The robot (blue) has a velocity controlled joint and a force controlled joint, which are orthogonal to each other. The table provides a natural constraint that stops the object from moving down. Assume no collision between the robot and the table. Systems in the left and middle are feasible. The right system is infeasible.}
+    \label{fig:example_1}
+\end{figure}
+In some works of quasi-static analysis, the rows of Newton's second law for velocity controlled dimensions are ignored because the forces have no influence on other parts of the system, as shown in Fig. \ref{fig:example_1}, left. We keep these rows in (\ref{eq:newton_second_law}), because the axes of velocity commands may not lie completely in the null space of natural constraints, then the force generated from a velocity command would matter in the force computation of the system. One such system is illustrated in Fig. \ref{fig:example_1}, middle.
+
+An interesting question is, can we set velocity commands in any directions? One apparent fact is that the velocity action must not fight against the natural constraints, e.g. trying to push against a wall (Fig. \ref{fig:example_1}, right). Mathematically it means the system of linear equations formed by the natural constraints and velocity commands is infeasible.
+The velocity controlled directions are thus preferred to overlap less with the natural constraints, more with its null space, so that the system of equations will be less likely to become infeasible under disturbances. If the system is holonomic, \ie fully actualized, the velocity commands can be chosen from within the null space of the natural constraints \cite{yoshikawa1987dynamic}. This is not always possible in general.
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.4\textwidth]{figs/example_2.png}
+    \caption{Relation between different velocity commands. The blue robot and green robot are applying different velocity commands on the object. Assume no collision between the two robots. Systems in the left and middle figures are feasible. The right system is infeasible.}
+    \label{fig:example_2}
+\end{figure}
+
+We can do the same analysis among different velocity commands. As shown in Fig. \ref{fig:example_2}, different velocity controlled directions in generalized velocity space should not be co-linear. The system would be more robust to disturbances if the velocities are more perpendicular to each other.
+% subsection goal_description (end)
+\subsection{Guard Conditions} % (fold)
+\label{sub:guard_conditions}
+A contact may be in one of three modes: sliding, sticking or not contacting. A motion plan usually assumes a certain contact mode for each contact at any given time.
+In hybrid control theory, the term \textit{guard conditions} refers to conditions for transitions between discrete modes. In our problem, we also need to apply guard conditions to make sure our robot action will maintain the contact modes in the motion plan.
+
+In this work, we consider guard conditions that can be expressed as linear (or affine) constraints on force variables. Examples of this type are friction cone constraints and lower/upper bounds on forces.
+\begin{equation}
+\label{eq:guard_conditions}
+	\Lambda\left[ {\begin{array}{*{20}{c}}
+	\lambda\\
+	f
+	\end{array}} \right] \le {b_\Lambda},\ \ \ \ \Gamma\left[ {\begin{array}{*{20}{c}}
+    \lambda\\
+    f
+    \end{array}} \right] = {b_\Gamma}.
+\end{equation}
+
+\subsection{Problem Formulation} % (fold)
+\label{sub:problem_formulation}
+To clearly describe the actions, we introduce \textit{transformed generalized velocity} $w=[w^T_u\ w^T_{af}\ w^T_{av}]^T\in\mathbb{R}^{n}$, where $w_u=v_u$ is the un-actuated velocity, $w_{af}\in \mathbb{R}^{n_{af}}$ is the velocity in the force controlled directions, $w_{av}\in\mathbb{R}^{n_{av}}$ is the velocity controlled actions. Denote $\eta=[\eta^T_u\ \eta^T_{af}\ \eta^T_{av}]^T\in\mathbb{R}^{n}$ as the \textit{transformed generalized force}, where $\eta_u=f_u=0$ is the un-actuated force, $\eta_{af}\in \mathbb{R}^{n_{af}}$ is the force controlled actions, $\eta_{av}\in\mathbb{R}^{n_{av}}$ is the force in the velocity controlled directions. The action space of the robot is $(w_{av},\eta_{af})$.
+
+We use matrix $T$ to describe the directions of force/velocity controlled axes: $w=Tv$, $\eta=Tf$.
+$T=diag(I_u, R_a)\in \mathbb{R}^{n\times n}$, where $I_u\in \mathbb{R}^{n_u\times n_u}$ is an identity matrix, $R_a\in \mathbb{R}^{n_a\times n_a}$ is an invertible matrix (not necessarily orthogonal).
+%
+Now we are ready to define the hybrid servoing problem mathematically. At any time step during the execution of a motion plan, the task of hybrid servoing is to find out:
+\begin{enumerate}
+	\item the dimensions of force controlled actions and velocity controlled actions, $n_{af}$ and $n_{av}$, and
+	\item the directions to do force control and velocity control, described by the matrix $T$, and
+	\item the magnitude of force/velocity actions: $\eta_{af}$ and $w_{av}$,
+\end{enumerate}
+such that:
+\begin{itemize}
+	\item the goal (\ref{eq:goal}) is satisfied as a result of velocity controlled actions and holonomic constraints (\ref{eq:holonomic_constraints});
+	\item the guard conditions (\ref{eq:guard_conditions}) are satisfied as a result of force controlled actions and the Newton's law (\ref{eq:newton_second_law}).
+\end{itemize}
+% 
+Usually the problem described above has more than one solution. As discussed in section \ref{sub:velocity_controlled_actions_and_holonomic_constraints}, we prefer velocity commands that are perpendicular to each other, and are close to the null space of holonomic natural constraints.
+
+Under this formulation, the satisfaction of goals is ensured by velocity controlled actions, which are accurate and immune to force disturbances; the holonomic natural constraints are satisfied by selecting non-conflicting directions for velocity controlled actions, it won't be easy for a disturbance to make them conflict again. The guard conditions are basically maintaining contacts, which do not require the force controlled actions to be super precise. These are the keys to the robustness of our method.
+
+
+% subsection problem_formulation (end)
+

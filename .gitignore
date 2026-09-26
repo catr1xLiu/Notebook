@@ -5,6 +5,7 @@
 *.log
 *.out
 *.synctex.gz
+*.synctex
 *.brf
 *.dvi
 *.ps

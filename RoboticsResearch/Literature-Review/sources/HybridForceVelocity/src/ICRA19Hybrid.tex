@@ -1,0 +1,148 @@
+%!TEX output_directory = ./generated
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%2345678901234567890123456789012345678901234567890123456789012345678901234567890
+%        1         2         3         4         5         6         7         8
+
+\documentclass[letterpaper, 10 pt, conference]{ieeeconf}  % Comment this line out if you need a4paper
+
+%\documentclass[a4paper, 10pt, conference]{ieeeconf}      % Use this line for a4 paper
+
+\IEEEoverridecommandlockouts                              % This command is only needed if
+                                                          % you want to use the \thanks command
+
+\overrideIEEEmargins                                      % Needed to meet printer requirements.
+
+% See the \addtolength command later in the file to balance the column lengths
+% on the last page of the document
+
+\let\proof\relax
+\let\endproof\relax
+\usepackage{amsthm}
+\usepackage{amssymb}  % assumes amsmath package installed
+% \usepackage{amsmath,amssymb}
+ 
+\usepackage{graphics} % for pdf, bitmapped graphics files
+\usepackage{float,url,enumerate}
+\usepackage{graphicx}
+% \usepackage{subcaption}
+\usepackage{hyperref}
+
+\usepackage{algorithm}
+\usepackage{algorithmic}
+
+\usepackage[usenames, dvipsnames]{color} % for comments
+
+\usepackage{xspace}
+\makeatletter
+\DeclareRobustCommand\onedot{\futurelet\@let@token\@onedot}
+\def\@onedot{\ifx\@let@token.\else.\null\fi\xspace}
+\def\eg{\emph{e.g}\onedot} \def\Eg{\emph{E.g}\onedot}
+\def\ie{\emph{i.e}\onedot} \def\Ie{\emph{I.e}\onedot}
+\def\cf{\emph{c.f}\onedot} \def\Cf{\emph{C.f}\onedot}
+\def\etc{\emph{etc}\onedot} \def\vs{\emph{vs}\onedot}
+\def\wrt{w.r.t\onedot} \def\dof{d.o.f\onedot}
+\def\etal{\emph{et al}\onedot}
+\makeatother
+
+\newcommand{\eref}[1]{(\ref{#1})} % Equation
+\newcommand{\sref}[1]{Sec. \ref{#1}} % Section
+\newcommand{\figref}[1]{Fig.\ref{#1}} % Figure
+\newcommand{\tref}[1]{Table \ref{#1}} % Table
+% \newcommand{\etal}{\em et al\adddot}
+
+% Math symbols
+% 	\mathbb : reals
+% 	\mathcal : frames
+% 	\bf P: set
+% 	P: constant
+% 	\bf p: matrix
+% 	p: vector
+
+
+\newcommand{\R}{\mathbb{R}} % Reals
+\newcommand{\Z}{\mathbb{Z}} % Integers
+\newcommand{\SO}{SO(3)}
+
+\newcommand{\W}{\mathcal{W}} % world frame
+\newcommand{\C}{\mathcal{C}} % special contact frame
+
+\renewcommand{\P}{{\bf P}} % set of vertices
+\newcommand{\G}{{\bf G}} % set of grasp points
+\newcommand{\V}{{\bf V}} % set of vertices
+\newcommand{\qobj}{q_{\rm{obj}}}
+\newcommand{\pobj}{p_{\rm{obj}}}
+\newcommand{\qgrp}{q_{\rm{grp}}}
+\newcommand{\pgrp}{p_{\rm{grp}}}
+\newcommand{\uo}{^{(\rm{o})}}
+\newcommand{\ui}{^{(\rm{i})}} % initial
+\newcommand{\uf}{^{(\rm{f})}} % final
+\newcommand{\uj}{^{(\rm{j})}} % j
+\newcommand{\uk}{^{(\rm{k})}} % k
+
+% comments
+\newcommand{\yifan}[1]{\textcolor{red}{#1}}
+
+% theorems
+\newtheorem{theorem}{Theorem}
+
+
+
+\title{\vspace{-0cm}
+% \includegraphics[width=0.9\textwidth]{figs/teaser.png}
+% \centering
+% \\
+\LARGE \bf
+Robust Execution of Contact-Rich Motion Plans by Hybrid Force-Velocity Control
+}
+
+\author{Yifan Hou and Matthew T. Mason~\IEEEmembership{Fellow,~IEEE} % <-this % stops a space
+\thanks{*This work was supported under NSF Grant No. 1662682. }% <-this % stops a space
+% \thanks{$^{1}$ Yifan Hou and Zhenzhong Jia are with the Robotics Institute, Carnegie Mellon University,
+%         Pittsburgh, PA 15213, USA
+%         {\tt\small {yifanh, zhenzjia}@cmu.edu}}%
+% \thanks{$^{2}$ Matthew T. Mason is with Faculty of Robotics Institute, Carnegie Mellon University,
+%         Pittsburgh, PA 15213, USA
+%         {\tt\small matt.mason@cs.cmu.edu}}%
+\thanks{The authors are with the Robotics Institute, Carnegie Mellon University, Pittsburgh, PA 15213, USA.
+        {\tt\small yifanh@cmu.edu, matt.mason@cs.cmu.edu}}
+}
+
+\begin{document}
+
+
+\maketitle
+\thispagestyle{empty}
+\pagestyle{empty}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{abstract}
+In hybrid force-velocity control, the robot can use velocity control in some directions to follow a trajectory, while performing force control in other directions to maintain contacts with the environment regardless of positional errors. We call this way of executing a trajectory \textit{hybrid servoing}.
+We propose an algorithm to compute hybrid force-velocity control actions for hybrid servoing. We quantify the robustness of a control action and make trade-offs between different requirements by formulating the control synthesis as optimization problems.
+Our method can efficiently compute the dimensions, directions and magnitudes of force and velocity controls.
+We demonstrated by experiments the effectiveness of our method in several contact-rich manipulation tasks.
+Link to the video: \href{https://youtu.be/KtSNmvwOenM}{https://youtu.be/KtSNmvwOenM}.
+
+\end{abstract}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\input{sections/INTRODUCTION.tex}
+\input{sections/RELATED_WORK.tex}
+\input{sections/PROBLEM_DESCRIPTION.tex}
+\input{sections/APPROACH.tex}
+\input{sections/EXAMPLE.tex}
+\input{sections/EXPERIMENTS.tex}
+\input{sections/DISCUSSIONS.tex}
+\input{sections/ACKNOWLEDGMENT.tex}
+
+
+
+\bibliographystyle{plain}
+\bibliography{ICRA19Hybrid}
+
+
+
+\end{document}

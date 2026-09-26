@@ -1,0 +1,21 @@
+% !TEX root = ../ICRA19Hybrid.tex
+
+\section{RELATED WORK}
+\label{sec:related_work}
+
+\subsection{Hybrid Force-Velocity Control} % (fold)
+\label{sub:hybrid_force_velocity_control}
+The idea of using hybrid force-velocity control for manipulation under constraints can date back to 1980s.
+Mason \cite{mason1981compliance} introduced a framework for identifying force and velocity controlled directions in a task frame given a task description. Raibert and Craig \cite{raibert1981hybrid} completed the framework and demonstrated a working system.
+Yoshikawa \cite{yoshikawa1987dynamic} investigated hybrid force-velocity control in joint space under Cartesian space constraints, and proposed to use gradient of the constraints to find the normal of the constraint surface in the robot joint space.
+There are also works on modeling the whole constrained robot system using Lagrange dynamics, such as analyzing the system stability under hybrid force-velocity control \cite{mcclamroch1988feedback}, or performing Cartesian space tracking for both positions and forces \cite{mills1989force}. Most of these works modeled only the robot and a rigid environment without any un-actuated degree-of-freedoms in the system. As an exception, Uchiyama and Dauchez performed hybrid force-velocity control for a particular example: two manipulators contacting one object \cite{uchiyama1988symmetric}.
+
+There are lots of works on how to implement hybrid force-velocity controls on manipulators. For example, stiffness control can be used for this purpose. Velocity control is essentially a high stiffness control; force control can be implemented by low stiffness control with force offset.
+Salisbury \cite{salisbury1980active} described how to perform stiffness control on arbitrary Cartesian axes with a torque-controlled robot.
+Raibert and Craig \cite{raibert1981hybrid} divided Cartesian space into force/velocity controlled parts, then controlled them with separated controllers.
+The impedance control \cite{hogan1985impedance}  and operational space control \cite{khatib1987unified} theory provided detailed analysis for regulating the force related behaviors of the end-effector for torque-controlled robots. Maples and Becker described how to use a robot with position controlled inner loop and a wrist-mounted force-torque sensor to do stiffness control on Cartesian axes \cite{maples1986experiments}. Lopes and Almeida enhanced the impedance control performance of industrial manipulators by mounting a high frequency 6DOF wrist \cite{lopes2008force}. Whitney \cite{whitney1987historical} and De Schutter \cite{de1998force} provided overviews and comparisons for a variety of force control methods.
+
+\subsection{Motion Planning through Contacts} % (fold)
+\label{sub:motion_planning_through_contacts}
+Recently, a lot of works tried to solve manipulation under constraints without explicitly using force control. For holonomic constraints, De Schutter \etal proposed a constraint-based motion planning and state estimation framework \cite{de2007constraint}. Berenson \etal did motion planning on the reduced manifold of the constrained state space \cite{berenson2009manipulation}. For non-holonomic constraints, the most popular example is pushing \cite{lynch-mason-pushing,zhou2016convex,dogar2011framework}. Chavan-Dafle \etal performed in-hand manipulation by pushing the object against external contacts \cite{prehensile}. In these works, the robots interacted with the objects in a way that force control was not necessary.
+

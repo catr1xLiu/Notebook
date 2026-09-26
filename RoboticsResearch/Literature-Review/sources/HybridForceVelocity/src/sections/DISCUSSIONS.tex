@@ -1,0 +1,15 @@
+% !TEX root = ../ICRA19Hybrid.tex
+
+\section{DISCUSSION AND FUTURE WORK} % (fold)
+\label{sec:discussion_and_future_work}
+For a hybrid force-velocity control problem, people might be able to manually design a control strategy that works just fine. We insist that our method is valuable, because we can automate the process for new problems without manual design. Moreover, we can solve some problems that are unintuitive for a human.
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.35\textwidth]{figs/experiment_drawing_3.png}
+    \caption{Illustration of the bottle rotation problem.}
+    \label{fig:experiment_drawing_3}
+\end{figure}
+%
+For example, consider the bottle rotation problem as shown in Fig. \ref{fig:experiment_drawing_3}, left. Use a robot to press on its top surface with a face to face contact. If you apply force properly, you can tilt the bottle and rotate it on the table. The control strategy is not straightforward, since it involves hybrid actions in 6D wrench space. The Matlab code for solving this problem is also available in our GitHub repository. Unfortunately we don't have time to implement it on a robot.
+
+Our method has several limitations. Firstly, we haven't consider non-holonomic constraints in our current formulation. Secondly, the algorithm \ref{alg:solve_for_velocity} could get stuck in a bad local minimum. The only way of avoiding it is to sample more initial points, which increases computation time. Finally, the cost functions proposed in this work are largely based on our intuition. The exact conditions for maintaining contact modes are not completely clear. Although they seem to work empirically, a better understanding of contact mechanics may lead to a more reliable hybrid servoing algorithm.

@@ -1,0 +1,25 @@
+% !TEX root = ../ICRA19Hybrid.tex
+
+\section{INTRODUCTION}
+\label{sec:intro}
+
+% example
+In the materials handling industry where robots pick up random objects from bins, it's generally difficult to pick up the last few objects, because they are usually too close to the bin walls, leaving no collision-free grasp locations. It's even harder if a flat object is lying in the corner. However, in such cases a human would simply lift the object up with only one finger by pressing on a side of the object and pushing against the bin wall.
+% manipulation with contacts is useful
+This is one of the many examples where humans can solve manipulation problems that are difficult for robots with surprisingly concise solutions. The human finger can do more than the robot finger because the human naturally utilizes the contacts between the object and the environment to create solutions.
+
+Manipulation under external contacts is common and useful in human life, yet our robots are still far less capable of doing it than they should be.
+In the robot motion planning community, most works are focused on generating collision-free motion trajectories.
+There are planning methods that are capable of computing complicated, contact-rich robot motions \cite{mordatch2012discovery,posa2014direct}, however, the translation from a planned motion to a successful experiment turns out to be difficult. High stiffness servo controls, such as velocity control, are prone to positional errors in the model. Low stiffness controls such as force control are vulnerable to all kinds of inevitable force disturbances and noise, such as un-modeled friction.
+
+In this work, we attempt to close the gap between contact-rich motion planning and successful execution with \textit{hybrid servoing}, defined as using hybrid force-velocity control to execute the planned trajectory. We try to combine the good points of both worlds: high stiffness controls are immune to small force disturbances, while force controls (even somewhat inaccurate force controls) can comply with holonomic constraints under modeling uncertainties.
+
+Solving for hybrid force-velocity control is more difficult than solving for force or velocity alone, because we need to compute directions for each type of control. It is challenging to properly formulate the problem itself; the solution space is also higher dimensional. This is why most of the previous works on hybrid force-velocity control only analyzed simple systems with the robot itself (may include a firmly grasped object) and a rigid environment, without any free objects and more degree-of-freedoms.
+
+In this work, we provide a hybrid servoing problem formulation that works for systems with more objects, along with an algorithm to efficiently solve it.
+We quantify what it means for a constraint to be satisfied ``robustly'', and automate the control synthesis by formulating it as two optimization problems on the velocity/force controlled actions. The optimization automatically makes trade-offs between robustness and feasibility.
+In particular, we show that the velocity controlled directions do not have to be orthogonal to the holonomic constraints, leaving space for more solutions. Being closer to orthogonal does have benefits; it is considered in the cost function.
+
+The rest of the paper is organized as follows. In the next section we review the related works. In section \ref{sec:problem_formulation}, we introduce our modeling and problem formulation for hybrid servoing. In section \ref{sec:approach}, we describe our algorithm for solving hybrid servoing. In section \ref{sec:example} and \ref{sec:experiments}, we provide a step by step analysis for one simple example, along with experimental results for several examples.
+
+% Our algorithm can be solved efficiently. The most computational

@@ -1,0 +1,136 @@
+% !TEX root = ../ICRA19Hybrid.tex
+
+\section{Example}
+\label{sec:example}
+Next we illustrate how our method works with a concrete example. Consider the ``block tilting'' task shown in Fig. \ref{fig:experiment_drawing_1}. The robot hand is a point. The robot needs to tilt and flip a square block about one of its edges by pressing on the block's top surface. We use a simple motion plan: the robot hand moves along an arc about the rotation axis, and all contacts in the system are sticking. If we only use velocity control to execute the plan, the robot can easily get stuck since the modeling or perception of the block may not be perfect.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.4\textwidth]{figs/experiment_drawing_1.png}
+    \caption{Block tilting example. From left to right, the robot use one point contact to rotate the block.}
+    \label{fig:experiment_drawing_1}
+\end{figure}
+
+\subsection{Variables} % (fold)
+\label{sub:variables}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.4\textwidth]{figs/experiment_drawing_2.png}
+    \caption{illustration of the coordinate frames.}
+    \label{fig:experiment_drawing_2}
+\end{figure}
+Denote $W$, $H$ and $O$ as the world frame, the hand frame and the object frame respectively. In the following, we use the form of $^A_BX$ to represent a symbol of frame $B$ as viewed from frame $A$. We do Cartesian control for the robot, so we ignore the joints and only model the hand. The state of the system can be represented by the 3D pose of the object and the position of the hand as viewed in the world frame:
+\begin{equation}
+	{q}=[^W_Op^T,\ ^W_Oq^T,\ ^W_Hp^T]^T\in \mathbb{R}^{10}.
+\end{equation}
+Define the generalized velocity for the system to be the object body twist $^O_O\xi\in \mathbb{R}^6$ and the hand linear velocity $^W_Hv\in\mathbb{R}^3$:
+\begin{equation}
+	v=[^O_O\xi^T,\ ^W_Hv^T]^T\in\mathbb{R}^9.
+\end{equation}
+The benefit of choosing body twist over spatial twist for representing generalized velocity of rigid body is that the expression of the mapping $\dot q=\Omega(q) v$ becomes simple:
+\begin{equation}
+\Omega ({\bf{q}}) = \left[ {\begin{array}{*{20}{c}}
+{{^W_OR}}&{}&{}\\{}&{E({^W_Oq})}&{}\\{}&{}&{{I_H}}\end{array}} \right]\in \mathbb{R}^{10\times 9},
+\end{equation}
+where $^W_OR\in SO(3)$ denotes the rotation matrix for $^W_Oq$, $E(^W_Oq)$ is the linear mapping from the body angular velocity to the quaternion time derivatives \cite{graf2008quaternions}:
+\begin{equation}
+E(^W_Oq) = \frac{1}{2}\left[ {\begin{array}{*{20}{c}}
+{ - {^W_Oq_1}}&{ - {^W_Oq_2}}&{ - {^W_Oq_3}}\\
+{{^W_Oq_0}}&{ - {^W_Oq_3}}&{{^W_Oq_2}}\\
+{{^W_Oq_3}}&{{^W_Oq_0}}&{ - {^W_Oq_1}}\\
+{ - {^W_Oq_2}}&{{^W_Oq_1}}&{{^W_Oq_0}}
+\end{array}} \right].
+\end{equation}
+The generalized force corresponding to our choice of generalized velocity is the object body wrench together with the hand pushing force:
+\begin{equation}
+	f=[^O_Ow^T,\ ^W_Hf^T]^T \in\mathbb{R}^9
+\end{equation}
+%
+\subsection{Goal Description} % (fold)
+\label{sub:example_goal_description}
+In the motion plan, the object rotates about the line of contact on the table. The goal for control at any time step is to let the object follow this motion. Now we try to write down the generalized velocity for such motion.
+Denote $^Wp_{tc}$ as the location of any point on the line of contact, $^W\omega_g$ as the axis of rotation, $\dot\theta_g$ as the desired object rotation speed. We can firstly write down the spatial twist for the object motion as $^W\xi_g=(-^W\omega_g\times ^Wp_{tc},\ ^W\omega_g)\dot\theta_g\in\mathbb{R}^6$. The corresponding body twist can be computed as
+\begin{equation}
+^O\xi_g=Ad_{^W_Og^{-1}}{^W\xi_g}
+\end{equation}
+where $Ad_{^W_Og^{-1}} = \left[ {\begin{array}{*{20}{c}}{^W_OR^T}&{ - ^W_OR^T{^W_O{\hat p}}}\\0&{^W_OR^T}\end{array}} \right]$
+is the adjoint transformation associated with $^W_Og^{-1}=\left[ {\begin{array}{*{20}{c}}{{^W_OR}}&{{^W_Op}}\\0&1\end{array}} \right]^{-1}$. Then the goal for our controller can be specified as
+\begin{equation}
+\label{eq:example_goal}
+G{\bf v}=b_G,
+\end{equation}
+where $G = \left[ {\begin{array}{*{20}{c}}{{I_6}}&0_{6\times3}\end{array}} \right],\;\;\,{b_G} = {^O\xi_g}.$
+
+\subsection{Natural constraints} % (fold)
+\label{sub:example_natural_constraints}
+
+\subsubsection{Holonomic constraints} % (fold)
+\label{subsub:example_holonomic_constraints}
+The contact between the object and the hand  is a sticking point contact,  which constrains the system states by
+\begin{equation}
+\label{eq:hand_contact_holonomic}
+^W_OQ(^Op_{hc}) + ^W_Op = ^Wp_{hc},
+\end{equation}
+where $^Wp_{hc}, ^Op_{hc}$ denote the location of the contact point, function $^W_OQ(p)$ rotates vector $p$ by quaternion $^W_Oq$.
+
+The contact between the object and the table is a sticking line contact. We approximate it with two point contacts at the two ends. Use subscript $tc$ to denote the table contacts, the sticking constraints can be approximated by requiring the two points to be sticking:
+\begin{equation}
+\label{eq:table_contact_holonomic}
+{{^W_OQ}{(^O}{p_{tc,i}}) + {^W_Op}} { = }{^Wp_{tc,i}},\;\;\; i=1,2.
+\end{equation}
+Equation (\ref{eq:hand_contact_holonomic}) and (\ref{eq:table_contact_holonomic}) together form the holonomic constraints for our system:
+\begin{equation}
+\label{eq:example_holonomic_constraint}
+\Phi ({{q}}) = \left[ {\begin{array}{*{20}{c}}
+{^W_OQ(^Op_{hc}) + ^W_Op = ^Wp_{hc}}\\
+{{^W_OQ}{(^O}{p_{tc,1}}) + {^W_Op}} { = }{^Wp_{tc,1}}\\
+{{^W_OQ}{(^O}{p_{tc,2}}) + {^W_Op}} { = }{^Wp_{tc,2}}\end{array}} \right] = 0
+\end{equation}
+%
+This example does not have face to face contacts; they can be handled similarly by multi-point-contacts approximation.
+
+\subsubsection{Newton's second law} % (fold)
+\label{subsub:example_newton_s_second_law}
+The reaction forces $\lambda=[^W\lambda_{hc}^T,^W\lambda_{tc,1}^T,^W\lambda_{tc,2}^T]^T\in \mathbb{R}^9$ associated with the holonomic constraints (\ref{eq:example_holonomic_constraint}) are the three contact forces as viewed in world frame. In Newton's second law (\ref{eq:newton_second_law}):
+	 $$\Omega^T(q)J^T_\Phi(q)\lambda + f + F = 0$$
+$\Omega$ is known, $J_\Phi(q)$ is computed by symbolic derivation from $\Phi(q)$, we refrain from showing its exact expression to save pages. The external force $F$ contains the gravity of the object $G_O$ and the robot hand $G_H$, the reference frames of which should be consistent with the generalized force:
+\begin{equation}
+F = \left[ {\begin{array}{*{20}{c}}{^O{G_O}}\\
+0\\{^H{G_H}}\end{array}} \right] \in\mathbb{R}^9.
+\end{equation}
+$^HG_H$ should be zero if the robot force controller already compensates for self weight.
+% subsection newton_s_second_law (end)
+
+\subsection{Guard Conditions}
+\label{sub:example_guard_conditions}
+The motion plan requires all contacts to be sticking. Coulomb friction thus gives two constraints on the force variables:
+\begin{enumerate}
+	\item The normal forces at all contacts must be greater than a threshold $n_{min}$.
+	\item All contact forces must be within their friction cones.
+\end{enumerate}
+To express 3D friction cone constraints linearly, we approximate the cone with eight-sided polyhedron \cite{trjopt1} with $d_i=[\sin(\pi i/4),\ \cos(\pi i/4),\ 0]^T$ being the unit direction vectors for each ridge. Denote $\mu_{hc}, \mu_{tc}$ as the estimated minimal possible friction coefficient, $z=[0\ 0\ 1]^T$ as the unit $Z$ vector, the friction cone constraints becomes
+\begin{equation}
+\label{eq:example_friction_cone}
+	\begin{array}{l}
+{\mu _{hc}}{z^T}(_W^OR{^W\lambda _{hc}}) \ge d_i^T(_W^OR{^W\lambda_{hc}}),\;\;\,\;\;\,i = 1,...,8\\
+{\mu _{tc}}{z^T}{^W\lambda _{tc,1}} \ge d_i^T{^W\lambda _{tc,1}},\;\;\,\;\;\,i = 1,...,8\\
+{\mu _{tc}}{z^T}{^W\lambda _{tc,2}} \ge d_i^T{^W\lambda _{tc,2}},\;\;\,\;\;\,i = 1,...,8
+\end{array}
+\end{equation}
+The normal force lower bound can be written as
+\begin{equation}
+\label{eq:example_normal_force}
+	\begin{array}{l}
+	{z^T}({_W^OR}{^W\lambda _{hc}}) \ge {n_{\min }}\\
+	{z^T}^W{\lambda _{tc,1}} \ge {n_{\min }}\\
+	{z^T}^W{\lambda _{tc,2}} \ge {n_{\min }}
+	\end{array}
+\end{equation}
+Equation (\ref{eq:example_friction_cone}) and (\ref{eq:example_normal_force}) are affine constraints on $\lambda$, together they form the guard condition (\ref{eq:guard_conditions}).
+
+\subsection{Solve the problem} % (fold)
+\label{sub:example_solve}
+At each time step, given the object and the hand poses we can use algorithm \ref{alg:solve_for_velocity} and \ref{alg:solve_for_force} to solve for the hybrid force-velocity control numerically. You can find our Matlab implementation of the step by step derivations in our GitHub repository (see section \ref{sub:code}).
+
+Here we briefly describes the solved actions. The solution to the block tilting problem has one dimensional velocity controlled action, which points in the tilting direction and is roughly perpendicular to the line from the hand to the rotation axis. The other two dimensions are under force control. The $Y$ component of the force command is close to zero, which makes sense as forces in $Y$ direction don't do anything useful. The force in other component is roughly pressing against the rotation axis to maintain sticking.
+
