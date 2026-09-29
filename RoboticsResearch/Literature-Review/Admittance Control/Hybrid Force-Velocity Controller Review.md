@@ -164,10 +164,10 @@ The discrete-time limits $D\Delta t/M < 2$ and $\omega_n\Delta t < 2$ rarely bin
 - A rigid axis follows the reference with the arm's full servo stiffness. Contact forces along it are ignored, so nothing limits the force if the reference drives into an obstacle.
 - It is deadbeat: feed rigid-axis references interpolated at the control rate, never raw low-rate waypoints.
 
-#### <u>Ideal Behavior with Tuned Parameters</u>
+> [!hint] Behavior
+> ## Situation Bavior under Ideal Parameters
 
-The three situations below use one tuned set on the translational axes, perfect position tracking, and a rubber-tipped tool ($k_e = 10^4$ N/m) unless noted.
-Numbers come from the controller's own discrete update at 500 Hz, with the contact modeled as a spring $k_e$.
+Assuming parameters are tuned to ideal setting, ignore control delay,set tool impedance to be ($k_e = 10^4$ N/m).
 
 | Axis role | $M$ | $K$ | $D$ | $f_{max}$ | Character |
 |---|---|---|---|---|---|
