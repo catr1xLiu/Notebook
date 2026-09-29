@@ -1,0 +1,125 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[top=2cm,bottom=2.5cm,left=2.5cm,right=2.5cm]{geometry}
+\usepackage[dvipsnames,svgnames,x11names]{xcolor}
+\usepackage{amsmath,amssymb,mathtools}
+\usepackage{graphicx}
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+
+\hypersetup{
+    pdfauthor={Author},
+    pdftitle={Force Feedback}
+}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.8em}
+
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}
+\cfoot{\scriptsize New Section 1 Page \thepage}
+
+\begin{document}
+
+% PAGE 1
+{\large \textbf{Force Feedback}}\\[-0.3em]
+{\scriptsize \color{gray} September 29, 2006 \quad 4:32 PM}
+
+\vspace{0.5em}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.55\textwidth]{img-0.jpeg}
+\end{figure}
+
+\vspace{0.5em}
+
+We define our space in 3D world. Every vector and matrix in this document have dimensions;
+
+\begin{equation*}
+\vec{r} \in \mathbb{R}^3, \quad [A] \in \mathbb{R}^{3 \times 3}
+\end{equation*}
+
+Define function mapping from operator space to robot;
+
+\begin{equation*}
+M(\vec{o}) = \vec{r}, \quad M(\vec{o}) = s[R]\vec{o} + \vec{d}, \quad M^{-1}(\vec{r}) = \vec{o}
+\end{equation*}
+
+Let $\vec{x}$ be the current position of arm, $\vec{r}$ be reference.
+
+$\vec{F}_n$ be the normal force on robot, $\vec{f}$ be friction
+
+$\vec{F}_s$ be filtered force, $\vec{F}_c$ be contact force, $\hat{h}$ be the direction of the end-effector head.
+
+\vspace{1em}
+{\large \textbf{Isolating Contact Force}}
+
+Let $m$ be the mass of the end-effector,
+
+\begin{equation*}
+\vec{F}_s = \vec{F}_c - \ddot{\vec{x}} m - g \cdot \hat{k} m
+\end{equation*}
+
+Ensure
+
+\newpage
+
+% PAGE 2
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.85\textwidth]{img-1.jpeg}
+\end{figure}
+
+Apply linear system identification
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.85\textwidth]{img-2.jpeg}
+\end{figure}
+
+\begin{equation*}
+\vec{F}_n = \text{proj}_{\hat{n}} \vec{F}_c, \quad \vec{f} = \vec{F}_c - \vec{F}_n
+\end{equation*}
+
+\begin{equation*}
+\|\vec{F}_c\| < F_{\text{thr}} : 
+\begin{cases} 
+\|\dot{\vec{r}}\| > V_L & : \vec{F}_b = -\dfrac{\dot{\vec{r}}}{V_L} f_L \\[1em]
+\|\dot{\vec{r}}\| \le V_L & : \vec{F}_b = \vec{0} 
+\end{cases}
+\end{equation*}
+
+\vspace{1.5em}
+Force feedback is disabled. Only velocity is fed back.
+
+\newpage
+
+% PAGE 3
+\begin{equation*}
+\|\vec{F}_c\| > F_{\text{thr}} \wedge \|\dot{\vec{r}}\| < V_{\text{thr}} :
+\end{equation*}
+
+\begin{equation*}
+\vec{F}_n = -k(\vec{x} - \vec{x}_0) \implies \vec{x}_0 = \frac{\vec{F}_n}{k} + \vec{x}
+\end{equation*}
+
+\begin{equation*}
+\vec{F}_b = -k \operatorname{Proj}_{\vec{n}}(\vec{x} - \vec{x}_0)
+\end{equation*}
+
+\vspace{2em}
+
+\begin{equation*}
+\|\vec{F}_c\| > F_{\text{thr}} \wedge \|\dot{\vec{r}}\| \ge V_{\text{thr}} :
+\end{equation*}
+
+\begin{equation*}
+\vec{f} = \vec{F}_c - \vec{F}_n
+\end{equation*}
+
+\begin{equation*}
+\vec{F}_b = -k \operatorname{Proj}_{\vec{n}}(\vec{x} - \vec{x}_0) - \frac{\dot{\vec{r}}}{\|\dot{\vec{r}}\|} \vec{f}
+\end{equation}
+
+\end{document}
