@@ -1,0 +1,207 @@
+%% Hybrid technical-report front matter
+%%
+%% This package is an independent reimplementation of the title and abstract
+%% treatment shown by the industry-style visual reference listed in
+%% ATTRIBUTION.md. It is designed for cleantechnicalreport.cls, a brand-neutral
+%% derivative of the class
+%% distributed with the public source of arXiv:2312.11805.
+%% No institutional logos or source code from the industry template are used.
+%%
+%% Distributed under CC BY-SA 4.0 to match the upstream and derived base class.
+%% https://creativecommons.org/licenses/by-sa/4.0/
+
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{hybridfrontmatter}[2026/08/03 v1.1 Hybrid report front matter]
+
+\RequirePackage{etoolbox}
+\RequirePackage{letltxmacro}
+\RequirePackage[most]{tcolorbox}
+
+% Icons are optional. The template remains compilable when Font Awesome is not
+% installed, falling back to a simple bullet.
+\IfFileExists{fontawesome5.sty}{%
+  \RequirePackage{fontawesome5}
+  \newcommand{\ReportWebsiteIcon}{\faGlobe}
+  \newcommand{\ReportContactIcon}{\faEnvelope}
+}{%
+  \newcommand{\ReportWebsiteIcon}{\textbullet}
+  \newcommand{\ReportContactIcon}{\textbullet}
+}
+
+% The colors follow the visual proportions of the reference front matter. Only
+% the front matter uses them; body text and section styling remain unchanged.
+\definecolor{ReportAccent}{HTML}{4A90D9}
+\definecolor{ReportTheme}{HTML}{1E3A5F}
+\colorlet{ReportAbstractBackground}{ReportAccent!8}
+\colorlet{ReportAbstractBorder}{ReportAccent!50}
+
+% Front-matter scale. These commands intentionally keep the base class's
+% XCharter family while balancing the title against the centered author block.
+% They are public so a paper can override them in its preamble if needed.
+\newcommand{\ReportTitleFont}{%
+  \normalfont\bfseries\fontsize{16}{19}\selectfont
+}
+\newcommand{\ReportAuthorFont}{%
+  \normalfont\bfseries\fontsize{10.5}{14}\selectfont
+}
+\newcommand{\ReportAffiliationFont}{%
+  \normalfont\fontsize{8.5}{11}\selectfont
+}
+\renewcommand{\Authfont}{\ReportAuthorFont}
+\renewcommand{\Affilfont}{\ReportAffiliationFont}
+
+\makeatletter
+
+% Keep literal author names together at their ordinary top-level spaces while
+% preserving normal interword glue shrink/stretch. TeX may break between
+% \author entries, but not between the words of names written in the recommended
+% one-author-per-command form. The public wrapper can be redefined if needed.
+\ExplSyntaxOn
+\cs_new_protected:Npn \ReportAuthorName #1
+  {
+    \group_begin:
+      \tl_set:Nn \l_tmpa_tl {#1}
+      \tl_replace_all:Nnn \l_tmpa_tl { ~ } { \nobreakspace }
+      \tl_use:N \l_tmpa_tl
+    \group_end:
+  }
+\ExplSyntaxOff
+\LetLtxMacro{\report@authblk@author}{\author}
+\renewcommand{\author}[2][]{%
+  \report@authblk@author[#1]{\ReportAuthorName{#2}}%
+}
+
+\newcommand{\report@website}{}
+\newcommand{\report@contact}{}
+\newcommand{\report@authornote}{}
+\newcommand{\report@leftlogo}{}
+\newcommand{\report@rightlogo}{}
+\newif\ifreport@hasmetadata
+\report@hasmetadatafalse
+
+\newcommand{\reportwebsite}[1]{%
+  \gdef\report@website{#1}%
+  \global\report@hasmetadatatrue
+}
+
+\newcommand{\reportcontact}[1]{%
+  \gdef\report@contact{#1}%
+  \global\report@hasmetadatatrue
+}
+
+\newcommand{\reportauthornote}[1]{\gdef\report@authornote{#1}}
+
+% Optional user-supplied marks for the two header slots. No branded assets are
+% bundled. A height near 10 mm fits the base class's existing 40 pt header.
+\newcommand{\reportleftlogo}[2][10mm]{%
+  \gdef\report@leftlogo{\includegraphics[height=#1]{#2}}%
+}
+
+\newcommand{\reportrightlogo}[2][10mm]{%
+  \gdef\report@rightlogo{\includegraphics[height=#1]{#2}}%
+}
+
+% The two title rules are drawn in normal document flow by \maketitle. Keeping
+% the header rule disabled lets the title block grow vertically when the title
+% wraps, while both rules retain the full inherited text width.
+\fancypagestyle{hybridfirststyle}{%
+  \fancyhf{}%
+  \fancyhead[L]{\ifdefempty{\report@leftlogo}{}{\report@leftlogo}}%
+  \fancyhead[R]{%
+    \ifdefempty{\report@rightlogo}
+      {{\footerfont\itshape\monthyeardate\today}}
+      {\report@rightlogo}%
+  }%
+  \fancyfoot[L]{%
+    \ifdefempty{\report@authornote}{}{%
+      \parbox[b]{\textwidth}{%
+        \raggedright\footerfont\itshape
+        \report@authornote\strut
+      }%
+    }%
+  }%
+  \fancyfoot[C]{}%
+  \fancyfoot[R]{}%
+  \renewcommand{\headrulewidth}{0pt}%
+  \renewcommand{\footrulewidth}{1pt}%
+  \renewcommand{\footrule}{\color{gray}\DefaultFootRule}%
+}
+
+\newcommand{\report@metadatafont}{%
+  \normalfont\fontsize{8}{10}\selectfont
+}
+
+\newcommand{\report@metarow}[3]{%
+  \noindent
+  {\report@metadatafont #1\hspace{0.45em}\textbf{#2:}\hspace{0.45em}#3\par}%
+}
+
+% The base class captures abstract text in \theabstract before
+% \begin{document}. This command only changes how the captured text is drawn.
+\providecommand{\theabstract}{}
+\renewcommand{\abscontent}{%
+  \begin{tcolorbox}[
+    enhanced,
+    colback=ReportAbstractBackground,
+    colframe=ReportAbstractBorder,
+    boxrule=1.2pt,
+    arc=10pt,
+    outer arc=10pt,
+    boxsep=0pt,
+    left=18pt,
+    right=18pt,
+    top=15pt,
+    bottom=15pt,
+    before skip=0pt,
+    after skip=0pt
+  ]
+    {\centering\headingfont\color{ReportTheme}Abstract\par}
+    \vspace{3mm}
+    {\normalfont\fontsize{10}{13}\selectfont\theabstract\par}
+    \@ifundefined{@keywords}{}{%
+      \vspace{2mm}
+      {\normalfont\itshape\fontsize{9}{12}\selectfont
+       \textbf{Keywords:} \@keywords\par}%
+    }%
+    \ifreport@hasmetadata
+      \vspace{3mm}
+      \ifdefempty{\report@website}{}{%
+        \report@metarow{\ReportWebsiteIcon}{Website}{%
+          \href{\report@website}{\nolinkurl{\report@website}}}%
+      }%
+      \ifdefempty{\report@contact}{}{%
+        \report@metarow{\ReportContactIcon}{Contact}{%
+          \href{mailto:\report@contact}{\report@contact}}%
+      }%
+    \fi
+  \end{tcolorbox}%
+}
+
+% Replace only the front-matter composition. All page geometry, typefaces,
+% section styles, captions, body spacing, and later-page headers remain those
+% of cleantechnicalreport.cls.
+\renewcommand{\maketitle}{%
+  \begingroup
+    \setlength{\parindent}{0pt}%
+    % The reference industry template resets \parskip inside its title block.
+    % Without this, the base class's paragraph skip is added on top of the
+    % intended 6 mm / 5 mm rule spacing and makes the title band look too tall.
+    \setlength{\parskip}{0pt}%
+    % Reclaim the class's header separation so the in-flow upper rule sits at
+    % the same visual height as the original first-page head rule.
+    \vspace*{-\headsep}%
+    {\centering\color{ReportTheme}\rule{\linewidth}{1.2pt}\par}%
+    \vspace{6mm}%
+    {\centering\ReportTitleFont\@title\par}%
+    \vspace{5mm}%
+    {\centering\color{ReportTheme}\rule{\linewidth}{1.2pt}\par}%
+    \vspace{6mm}%
+    {\centering\@author\par}%
+    \vspace{5mm}%
+    \abscontent
+    \vspace{8mm}%
+  \endgroup
+  \thispagestyle{hybridfirststyle}%
+}
+
+\makeatother

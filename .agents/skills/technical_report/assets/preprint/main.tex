@@ -1,0 +1,119 @@
+\pdfoutput=1
+\documentclass[11pt,onecolumn]{cleantechnicalreport}
+
+\usepackage[authoryear,sort&compress,round]{natbib}
+\usepackage{hybridfrontmatter}
+
+% The neutral base class remains responsible for XCharter text, newtxmath mathematics,
+% zlmtt monospaced text, A4 geometry, body spacing, headings, and page furniture.
+
+\title{Adaptive Compute for Language Model Reasoning}
+
+\author[1]{Test Author One}
+\author[1]{Test Author Two}
+\author[2]{Test Author Three}
+\author[1,2,$\dagger$]{Test Author Four}
+\affil[1]{Test Research Organization One}
+\affil[2]{Test University Two}
+\renewcommand{\Authands}{, }
+
+\reportauthornote{$^{\dagger}$ Corresponding author}
+\reportwebsite{https://example.org/adaptive-compute}
+\reportcontact{test.author@example.org}
+\keywords{language models, adaptive computation, reasoning}
+
+% Keep the abstract in the preamble: the base class captures it here and
+% renders it when \maketitle is called. Do not put nested environments inside.
+\begin{abstract}
+We study adaptive computation for language-model reasoning under a fixed
+inference budget. Our method allocates additional tokens only when intermediate
+confidence estimates indicate that a problem is unresolved. Across mathematical
+reasoning, code generation, and scientific question answering, adaptive
+allocation improves accuracy while reducing average compute. The results suggest
+that inference-time scaling can be made both more predictable and more efficient
+when budget decisions are treated as part of the reasoning policy.
+\end{abstract}
+
+\begin{document}
+
+\maketitle
+
+\section{Introduction}
+
+Language models often receive the same inference budget for every prompt even
+though problem difficulty varies substantially. Easy examples may be solved in a
+few steps, while difficult examples benefit from verification, revision, or a
+larger search tree. A useful technical-report template should make this kind of
+argument easy to read: the first page establishes the contribution, and the
+remaining pages prioritize equations, figures, and experimental evidence.
+
+We consider a policy that selects an inference budget $b(x)$ for prompt $x$.
+Given utility $U$ and compute cost $C$, the policy solves
+
+\begin{equation}
+  b^{\star}(x)
+  = \arg\max_{b \in \mathcal{B}}
+    \mathbb{E}\!\left[U(y,x) \mid b,x\right] - \lambda C(b),
+  \label{eq:budget-policy}
+\end{equation}
+
+where $\lambda$ controls the accuracy--efficiency trade-off. This formulation is
+compatible with outcome-based reinforcement learning as well as process-level
+supervision. It also separates the question of how to reason from the question
+of how much computation a particular input warrants.
+
+\section{Method}
+
+The controller observes summary statistics from the current reasoning state and
+chooses whether to stop, verify, or continue. Training examples are grouped by
+difficulty, and the controller is optimized against held-out utility rather than
+raw response length. This prevents verbosity from becoming a proxy for quality.
+
+\subsection{Budget controller}
+
+At decision step $t$, the controller receives state $s_t$ and samples action
+$a_t \in \{\text{stop},\text{verify},\text{continue}\}$. The return combines task
+reward with a linear token penalty. A clipped policy update limits abrupt changes
+in allocation behavior, while an independent value head estimates the remaining
+benefit of additional computation.
+
+\begin{table}[t]
+  \centering
+  \caption{Illustrative accuracy and token usage. Lower token counts are better.}
+  \label{tab:results}
+  \begin{tabular}{lrr}
+    \toprule
+    Method & Accuracy (\%) & Mean tokens \\
+    \midrule
+    Fixed short budget & 71.4 & 512 \\
+    Fixed long budget  & 78.2 & 2048 \\
+    Adaptive budget    & \textbf{79.0} & \textbf{936} \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+The example in Table~\ref{tab:results} illustrates the desired operating point:
+adaptive allocation approaches the quality of a long fixed budget while using
+less than half as many tokens. The values are placeholders and are included only
+to demonstrate the inherited table and caption typography.
+
+\section{Relationship to prior work}
+
+The placeholder bibliography demonstrates author--year citations for scaling
+and compute-allocation studies \citep{test2024scaling,test2025training}. Our
+focus is complementary: the trained model is held fixed while computation is
+allocated dynamically at inference time. A separate synthetic entry illustrates
+how an architecture reference appears in the template \citep{test2023attention}.
+
+\section{Conclusion}
+
+This sample demonstrates the intended division of responsibility. The neutral
+base class supplies the type system, mathematical fonts, page geometry,
+paragraph rhythm, section hierarchy, captions, and later-page headers. The
+companion package changes only the title composition and abstract presentation,
+using the same XCharter family throughout.
+
+\bibliographystyle{plainnat}
+\bibliography{references}
+
+\end{document}

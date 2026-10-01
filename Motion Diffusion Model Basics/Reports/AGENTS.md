@@ -11,26 +11,11 @@ Purpose
 
 ## Documentation References
 
-### Typst Documentation (local)
-- `docs/typst/typst-syntax.md` - Language syntax
-- `docs/typst/typst-styling.md` - Styling rules
-- `docs/typst/typst-context.md` - Context system
-
-### LaTeX Documentation (local source files)
-- `docs/latex/src/` - Complete lshort handbook source code (~10 pages as pdf)
-- Key files to reference:
-  - `lshort.tex` - Main document structure
-  - `things.tex` - Document classes, packages, structure
-  - `typeset.tex` - Text formatting, fonts, spacing
-  - `math.tex` - Mathematical typesetting (equations, symbols)
-  - `spec.tex` - Specialized features (algorithms, theorems)
-  - `graphic.tex` - Figures, tables, graphics
-  - `custom.tex` - Custom commands, environments
-  - `biblio.tex` - Bibliography and citations
-  - `lssym.tex` - Symbol reference
+The Typst docs and the LaTeX handbook (lshort) live in the `technical-report` skill: `.agents/skills/technical_report/references/`.
+Its `SKILL.md` indexes which file covers which topic.
 
 **LaTeX Learning Approach**:
-1. Agent reads relevant .tex files from `docs/latex/src/` for syntax patterns
+1. Agent reads the relevant handbook chapter for syntax patterns
 2. Agent **always prioritizes conference template requirements** over handbook examples
 3. When in doubt, check the author kit's example paper and comments
 
@@ -146,23 +131,8 @@ Papers/ConferenceName/
 
 ## LaTeX Additional Templates
 
-Additional templates available in `docs/latex/Templates/`:
-
-### Available Templates
-
-| Template | Description | Use Case |
-|----------|-------------|----------|
-| `Proposal/` | IEEEtran-based thesis proposal template for D-IV Komputasi Statistik at Politeknik Statistika STIS (Indonesian) | Thesis proposals |
-| `Report2/` | Rho class - professional academic article/research report template with STIX2 fonts, custom environments, and code highlighting | Research articles, technical reports |
-| `TAU Report/` | Tau class - professional academic article/research report template with STIX2 fonts, custom environments, and code highlighting | Research articles, lab reports |
-
-### Using These Templates
-
-1. Copy the entire template folder to your project location
-2. Edit `main.tex` (or `Proposal.tex`) with your content
-3. Update the bibliography file (`.bib`)
-4. Place figures in the `figures/` subfolder
-5. Compile with `latexmk -pdf main.tex`
+Non-venue LaTeX templates (lab report, preprint, technical report, proposal) live in `.agents/skills/technical_report/assets/`.
+See that skill's `SKILL.md` for what each one is for and how to use it.
 
 ---
 
