@@ -1,36 +1,26 @@
-\documentclass[11pt,a4paper]{article}
-\usepackage[top=2cm,bottom=2.5cm,left=2.5cm,right=2.5cm]{geometry}
-\usepackage[dvipsnames,svgnames,x11names]{xcolor}
-\usepackage{amsmath,amssymb,mathtools}
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[
+    left=1in,
+    right=1in,
+    top=0.6in,
+    bottom=1in
+]{geometry}
+
+\usepackage{amsmath,amssymb}
 \usepackage{graphicx}
-\usepackage{fancyhdr}
-\usepackage{hyperref}
+\usepackage{booktabs}
+\usepackage{float}
+\usepackage[hidelinks]{hyperref}
+\usepackage{tabularx}
 
-\hypersetup{
-    pdfauthor={Author},
-    pdftitle={Force Feedback}
-}
-
-\setlength{\parindent}{0pt}
-\setlength{\parskip}{0.8em}
-
-\pagestyle{fancy}
-\fancyhf{}
-\renewcommand{\headrulewidth}{0pt}
-\cfoot{\scriptsize New Section 1 Page \thepage}
+\title{Force Feedback Refinement}
+\author{Drafted by Yiran}
+\date{\today}
 
 \begin{document}
-
-% PAGE 1
-{\large \textbf{Force Feedback}}\\[-0.3em]
-{\scriptsize \color{gray} September 29, 2006 \quad 4:32 PM}
-
-\vspace{0.5em}
-
-\begin{figure}[htbp]
-    \centering
-    \includegraphics[width=0.55\textwidth]{img-0.jpeg}
-\end{figure}
+\maketitle
 
 \vspace{0.5em}
 
@@ -63,20 +53,8 @@ Let $m$ be the mass of the end-effector,
 
 Ensure
 
-\newpage
-
-% PAGE 2
-\begin{figure}[htbp]
-    \centering
-    \includegraphics[width=0.85\textwidth]{img-1.jpeg}
-\end{figure}
 
 Apply linear system identification
-
-\begin{figure}[htbp]
-    \centering
-    \includegraphics[width=0.85\textwidth]{img-2.jpeg}
-\end{figure}
 
 \begin{equation*}
 \vec{F}_n = \text{proj}_{\hat{n}} \vec{F}_c, \quad \vec{f} = \vec{F}_c - \vec{F}_n
@@ -92,8 +70,6 @@ Apply linear system identification
 
 \vspace{1.5em}
 Force feedback is disabled. Only velocity is fed back.
-
-\newpage
 
 % PAGE 3
 \begin{equation*}
@@ -120,6 +96,6 @@ Force feedback is disabled. Only velocity is fed back.
 
 \begin{equation*}
 \vec{F}_b = -k \operatorname{Proj}_{\vec{n}}(\vec{x} - \vec{x}_0) - \frac{\dot{\vec{r}}}{\|\dot{\vec{r}}\|} \vec{f}
-\end{equation}
+\end{equation*}
 
 \end{document}
