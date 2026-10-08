@@ -212,7 +212,7 @@ This is likely the **SOTA** VLA inference stack available to the public, given t
 
 I think this is the most promising direction for future work, because the model currently relies on a $(\text{col}, \text{row}, \text{depth}) \rightarrow (x, y, z)$ projection tool. *This is probably inefficient for VLM agents.*
 
-An alternative approach would be to use solid 3D object positioning methods, such as [Neural Memory Object (NeMO)](https://arxiv.org/html/2602.04343v1), which maps the exact 6-DoF position of an object after few-shot learning. ![[NeMO.png]]
+An alternative approach would be to use solid 3D object positioning methods, such as [Neural Memory Object (NeMO)](https://arxiv.org/html/2602.04343v1) (review: [[NeMO Literature Review]]), which maps the exact 6-DoF position of an object after few-shot learning. ![[NeMO.png]]
 
 We can adapt a simple motion planner and create more powerful tools for the VLM using some basic motion planning, such as `{"action": "move_to_known_object",  "object_identifier": "YELLOW_PLATE", "relative_pose" : "grabbing_pose"}`, after recognizing objects and recording different relative transformations $T^{\text{OBJ}}_{\text{EF}}$ (the end-effector pose expressed in the object's frame) for grabbing, pulling, etc. This will free up the mental effort of the VLM to determine the exact position.
 
