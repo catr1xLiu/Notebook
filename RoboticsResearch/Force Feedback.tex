@@ -14,6 +14,8 @@
 \usepackage{float}
 \usepackage[hidelinks]{hyperref}
 \usepackage{tabularx}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning}
 
 \title{Force Feedback Refinement}
 \author{Drafted by Yiran}
@@ -22,80 +24,160 @@
 \begin{document}
 \maketitle
 
-\vspace{0.5em}
+%==============================================================================
+\section{Defining the Problem}
 
-We define our space in 3D world. Every vector and matrix in this document have dimensions;
+\begin{center}
+\includegraphics[width=0.9\textwidth]{drawings/ForceFeedback.png}
+\end{center}
 
+During tele-op, end effector tracks the desired position that the operator specifies through a controller. Our problem is: how to meaningfully reflect the measured force measured back to operator?
+
+We define action space in 3D world, every vector and matrix below has:
 \begin{equation*}
-\vec{r} \in \mathbb{R}^3, \quad [A] \in \mathbb{R}^{3 \times 3}
+\vec{v} \in \mathbb{R}^3 \quad\quad [A]\in\mathbb{R}^{3\times3}
+\end{equation*}
+We only consider translational force feedback, torque is similar.
+
+\subsection{Controller Space and Robot Space}
+
+The controller polls the current position of the pen $\vec{p}$ in the controller space, we map it to the reference point in robot space through a linear function. The function is reversible.
+\begin{equation*}
+M(\vec{p})=s[R]\vec{p} + \vec{r}_0 = \vec{r} \quad\quad M^{-1}(\vec{r})=\vec{p}
+\end{equation*}
+where $s$ is the scaling factor, $[R]$ is the rotation from controller space to robot space, and $\vec{r}_0$ is the zero-reference. In real life, it gets reset every time the operator picks-up control again. Here, since the pilot remains control, we treat it as a constant.
+
+Let the actual (measured) state of the robot be:
+\begin{equation*}
+\{\, \text{Position: } \,\vec{x} \quad\quad \text{Velocity: } \,\dot{\vec{x}} \quad\quad \text{Acceleration: } \,\ddot{\vec{x}} \,\}
 \end{equation*}
 
-Define function mapping from operator space to robot;
+\subsection{Applied and Measured Force}
 
+The operator's hand applies a force $\vec{F}_o$ to the Haply controller.
+The controller renders the feedback force $\vec{F}_b$ back onto the operator's hand.
 \begin{equation*}
-M(\vec{o}) = \vec{r}, \quad M(\vec{o}) = s[R]\vec{o} + \vec{d}, \quad M^{-1}(\vec{r}) = \vec{o}
+\vec{F}_o = - \vec{F}_b
 \end{equation*}
 
-Let $\vec{x}$ be the current position of arm, $\vec{r}$ be reference.
-
-$\vec{F}_n$ be the normal force on robot, $\vec{f}$ be friction
-
-$\vec{F}_s$ be filtered force, $\vec{F}_c$ be contact force, $\hat{h}$ be the direction of the end-effector head.
-
-\vspace{1em}
-{\large \textbf{Isolating Contact Force}}
-
-Let $m$ be the mass of the end-effector,
-
+On the robot side, we measure the raw force $\vec{F}_s$, and denote its filtered version as $\vec{F}_s^\ast$.
+The raw reading is not yet the contact force $\vec{F}_c$ that the environment exerts on the end-effector: it also includes the inertia and weight of the end-effector, which has mass $m$:
 \begin{equation*}
-\vec{F}_s = \vec{F}_c - \ddot{\vec{x}} m - g \cdot \hat{k} m
+\vec{F}_s = \vec{F}_c - m\ddot{\vec{x}} - mg\,\hat{k}
+\end{equation*}
+Here $g$ is the gravitational acceleration and $\hat{k}$ is the upward unit vector.
+
+Let $\hat{n}$ be the direction of the end-effector head.
+The contact force splits into the normal force $\vec{F}_n$ along $\hat{n}$, and the friction $\vec{f}$ perpendicular to it:
+\begin{equation*}
+\vec{F}_n = \text{proj}_{\hat{n}}\,\vec{F}_c \quad\quad \vec{f} = \vec{F}_c - \vec{F}_n
 \end{equation*}
 
-Ensure
+%==============================================================================
+\section{Baseline Method}
 
-
-Apply linear system identification
-
+The baseline feeds back a blend of two $z$-axis forces, scaled by the gain $\lambda$:
 \begin{equation*}
-\vec{F}_n = \text{proj}_{\hat{n}} \vec{F}_c, \quad \vec{f} = \vec{F}_c - \vec{F}_n
+F_{b,z} = \lambda\,\big[(1-\alpha)\,F^\ast_{s,z} + \alpha\,F_{\text{wall},z}\big]
+\end{equation*}
+\begin{itemize}
+    \item \textbf{Direct force feedback:} the filtered force $F^\ast_{s,z}$.
+    \item \textbf{Virtual wall with deadzone:} once $F_{s,z}$ exceeds a threshold, a wall is fixed at $p_\text{wall} = p_z + F^\ast_{s,z}/K$ and pushes back with $F_{\text{wall},z} = K\,(p_\text{wall} - p_z) - B\,\dot{p}_z$; below the threshold, $\alpha = 0$.
+\end{itemize}
+
+%==============================================================================
+\section{Admittance Controller}
+
+\subsection{Purpose}
+
+We want to control the amount of force applied on the object by the end-effector.
+
+However, we don't have the ability to control force precisely: motor torque control is open-loop; UR robots doesn't support it anyways. We only have a strong position controller that rigorously follows the reference, even when that means smashing hard into obstacles.
+
+\subsection{Modeling}
+
+The solution is we simulate a classic \textbf{impedance control model}. The operator holds the tool from a spring of \emph{neglect-able length}.
+\begin{itemize}
+    \item The hand represents reference pose $\vec{r}$, the tool represents end-effector position $\vec{x}$, the spring has impedance $K_p$.
+    \item The spring has some damping factor too.
+    \item The object exerts a force $\vec{F}_\text{ext}$ to the tool, and we wish to apply an additional $\vec{F}_\text{ref}$ onto the object.
+\end{itemize}
+
+\begin{center}
+\includegraphics[width=0.6\textwidth]{drawings/Impedance Model.png}
+\end{center}
+
+We can write differential equation:
+\begin{equation*}
+m_\text{vir} \,\ddot{\vec{x}} = \underbrace{K_p (\vec{r}-\vec{x})}_{\text{Impedance}} \,-\, \underbrace{K_d \dot{\vec{x}}}_{\text{Damping}} \,+\, \underbrace{(f_\text{ext} + f_\text{ref})^{*}}_{\text{Force Term}}
 \end{equation*}
 
+And we send the result of this simulation to the rigorous position controller instead.
+
+\subsection{Feedback}
+
+Now we ask in this model, what is the force that the tool feeds back on the operator? It turns out to be exactly equal to the force of the spring. This writes as a simple PD controller.
 \begin{equation*}
-\|\vec{F}_c\| < F_{\text{thr}} : 
-\begin{cases} 
-\|\dot{\vec{r}}\| > V_L & : \vec{F}_b = -\dfrac{\dot{\vec{r}}}{V_L} f_L \\[1em]
-\|\dot{\vec{r}}\| \le V_L & : \vec{F}_b = \vec{0} 
+\vec{F}_b = K_p(\vec{x}-\vec{r}) - K_d \,\dot{\vec{r}}
+\end{equation*}
+Even better, this system
+
+%==============================================================================
+\section{Async Feedback System}
+
+\begin{center}
+\begin{tikzpicture}[
+    box/.style={draw, thick, minimum width=2.4cm, minimum height=1.2cm, align=center},
+    lbl/.style={font=\small, align=center},
+    >={Stealth[length=2.5mm]}
+]
+    \node[box] (R) {Robot};
+    \node[box, right=1.9cm of R] (CM) {Contact\\Modeling};
+    \node[box, right=1.9cm of CM] (FC) {Force\\Control};
+    \node[box, right=1.4cm of FC] (H) {Haply\\controller};
+    \draw[->, thick] (R) -- node[lbl, above] {Force\\(low freq)} (CM);
+    \draw[->, thick] (CM) -- node[lbl, above] {Contact\\model} (FC);
+    \draw[->, thick] (H.north) -- ++(0,0.6) -| node[lbl, pos=0.25, above] {Command (2000 Hz)} (FC.north);
+    \draw[->, thick] (FC.south) -- ++(0,-0.6) -| node[lbl, pos=0.25, below] {Feedback} (H.south);
+\end{tikzpicture}
+\end{center}
+
+%==============================================================================
+\section{Sensor Calibration}
+
+To isolate the contact force $\vec{F}_c$, we need to estimate $m$ and $g$.
+The sensor cannot be zeroed, so we apply linear system identification instead.
+
+\subsection{Tilting the Arm}
+
+\begin{center}
+\begin{minipage}[c]{0.38\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{drawings/SystemID_1.png}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.38\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{media/sysid-tilt-plots.png}
+\end{minipage}
+\end{center}
+
+With the load hanging below the sensor, rotate the arm upwards so that the head direction $\hat{n}$ tilts by $\theta$ from the vertical.
+In the end-effector frame $(\hat{i}_E, \hat{k}_E)$, the sensor reads:
+\begin{equation*}
+\begin{cases}
+\vec{F}_s \cdot \hat{k}_E = mg\cos\theta + B_k \\
+\vec{F}_s \cdot \hat{i}_E = mg\sin\theta + B_i
 \end{cases}
 \end{equation*}
+Plot each component against $\cos\theta$ and $\sin\theta$: the slope yields the value of $mg$, and the intercepts give the biases $B_k$ and $B_i$.
 
-\vspace{1.5em}
-Force feedback is disabled. Only velocity is fed back.
+\subsection{Spiral Trajectory}
 
-% PAGE 3
-\begin{equation*}
-\|\vec{F}_c\| > F_{\text{thr}} \wedge \|\dot{\vec{r}}\| < V_{\text{thr}} :
-\end{equation*}
+\begin{center}
+\includegraphics[width=0.72\textwidth]{media/sysid-spiral.png}
+\end{center}
 
-\begin{equation*}
-\vec{F}_n = -k(\vec{x} - \vec{x}_0) \implies \vec{x}_0 = \frac{\vec{F}_n}{k} + \vec{x}
-\end{equation*}
-
-\begin{equation*}
-\vec{F}_b = -k \operatorname{Proj}_{\vec{n}}(\vec{x} - \vec{x}_0)
-\end{equation*}
-
-\vspace{2em}
-
-\begin{equation*}
-\|\vec{F}_c\| > F_{\text{thr}} \wedge \|\dot{\vec{r}}\| \ge V_{\text{thr}} :
-\end{equation*}
-
-\begin{equation*}
-\vec{f} = \vec{F}_c - \vec{F}_n
-\end{equation*}
-
-\begin{equation*}
-\vec{F}_b = -k \operatorname{Proj}_{\vec{n}}(\vec{x} - \vec{x}_0) - \frac{\dot{\vec{r}}}{\|\dot{\vec{r}}\|} \vec{f}
-\end{equation*}
+Move the end-effector along a spiral in the vertical $\hat{j}$--$\hat{k}$ plane.
+Plot $\vec{F}_s \cdot \hat{k}$ against $\ddot{\vec{x}} \cdot \hat{k}$, and fit a line through the samples.
 
 \end{document}
