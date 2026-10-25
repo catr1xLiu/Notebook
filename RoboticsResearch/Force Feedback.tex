@@ -18,7 +18,7 @@
 \usetikzlibrary{arrows.meta,positioning}
 
 \title{Force Feedback Refinement}
-\author{Drafted by Yiran}
+\author{ARC Students}
 \date{\today}
 
 \begin{document}
@@ -31,21 +31,21 @@
 \includegraphics[width=0.9\textwidth]{drawings/ForceFeedback.png}
 \end{center}
 
-During tele-op, end effector tracks the desired position that the operator specifies through a controller. Our problem is: how to meaningfully reflect the measured force measured back to operator?
+During tele-op, the end effector tracks the position the operator specifies via a controller. Our problem is: how to meaningfully reflect the measured force to the operator?
 
-We define action space in 3D world, every vector and matrix below has:
+We define the action space in a 3D world; every vector and matrix below has:
 \begin{equation*}
 \vec{v} \in \mathbb{R}^3 \quad\quad [A]\in\mathbb{R}^{3\times3}
 \end{equation*}
-We only consider translational force feedback, torque is similar.
+We only consider translational force feedback; torque is similar.
 
 \subsection{Controller Space and Robot Space}
 
-The controller polls the current position of the pen $\vec{p}$ in the controller space, we map it to the reference point in robot space through a linear function. The function is reversible.
+The controller polls the current position of the pen $\vec{p}$ in the controller space; we map it to the reference point in robot space through a linear function. The function is reversible.
 \begin{equation*}
 M(\vec{p})=s[R]\vec{p} + \vec{r}_0 = \vec{r} \quad\quad M^{-1}(\vec{r})=\vec{p}
 \end{equation*}
-where $s$ is the scaling factor, $[R]$ is the rotation from controller space to robot space, and $\vec{r}_0$ is the zero-reference. In real life, it gets reset every time the operator picks-up control again. Here, since the pilot remains control, we treat it as a constant.
+where $s$ is the scaling factor, $[R]$ is the rotation from controller space to robot space, and $\vec{r}_0$ is the zero-reference. In real life, it gets reset every time the operator picks up control again. Here, since the pilot remains in control, we treat it as a constant.
 
 Let the actual (measured) state of the robot be:
 \begin{equation*}
@@ -92,11 +92,11 @@ F_{b,z} = \lambda\,\big[(1-\alpha)\,F^\ast_{s,z} + \alpha\,F_{\text{wall},z}\big
 
 We want to control the amount of force applied on the object by the end-effector.
 
-However, we don't have the ability to control force precisely: motor torque control is open-loop; UR robots doesn't support it anyways. We only have a strong position controller that rigorously follows the reference, even when that means smashing hard into obstacles.
+However, we can’t control force precisely: motor torque control is open-loop; UR robots don’t support it anyways. We only have a strong position controller that rigorously follows the reference, even when that means smashing hard into obstacles.
 
 \subsection{Modeling}
 
-The solution is we simulate a classic \textbf{impedance control model}. The operator holds the tool from a spring of \emph{neglect-able length}.
+The solution is to simulate a classic \textbf{impedance control model}. The operator holds the tool from a spring of \emph{negligible length}.
 \begin{itemize}
     \item The hand represents reference pose $\vec{r}$, the tool represents end-effector position $\vec{x}$, the spring has impedance $K_p$.
     \item The spring has some damping factor too.
@@ -107,7 +107,7 @@ The solution is we simulate a classic \textbf{impedance control model}. The oper
 \includegraphics[width=0.6\textwidth]{drawings/Impedance Model.png}
 \end{center}
 
-We can write differential equation:
+We can write a differential equation:
 \begin{equation*}
 m_\text{vir} \,\ddot{\vec{x}} = \underbrace{K_p (\vec{r}-\vec{x})}_{\text{Impedance}} \,-\, \underbrace{K_d \dot{\vec{x}}}_{\text{Damping}} \,+\, \underbrace{(f_\text{ext} + f_\text{ref})^{*}}_{\text{Force Term}}
 \end{equation*}
@@ -116,14 +116,17 @@ And we send the result of this simulation to the rigorous position controller in
 
 \subsection{Feedback}
 
-Now we ask in this model, what is the force that the tool feeds back on the operator? It turns out to be exactly equal to the force of the spring. This writes as a simple PD controller.
+Now we ask in this model what the force that the tool feeds back to the operator? It turns out to be exactly equal to the force of the spring. This can be written as a simple PD controller.
 \begin{equation*}
 \vec{F}_b = K_p(\vec{x}-\vec{r}) - K_d \,\dot{\vec{r}}
 \end{equation*}
-Even better, this system
 
 %==============================================================================
 \section{Async Feedback System}
+
+In the baseline system, everything is synchronous, and we have to trade filtering quality for reactiveness.
+
+Here, the force model can be sent from the robot at a lower frequency as an impedance model, leaving time for fine filtering. The high-frequency force feedback loop gives instant responses to operator inputs.
 
 \begin{center}
 \begin{tikzpicture}[
