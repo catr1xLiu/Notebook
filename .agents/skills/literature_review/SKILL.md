@@ -108,7 +108,7 @@ This is the most important part, reserving ~40-60% of the total length. It exten
 
 
 
-Most importantly, this is the part you **don't fully finish**; instead, you write a 100-word overview at the very top to lead the discussion, and:
+The user may ask you to left this partially finished; that means you will instead write a 100-word overview at the very top to lead the discussion, and:
 
 - **Transcribe math** - Most equations from the original paper should be included. Use the Obsidian way of creating `$$ Equations blocks $$`. In most cases, use one line of equation per block by default, unless there are specific reasons to group multiple lines into a block (e.g. system of equations).  After every equation block, leave an empty line. 
 - There is one exception, however: if a huge part of the equation is derivation/justification, show the intent in the head, use the Obsidian way to fold the derivation body, then show the final result at the buttom, result highlighted by $\boxed$.
@@ -117,7 +117,7 @@ Most importantly, this is the part you **don't fully finish**; instead, you writ
 - **Attach fake code** (see instructions below) when a complex algorithm is introduced.
 - **Attatch illustrations** from original paper whenever applicable.
 
-But then, you will:
+And you will:
 - **Leave detailed explanations blank.** You can imagine how detailed explanation will be written in the spaces you left between the equations, code, and illustrations to help you get the structure right. But you need to intentionally remove them when writing down the notes. This part is exactly what the user needs to complete on their own to strengthen their understanding.
 
 ### Implementation Tricks
