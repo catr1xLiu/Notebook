@@ -1,3 +1,6 @@
+# Research Direction Proposal
+
+High-fidelity simulation as bridge for human-policy shared
 
 ## Subjects of Interest
 According to previous discussion, the topics that that ARC project should focus on are (going from highest to lowest priority):
