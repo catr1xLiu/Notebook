@@ -1,0 +1,71 @@
+% =====================================================================
+%  preamble_maps.tex -- packages, colours, macros and TikZ styles for the
+%  equation maps. \input from the preamble of any document that
+%  \input{background_maps}. Requires amsmath, amssymb, array.
+% =====================================================================
+\usepackage{xcolor}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,calc,decorations.pathmorphing,decorations.pathreplacing}
+
+% ---------------- role colours ----------------------------------------
+\definecolor{cS}{HTML}{0072B2}  % decision state
+\definecolor{cU}{HTML}{C76E00}  % control input
+\definecolor{cR}{HTML}{00876C}  % reference / track data
+\definecolor{cP}{HTML}{7A7A7A}  % fixed parameter
+\definecolor{cD}{HTML}{8E44AD}  % derived quantity
+\definecolor{cL}{HTML}{C0392B}  % limit / bound
+\newcommand{\xS}[1]{{\color{cS}#1}}
+\newcommand{\xU}[1]{{\color{cU}#1}}
+\newcommand{\xR}[1]{{\color{cR}#1}}
+\newcommand{\xP}[1]{{\color{cP}#1}}
+\newcommand{\xD}[1]{{\color{cD}#1}}
+\newcommand{\xL}[1]{{\color{cL}#1}}
+
+% ---------------- layout ----------------------------------------------
+\newenvironment{panel}[2]{%
+  \par\addvspace{5pt}\noindent\begin{minipage}{\linewidth}%
+  {\sffamily\small\bfseries\color{black!70}#1}\enspace{\sffamily\small #2}\par\vspace{4pt}}%
+  {\end{minipage}\par\vspace{6pt}\noindent{\color{black!12}\rule{\linewidth}{0.5pt}}\par}
+\newenvironment{figside}[1][0.53]{\begin{minipage}[c]{#1\linewidth}\centering}{\end{minipage}\hfill}
+\newenvironment{eqside}[1][0.45]{\begin{minipage}[c]{#1\linewidth}\small
+  \setlength{\abovedisplayskip}{3pt}\setlength{\belowdisplayskip}{3pt}%
+  \setlength{\abovedisplayshortskip}{2pt}\setlength{\belowdisplayshortskip}{2pt}}{\end{minipage}}
+\newcommand{\deps}[1]{\par\smallskip{\sffamily\scriptsize\bfseries\color{black!45}DEPENDS}\enspace{\small#1}}
+\newcommand{\restr}[1]{\par\smallskip{\sffamily\scriptsize\bfseries\color{cL}RESTRAINS}\enspace{\small#1}}
+\newcommand{\chip}[2]{\tikz[baseline=-0.6ex]\fill[#1] (0,0) circle (3pt);\,{\small\sffamily\color{#1}#2}\quad}
+\providecommand{\sect}[1]{\par\vspace{8pt}{\large\sffamily\bfseries #1}\par\vspace{2pt}\noindent{\color{black!40}\rule{\linewidth}{0.8pt}}\par}
+
+% ---------------- tikz styles -----------------------------------------
+\tikzset{
+  every picture/.style={line cap=round,line join=round,>={Stealth[length=4.5pt,width=3.2pt]}},
+  ax/.style={->,black!45,line width=0.5pt},
+  body/.style={draw=black!65,fill=black!5,line width=0.6pt,rounded corners=1.2pt},
+  whl/.style={fill=black!75,draw=none,rounded corners=0.6pt,minimum width=5.5mm,minimum height=2mm,inner sep=0pt},
+  vS/.style={->,cS,line width=0.9pt},
+  vD/.style={->,cD,line width=0.9pt},
+  vec/.style={->,line width=0.8pt},
+  refl/.style={cR,line width=1pt},
+  bnd/.style={black!55,line width=0.7pt},
+  liml/.style={cL,line width=0.8pt},
+  guide/.style={black!35,dash pattern=on 2pt off 1.5pt,line width=0.4pt},
+  dim/.style={<->,black!50,line width=0.4pt,>={Stealth[length=3pt,width=2.4pt]}},
+  lab/.style={font=\footnotesize,inner sep=1pt},
+  sm/.style={font=\scriptsize,inner sep=1pt},
+  dot/.style={circle,fill,inner sep=0pt,minimum size=3.4pt},
+  odot/.style={circle,draw,fill=white,inner sep=0pt,minimum size=3.8pt,line width=0.6pt},
+}
+% small car icon: \caricon{(x,y)}{heading deg}{scale}
+\newcommand{\caricon}[3]{%
+  \begin{scope}[shift={#1},rotate=#2,scale=#3]
+    \draw[body] (-0.45,-0.2) rectangle (0.45,0.2);
+    \fill[black!55] (0.45,0) -- (0.28,0.11) -- (0.28,-0.11) -- cycle;
+  \end{scope}}
+% dependency-matrix row: {row}{label}{direct cols}{via cols}  (0 = none)
+\newcommand{\mrow}[4]{%
+  \draw[black!7,line width=3.6pt] (0.6,-#1) -- (\ncols+0.4,-#1);
+  \node[anchor=east,font=\footnotesize,inner sep=1pt] at (0.45,-#1) {$#2$};
+  \foreach \c in {#3}{\ifnum\c>0 \fill[black!85] (\c,-#1) circle (2.5pt);\fi}
+  \foreach \c in {#4}{\ifnum\c>0 \draw[black!60,line width=0.6pt,fill=white] (\c,-#1) circle (2.2pt);\fi}}
+\newcommand{\mcol}[3]{\node[font=\footnotesize,text=#3] at (#1,0.85) {$#2$};}
+
+% =====================================================================

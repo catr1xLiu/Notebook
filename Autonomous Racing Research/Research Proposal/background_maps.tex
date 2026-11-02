@@ -1,0 +1,774 @@
+% =====================================================================
+%  background_maps.tex -- equation maps (body only).
+%  Online: Liniger MPCC (C++ master). Offline: TUM global_racetrajectory_optimization.
+%  \input inside a document whose preamble \input{preamble_maps}.
+%  \sect{} renders the two part headings; redefine it before \input{preamble_maps}
+%  to change how they look (e.g. as \subsection).
+% =====================================================================
+{\setlength{\parindent}{0pt}%
+\chip{cS}{decision state}\chip{cU}{control input}\chip{cR}{reference / track data}%
+\chip{cP}{fixed parameter}\chip{cD}{derived}\chip{cL}{limit / bound}
+
+% =====================================================================
+\sect{Online \quad MPCC \quad (receding horizon, 60 steps $\times$ 20 ms)}
+
+% ---------------------------------------------------------------- A0
+\begin{panel}{A0}{Variables and who depends on whom}
+\begin{figside}[0.60]
+\begin{tikzpicture}[x=0.5cm,y=0.37cm]
+  \def\ncols{14}
+  \mcol{1}{X}{cS}\mcol{2}{Y}{cS}\mcol{3}{\varphi}{cS}\mcol{4}{v_x}{cS}\mcol{5}{v_y}{cS}
+  \mcol{6}{r}{cS}\mcol{7}{s}{cS}\mcol{8}{D}{cS}\mcol{9}{\delta}{cS}\mcol{10}{v_s}{cS}
+  \mcol{11}{\dot D}{cU}\mcol{12}{\dot\delta}{cU}\mcol{13}{\dot v_s}{cU}\mcol{14}{\mathbf p_{\!\mathrm{ref}}}{cR}
+  \mrow{1}{\xD{\alpha_f}}{4,5,6,9}{0}
+  \mrow{2}{\xD{\alpha_r}}{4,5,6}{0}
+  \mrow{3}{\xD{F_{f,y}}}{0}{4,5,6,9}
+  \mrow{4}{\xD{F_{r,y}}}{0}{4,5,6}
+  \mrow{5}{\xD{F_{r,x}}}{4,8}{0}
+  \mrow{6}{\xD{F_{\mathrm{fric}}}}{4}{0}
+  \mrow{7.4}{\xS{\dot X,\dot Y}}{3,4,5}{0}
+  \mrow{8.4}{\xS{\dot\varphi}}{6}{0}
+  \mrow{9.4}{\xS{\dot v_x}}{5,6,9}{4,8}
+  \mrow{10.4}{\xS{\dot v_y}}{4,6,9}{5}
+  \mrow{11.4}{\xS{\dot r}}{9}{4,5,6}
+  \mrow{12.4}{\xS{\dot s}}{10}{0}
+  \mrow{13.4}{\xS{\dot D,\dot\delta,\dot v_s}}{11,12,13}{0}
+  \mrow{14.8}{\xD{e_c,\,e_l}}{1,2,7,14}{0}
+  \mrow{15.8}{\xL{\text{track}}}{1,2,14}{0}
+  \mrow{16.8}{\xL{\text{ellipse}}}{0}{4,5,6,8}
+  \mrow{17.8}{\xL{|\alpha_f|}}{0}{4,5,6,9}
+  \mrow{18.8}{\beta\ \text{cost}}{4,5}{0}
+  \mrow{19.8}{\varphi\ \text{cost}}{3,7,14}{0}
+  \mrow{20.8}{\text{progress}}{10}{0}
+  \draw[black!30] (0.5,-6.7) -- (14.5,-6.7);
+  \draw[black!30] (0.5,-14.1) -- (14.5,-14.1);
+  \draw[black!30] (10.5,1.4) -- (10.5,-21.3);
+\end{tikzpicture}
+\end{figside}
+\begin{eqside}[0.38]
+\[\xS{\mathbf x} = [\,\xS{X\ Y\ \varphi\ v_x\ v_y\ r\ s\ D\ \delta\ v_s}\,]^{\top}\]
+\[\xU{\mathbf u} = [\,\xU{\dot D\ \ \dot\delta\ \ \dot v_s}\,]^{\top}\]
+\[\xS{\dot s}=\xS{v_s},\quad \xS{\dot D}=\xU{u_1},\quad \xS{\dot\delta}=\xU{u_2},\quad \xS{\dot v_s}=\xU{u_3}\]
+\medskip
+{\footnotesize
+\tikz\fill[black!85] (0,0) circle (2.5pt);\ appears in the formula\par
+\tikz\draw[black!60,line width=0.6pt] (0,0) circle (2.2pt);\ enters through $\alpha$ or $F$\par}
+\restr{inputs are \emph{rates}, so rate costs and slew bounds act directly on $\xU{\mathbf u}$.}
+\end{eqside}
+
+\par\medskip
+{\footnotesize\renewcommand{\arraystretch}{1.12}%
+\begin{minipage}[t]{0.335\linewidth}
+{\sffamily\scriptsize\bfseries\color{cS}STATE $\mathbf x$}\par\smallskip
+\begin{tabular}{@{}l@{\ \ }>{\raggedright\arraybackslash}p{4.35cm}@{}}
+$\xS{X,Y}$       & car position, world frame [m]\\
+$\xS{\varphi}$   & heading (yaw angle), world frame [rad]\\
+$\xS{v_x}$       & forward velocity, body frame [m/s]\\
+$\xS{v_y}$       & sideways velocity, body frame [m/s]\\
+$\xS{r}$         & yaw rate [rad/s]\\
+$\xS{s}$         & progress: virtual arc length along the reference [m]\\
+$\xS{D}$         & motor duty cycle, $[-0.1,1]$; $<0$ brakes\\
+$\xS{\delta}$    & front steering angle, $|\delta|\le 0.35$ rad\\
+$\xS{v_s}$       & progress speed $\dot s\ge 0$ [m/s]
+\end{tabular}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.32\linewidth}
+{\sffamily\scriptsize\bfseries\color{cU}INPUT $\mathbf u$}\par\smallskip
+\begin{tabular}{@{}l@{\ \ }>{\raggedright\arraybackslash}p{4.05cm}@{}}
+$\xU{\dot D}$         & duty-cycle rate\\
+$\xU{\dot\delta}$     & steering rate\\
+$\xU{\dot v_s}$       & progress acceleration
+\end{tabular}\par\medskip
+{\sffamily\scriptsize\bfseries\color{cR}REFERENCE}\par\smallskip
+\begin{tabular}{@{}l@{\ \ }>{\raggedright\arraybackslash}p{4.05cm}@{}}
+$\xR{\mathbf p_{\mathrm{ref}}}$ & centreline spline $(X_{\mathrm{ref}}(s),Y_{\mathrm{ref}}(s))$ with heading $\Phi(s)$; fixed data
+\end{tabular}\par\medskip
+{\sffamily\scriptsize\bfseries\color{cD}DERIVED}\par\smallskip
+\begin{tabular}{@{}l@{\ \ }>{\raggedright\arraybackslash}p{4.05cm}@{}}
+$\xD{\alpha_f,\alpha_r}$       & front / rear tire slip angle\\
+$\xD{F_{f,y},F_{r,y}}$         & front / rear lateral tire force\\
+$\xD{F_{r,x}}$                 & rear drive force from the motor\\
+$\xD{F_{\mathrm{fric}}}$       & rolling resistance + air drag
+\end{tabular}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.31\linewidth}
+{\sffamily\scriptsize\bfseries\color{black!60}COST / CONSTRAINT}\par\smallskip
+\begin{tabular}{@{}l@{\ \ }>{\raggedright\arraybackslash}p{3.55cm}@{}}
+$\dot{(\,\cdot\,)}$        & time derivative: the state equations\\
+$\xD{e_c}$                 & contouring error: sideways offset from $\mathbf p_{\mathrm{ref}}(s)$\\
+$\xD{e_l}$                 & lag error: along-track gap between $s$ and the car\\
+\xL{track}                 & car inside the slab around the reference\\
+\xL{ellipse}               & rear friction ellipse\\
+$\xL{|\alpha_f|}$          & front slip-angle limit\\
+$\beta$ cost               & sideslip $\arctan(v_y/v_x)$ penalty\\
+$\varphi$ cost             & heading vs.\ track heading $\Phi(s)$\\
+progress                   & reward $-q_{v_s}v_s$
+\end{tabular}
+\end{minipage}}
+\end{panel}
+
+% ---------------------------------------------------------------- A1
+\begin{panel}{A1}{Body velocity $\to$ world pose}
+\begin{figside}
+\begin{tikzpicture}
+  \draw[ax] (0,0) -- (1.0,0) node[sm,right]{$X$};
+  \draw[ax] (0,0) -- (0,1.0) node[sm,above]{$Y$};
+  \coordinate (C) at (2.9,0.45);
+  % world components of v (dotted)
+  \draw[black!55,dotted,line width=0.9pt] (C) -- ++(1.282,0) node[sm,below,midway,yshift=-2pt]{$\dot X$}
+        -- ++(0,1.779) node[sm,right,pos=0.8]{$\dot Y$};
+  % heading angle, measured behind the car
+  \draw[guide] (C) -- ++(180:1.5);
+  \draw[guide] (C) -- ++(210:1.5);
+  \draw[cS,line width=0.6pt] ($(C)+(180:1.15)$) arc (180:210:1.15);
+  \node[lab,text=cS] at ($(C)+(195:1.42)$) {$\varphi$};
+  \begin{scope}[shift={(C)},rotate=30]
+    \draw[body] (-0.55,-0.22) rectangle (0.55,0.22);
+    \fill[black!55] (0.55,0) -- (0.4,0.1) -- (0.4,-0.1) -- cycle;
+    \draw[vS] (0,0) -- (2.0,0) node[lab,below right=0pt]{$v_x$};
+    \draw[vS] (0,0) -- (0,0.9) node[lab,above left=0pt]{$v_y$};
+    \draw[->,black!75,line width=0.6pt] (0,0) -- (2.0,0.9) node[lab,above=1pt]{$\mathbf v$};
+  \end{scope}
+  \draw[cS,->,line width=0.7pt] ($(C)+(245:0.7)$) arc (245:305:0.7);
+  \node[lab,text=cS] at ($(C)+(275:0.92)$) {$r$};
+\end{tikzpicture}
+\end{figside}
+\begin{eqside}
+\[\begin{aligned}
+\xS{\dot X} &= \xS{v_x}\cos\xS{\varphi} - \xS{v_y}\sin\xS{\varphi}\\
+\xS{\dot Y} &= \xS{v_x}\sin\xS{\varphi} + \xS{v_y}\cos\xS{\varphi}\\
+\xS{\dot\varphi} &= \xS{r}
+\end{aligned}\]
+\deps{$(\dot X,\dot Y)\leftarrow \xS{v_x,v_y,\varphi}$;\quad $\dot\varphi\leftarrow\xS{r}$}
+\restr{pose = integral of the body velocity rotated by the heading.}
+\end{eqside}
+\end{panel}
+
+% ---------------------------------------------------------------- A2
+\begin{panel}{A2}{Slip angles}
+\begin{figside}
+\begin{tikzpicture}
+  \coordinate (R) at (0,0); \coordinate (G) at (1.5,0); \coordinate (F) at (3.2,0);
+  \draw[black!40,line width=1.4pt] (R) -- (F);
+  \draw[guide] (F) -- ++(0:1.7);
+  \draw[guide] ($(F)+(208:0.9)$) -- ++(28:2.7);
+  \node[whl] at (R) {};
+  \node[whl,rotate=28] at (F) {};
+  \fill (G) circle (1.6pt);
+  % rear
+  \draw[vS] (R) -- ++(-16:1.55) node[sm,below=2pt]{$(v_x,\ v_y{-}l_r r)$};
+  \draw[cD,line width=0.8pt] ($(R)+(-16:1.1)$) arc (-16:0:1.1);
+  \node[lab,text=cD] at ($(R)+(-6:1.35)$) {$\alpha_r$};
+  % front
+  \draw[vS] (F) -- ++(10:1.6) node[sm,right]{$(v_x,\ v_y{+}l_f r)$};
+  \draw[cD,line width=0.8pt] ($(F)+(10:1.25)$) arc (10:28:1.25);
+  \node[lab,text=cD] at ($(F)+(19:1.5)$) {$\alpha_f$};
+  \draw[cS,line width=0.6pt] ($(F)+(180:0.75)$) arc (180:208:0.75);
+  \node[lab,text=cS] at ($(F)+(194:1.0)$) {$\delta$};
+  % dims
+  \draw[dim] (0,-1.05) -- (1.5,-1.05) node[sm,midway,below]{$l_r$};
+  \draw[dim] (1.5,-1.05) -- (3.2,-1.05) node[sm,midway,below]{$l_f$};
+\end{tikzpicture}
+\end{figside}
+\begin{eqside}
+\[\begin{aligned}
+\xD{\alpha_f} &= \xS{\delta} - \arctan\frac{\xS{v_y}+\xP{l_f}\,\xS{r}}{\xS{v_x}}\\[2pt]
+\xD{\alpha_r} &= -\arctan\frac{\xS{v_y}-\xP{l_r}\,\xS{r}}{\xS{v_x}}
+\end{aligned}\]
+\deps{$\alpha_f\leftarrow\xS{v_x,v_y,r,\delta}$;\quad $\alpha_r\leftarrow\xS{v_x,v_y,r}$}
+\restr{nothing alone: angle between where a tire points and where it moves (bounded in A8).}
+\end{eqside}
+\end{panel}
+
+% ---------------------------------------------------------------- A3
+\begin{panel}{A3}{Tire and drivetrain forces}
+\begin{figside}[0.56]
+\begin{tikzpicture}
+  \begin{scope}[xscale=1.35,yscale=7]
+    \fill[cL!10] (0.6,-0.215) rectangle (1.65,0.215);
+    \fill[cL!10] (-1.65,-0.215) rectangle (-0.6,0.215);
+    \draw[ax] (-1.7,0) -- (1.8,0) node[sm,right]{$\alpha$};
+    \draw[ax] (0,-0.22) -- (0,0.25) node[sm,above]{$F_y$};
+    \draw[guide] (-1.65,0.192) -- (1.65,0.192);
+    \node[sm,text=cP,anchor=south east] at (-0.05,0.193) {$D_f$};
+    \draw[black!50,line width=0.5pt] (-0.15,-0.0891) -- (0.26,0.1545);
+    \node[sm,text=cP,anchor=east] at (-0.05,0.12) {$B_fC_fD_f$};
+    \draw[cD,line width=1pt,domain=-1.6:1.6,samples=100,smooth] plot (\x,{0.192*sin(1.2*atan(2.579*\x))});
+    \draw[liml] (0.6,-0.215) -- (0.6,0.215);
+    \draw[liml] (-0.6,-0.215) -- (-0.6,0.215);
+    \node[sm,text=cL,above] at (0.6,0.215) {$\alpha_{\max}$};
+  \end{scope}
+  \begin{scope}[shift={(3.35,-0.65)},xscale=0.6,yscale=7]
+    \draw[ax] (0,0) -- (3.9,0) node[sm,right]{$v_x$};
+    \draw[ax] (0,-0.09) -- (0,0.34) node[sm,above]{$F_x$};
+    \draw[cD,line width=1pt,domain=0:3.5] plot (\x,{0.287-0.0545*\x}) node[sm,right]{$D{=}1$};
+    \draw[cD!50,line width=1pt,domain=0:3.5] plot (\x,{0.5*(0.287-0.0545*\x)}) node[sm,right]{$D{=}\tfrac12$};
+    \draw[cD,dashed,line width=0.8pt,domain=0:3.5] plot (\x,{-0.0518-0.00035*\x*\x}) node[sm,right]{$F_{\mathrm{fric}}$};
+  \end{scope}
+\end{tikzpicture}
+\end{figside}
+\begin{eqside}[0.42]
+\[\begin{aligned}
+\xD{F_{f,y}} &= \xP{D_f}\sin\!\big(\xP{C_f}\arctan(\xP{B_f}\,\xD{\alpha_f})\big)\\
+\xD{F_{r,y}} &= \xP{D_r}\sin\!\big(\xP{C_r}\arctan(\xP{B_r}\,\xD{\alpha_r})\big)\\
+\xD{F_{r,x}} &= (\xP{C_{m1}}-\xP{C_{m2}}\,\xS{v_x})\,\xS{D}\\
+\xD{F_{\mathrm{fric}}} &= -\xP{C_{r0}}-\xP{C_{r2}}\,\xS{v_x}^2
+\end{aligned}\]
+{\footnotesize $\xP{D_f},\xP{D_r}$: peak force $\approx\mu F_z$ \quad $\xS D$: duty cycle $\in[-0.1,1]$}
+\deps{$F_y\leftarrow\xD{\alpha}$;\quad $F_{r,x}\leftarrow\xS{D,v_x}$;\quad $F_{\mathrm{fric}}\leftarrow\xS{v_x}$}
+\restr{lateral force saturates at $D$; drive force fades with speed; front tire has no $F_x$.}
+\end{eqside}
+\end{panel}
+
+% ---------------------------------------------------------------- A4
+\begin{panel}{A4}{Newton--Euler in the body frame}
+\begin{figside}
+\begin{tikzpicture}
+  \coordinate (R) at (0,0); \coordinate (G) at (1.6,0); \coordinate (F) at (3.4,0);
+  \draw[black!40,line width=1.4pt] (R) -- (F);
+  \node[whl] at (R) {};
+  \node[whl,rotate=22] at (F) {};
+  \fill (G) circle (1.6pt);
+  \draw[vD] (R) -- ++(0,1.0) node[lab,above]{$F_{r,y}$};
+  \draw[vD] (-1.1,0) -- (-0.33,0);
+  \node[lab,text=cD,below] at (-0.75,-0.05) {$F_{r,x}$};
+  \draw[vD] (F) -- ++(112:1.05) node[lab,above]{$F_{f,y}$};
+  \draw[vD,dashed] (G) -- ++(-0.75,0);
+  \node[lab,text=cD,above] at (1.15,0.05) {$F_{\mathrm{fric}}$};
+  \draw[cS,->,line width=0.7pt] ($(G)+(-150:0.5)$) arc (-150:-30:0.5);
+  \node[lab,text=cS] at ($(G)+(-90:0.72)$) {$r$};
+  \draw[dim] (0,-1.15) -- (1.6,-1.15) node[sm,midway,below]{$l_r$};
+  \draw[dim] (1.6,-1.15) -- (3.4,-1.15) node[sm,midway,below]{$l_f$};
+\end{tikzpicture}
+\end{figside}
+\begin{eqside}
+\[\begin{aligned}
+\xP m\,\xS{\dot v_x} &= \xD{F_{r,x}}+\xD{F_{\mathrm{fric}}}-\xD{F_{f,y}}\sin\xS\delta+\xP m\,\xS{v_y}\,\xS r\\
+\xP m\,\xS{\dot v_y} &= \xD{F_{r,y}}+\xD{F_{f,y}}\cos\xS\delta-\xP m\,\xS{v_x}\,\xS r\\
+\xP{I_z}\,\xS{\dot r} &= \xD{F_{f,y}}\,\xP{l_f}\cos\xS\delta-\xD{F_{r,y}}\,\xP{l_r}
+\end{aligned}\]
+{\footnotesize $\pm m\,v\,r$ terms: the body frame itself rotates.}
+\deps{$(\dot v_x,\dot v_y,\dot r)\leftarrow\xD{F}$'s, $\xS{\delta}$, $\xS{v_x,v_y,r}$}
+\restr{accelerations = forces / inertia. Linearized + ZOH-discretized each QP (A9).}
+\end{eqside}
+\end{panel}
+
+% ---------------------------------------------------------------- A5
+\begin{panel}{A5}{Progress $s$, contouring error $e_c$, lag error $e_l$}
+\begin{figside}
+\begin{tikzpicture}
+  \begin{scope}[shift={(0,-4.4)}]
+    \draw[refl] (127:5) arc (127:58:5) node[sm,right]{$\mathbf p_{\mathrm{ref}}(\cdot)$};
+    \coordinate (P) at (102:5);
+    \coordinate (S) at (88:5);
+    \coordinate (p) at (88:4.15);
+    \coordinate (N) at ($(P)+(-78:1)$);
+    \coordinate (Q) at ($(P)!(p)!(N)$);
+    \draw[guide] ($(P)+(192:0.6)$) -- ($(P)+(12:2.9)$);
+    \draw[vec,black!70] (P) -- ++(12:0.65) node[sm,above]{$\mathbf t$};
+    \draw[black!45,dotted,line width=0.8pt] (p) -- (S);
+    \draw[cD,line width=1.2pt] (P) -- (Q) node[lab,midway,left=1pt]{$e_c$};
+    \draw[cD,line width=1.2pt] (Q) -- (p) node[lab,midway,below=1pt]{$e_l$};
+    \caricon{(p)}{-2}{0.65}
+    \node[dot,cR] at (P) {};
+    \node[sm,text=cR,above left] at (P) {$s$};
+    \node[odot,draw=cR] at (S) {};
+    \node[sm,text=cR,above] at (S) {$s^{\ast}$};
+    \node[sm,below right=4pt] at (p) {$(X,Y)$};
+  \end{scope}
+\end{tikzpicture}
+\end{figside}
+\begin{eqside}
+\[\begin{aligned}
+\xD{e_c} &= \phantom{-}\xR{\mathbf n(\xS s)}^{\!\top}\big(\xS{\mathbf p}-\xR{\mathbf p_{\mathrm{ref}}(\xS s)}\big)\\
+\xD{e_l} &= -\xR{\mathbf t(\xS s)}^{\!\top}\big(\xS{\mathbf p}-\xR{\mathbf p_{\mathrm{ref}}(\xS s)}\big)
+\end{aligned}\]
+{\footnotesize $\xR{\mathbf t}=(\cos\Phi,\sin\Phi)$,\ \ $\xR{\mathbf n}=(\sin\Phi,-\cos\Phi)$ (right),\ \ $\xS{\mathbf p}=(\xS X,\xS Y)$}
+\deps{$e_c,e_l\leftarrow\xS{X,Y,s}$ and the spline $\xR{\mathbf p_{\mathrm{ref}}}$}
+\restr{nothing alone; $e_l\!\approx\!0 \Leftrightarrow s\!\approx\!s^{\ast}$ (projection), with no inner $\arg\min$.}
+\end{eqside}
+\end{panel}
+
+% ---------------------------------------------------------------- A6
+\begin{panel}{A6}{Stage cost as springs}
+\begin{figside}
+\begin{tikzpicture}
+  \draw[refl] (-0.2,0) -- (5.6,0);
+  \coordinate (P) at (3.5,0); \coordinate (Fp) at (1.9,0); \coordinate (p) at (1.9,1.15);
+  \draw[cD,line width=1.1pt,decorate,decoration={zigzag,segment length=3.2pt,amplitude=2.6pt}] (Fp) -- (P);
+  \draw[cD!75,line width=0.5pt,decorate,decoration={coil,aspect=0.45,segment length=6pt,amplitude=3pt}] (Fp) -- (p);
+  \caricon{(p)}{0}{0.8}
+  \node[dot,cR] at (P) {};
+  \node[sm,text=cR,below=2pt] at (P) {$s$};
+  \draw[vS,line width=1.2pt] (P) -- ++(1.15,0);
+  \node[lab,text=cS,above] at ($(P)+(0.62,0.05)$) {$q_{v_s}v_s$};
+  \node[lab,text=cD,below] at ($(Fp)!0.5!(P)+(0,-0.12)$) {$q_l\,e_l^2$\ \ \textcolor{cP}{\scriptsize$q_l{=}500$}};
+  \node[lab,text=cD,left=5pt] at ($(Fp)!0.5!(p)+(0,0.12)$) {$q_c\,e_c^2$};
+  \node[sm,text=cP,left=5pt] at ($(Fp)!0.5!(p)+(0,-0.22)$) {$q_c{=}0.1$};
+\end{tikzpicture}
+\end{figside}
+\begin{eqside}
+\[J=\sum_{k=0}^{N}\Big(\xP{q_c}\xD{e_c}^2+\xP{q_l}\xD{e_l}^2-\xP{q_{v_s}}\xS{v_s}\Big)+\text{reg.}\]
+{\footnotesize reg.\ $= \xP{q_\beta}\beta^2+\xP{q_r}\xS r^2+\xP{q_\mu}(\xS\varphi-\xR\Phi)^2+\|(\xS{D,\delta,v_s})\|^2_{\xP{R}}+\|\xU{\mathbf u}\|^2_{\xP{R_\Delta}}$\\
+\phantom{reg.\ }$\beta=\arctan(\xS{v_y}/\xS{v_x})$;\ \ $q_c,q_r\times10$ at $k=N$;\ \ $q_{v_s}{=}0.02$}
+\deps{$e_c,e_l$ (A5), $\xS{v_s}$, $\xS{v_x,v_y,r}$, $\xU{\mathbf u}$}
+\restr{soft only: $s$ pinned to the car (stiff), lateral position nearly free (weak), progress rewarded.}
+\end{eqside}
+\end{panel}
+
+% ---------------------------------------------------------------- A7
+\begin{panel}{A7}{Track constraint (linearized slab)}
+\begin{figside}
+\begin{tikzpicture}
+  \begin{scope}[shift={(0,-4.3)}]
+    \coordinate (P) at (95:4.5);
+    \coordinate (Ao) at (95:5.25);
+    \coordinate (Ai) at (95:3.75);
+    \path ($(Ao)+(185:2.6)$) coordinate (o1) ($(Ao)+(5:2.6)$) coordinate (o2)
+          ($(Ai)+(185:2.6)$) coordinate (i1) ($(Ai)+(5:2.6)$) coordinate (i2);
+    \fill[cS!7] (o1) -- (o2) -- (i2) -- (i1) -- cycle;
+    \begin{scope}
+      \clip (o1) -- (o2) -- (i2) -- (i1) -- cycle;
+      \fill[cL!20,even odd rule] (0,0) circle (7) (0,0) circle (5.25);
+    \end{scope}
+    \draw[bnd] (128:5.25) arc (128:60:5.25);
+    \draw[bnd] (128:3.75) arc (128:60:3.75);
+    \draw[cR,dash pattern=on 4pt off 2pt,line width=0.8pt] (128:4.5) arc (128:60:4.5);
+    \draw[liml] (o1) -- (o2);
+    \draw[liml] (i1) -- (i2);
+    \draw[vec,black!70] (P) -- ++(95:0.5) node[sm,right]{$\bar{\mathbf n}$};
+    \node[dot,cR] at (P) {};
+    \node[sm,text=cR,below right] at (P) {$\bar s_k$};
+    \draw[dim] ($(P)+(185:1.7)$) -- ($(Ao)+(185:1.7)$) node[sm,midway,left]{$R_{\mathrm{out}}$};
+    \draw[dim] ($(P)+(185:1.7)$) -- ($(Ai)+(185:1.7)$) node[sm,midway,left]{$R_{\mathrm{in}}$};
+    \node[dot,cS] at ($(P)+(5:1.3)+(95:-0.42)$) {};
+    \node[sm,text=cS,below] at ($(P)+(5:1.3)+(95:-0.42)$) {$\mathbf p_k$};
+    \node[sm,text=cL] at ($(o2)+(-0.15,-0.35)$) {\tiny lin.\ error};
+  \end{scope}
+\end{tikzpicture}
+\end{figside}
+\begin{eqside}
+\[-\xL{R_{\mathrm{in}}}\ \le\ \xR{\bar{\mathbf n}}^{\!\top}\big(\xS{\mathbf p_k}-\xR{\mathbf p_{\mathrm{ref}}(\bar s_k)}\big)\ \le\ \xL{R_{\mathrm{out}}}\quad(+\,\xi_k\ge 0)\]
+{\footnotesize $\bar s_k$: progress of the \emph{previous guess} (fixed in this QP); $\xR{\bar{\mathbf n}}$: left normal there;\\
+$R_{\mathrm{in}}{=}R_{\mathrm{out}}{=}0.14$\,m constant; car treated as a point.}
+\deps{$\xS{X_k,Y_k}$ only}
+\restr{car point inside a straight slab; soft (slack $\xi$, penalized); can overshoot the real edge far from $\bar s_k$.}
+\end{eqside}
+\end{panel}
+
+% ---------------------------------------------------------------- A8
+\begin{panel}{A8}{Tire constraints}
+\begin{figside}
+\begin{tikzpicture}[scale=0.72]
+  \fill[cS!7] (0,0) ellipse (1.83 and 1.65);
+  \draw[ax] (-2.3,0) -- (2.9,0) node[sm,right]{$F_{r,x}$};
+  \draw[ax] (0,-2.0) -- (0,2.3) node[sm,above]{$F_{r,y}$};
+  \draw[guide] (0,0) circle (1.737);
+  \draw[liml] (0,0) ellipse (1.83 and 1.65);
+  \draw[vD] (0,0) -- (0.9,1.2);
+  \node[dot,cD] at (0.9,1.2) {};
+  \node[sm,text=cD,right=2pt] at (0.9,1.2) {$(F_{r,x},F_{r,y})$};
+  \node[sm,text=cL,anchor=north west] at (1.86,-0.3) {$e_\varepsilon D_r/e_{\mathrm{long}}$};
+  \node[sm,text=cL,anchor=south east] at (-0.05,1.68) {$e_\varepsilon D_r$};
+  \node[sm,text=black!55,anchor=north east] at (-1.25,-1.25) {$D_r$};
+\end{tikzpicture}
+\end{figside}
+\begin{eqside}
+\[\Big(\tfrac{\xP{e_{\mathrm{long}}}\,\xD{F_{r,x}}}{\xP{F_{N,r}}}\Big)^2+\Big(\tfrac{\xD{F_{r,y}}}{\xP{F_{N,r}}}\Big)^2\ \le\ \Big(\tfrac{\xL{e_\varepsilon}\,\xP{D_r}}{\xP{F_{N,r}}}\Big)^2\]
+\[|\xD{\alpha_f}|\ \le\ \xL{\alpha_{\max}}\]
+{\footnotesize $e_{\mathrm{long}}{=}0.9$,\ $e_\varepsilon{=}0.95$,\ $\alpha_{\max}{=}0.6$; $F_{N,r}$ static load. Both first-order in $\xS{\mathbf x}$ around the guess.}
+\deps{ellipse $\leftarrow\xS{v_x,v_y,r,D}$;\quad $|\alpha_f|\leftarrow\xS{v_x,v_y,r,\delta}$}
+\restr{rear: drive + lateral force share one ellipse at 95\,\% of peak. Front: slip below $\alpha_{\max}$ (A3, red band). Soft.}
+\end{eqside}
+\end{panel}
+
+% ---------------------------------------------------------------- A9
+\begin{panel}{A9}{One QP per SQP step, trust region on $s$}
+\begin{figside}
+\begin{tikzpicture}[x=0.52cm,y=1cm]
+  \fill[cL!12] (0,0.0) -- (11,2.18) -- (11,2.68) -- (0,0.5) -- cycle;
+  \draw[ax] (-0.3,0) -- (12.4,0) node[sm,right]{$k$};
+  \draw[ax] (0,-0.1) -- (0,2.8) node[sm,left]{$s_k$};
+  \draw[black!40,line width=0.5pt] (0,0.25) -- (11,2.43);
+  \foreach \k in {1,...,7,11} {
+    \pgfmathsetmacro\sb{0.25+0.198*\k}
+    \pgfmathsetmacro\so{\sb+0.17*sin(40*\k)}
+    \node[odot,draw=black!45] at (\k,\sb) {};
+    \node[dot,cS] at (\k,\so) {};
+  }
+  \node[dot,cS] at (0,0.25) {};
+  \node[sm,left] at (0,0.25) {$\hat{\mathbf x}$};
+  \node[sm] at (9,1.4) {$\cdots$};
+  \foreach \k/\l in {0/0,1/1,2/2,11/N} \node[sm,below] at (\k,-0.05) {$\l$};
+  \draw[decorate,decoration={brace,amplitude=4pt},black!50] (0.2,3.05) -- (11,3.05) node[sm,midway,above=4pt]{$N\,T_s=60\times20\,\text{ms}$};
+  \node[sm,text=cL] at (6.3,2.55) {$|s_k-\bar s_k|\le 0.2$\,m};
+  \node[sm,text=black!50] at (8.6,0.95) {$\bar s_k$ (guess)};
+\end{tikzpicture}
+\end{figside}
+\begin{eqside}
+\[\begin{aligned}
+\min\ &\textstyle\sum_k \tfrac12\xS{\mathbf x_k}^{\!\top}\!Q_k\xS{\mathbf x_k}+\mathbf q_k^{\!\top}\xS{\mathbf x_k}+\tfrac12\xU{\mathbf u_k}^{\!\top}\!R\,\xU{\mathbf u_k}+\text{slack}\\
+\text{s.t. }&\xS{\mathbf x_0}=\hat{\mathbf x},\quad \xS{\mathbf x_{k+1}}=A_k\xS{\mathbf x_k}+B_k\xU{\mathbf u_k}+\mathbf g_k\\
+&\text{A7, A8 (soft)},\ \ \text{box bounds on }\xS{\mathbf x},\xU{\mathbf u}\\
+&|\xS{s_k}-\bar s_k|\le 0.2\,\text{m}
+\end{aligned}\]
+{\footnotesize $(A_k,B_k,\mathbf g_k)$: exact ZOH of the Jacobian at $(\bar{\mathbf x}_k,\bar{\mathbf u}_k)$.\\
+$\bar{\mathbf x}\leftarrow 0.8\,\mathbf x^{\ast}+0.2\,\bar{\mathbf x}$, \ 2 iterations, apply $\xU{\mathbf u_0}$, shift.}
+\restr{each QP trusts its linearization only near the previous guess.}
+\end{eqside}
+\end{panel}
+
+% =====================================================================
+\clearpage
+\sect{Offline \quad TUM \texttt{global\_racetrajectory\_optimization} \quad (whole lap)}
+
+% ---------------------------------------------------------------- B0
+\begin{panel}{B0}{Two pipelines}
+\centering
+\begin{tikzpicture}[
+  bx/.style={draw=black!35,rounded corners=2pt,inner sep=3.5pt,font=\footnotesize,align=center,fill=#1!9},
+  fl/.style={->,black!55,line width=0.6pt}]
+  \node[font=\sffamily\small\bfseries,anchor=west] at (-1.8,0.95) {mincurv};
+  \node[font=\footnotesize\itshape,text=black!50,anchor=west] at (-0.2,0.95) {path first, speed second};
+  \node[bx=cR] (t1) at (0,0) {$\xR{\mathbf p_i,\ \mathbf n_i}$\\ $\xR{w_{\ell,i},\ w_{r,i}}$};
+  \node[bx=cS] (q1) at (3.4,0) {QP over $\xS{\boldsymbol\alpha}$\\ $\min\sum\kappa_i^2$};
+  \node[bx=cD] (r1) at (6.6,0) {$\xD{\mathbf r(s)},\ \xD{\kappa(s)}$};
+  \node[bx=cS] (v1) at (10.2,0) {fwd/bwd pass\\ $\xS{v(s)},\ \xD{a_x(s)}$};
+  \node[bx=cP] (g1) at (10.2,-1.3) {$\text{ggv}(v),\ a_{x,\mathrm{mach}}(v),\ c_d,\ m,\ \mu$};
+  \draw[fl] (t1) -- (q1); \draw[fl] (q1) -- (r1); \draw[fl] (r1) -- (v1); \draw[fl] (g1) -- (v1);
+  \draw[fl,dashed] (r1.north) to[bend right=35] node[sm,above]{IQP: re-linearize} (q1.north);
+  \node[font=\sffamily\small\bfseries,anchor=west] at (-1.8,-2.35) {mintime};
+  \node[font=\footnotesize\itshape,text=black!50,anchor=west] at (-0.2,-2.35) {path and speed in one problem};
+  \node[bx=cR] (t2) at (0,-3.4) {$\xR{\kappa_{\mathrm{ref}}(s)}$\\ $\xR{w_\ell(s),\ w_r(s)}$};
+  \node[bx=cS] (n2) at (5.0,-3.4) {NLP (collocation + IPOPT)\\ $\min\int_0^L \tfrac{dt}{ds}\,ds$\\ over $\xS{\mathbf x(s)},\ \xU{\mathbf u(s)}$};
+  \node[bx=cD] (o2) at (10.2,-3.4) {$\xD{\mathbf r(s)},\ \xS{v(s)}$};
+  \node[bx=cP] (p2) at (5.0,-4.95) {double track, Pacejka, load transfer, aero, $\mu$};
+  \draw[fl] (t2) -- (n2); \draw[fl] (n2) -- (o2); \draw[fl] (p2) -- (n2);
+\end{tikzpicture}
+\restr{\texttt{mincurv}: speed never feeds back into geometry. \texttt{mintime}: geometry and speed traded off jointly.}
+\end{panel}
+
+% ---------------------------------------------------------------- B1
+\begin{panel}{B1}{mincurv: the only variable is a lateral shift $\alpha_i$}
+\begin{figside}
+\begin{tikzpicture}
+  \begin{scope}[shift={(0,-5.65)}]
+    \draw[bnd] (121:7) arc (121:59:7);
+    \draw[bnd] (121:5) arc (121:59:5);
+    \draw[refl,dash pattern=on 4pt off 2pt] (121:6) arc (121:59:6);
+    \draw[cS,line width=1pt] plot[smooth] coordinates {(121:6.62) (115:6.6) (105:6.15) (95:5.45) (85:5.45) (75:6.15) (65:6.6) (59:6.62)};
+    \foreach \t/\a in {115/-0.6,105/-0.15,95/0.55,85/0.55,75/-0.15,65/-0.6} {
+      \draw[->,black!40,line width=0.5pt] (\t:6) -- (\t:5.5);
+      \node[dot,cR] at (\t:6) {};
+      \pgfmathsetmacro\rr{6-\a}
+      \node[dot,cS] at (\t:\rr) {};
+    }
+    \draw[cL!60,line width=3pt,opacity=0.5] (77.5:6.9) -- (77.5:5.1);
+    \draw[cL,line width=0.6pt] ($(77.5:6.9)+(167.5:0.12)$) -- ($(77.5:6.9)+(-12.5:0.12)$);
+    \draw[cL,line width=0.6pt] ($(77.5:5.1)+(167.5:0.12)$) -- ($(77.5:5.1)+(-12.5:0.12)$);
+    \node[sm,text=cL,right=3pt] at (77.5:5.25) {$[-\bar w_\ell,\ \bar w_r]$};
+    \node[sm,text=cR,above] at (95:6.02) {$\mathbf p_i$};
+    \node[sm,text=cS,below] at (95:5.42) {$\mathbf r_i$};
+    \node[sm,text=black!55,left] at (115:5.6) {$\mathbf n_i$};
+    \node[lab,text=cS,right] at (91.5:5.75) {$\alpha_i$};
+    \draw[dim] (119:6) -- (119:7) node[sm,midway,left]{$w_\ell$};
+    \draw[dim] (119:6) -- (119:5) node[sm,midway,left]{$w_r$};
+    \draw[->,cR,line width=0.8pt] (63:6) arc (63:58:6);
+  \end{scope}
+\end{tikzpicture}
+\end{figside}
+\begin{eqside}
+\[\xD{\mathbf r_i}=\xR{\mathbf p_i}+\xS{\alpha_i}\,\xR{\mathbf n_i}\]
+\[-\big(\xR{w_{\ell,i}}-\tfrac{\xP{w_{\mathrm{veh}}}}{2}\big)\ \le\ \xS{\alpha_i}\ \le\ \xR{w_{r,i}}-\tfrac{\xP{w_{\mathrm{veh}}}}{2}\]
+{\footnotesize $\xR{\mathbf n_i}$ points \emph{right};\quad $\bar w=w-w_{\mathrm{veh}}/2$;\quad decision vector $\xS{\boldsymbol\alpha}\in\mathbb R^{N}$.}
+\deps{$\mathbf r_i\leftarrow\xS{\alpha_i}$ and fixed track data}
+\restr{each point slides only along its own normal, inside the track minus half the car width.}
+\end{eqside}
+\end{panel}
+
+% ---------------------------------------------------------------- B2
+\begin{panel}{B2}{mincurv: curvature, linearized}
+\begin{figside}
+\begin{tikzpicture}[scale=1.05]
+  \draw[cR,line width=0.8pt,dash pattern=on 4pt off 2pt,domain=-2.2:2.5,samples=50,smooth] plot (\x,{0.22*\x*\x-0.75});
+  \draw[cS,line width=1pt,domain=-2.2:2.5,samples=50,smooth] plot (\x,{0.22*\x*\x});
+  \coordinate (Ar) at (1.2,-0.4332);
+  \coordinate (A) at (1.2,0.3168);
+  \draw[vec,black!55] (Ar) -- ++(0.95,0.5016) node[sm,right]{$(\xP{x'},\xP{y'})$ frozen};
+  \node[dot,cR] at (Ar) {};
+  \draw[vec,cS] (A) -- ++(0,0.85) node[sm,above]{$(\xS{x''},\xS{y''})$};
+  \draw[guide] (A) -- ++(-0.7004,1.3265) node[sm,left]{$1/\kappa_i$};
+  \draw[cD,dashed,line width=0.6pt] (-0.335,3.224) ++(-98:3.287) arc (-98:-26:3.287);
+  \node[dot,cS] at (A) {};
+  \node[sm,text=cS,right=2pt] at (A) {$\mathbf r_i$};
+  \node[sm,text=cR] at (-1.6,-0.05) {ref.};
+  \node[sm,text=cS] at (-1.75,1.25) {raceline};
+\end{tikzpicture}
+\end{figside}
+\begin{eqside}
+\[\xD{\kappa_i}=\frac{\xP{x_i'}\,\xS{y_i''}-\xP{y_i'}\,\xS{x_i''}}{\big(\xP{x_i'}^2+\xP{y_i'}^2\big)^{3/2}}
+\ \Rightarrow\ \xD{\boldsymbol\kappa}\approx\xR{\boldsymbol\kappa_{\mathrm{ref}}}+\xP{E_\kappa}\,\xS{\boldsymbol\alpha}\]
+\[\min_{\xS{\boldsymbol\alpha}}\ \sum_i\xD{\kappa_i}^2=\tfrac12\xS{\boldsymbol\alpha}^{\!\top}\!H\xS{\boldsymbol\alpha}+\mathbf f^{\top}\xS{\boldsymbol\alpha}
+\quad\text{s.t.}\ \ |\xD{\kappa_i}|\le\xL{\kappa_{\max}}\ \ \&\ \text{B1}\]
+{\footnotesize $x',y'$ taken from the reference spline (frozen); $x'',y''$ are linear in $\boldsymbol\alpha$ through the spline system. IQP: refreeze at the new line, re-solve.}
+\deps{$\kappa_i\leftarrow\xS{\boldsymbol\alpha}$ (neighbours too, via splines)}
+\restr{a QP: smoothest line through the corridor; no speed, mass or tire in it.}
+\end{eqside}
+\end{panel}
+
+% ---------------------------------------------------------------- B3
+\begin{panel}{B3}{Velocity profile: acceleration left after cornering}
+\begin{figside}
+\begin{tikzpicture}
+  \begin{scope}
+    \clip (-2.0,-1.6) rectangle (2.0,0.8);
+    \fill[cS!7] (0,0) ellipse (1.6 and 1.3);
+  \end{scope}
+  \draw[ax] (-2.1,0) -- (2.4,0) node[sm,right]{$a_y$};
+  \draw[ax] (0,-1.7) -- (0,1.85) node[sm,above]{$a_x$};
+  \draw[cL,line width=0.9pt] (0,0) ellipse (1.6 and 1.3);
+  \draw[cL!70,dashed,line width=0.7pt] (1.6,0) -- (0,1.3) -- (-1.6,0) -- (0,-1.3) -- cycle;
+  \draw[liml] (-1.9,0.8) -- (1.9,0.8) node[sm,right]{$a_{x,\mathrm{mach}}(v)$};
+  \draw[cD,line width=0.8pt] (0.75,-1.6) -- (0.75,1.6) node[sm,above]{$a_y{=}v^2\kappa$};
+  \node[odot,draw=cD] at (0.75,1.148) {};
+  \node[dot,cD] at (0.75,-1.148) {};
+  \node[dot,cD] at (0.75,0.8) {};
+  \node[sm,text=cL,anchor=north west] at (1.62,-0.18) {$\mu a_{y,\max}$};
+  \node[sm,text=cL,above left] at (0,1.3) {$\mu a_{x,\max}$};
+  \node[sm,text=cL] at (-1.45,1.05) {$p{=}2$};
+  \node[sm,text=cL!70] at (-0.55,-0.6) {$p{=}1$};
+\end{tikzpicture}
+\end{figside}
+\begin{eqside}
+\[\xD{a_y}=\xS v^2\,\xD{\kappa}\]
+\[\xD{a_x^{\mathrm{avail}}}=\xL{\mu\,a_{x,\max}(v)}\Big[1-\Big(\frac{\xD{a_y}}{\xL{\mu\,a_{y,\max}(v)}}\Big)^{\xP p}\Big]^{1/\xP p}\]
+\[\begin{aligned}
+\text{accel: }&\min\!\big(\xD{a_x^{\mathrm{avail}}},\,\xL{a_{x,\mathrm{mach}}(v)}\big)-\tfrac{\xP{c_d}}{\xP m}\xS v^2\\
+\text{brake: }&\xD{a_x^{\mathrm{avail}}}+\tfrac{\xP{c_d}}{\xP m}\xS v^2\quad(\text{magnitude})
+\end{aligned}\]
+{\footnotesize ggv table: $(v,a_{x,\max},a_{y,\max})$; $p$ = \texttt{dyn\_model\_exp} $\in[1,2]$ (default 1).}
+\deps{$a_x\leftarrow\xS v,\ \xD\kappa$ (from B2)}
+\restr{longitudinal accel.\ allowed by grip after cornering, and by the motor.}
+\end{eqside}
+\end{panel}
+
+% ---------------------------------------------------------------- B4
+\begin{panel}{B4}{Velocity profile: forward--backward pass}
+\begin{figside}
+\begin{tikzpicture}[x=0.72cm,y=0.36cm]
+  \draw[ax] (0,0) -- (10.7,0) node[sm,right]{$s$};
+  \draw[ax] (0,0) -- (0,7.2) node[sm,above]{$v$};
+  \draw[cL,dash pattern=on 3pt off 2pt,line width=0.6pt,domain=0:10,samples=150,smooth]
+     plot (\x,{6-4*exp(-(((\x-3)/0.6)^2))-3*exp(-(((\x-7.5)/0.6)^2))});
+  \draw[cS!45,dashed,line width=0.7pt,domain=3:7.5,samples=40] plot (\x,{sqrt(4+5*(\x-3))});
+  \draw[cS!45,dashed,line width=0.7pt,domain=7.5:10,samples=30] plot (\x,{sqrt(9+5*(\x-7.5))});
+  \draw[cL!55,dashed,line width=0.7pt,domain=0.3:3,samples=30] plot (\x,{sqrt(4+8*(3-\x))});
+  \draw[cL!55,dashed,line width=0.7pt,domain=4.2:7.5,samples=30] plot (\x,{sqrt(9+8*(7.5-\x))});
+  \draw[cS,line width=1.3pt,domain=0:10,samples=200]
+     plot (\x,{min(6-4*exp(-(((\x-3)/0.6)^2))-3*exp(-(((\x-7.5)/0.6)^2)),
+                   (\x<3)*sqrt(4+8*abs(3-\x)) + (\x>=3)*(\x<7.5)*min(sqrt(4+5*abs(\x-3)),sqrt(9+8*abs(7.5-\x))) + (\x>=7.5)*sqrt(9+5*abs(\x-7.5)))});
+  \node[sm,text=cL,anchor=south] at (5.2,6.05) {$v_\kappa=\sqrt{\mu a_{y,\max}/|\kappa|}$};
+  \node[sm,text=cS!70] at (5.35,3.3) {fwd};
+  \node[sm,text=cL!80] at (6.45,4.6) {bwd};
+  \foreach \s in {3,7.5} \draw[black!40] (\s,-0.25) -- (\s,0.25);
+  \node[sm,below] at (3,-0.2) {apex};
+  \node[sm,below] at (7.5,-0.2) {apex};
+\end{tikzpicture}
+\end{figside}
+\begin{eqside}
+\[\text{fwd: }\ \xS{v_{i+1}}=\sqrt{\xS{v_i}^2+2\,\xD{a_x^{+}}(\xS{v_i},\xD{\kappa_i})\,\xR{\ell_i}}\]
+\[\text{bwd: }\ \xS{v_{i}}=\sqrt{\xS{v_{i+1}}^2+2\,|\xD{a_x^{-}}(\xS{v_{i+1}},\xD{\kappa_{i+1}})|\,\xR{\ell_i}}\]
+\[\xS{v}=\min\big(v_\kappa,\ \text{fwd},\ \text{bwd}\big)\]
+{\footnotesize $\ell_i$: segment length; $a_x^{\pm}$ from B3. No optimizer: a sweep.}
+\deps{$v\leftarrow\xD\kappa(s)$, ggv, motor, drag}
+\restr{speed $\le$ cornering limit, and reachable by accelerating out of / braking into each apex.}
+\end{eqside}
+\end{panel}
+
+% ---------------------------------------------------------------- B5
+\begin{panel}{B5}{mintime: who depends on whom}
+\begin{figside}[0.56]
+\begin{tikzpicture}[x=0.55cm,y=0.37cm]
+  \def\ncols{11}
+  \mcol{1}{v}{cS}\mcol{2}{\beta}{cS}\mcol{3}{\omega_z}{cS}\mcol{4}{n}{cS}\mcol{5}{\xi}{cS}
+  \mcol{6}{\delta}{cU}\mcol{7}{F_d}{cU}\mcol{8}{F_b}{cU}\mcol{9}{\gamma_y}{cU}
+  \mcol{10}{\kappa}{cR}\mcol{11}{w}{cR}
+  \mrow{1}{\xD{S_f}}{1,2,4,5,10}{0}
+  \mrow{2}{\xD{\alpha_{ij}}}{1,2,3,6}{0}
+  \mrow{3}{\xD{F_{z,ij}}}{1,7,8,9}{0}
+  \mrow{4}{\xD{F_{x,ij}}}{7,8}{0}
+  \mrow{5}{\xD{F_{y,ij}}}{0}{1,2,3,6,7,8,9}
+  \mrow{6.4}{\xS{v'}}{2,6}{1,3,4,5,7,8,9,10}
+  \mrow{7.4}{\xS{\beta'}}{1,2,3,6}{4,5,7,8,9,10}
+  \mrow{8.4}{\xS{\omega_z'}}{6}{1,2,3,4,5,7,8,9,10}
+  \mrow{9.4}{\xS{n'}}{1,2,5}{4,10}
+  \mrow{10.4}{\xS{\xi'}}{3,10}{1,2,4,5}
+  \mrow{11.8}{T_{\mathrm{lap}}}{0}{1,2,4,5,10}
+  \mrow{12.8}{\xL{\text{track}}}{4,11}{0}
+  \mrow{13.8}{\xL{\text{circles}}}{0}{1,2,3,6,7,8,9}
+  \mrow{14.8}{\xL{\gamma_y\ \text{eq.}}}{9}{1,2,3,6,7,8}
+  \mrow{15.8}{\xL{\text{power}}}{1,7}{0}
+  \mrow{16.8}{\xL{F_dF_b}}{7,8}{0}
+  \mrow{17.8}{\xL{\text{rates}}}{6,7,8}{1,4,10}
+  \mrow{18.8}{\xL{\text{periodic}}}{1,2,3,4,5}{0}
+  \draw[black!30] (0.5,-5.7) -- (11.5,-5.7);
+  \draw[black!30] (0.5,-11.1) -- (11.5,-11.1);
+  \draw[black!30] (5.5,1.4) -- (5.5,-19.3);
+  \draw[black!30] (9.5,1.4) -- (9.5,-19.3);
+\end{tikzpicture}
+\end{figside}
+\begin{eqside}[0.40]
+{\footnotesize
+$(\cdot)'=d(\cdot)/ds$\par\medskip
+\tikz\fill[black!85] (0,0) circle (2.5pt);\ appears in the formula\par
+\tikz\draw[black!60,line width=0.6pt] (0,0) circle (2.2pt);\ enters through $S_f$, $\alpha$ or $F$\par\medskip
+Every $d/ds$ row inherits $n,\xi,\kappa$ through $S_f=dt/ds$.}
+\restr{compared with A0: no $X,Y$ states and no progress variable; position is $(s,n)$ on the fixed reference.}
+\end{eqside}
+\end{panel}
+
+% ---------------------------------------------------------------- B6
+\begin{panel}{B6}{mintime: curvilinear coordinates, time as a function of $s$}
+\begin{figside}
+\begin{tikzpicture}
+  \coordinate (O) at (0,0);
+  \coordinate (P) at (0:4);
+  \coordinate (C) at (0:2.85);
+  \draw[refl] (-32:4) arc (-32:42:4) node[sm,above]{ref.};
+  \node[dot,black!55] at (O) {};
+  \draw[guide] (O) -- (-22:4) node[sm,pos=0.33,below,text=cR]{$1/\kappa(s)$};
+  \node[dot,cR] at (P) {};
+  \node[sm,text=cR,right] at (P) {$s$};
+  \draw[guide] (2.85,-1.0) -- (2.85,2.4);
+  \draw[guide] (4,-0.25) -- (4,-1.15);
+  \draw[guide] (C) -- ++(108:2.3);
+  \draw[dim] (2.85,-1.1) -- (4,-1.1) node[sm,midway,below,text=cS]{$n$};
+  \begin{scope}[shift={(C)},rotate=108]
+    \draw[body] (-0.72,-0.28) rectangle (0.72,0.28);
+    \fill[black!55] (0.72,0) -- (0.52,0.12) -- (0.52,-0.12) -- cycle;
+  \end{scope}
+  \draw[vS] (C) -- ++(122:2.15) node[lab,above]{$v$};
+  \draw[cS,line width=0.6pt] ($(C)+(90:1.3)$) arc (90:108:1.3);
+  \node[lab,text=cS] at ($(C)+(99:1.08)$) {$\xi$};
+  \draw[cS,line width=0.6pt] ($(C)+(108:1.75)$) arc (108:122:1.75);
+  \node[lab,text=cS] at ($(C)+(115:2.0)$) {$\beta$};
+  \draw[cS,->,line width=0.7pt] ($(C)+(195:0.95)$) arc (195:255:0.95);
+  \node[lab,text=cS] at ($(C)+(222:1.22)$) {$\omega_z$};
+\end{tikzpicture}
+\end{figside}
+\begin{eqside}
+\[\xD{S_f}\equiv\frac{dt}{ds}=\frac{1-\xS n\,\xR\kappa}{\xS v\cos(\xS\xi+\xS\beta)}\]
+\[\frac{d\xS n}{ds}=\xD{S_f}\,\xS v\sin(\xS\xi+\xS\beta),\qquad \frac{d\xS\xi}{ds}=\xD{S_f}\,\xS{\omega_z}-\xR\kappa\]
+\[T_{\mathrm{lap}}=\int_0^{L}\xD{S_f}\,ds\]
+{\footnotesize $\xS{\mathbf x}=(v,\beta,\omega_z,n,\xi)$,\ $\xU{\mathbf u}=(\delta,F_d,F_b,\gamma_y)$;\ \ $n>0$ = \emph{left} (opposite sign to $\alpha$ in B1).}
+\deps{$S_f\leftarrow\xS{v,\beta,n,\xi},\ \xR\kappa$}
+\restr{time is not a variable: lap time integrates $dt/ds$ over the fixed reference length $L$.}
+\end{eqside}
+\end{panel}
+
+% ---------------------------------------------------------------- B7
+\begin{panel}{B7}{mintime: double-track loads}
+\begin{figside}
+\begin{tikzpicture}
+  \draw[body] (-0.55,-0.55) rectangle (3.85,0.55);
+  \draw[black!35] (0,-0.8) -- (0,0.8);
+  \draw[black!35] (3.3,-0.8) -- (3.3,0.8);
+  \draw[cL!80,line width=0.6pt,fill=cL!6] (3.3,-0.8) circle (0.55);
+  \draw[cL!80,line width=0.6pt,fill=cL!6] (3.3,0.8) circle (0.38);
+  \draw[cL!80,line width=0.6pt,fill=cL!6] (0,-0.8) circle (0.40);
+  \draw[cL!80,line width=0.6pt,fill=cL!6] (0,0.8) circle (0.24);
+  \node[whl] at (0,0.8) {}; \node[whl] at (0,-0.8) {};
+  \node[whl,rotate=15] at (3.3,0.8) {}; \node[whl,rotate=15] at (3.3,-0.8) {};
+  \fill (1.54,0) circle (1.6pt);
+  \draw[vD] (1.54,0) -- ++(-0.8,0) node[sm,left]{$a_x$};
+  \draw[vD] (1.54,0) -- ++(0,0.5) node[sm,above]{$a_y$};
+  \node[sm,text=cL] at (4.45,-0.8) {$\propto F_{z,fr}$};
+  \draw[dim] (0,-1.55) -- (1.54,-1.55) node[sm,midway,below]{$l_r$};
+  \draw[dim] (1.54,-1.55) -- (3.3,-1.55) node[sm,midway,below]{$l_f$};
+  \draw[dim] (-1.0,-0.8) -- (-1.0,0.8) node[sm,midway,left]{$b$};
+  \node[sm,text=black!50] at (1.65,1.15) {braking + left turn};
+\end{tikzpicture}
+\end{figside}
+\begin{eqside}[0.46]
+\[\xD{F_{z,ij}}=\xP{F^{\mathrm{st}}_{z,ij}}+\tfrac12\xP{c_{l,i}}\xS v^2
+\mp\tfrac{\xP h}{2\xP l}\big(\xU{F_d}{+}\xU{F_b}{-}\xP{c_d}\xS v^2{-}\xP{F_{\mathrm{roll}}}\big)
+\mp\xP{k_i}\,\xU{\gamma_y}\]
+{\footnotesize long.: $-$front/$+$rear;\ lat.: $-$left/$+$right;\ $k_f{=}k_{\mathrm{roll}}$, $k_r{=}1{-}k_{\mathrm{roll}}$}
+\[\xU{\gamma_y}=\frac{\xP h}{\xP{\bar b}}\,\xP m\,\xD{a_y}\quad(\text{equality constraint})\]
+{\footnotesize $\xD{F_{x,ij}}$: drive/brake split $\xP{k_{\mathrm{drive}}},\xP{k_{\mathrm{brake}}}$ minus rolling resistance.}
+\deps{$F_z\leftarrow\xS v,\ \xU{F_d,F_b,\gamma_y}$}
+\restr{each wheel's load (hence grip) follows the accelerations; $\gamma_y$ is a decision variable closed by an equality.}
+\end{eqside}
+\end{panel}
+
+% ---------------------------------------------------------------- B8
+\begin{panel}{B8}{mintime: tire model and friction circles}
+\begin{figside}
+\begin{tikzpicture}
+  \begin{scope}[xscale=7,yscale=1.6]
+    \draw[ax] (0,0) -- (0.38,0) node[sm,right]{$\alpha$};
+    \draw[ax] (0,0) -- (0,1.3) node[sm,above]{$F_y/D$};
+    \draw[guide] (0,1) -- (0.36,1);
+    \draw[cD,line width=1pt,domain=0:0.35,samples=150,smooth] plot (\x,{sin(2.5*atan(10*\x-1.0*(10*\x-rad(atan(10*\x)))))});
+    \node[sm,left] at (0,1) {$1$};
+  \end{scope}
+  \begin{scope}[shift={(3.55,0)},xscale=0.25,yscale=0.25]
+    \draw[ax] (0,0) -- (10,0) node[sm,right]{$F_z$};
+    \draw[ax] (0,0) -- (0,9.6) node[sm,above]{$D$};
+    \draw[guide] (0,0) -- (9,9) node[sm,above]{$\mu F_z$};
+    \draw[cD,line width=1pt,domain=0:9,samples=30] plot (\x,{\x*(1-0.1*\x/3)});
+    \node[sm,text=cD] at (8.2,4.9) {$\varepsilon<0$};
+  \end{scope}
+\end{tikzpicture}
+\end{figside}
+\begin{eqside}
+\[\xD{D_{ij}}=\xP\mu\,\xD{F_{z,ij}}\Big(1+\xP\varepsilon\,\frac{\xD{F_{z,ij}}}{\xP{F_{z0}}}\Big)\]
+\[\xD{F_{y,ij}}=\xD{D_{ij}}\sin\!\Big(\xP C\arctan\big(\xP B\xD\alpha-\xP E(\xP B\xD\alpha-\arctan\xP B\xD\alpha)\big)\Big)\]
+\[\Big(\frac{\xD{F_{x,ij}}}{\xP\mu\,\xD{F_{z,ij}}}\Big)^2+\Big(\frac{\xD{F_{y,ij}}}{\xP\mu\,\xD{F_{z,ij}}}\Big)^2\le\xL{1}\qquad\forall\,ij\]
+\deps{$\alpha_{ij}\leftarrow\xS{v,\beta,\omega_z},\xU\delta$;\ \ $F_{z,ij}$ from B7}
+\restr{each tire inside its own circle sized by its load (B7 circles); load transfer costs total grip ($\varepsilon<0$).}
+\end{eqside}
+\end{panel}
+
+% ---------------------------------------------------------------- B9
+\begin{panel}{B9}{mintime: the NLP}
+\begin{figside}[0.40]
+\begin{tikzpicture}[x=1cm,y=1cm]
+  \draw[ax] (-0.2,0) -- (5.3,0) node[sm,right]{$s$};
+  \foreach \t in {0.1127,0.5,0.8873} \draw[black!25] ({0.4+4.2*\t},0) -- ({0.4+4.2*\t},2.2);
+  \draw[cS,line width=1pt,domain=0:1,samples=40] plot ({0.4+4.2*\x},{1+2.4*\x-1.4*\x*\x});
+  \foreach \t/\m in {0.1127/0.4963,0.5/0.2381,0.8873/-0.0201} {
+    \pgfmathsetmacro\xx{0.4+4.2*\t}
+    \pgfmathsetmacro\yy{1+2.4*\t-1.4*\t*\t}
+    \draw[cD,line width=1.1pt] ({\xx-0.6},{\yy-0.6*\m+0.12}) -- ({\xx+0.6},{\yy+0.6*\m+0.12});
+    \node[dot,cS] at (\xx,\yy) {};
+  }
+  \node[dot,cS] at (0.4,1) {};
+  \node[odot,draw=cS] at (4.6,2) {};
+  \node[sm,text=cS,left] at (0.4,1) {$X_k$};
+  \node[sm,text=cS,right] at (4.6,2) {$X_{k+1}$};
+  \node[sm,text=cD,above] at (2.5,2.3) {slope $=h_k\mathbf f(X_{k,j},U_k,\kappa)$};
+  \draw[cU,line width=1pt] (-0.1,-0.75) -- (0.4,-0.75) (0.4,-0.5) -- (4.6,-0.5) (4.6,-0.85) -- (5.1,-0.85);
+  \node[sm,text=cU,above] at (2.5,-0.5) {$U_k$};
+  \draw[dim] (0.4,-1.15) -- (4.6,-1.15) node[sm,midway,below]{$h_k$};
+\end{tikzpicture}
+\end{figside}
+\begin{eqside}[0.58]
+\[\min_{\xS{\mathbf x},\xU{\mathbf u}}\ \int_0^{L}\xD{S_f}\,ds+\xP{\lambda_F}\|\Delta\xU F\|^2+\xP{\lambda_\delta}\|\Delta\xU\delta\|^2\]
+\footnotesize
+\[\begin{aligned}
+&\text{dynamics:}  && h_k\,\mathbf f(X_{k,j},\xU{U_k},\xR{\kappa})=\textstyle\sum_r C_{rj}X_{k,r},\ \ 3\text{ Legendre pts}\\
+&\text{track:}     && -\xR{w_r}+\tfrac{\xP{w_{\mathrm{opt}}}}{2}\le\xS n\le\xR{w_\ell}-\tfrac{\xP{w_{\mathrm{opt}}}}{2}\\
+&\text{grip, loads:}&& \text{B8 circles},\ \ \gamma_y\ \text{equality (B7)}\\
+&\text{power:}     && \xS v\,\xU{F_d}\le\xL{P_{\max}},\qquad -\epsilon\le\xU{F_d}\,\xU{F_b}\le 0\\
+&\text{actuators:} && \tfrac{\Delta\xU\delta}{\Delta t}\in\pm\tfrac{\xL{\delta_{\max}}}{\xP{t_\delta}},\ \
+                      \tfrac{\Delta\xU{F_d}}{\Delta t}\le\tfrac{\xL{F_{d,\max}}}{\xP{t_d}},\ \
+                      \tfrac{\Delta\xU{F_b}}{\Delta t}\ge-\tfrac{\xL{F_{b,\max}}}{\xP{t_b}}\\
+&\text{closed lap:}&& \xS{\mathbf x}(0)=\xS{\mathbf x}(L)\\
+&\text{bounds:}    && \xS v\ge 1,\ \ |\xS\beta|,|\xS{\omega_z}|,|\xS\xi|\le\tfrac{\pi}{2},\ \ \xU{F_d}\ge0\ge\xU{F_b}
+\end{aligned}\]
+\small
+\restr{dynamics enforced only at collocation points; the lap must close; everything else is a path constraint.}
+\end{eqside}
+\end{panel}
+}

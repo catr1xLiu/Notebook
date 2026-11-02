@@ -1,0 +1,95 @@
+% =====================================================================
+%  background_boundaries.tex -- one condensed figure: the constraint
+%  boundaries of the three classical optimizers. Needs preamble_maps.tex,
+%  tabularx, booktabs, array. Full equations: background_maps.tex.
+% =====================================================================
+\begin{figure}[h!]
+\centering
+\tikzset{
+  mt/.style={black,line width=0.9pt},                          % TUM mintime
+  mp/.style={black,line width=0.9pt,dash pattern=on 4pt off 2pt}, % MPCC
+  mc/.style={black,line width=1.0pt,dotted},                   % TUM mincurv + speed profile
+}
+% legend
+\begin{tikzpicture}
+  \draw[mp] (0,0) -- (0.7,0); \node[sm,anchor=west] at (0.75,0) {MPCC (online)};
+  \draw[mc] (3.3,0) -- (4.0,0); \node[sm,anchor=west] at (4.05,0) {\texttt{mincurv} + speed profile};
+  \draw[mt] (8.0,0) -- (8.7,0); \node[sm,anchor=west] at (8.75,0) {\texttt{mintime}};
+  \fill[cS!12] (11.0,-0.12) rectangle (11.6,0.12); \node[sm,anchor=west] at (11.65,0) {feasible};
+\end{tikzpicture}\par\medskip
+% (a) track
+\begin{tikzpicture}
+  \begin{scope}[shift={(0,-3.6)}]
+    \fill[cS!12] (119:4.5) arc (119:61:4.5) -- (61:3.5) arc (61:119:3.5) -- cycle;
+    \draw[bnd] (119:4.75) arc (119:61:4.75);
+    \draw[bnd] (119:3.25) arc (119:61:3.25);
+    \draw[cR,dash pattern=on 3pt off 2pt,line width=0.6pt] (119:4) arc (119:61:4);
+    \draw[mp,cL] (-1.35,4.75) -- (1.35,4.75);
+    \draw[mp,cL] (-1.35,3.25) -- (1.35,3.25);
+    \node[dot,cR] at (90:4) {};
+    \node[sm,text=cR,below=1pt] at (90:4) {$\bar s_k$};
+    \draw[dim] (110:4.5) -- (110:4.75);
+    \node[sm,text=black!60,anchor=east] at (110:4.85) {$\tfrac{w_{\mathrm{veh}}}{2}$};
+  \end{scope}
+  \node[sm] at (0,-0.95) {(a) track};
+\end{tikzpicture}\hfill
+% (b) grip
+\begin{tikzpicture}[scale=0.95]
+  \fill[cS!12] (0,0) circle (1);
+  \draw[ax] (-1.45,0) -- (1.5,0) node[sm,right]{$a_y$};
+  \draw[ax] (0,-1.3) -- (0,1.35) node[sm,above]{$a_x$};
+  \draw[mt,cL] (0,0) circle (1);
+  \draw[mp,cL] (0,0) ellipse (1.056 and 0.95);
+  \draw[mc,cL] (1,0) -- (0,1) -- (-1,0) -- (0,-1) -- cycle;
+  \node[sm] at (0,-1.65) {(b) grip};
+\end{tikzpicture}\hfill
+% (c) drive / brake
+\begin{tikzpicture}[x=1.15cm,y=1.0cm]
+  \fill[cS!12] plot[domain=0:3,samples=40] (\x,{min(1.0,0.8/max(\x,0.01))}) -- (3,-1) -- (0,-1) -- cycle;
+  \draw[ax] (0,0) -- (3.3,0) node[sm,right]{$v$};
+  \draw[ax] (0,-1.3) -- (0,1.3) node[sm,above]{$F_x$};
+  \draw[mt,cL,domain=0:3,samples=60] plot (\x,{min(1.0,0.8/max(\x,0.01))});
+  \draw[mp,cL,domain=0:3] plot (\x,{0.9-0.2*\x});
+  \draw[mc,cL,domain=0:3,samples=60] plot (\x,{min(0.95,0.9/max(\x,0.01))-0.03*\x*\x});
+  \draw[mt,cL] (0,-1.0) -- (3,-1.0);
+  \draw[mp,cL] (0,-0.12) -- (3,-0.12);
+  \draw[mc,cL,domain=0:3] plot (\x,{-0.9-0.03*\x*\x});
+  \node[sm,text=cL,anchor=south west] at (1.45,0.72) {$P_{\max}/v$};
+  \node[sm,text=black!60] at (2.6,-0.35) {brake};
+  \node[sm] at (1.5,-1.65) {(c) drive / brake};
+\end{tikzpicture}
+
+\medskip
+{\footnotesize\renewcommand{\arraystretch}{1.35}
+\begin{tabularx}{\linewidth}{@{}>{\sffamily}l
+  >{\raggedright\arraybackslash}X >{\raggedright\arraybackslash}X >{\raggedright\arraybackslash}X@{}}
+\toprule
+ & MPCC (online, 1.2\,s) & \texttt{mincurv} + speed profile & \texttt{mintime} (whole lap)\\
+\midrule
+track &
+  $-\xL{R_{\mathrm{in}}}\le\bar{\mathbf n}^{\top}(\mathbf p_k-\mathbf p_{\mathrm{ref}}(\bar s_k))\le\xL{R_{\mathrm{out}}}$; slab at the guess, soft, car = point &
+  $-\bar w_{\ell,i}\le\alpha_i\le\bar w_{r,i}$, \ $\bar w=w-\tfrac{w_{\mathrm{veh}}}{2}$ &
+  $-w_r+\tfrac{w_{\mathrm{opt}}}{2}\le n\le w_\ell-\tfrac{w_{\mathrm{opt}}}{2}$\\
+grip &
+  rear: $(e_{\mathrm{long}}F_{r,x})^2+F_{r,y}^2\le(\xL{e_\varepsilon}D_r)^2$; front: $|\alpha_f|\le\xL{\alpha_{\max}}$; soft, linearized &
+  $|\kappa_i|\le\xL{\kappa_{\max}}$; then $\big(\tfrac{|a_x|}{\mu a_{x,\max}(v)}\big)^{p}+\big(\tfrac{|a_y|}{\mu a_{y,\max}(v)}\big)^{p}\le1$, default $p{=}1$ &
+  per tire: $F_{x,ij}^2+F_{y,ij}^2\le(\mu F_{z,ij})^2$, $F_z$ with aero and load transfer\\
+drive / brake &
+  $-0.1\le D\le1$, \ $F_{r,x}=(C_{m1}-C_{m2}v_x)D$; no front brake &
+  $a_x\le\xL{a_{x,\mathrm{mach}}(v)}-\tfrac{c_d}{m}v^2$ &
+  $vF_d\le\xL{P_{\max}}$, \ $F_d\ge0\ge F_b\ge-\xL{F_{b,\max}}$, \ $F_dF_b\approx0$\\
+rates &
+  box bounds on $\dot D,\dot\delta,\dot v_s$ &
+  -- &
+  $\tfrac{\Delta\delta}{\Delta t}\in\pm\tfrac{\delta_{\max}}{t_\delta}$, similar for $F_d,F_b$\\
+structure &
+  $|s_k-\bar s_k|\le0.2$\,m; dynamics linearized per QP &
+  no dynamics: geometry, then a speed sweep &
+  $\mathbf x(0)=\mathbf x(L)$; dynamics at collocation points\\
+\bottomrule
+\end{tabularx}}
+\caption{Constraint boundaries of the classical optimizers, condensed. Shaded: feasible
+region. Shapes are schematic; sizes differ per optimizer. Full equations, variables and
+dependencies: Appendix~\ref{app:maps}.}
+\label{fig:boundaries}
+\end{figure}

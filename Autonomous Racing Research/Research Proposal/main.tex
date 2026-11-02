@@ -1,0 +1,266 @@
+% =====================================================================
+%  Initial research proposal (working draft, internal)
+%
+%  Files:  main.tex                    this document
+%          preamble_maps.tex           colours / macros / TikZ styles
+%          background_boundaries.tex   Appendix A.1 figure
+%          background_maps.tex         Appendix A.2 equation maps
+%          references.bib
+%  Build:  latexmk -pdf main.tex   (or pdflatex, bibtex, pdflatex x2)
+%
+%  \todo{...} and \todoitems{...} print in red. Set \todofalse to hide them.
+% =====================================================================
+\documentclass[11pt]{article}
+\usepackage[a4paper,margin=2.2cm]{geometry}
+\usepackage{amsmath,amssymb,array,booktabs,tabularx,enumitem}
+\usepackage[numbers,sort&compress]{natbib}
+
+% equation-map part headings sit under Appendix A.2
+\newcommand{\sect}[1]{\subsubsection*{#1}}
+\input{preamble_maps}
+\usetikzlibrary{fit,positioning}
+
+\usepackage{url}
+\usepackage[hidelinks]{hyperref}
+
+% ---------------- visible TODO notes -----------------------------------
+\newif\iftodo \todotrue
+\DeclareRobustCommand{\todo}[1]{\iftodo\ifmmode\text{\sffamily\small\color{cL}[TODO: #1]}%
+  \else\leavevmode{\sffamily\small\color{cL}[TODO: #1]}\fi\fi}
+\newcommand{\todoitems}[1]{\iftodo\par{\small\sffamily\color{cL}%
+  \begin{itemize}[leftmargin=1.5em,itemsep=0pt,topsep=2pt,label=--]#1\end{itemize}}\fi}
+
+% ---------------- notation ---------------------------------------------
+\newcommand{\bx}{\mathbf x}
+\newcommand{\bp}{\mathbf p}
+\newcommand{\bv}{\mathbf v}
+\newcommand{\bu}{\mathbf u}
+\newcommand{\tauc}{\boldsymbol\tau}
+\newcommand{\ok}{\checkmark}
+
+\title{LOORacer: Learning-driven, Opponent-aware,\\ Optimal autonomous racing agent}
+\author{Yiran Liu}
+\date{Initial proposal \textendash\ draft on \today}
+
+\begin{document}
+\maketitle
+
+% =====================================================================
+\begin{abstract}
+Trajectory optimization has been the dominant method in autonomous racing, but it lacks the ability to react in real time in head-to-head competition.
+Recent learning-based approaches seek to address the gap, but they fall short in racing-time optimization.
+We propose a learning-driven framework for autonomous racing policies that are both optimal and opponent-aware. 
+We first learn a trajectory latent capturing trajectories that are generally feasible for a vehicle's physical constraints. 
+Generative policies are pretrained using real-world professional driver demonstrations. 
+Additionally, learned feasibility critics are parameterized from actual vehicle motion measurements and judge the policy on execution feasibility. They may also provide learning signals for subsequent reinforcement learning.
+
+The goal is to develop policies that match top drivers in strategic thinking, produce time-optimal trajectories, and engage responsively in execution.
+\end{abstract}
+
+% =====================================================================
+\section{Introduction}
+
+\paragraph{Foundations.}
+The kinematics of a racing vehicle are well-modelled by vehicle dynamics theories; exploiting optimal programming on such model allows us to produce best-time solutions to the racing problem. In [cite], an offline planner constructs the global trajectory, while an online controller replans over a short horizon to correct tracking error. In robot learning, a broad spectrum of generative policies [cite] predicts actions given observations, capturing the strategic decision and multimodel behavior of human experts. 
+
+\paragraph{Gap.}
+\todo{what current work does not cover, with Table~\ref{tab:gap};
+RL racing agents \citep{wurman2022outracing}}
+
+\begin{table}[h!]
+\centering\small
+\begin{tabular}{@{}lcccc@{}}
+\toprule
+ & Optimal & Learned prior & Opponent-aware & Real-time\\
+\midrule
+Offline trajectory optimization & \ok & -- & -- & --\\
+Online contouring MPC           & horizon only & -- & partial & \ok\\
+Imitation-learned driving policies & -- & \ok & \ok & \ok\\
+Reinforcement-learning racing agents & \ok & -- & \ok & \ok\\
+\midrule
+This proposal (goal)            & \ok & \ok & \ok & \ok\\
+\bottomrule
+\end{tabular}
+\caption{Properties of existing approaches (defined in Section~\ref{sec:props}).
+\todo{verify each cell}}
+\label{tab:gap}
+\end{table}
+
+% =====================================================================
+
+\pagebreak
+\section{Problem and scope}\label{sec:problem}
+
+\subsection{Problem definition}
+
+A vehicle races on a known race track, either against opponents or by itself. Let $\mathcal V$ denote the vehicle kinematics space, and $\mathcal P$ denote pose space, they combine to be state space $\mathcal X$. 
+\[
+\bp_t\in\mathcal P,\qquad \bv_t\in\mathcal V, \qquad \bx_t=[\,\bp_t\ \ \bv_t\,]\in\mathcal X
+\]
+
+In [cite], the vehicle functions in 2D track, and has kinematics state as: body velocity $[ v_x\ \ v_y ]$, yaw rate $r$, duty cycle $D$  
+and steering $\delta_t$. See Appendix~\ref{app:maps} for details.
+\[
+\bp_t \in \mathrm{SE}(2)=[\,p_x\ \ p_y\ \ \varphi\,],\qquad
+\bv_t=[\,v_x\ \ v_y \ \ r\ \ D\ \ \delta\,],
+\]
+
+The race track geometry is defined as a subset $\mathcal T$ of the pose space
+$\mathcal P$:
+\[
+\mathcal T\subseteq\mathcal P,\qquad \bp_t\in\mathcal T\iff\text{"vehicle in track"}
+\]
+
+The vehicle can be modeled with fair accuracy by a known dynamics model $F_\theta$ with
+vehicle parameters $\theta$ and control input $\bu_t=[\,\dot D_t\ \ \dot\delta_t\,]\in\mathcal U$:
+\[
+\bx_{t+\Delta t}=F_\theta(\bx_t,\bu_t,\Delta t).
+\]
+
+The physical constraints of the vehicle makes a subset of $\mathcal V$, denoting possible vehicle state:
+\[
+\mathcal V_{\mathrm{feas}}\subseteq\mathcal V,\qquad
+\bp_t\in\mathcal T\ \wedge\ \bv_t\in\mathcal V_{\mathrm{feas}}\iff
+\text{"vehicle can be in this state"}
+\]
+
+A trajectory is a sequence of $H$ future states sampled every $\Delta t$:
+\[
+\tauc_t=(\bx_{t+\Delta t},\,\bx_{t+2\Delta t},\,\dots,\,\bx_{t+H\Delta t}).
+\]
+
+Each opponent $j=1,\dots,M$ is observed by sensors to have estimation
+$\boldsymbol\mu^j_t$ and uncertainty $\Sigma^j_t$. The policy generates a trajectory from both past the vehicle states, the track and the opponent observations:
+\[
+\tauc_t\sim\pi\big(\,\cdot\mid\bx_t,\ \mathcal T,\ \{(\boldsymbol\mu^j_t,\Sigma^j_t)\}_{j=1}^{M}\big),
+\]
+
+An online controller rolls out the trajectory by choosing $\bu_t$ to minimze tracking error.
+
+\subsection{Defining properties}\label{sec:props}
+\begin{description}[leftmargin=1.2em,itemsep=2pt]
+  \item[Optimal.]        \todo{maximizes a racing objective, not merely feasible}
+  \item[Learned prior.]  \todo{operates in a latent space learned from data}
+  \item[Opponent-aware.] \todo{conditions on opponent observations with uncertainty; no collisions}
+\end{description}
+\todo{real-time requirement}
+
+\subsection{Goals}\label{sec:goals}
+\todo{goals, kept blurry: one policy that is optimal, operates in a learned prior, is
+opponent-aware and runs in real time; transfer across vehicle types as a further goal}
+
+\subsection{Assumptions}
+\todoitems{
+  \item opponent states observed as (position, uncertainty) $\Rightarrow$ perception not in scope
+  \item vehicle capability = practical constraint model regressed from observed behaviour
+  \item vehicle class: 2026 Formula~1 car (matches the data)
+}
+
+% =====================================================================
+\section{Method}\label{sec:method}
+
+\begin{figure}[h!]
+\centering
+\begin{tikzpicture}[
+  box/.style={draw=black!45,rounded corners=2pt,fill=#1!8,align=center,
+              font=\footnotesize,inner sep=4pt,minimum height=0.9cm,minimum width=2.0cm},
+  box/.default=black,
+  fl/.style={->,black!60,line width=0.6pt},
+  lab/.style={font=\scriptsize,text=black!60,inner sep=1pt}]
+  % data branch
+  \node[box=cR] (tel)  at (0,0)      {F1 telemetry};
+  \node[box=cR] (cur)  at (2.6,0)    {curation\\pipeline};
+  \node[box=cR] (demo) at (5.3,0)    {curated\\demonstrations};
+  \node[box=cP] (cm)   at (5.3,-2.35) {practical\\constraint model};
+  % policy
+  \node[box=cS,minimum width=2.4cm] (pol) at (9.0,0) {policy $\pi$};
+  \node[box=cU] (tau)  at (12.6,0)   {trajectory $\tauc$};
+  \node[box,font=\scriptsize,minimum height=0.6cm] (obs) at (9.0,1.5)
+       {ego state, track, opponents $(\boldsymbol\mu,\Sigma)$};
+  % critics
+  \node[box=cL] (fc) at (12.6,-1.75) {feasibility critic};
+  \node[box=cL] (ec) at (12.6,-2.95) {execution critic\\[-1pt]\scriptsize online MPC + simulation};
+  \node[draw=black!35,dashed,rounded corners=3pt,inner sep=5pt,fit=(fc)(ec)] (crit) {};
+  % arrows
+  \draw[fl] (tel) -- (cur);
+  \draw[fl] (cur) -- (demo);
+  \draw[fl] (demo) -- node[lab,right]{regression} (cm);
+  \draw[fl] (demo) -- node[lab,above]{imitation} (pol);
+  \draw[fl] (obs) -- (pol);
+  \draw[fl] (pol) -- (tau);
+  \draw[fl] (tau) -- (crit.north -| tau);
+  \draw[fl] (cm) -- node[lab,above]{parameterizes} (crit.west |- cm);
+  \draw[fl,dashed] (crit.west |- fc) -| node[lab,pos=0.75,left,align=right]{evaluation /\\learning signal} (pol.south);
+\end{tikzpicture}
+\caption{Pipeline overview (placeholder). \todo{revise}}
+\label{fig:pipeline}
+\end{figure}
+
+\subsection{Initialization from driver telemetry}
+\todo{imitation learning from professional-driver telemetry of the 2026 season
+\citep{tracinginsights2026,fastf1}}
+
+\paragraph{Data accuracy.}
+The telemetry is not first-hand vehicle measurement: (a) it does not contain the full state
+$\bx_t$, so some components must be inferred; (b) it has a low sampling rate and moderate
+noise. Data curation is therefore likely required and is part of what we develop.
+
+\subsection{Two critics}\label{sec:critics}
+\todo{both parameterized by the practical constraint model regressed from observed vehicle
+behaviour; used for result measurement and future IL; classical constraint forms in
+Appendix~\ref{app:classical}}
+\begin{enumerate}[leftmargin=1.5em,itemsep=2pt]
+  \item \textbf{Feasibility critic.} \todo{how feasible a trajectory is to execute}
+  \item \textbf{Execution critic.}   \todo{simulation with online MPC; works well when
+        (a) inference time on practical hardware fits, (b) continuity--reactiveness
+        balance holds}
+\end{enumerate}
+
+\subsection{Learning methods}
+\todo{set of methods adapted from SOTA robot policy learning, basic first; examples only,
+no verdict: behaviour cloning, action chunking \citep{zhao2023act}, diffusion
+\citep{chi2023diffusion}, flow matching \citep{lipman2022flow}, later A2A \citep{jia2026a2a}}
+
+% =====================================================================
+\section{Research questions}\label{sec:rq}
+\todo{list the research questions; initial suggestions:}
+\todoitems{
+  \item Data: can telemetry with missing state components, low sampling rate and noise be
+        curated into demonstrations usable for imitation learning?
+  \item Constraint model: how well does a constraint model regressed from observed behaviour
+        separate trajectories the vehicle executed from ones it did not (e.g.\ on held-out laps)?
+  \item Methods: which learning methods adapted from robot learning produce trajectories
+        that pass the feasibility critic?
+  \item Execution: which of them can be executed by an online MPC in real time on practical
+        hardware, and how do they trade continuity against reactiveness?
+  \item Learned prior: does operating in a learned latent space change feasibility compared
+        with generating trajectories directly?
+  \item Opponents: how does conditioning on opponent observations and their uncertainty affect
+        collisions and race outcome?
+  \item Optimality: how close to optimal does imitation alone get, and what is needed beyond it?
+  \item Transfer (further): what carries over to another vehicle type?
+}
+
+% =====================================================================
+% TODO: remove this \nocite once every entry is cited in the text.
+\nocite{heilmeier2019minimum,christ2019timeoptimal,liniger2015optimization,zhao2023act,
+chi2023diffusion,lipman2022flow,black2025rtc,jia2026a2a,wurman2022outracing,
+tracinginsights2026,fastf1}
+\bibliographystyle{plainnat}
+\bibliography{references}
+
+% =====================================================================
+\clearpage
+\appendix
+\newgeometry{margin=1.5cm}
+\section{Classical racing optimizers}\label{app:classical}
+
+\subsection{Constraint boundaries}\label{app:boundaries}
+\input{background_boundaries}
+
+\clearpage
+\subsection{Equation maps}\label{app:maps}
+\input{background_maps}
+\restoregeometry
+
+\end{document}

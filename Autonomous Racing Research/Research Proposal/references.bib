@@ -1,0 +1,194 @@
+% =====================================================================
+%  references.bib
+%  Entries below were checked against a primary source (paper page, repo
+%  README/BibTeX, or publisher DOI) during drafting. Add the rest yourself;
+%  suggested keys for still-missing anchors are listed at the bottom.
+% =====================================================================
+
+% ---------------- classical racing optimization -----------------------
+@article{liniger2015optimization,
+  title   = {Optimization-based autonomous racing of 1:43 scale {RC} cars},
+  author  = {Liniger, Alexander and Domahidi, Alexander and Morari, Manfred},
+  journal = {Optimal Control Applications and Methods},
+  volume  = {36},
+  number  = {5},
+  pages   = {628--647},
+  year    = {2015},
+  note    = {arXiv:1711.07300}
+}
+
+@misc{kabzan2019amz,
+  title         = {{AMZ} Driverless: The Full Autonomous Racing System},
+  author        = {Kabzan, J. and others},
+  year          = {2019},
+  eprint        = {1905.05150},
+  note          = {arXiv:1905.05150},
+  archivePrefix = {arXiv}
+}
+
+@article{heilmeier2019minimum,
+  title   = {Minimum Curvature Trajectory Planning and Control for an Autonomous Racecar},
+  author  = {Heilmeier, Alexander and Wischnewski, Alexander and Hermansdorfer, Leonhard
+             and Betz, Johannes and Lienkamp, Markus and Lohmann, Boris},
+  journal = {Vehicle System Dynamics},
+  year    = {2019},
+  doi     = {10.1080/00423114.2019.1631455}
+}
+
+@article{christ2019timeoptimal,
+  title   = {Time-Optimal Trajectory Planning for a Race Car Considering Variable
+             Tire-Road Friction Coefficients},
+  author  = {Christ, Fabian and Wischnewski, Alexander and Heilmeier, Alexander and Lohmann, Boris},
+  journal = {Vehicle System Dynamics},
+  year    = {2019},
+  doi     = {10.1080/00423114.2019.1704804}
+}
+
+% ---------------- F1TENTH / RoboRacer ---------------------------------
+@inproceedings{okelly2020f1tenth,
+  title     = {{F1TENTH}: An Open-source Evaluation Environment for Continuous Control
+               and Reinforcement Learning},
+  author    = {O'Kelly, Matthew and Zheng, Hongrui and Karthik, Dhruv and Mangharam, Rahul},
+  booktitle = {NeurIPS 2019 Competition and Demonstration Track},
+  pages     = {77--89},
+  year      = {2020},
+  organization = {PMLR}
+}
+
+@misc{evans2024unifying,
+  title         = {Unifying {F1TENTH} Autonomous Racing: Survey, Methods and Benchmarks},
+  author        = {Evans, Benjamin and Trumpp, Raphael and Caccamo, Marco and Jahncke, Felix
+                   and Betz, Johannes and Jordaan, Hendrik and Engelbrecht, Herman},
+  year          = {2024},
+  eprint        = {2402.18558},
+  note          = {arXiv:2402.18558},
+  archivePrefix = {arXiv}
+}
+
+@article{baumann2024forzaeth,
+  title   = {{ForzaETH} Race Stack---Scaled Autonomous Head-to-Head Racing on Fully
+             Commercial Off-the-Shelf Hardware},
+  author  = {Baumann, Nicolas and Ghignone, Edoardo and K{\"u}hne, Jonas and Bastuck, Niklas
+             and Becker, Jonathan and Imholz, Nadine and Kr{\"a}nzlin, Tobias and Lim, Tian Yi
+             and L{\"o}tscher, Michael and Schwarzenbach, Luca and others},
+  journal = {Journal of Field Robotics},
+  year    = {2024}
+}
+
+@inproceedings{althoff2017commonroad,
+  title     = {{CommonRoad}: Composable benchmarks for motion planning on roads},
+  author    = {Althoff, Matthias and Koschi, Markus and Manzinger, Stefanie},
+  booktitle = {IEEE Intelligent Vehicles Symposium (IV)},
+  pages     = {719--726},
+  year      = {2017}
+}
+
+% ---------------- learning for racing ---------------------------------
+@article{wurman2022outracing,
+  title   = {Outracing champion {Gran Turismo} drivers with deep reinforcement learning},
+  author  = {Wurman, Peter R. and others},
+  journal = {Nature},
+  volume  = {602},
+  number  = {7896},
+  pages   = {223--228},
+  year    = {2022}
+}
+
+% ---------------- generative policies / chunking ----------------------
+@misc{black2025rtc,
+  title         = {Real-Time Execution of Action Chunking Flow Policies},
+  author        = {Black, Kevin and Galliker, Manuel Y. and Levine, Sergey},
+  year          = {2025},
+  eprint        = {2506.07339},
+  note          = {arXiv:2506.07339},
+  archivePrefix = {arXiv}
+}
+
+@inproceedings{jia2026a2a,
+  title     = {Action-to-Action Flow Matching},
+  author    = {Jia, Jindou and Li, Gen and Chen, Xiangyu and An, Tuo and Hu, Yuxuan
+               and Li, Jingliang and Guo, Xinying and Yang, Jianfei},
+  booktitle = {Robotics: Science and Systems XXII},
+  year      = {2026},
+  note      = {arXiv:2602.07322}
+}
+
+% ---------------- differentiable simulation ---------------------------
+@inproceedings{suh2022differentiable,
+  title     = {Do Differentiable Simulators Give Better Policy Gradients?},
+  author    = {Suh, H. J. Terry and Simchowitz, Max and Zhang, Kaiqing and Tedrake, Russ},
+  booktitle = {International Conference on Machine Learning (ICML)},
+  series    = {PMLR},
+  volume    = {162},
+  year      = {2022}
+}
+
+% ---------------- data and code ----------------------------------------
+@misc{tracinginsights2026,
+  title        = {{TracingInsights} 2026 Formula 1 telemetry archive},
+  howpublished = {\url{https://github.com/TracingInsights/2026}},
+  note         = {Derived from FastF1, Ergast/Jolpica, OpenF1}
+}
+
+@misc{fastf1,
+  title        = {{FastF1}},
+  howpublished = {\url{https://github.com/theOehrly/Fast-F1}}
+}
+
+@misc{tum_racetrackdb,
+  title        = {{TUMFTM} racetrack-database},
+  howpublished = {\url{https://github.com/TUMFTM/racetrack-database}}
+}
+
+@misc{tum_globaltraj,
+  title        = {{TUMFTM} global\_racetrajectory\_optimization},
+  howpublished = {\url{https://github.com/TUMFTM/global_racetrajectory_optimization}}
+}
+
+@misc{liniger_mpcc_code,
+  title        = {{MPCC}: Model Predictive Contouring Controller for Autonomous Racing},
+  howpublished = {\url{https://github.com/alexliniger/MPCC}}
+}
+
+@misc{f1tenth_gym,
+  title        = {{f1tenth\_gym}},
+  howpublished = {\url{https://github.com/f1tenth/f1tenth_gym}},
+  note         = {branch \texttt{dev-jax} contains a JAX simulator}
+}
+
+% ---------------- robot policy learning --------------------------------
+@misc{chi2023diffusion,
+  title         = {Diffusion Policy: Visuomotor Policy Learning via Action Diffusion},
+  author        = {Chi, Cheng and Xu, Zhenjia and Feng, Siyuan and Cousineau, Eric and Du, Yilun
+                   and Burchfiel, Benjamin and Tedrake, Russ and Song, Shuran},
+  year          = {2023},
+  eprint        = {2303.04137},
+  note          = {arXiv:2303.04137},
+  archivePrefix = {arXiv}
+}
+
+@misc{zhao2023act,
+  title         = {Learning Fine-Grained Bimanual Manipulation with Low-Cost Hardware},
+  author        = {Zhao, Tony Z. and Kumar, Vikash and Levine, Sergey and Finn, Chelsea},
+  year          = {2023},
+  eprint        = {2304.13705},
+  note          = {arXiv:2304.13705},
+  archivePrefix = {arXiv}
+}
+
+@misc{lipman2022flow,
+  title         = {Flow Matching for Generative Modeling},
+  author        = {Lipman, Yaron and Chen, Ricky T. Q. and Ben-Hamu, Heli and Nickel, Maximilian and Le, Matt},
+  year          = {2022},
+  eprint        = {2210.02747},
+  note          = {arXiv:2210.02747},
+  archivePrefix = {arXiv}
+}
+
+% ---------------- TODO: add and verify ---------------------------------
+% weaver2024betail         BeTAIL (racing, residual IL)
+% hafner_dreamer           Dreamer (latent imagination)
+% kapania_racing           sequential path/speed racing planner (Kapania et al.)
+% vandeneshof_benchmark    min-curvature vs min-time benchmark (cited in the F1-demo paper)
+% f1demo_il                "Imitation Learning From F1 Demo" (project file) -- full citation
+% game-theoretic / chance-constrained interactive planning anchors
