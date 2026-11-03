@@ -1,0 +1,111 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[
+    left=1in,
+    right=1in,
+    top=0.6in,
+    bottom=1in
+]{geometry}
+
+\usepackage{amsmath,amssymb}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{float}
+\usepackage[hidelinks]{hyperref}
+\usepackage{tabularx}
+\usepackage{caption}
+\captionsetup[figure]{font=small}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta, positioning}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+\setlength{\emergencystretch}{3em}
+
+
+% Latency chart colours, light to dark, and the UR setting in grey.
+\definecolor{latA}{HTML}{A9CDD8}
+\definecolor{latB}{HTML}{6FA5B5}
+\definecolor{latC}{HTML}{3A7C96}
+\definecolor{latD}{HTML}{1E4A66}
+\definecolor{latE}{HTML}{BDBDBD}
+
+% File links point to the GitLab repository, branch teleop-refactor.
+
+\title{Week8 Status Report}
+\author{Yiran Liu, To: Dr.Pengcheng Xi}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\section{Teleoperation Refactor}
+
+Four major stages were outlined in the refactor plan \href{https://gitlabc.nrc-cnrc.gc.ca/Yiran.Liu/nrc_robot_manipulation/-/blob/teleop-refactor/Documentation/Journal/2026Sep/TeleopRefactor.md}{\texttt{TeleopRefactor.md}}. All of them are completed and tested on hardware by now. The camera recording process now stores the video at full resolution and frame rate (480p@30fps), and time-stamp each frame for accurate playback. 
+
+\begin{table}[H]
+\centering\small
+\begin{tabularx}{\linewidth}{@{}c>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}p{0.33\linewidth}@{}}
+\toprule
+Stage & Delivers & Status \\
+\midrule
+1 & Haply Inverse3 and the 500\,Hz RTDE control loop
+  & Latency improvement confirmed \\
+2 & Robotiq gripper in its own process
+  & Tested on hardware \\
+3 & Force sensor reading process at 2\,kHz
+  & Tested on Hardware  \\
+4 & Cameras: Separate process, time-stamped frames
+  & Tested on Hardware (30fps) \\
+5 & Force feedback.
+  & Has been worked on by Geoffrey. \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\section{Inference \& Training Refactor}
+\label{sec:policy}
+
+The plan was proposed last week, available on Teams as editable document and kept in
+\href{https://gitlabc.nrc-cnrc.gc.ca/Yiran.Liu/nrc_robot_manipulation/-/blob/teleop-refactor/Documentation/Journal/2026Oct/PolicyRefactor.md}{\texttt{PolicyRefactor.md}}, with the technical details in
+\href{https://gitlabc.nrc-cnrc.gc.ca/Yiran.Liu/nrc_robot_manipulation/-/blob/teleop-refactor/Documentation/Journal/2026Oct/PolicyRefactorExecutionJournal.md}{\texttt{PolicyRefactorExecutionJournal.md}}. 
+
+\subsection{Dashboard and Dataset Trimming}
+To make the code behavior fully transparent, I proposed to develop a unified visualization dashboard. It is used to inspect both the dataset and policy output in several different scenarios. The dashboard has now been written to visualize full details in our lossless logging format. 
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.85\linewidth]{./Trimming.png}
+\end{figure}
+
+This also allows us to redesign how episodes are collectly. Previously, you start, save and drop episodes directly when operating the robot., which makes it possible for mistakes in dataset. In this dashboard, you can adjust the trimming and drop epsiodes in the timeline after the collection is done. 
+
+\subsection{LeRobot Model Test on Legacy Dataset}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.85\linewidth]{./DryInference.png}
+\end{figure}
+
+\subsection{LeRobot Code Integration}
+
+The runtime dependency for LeRobot in our conda environment has been created properly and tested to compile. LeRobot's code can now run alongside our codebase. What remains is integrating LeRobot's 
+
+\begin{enumerate}\label{sec:policy}
+    \item (Done) \textbf{Data Collection with New Runtime.} Defined the exact layout to store our dataset under LeRobot's standard. That includes adding high-frequency force representation and customizing robot action dimentions. 
+	\item (Done) \textbf{Training Script.} The training script for running model training with LeRobot's training infrastructure. One unified script with args trains any model type with adjustable training settings.
+ 	\item \textbf{Next Steps} continues in table ~\ref{sec:plan}
+\end{enumerate}
+
+
+
+\section{Plan for Next Week}
+
+\begin{enumerate}\label{sec:plan}
+    \item (Todo) \textbf{Policy refactor.} Write the contract classes as planned to define boundaries, then write the wrapper code to use LeRobot as inference backend for our codebase.
+    \item (Todo) \textbf{Shadow mode.} 
+    operator teleoperates, with its chunks shown on the dashboard; nothing is executed.
+    \item (Goal) \textbf{Robot Execution.} Complte
+\end{enumerate}
+
+\end{document}
