@@ -41,7 +41,7 @@
 
 \section{Teleoperation Refactor}
 
-Four major stages were outlined in the refactor plan \href{https://gitlabc.nrc-cnrc.gc.ca/Yiran.Liu/nrc_robot_manipulation/-/blob/teleop-refactor/Documentation/Journal/2026Sep/TeleopRefactor.md}{\texttt{TeleopRefactor.md}}. All of them are completed and tested on hardware by now. The camera recording process now stores the video at full resolution and frame rate (480p@30fps), and time-stamp each frame for accurate playback. 
+Four major stages were outlined in the refactor plan \href{https://gitlabc.nrc-cnrc.gc.ca/Yiran.Liu/nrc_robot_manipulation/-/blob/teleop-refactor/Documentation/Journal/2026Sep/TeleopRefactor.md}{\texttt{TeleopRefactor.md}}. All of them are completed and tested on hardware by now. The camera recording process now stores the video at full resolution and frame rate (480p@30fps), and time-stamps each frame for accurate playback. 
 
 \begin{table}[H]
 \centering\small
@@ -66,39 +66,42 @@ Stage & Delivers & Status \\
 \section{Inference \& Training Refactor}
 \label{sec:policy}
 
-The plan was proposed last week, available on Teams as editable document and kept in
-\href{https://gitlabc.nrc-cnrc.gc.ca/Yiran.Liu/nrc_robot_manipulation/-/blob/teleop-refactor/Documentation/Journal/2026Oct/PolicyRefactor.md}{\texttt{PolicyRefactor.md}}, with the technical details in
-\href{https://gitlabc.nrc-cnrc.gc.ca/Yiran.Liu/nrc_robot_manipulation/-/blob/teleop-refactor/Documentation/Journal/2026Oct/PolicyRefactorExecutionJournal.md}{\texttt{PolicyRefactorExecutionJournal.md}}. 
+The plan proposed last week
+\href{https://gitlabc.nrc-cnrc.gc.ca/Yiran.Liu/nrc_robot_manipulation/-/blob/teleop-refactor/Documentation/Journal/2026Oct/PolicyRefactor.md}{\texttt{PolicyRefactor.md}}, also available on Teams as an editable document, had been caried out.
 
 \subsection{Dashboard and Dataset Trimming}
-To make the code behavior fully transparent, I proposed to develop a unified visualization dashboard. It is used to inspect both the dataset and policy output in several different scenarios. The dashboard has now been written to visualize full details in our lossless logging format. 
+I proposed to develop a unified visualization dashboard for data transparency. It is used to inspect both the dataset episodes and policy outputs. The dashboard reads CycleLog, our custom lossless logging format. 
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.85\linewidth]{./Trimming.png}
+\includegraphics[width=0.75\linewidth]{./Trimming.png}
 \end{figure}
 
-This also allows us to redesign how episodes are collectly. Previously, you start, save and drop episodes directly when operating the robot., which makes it possible for mistakes in dataset. In this dashboard, you can adjust the trimming and drop epsiodes in the timeline after the collection is done. 
+This also allows us to redesign how episodes are collected. In the legacy code, we start, save, and drop episodes directly when operating the robot, which makes it possible for mistakes in the dataset. In this dashboard, you can adjust the trimming and drop episodes in the timeline after the collection is done. 
 
 \subsection{LeRobot Model Test on Legacy Dataset}
 
-Multiple usable datasets exist for the pressing task, but they are in the legacy ZARR format. I had an agent attempt to convert them to the LeRobot format, and it claims it can convert with some patches. Using the converted dataset, I tried training the default DiffusionPolicy model that LeRobot provide - which is slightly different from what we used to run. The training converges and shows healthy checkpoint.
+The usable datasets for the pressing task are in the legacy ZARR format. 
+I asked an agent to try to convert them to the LeRobot format. 
+It succeeded, though the quality is not fully promised. 
+It still allowed me to try training LeRobot's DiffusionPolicy model. 
+The training converges with a healthy training curve, producing our first usable LeRobot checkpoint.
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.85\linewidth]{./DryInference.png}
+\includegraphics[width=0.80\linewidth]{./DryInference.png}
 \end{figure}
 
-I ran the checkpoints in dry-inference runs: where I feed the model with frozen frames in a collected episode and visualize its trajectory output. This ofcourse, doesn't consider how the environment changes to the robot's action. But they do show that the action trajectories are reasonable and fits the operator's demonstration well. This gives me fair condifence that LeRobot's model and inference runtime can work on our setup.
+I tested the checkpoints in dry-inference runs: I feed the model with frozen frames in a collected episode, and visualize its trajectory output. The action trajectories are reasonable and fit the operator's demonstration. This gives me fair confidence that LeRobot's model and inference runtime will work great on our setup.
 
 \subsection{LeRobot Code Integration}
 
-The runtime dependency for LeRobot in our conda environment has been created properly and tested to compile. LeRobot is now installed alongside our codebase. What remains is integrating LeRobot's inference backend to our robot control loop.
+I installed LeRobot runtime alongside our codebase, now working to adapt it as inference backend for our system:
 
 \begin{enumerate}\label{sec:policy}
-    \item (Done) \textbf{Data Collection with New Runtime.} Defined the exact layout to store our dataset under LeRobot's standard. That includes adding high-frequency force representation and customizing robot action dimentions. 
-	\item (Done) \textbf{Training Script.} The training script for running model training with LeRobot's training infrastructure. One unified script with args trains any model type with adjustable training settings.
- 	\item \textbf{Next Steps} continues in table ~\ref{sec:plan}
+  \item (Done) \textbf{Dataset Convention.} Defined the action dimensions and force representation of our dataset within LeRobot's standard. 
+  \item (Done) \textbf{Training Script.} One unified training script based on LeRobot's training infrastructure, suiting any model type and with adjustable training settings.
+  \item (In-Progress) \textbf{Policy refactor.} Write the contract classes as planned to define boundaries, then write the wrapper code to use LeRobot as inference backend for our codebase.
 \end{enumerate}
 
 
@@ -106,10 +109,9 @@ The runtime dependency for LeRobot in our conda environment has been created pro
 \section{Plan for Next Week}
 
 \begin{enumerate}\label{sec:plan}
-    \item (Todo) \textbf{Policy refactor.} Write the contract classes as planned to define boundaries, then write the wrapper code to use LeRobot as inference backend for our codebase.
-    \item (Todo) \textbf{Shadow mode.} 
-    operator teleoperates, with its chunks shown on the dashboard; nothing is executed.
-    \item (Goal) \textbf{Robot Execution.} Complte
+  \item (Team) \textbf{Data Collection. } Collect data using the updated teleop code.
+  \item (Team) \textbf{Another Training.} Using the formal dataset convention and newly collected data. 
+  \item (Me) \textbf{Robot Execution.} Sending commands according to the trajectory output to roll out the policy.
 \end{enumerate}
 
 \end{document}
