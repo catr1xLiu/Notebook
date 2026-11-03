@@ -82,14 +82,18 @@ This also allows us to redesign how episodes are collectly. Previously, you star
 
 \subsection{LeRobot Model Test on Legacy Dataset}
 
+Multiple usable datasets exist for the pressing task, but they are in the legacy ZARR format. I had an agent attempt to convert them to the LeRobot format, and it claims it can convert with some patches. Using the converted dataset, I tried training the default DiffusionPolicy model that LeRobot provide - which is slightly different from what we used to run. The training converges and shows healthy checkpoint.
+
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.85\linewidth]{./DryInference.png}
 \end{figure}
 
+I ran the checkpoints in dry-inference runs: where I feed the model with frozen frames in a collected episode and visualize its trajectory output. This ofcourse, doesn't consider how the environment changes to the robot's action. But they do show that the action trajectories are reasonable and fits the operator's demonstration well. This gives me fair condifence that LeRobot's model and inference runtime can work on our setup.
+
 \subsection{LeRobot Code Integration}
 
-The runtime dependency for LeRobot in our conda environment has been created properly and tested to compile. LeRobot's code can now run alongside our codebase. What remains is integrating LeRobot's 
+The runtime dependency for LeRobot in our conda environment has been created properly and tested to compile. LeRobot is now installed alongside our codebase. What remains is integrating LeRobot's inference backend to our robot control loop.
 
 \begin{enumerate}\label{sec:policy}
     \item (Done) \textbf{Data Collection with New Runtime.} Defined the exact layout to store our dataset under LeRobot's standard. That includes adding high-frequency force representation and customizing robot action dimentions. 
